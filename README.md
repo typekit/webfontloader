@@ -18,7 +18,7 @@ To view the demos, just boot up our demo server and start browsing.
 
     $ rake demo
 
-You may need a few rubygems to run the server. Get them with (Bundler)[http://gembundler.com/].
+You may need a few rubygems to run the server. Get them with [Bundler](http://gembundler.com/).
 
     $ gem install bundler
     $ bundle install
