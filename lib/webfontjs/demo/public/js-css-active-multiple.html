@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <link href="/basic.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/fonts.js"></script>
+  <script type="text/javascript">
+    WebFont.load({
+      google: {
+        family: ['Droid Sans', 'Tangerine']
+      }
+    });
+  </script>
+  <style type="text/css">
+    h1 {
+      visibility: hidden;
+    }
+    html.tk-DroidSans-active h1.droid {
+      visibility: visible;
+      font-family: 'Droid Sans';
+    }
+    html.tk-Tangerine-active h1.tangerine {
+      visibility: visible;
+      font-family: 'Tangerine';
+    }
+  </style>
+</head>
+<body>
+  <h1 class="droid">
+    Hello World. I am Droid Sans.
+  </h1>
+  <h1 class="tangerine">
+    Hello World. I am Tangerine.
+  </h1>
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/js-css-active-multiple.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is to use CSS to show each part of the page when
+    its font has loaded.
+  </p>
+</body>
+</html>

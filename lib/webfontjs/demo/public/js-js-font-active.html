@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <link href="/basic.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/fonts.js"></script>
+  <script type="text/javascript">
+    WebFont.load({
+      google: {
+        family: ['Droid Sans'],
+        api: '/fonts/api'
+      },
+      familyactive: function(fontFamilyName) {
+        if (fontFamilyName == 'Droid Sans') {
+          var h1 = document.getElementsByTagName('h1')[0];
+          h1.innerHTML = 'Hello World. I am ' + fontFamilyName;
+        }
+      }
+    });
+  </script>
+  <style type="text/css">
+    h1 {
+      font-family: 'Droid Sans';
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    Hello World.
+  </h1>
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/js-js-font-active.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is to use JavaScript to manipulate the page when
+    a particular font loads.
+  </p>
+</body>
+</html>

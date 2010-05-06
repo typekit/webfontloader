@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+  <script type="text/javascript" src="/fonts.js"></script>
+  <script type="text/javascript">
+    function progress(message) {
+      var output = document.getElementById('events');
+      if (output) {
+        var e = document.createElement('li');
+        e.innerHTML = message;
+        output.appendChild(e);
+      }
+      if (console && console.log) {
+        console.log(message);
+      }
+    }
+    WebFont.load({
+      google: {
+        family: ['Droid Sans', 'Tangerine']
+      },
+      loading: function() {
+        progress('loading');
+      },
+      active: function() {
+        progress('active');
+      },
+      inactive: function(fontFamily) {
+        progress('inactive: ' + fontFamily);
+      },
+      familyloading: function(fontFamily) {
+        progress('familyloading: ' + fontFamily);
+      },
+      familyactive: function(fontFamily) {
+        progress('familyactive: ' + fontFamily);
+      },
+      familyfailed: function(fontFamily) {
+        progress('familyfailed: ' + fontFamily);
+      }
+    });
+  </script>
+  <style type="text/css">
+    h1 {
+      visibility: hidden;
+    }
+    .tk-DroidSans-active h1.droid {
+      font-family: 'Droid Sans';
+      font-weight: normal;
+      visibility: visible;
+    }
+    .tk-Tangerine-active h1.tangerine {
+      font-family: 'Tangerine';
+      font-weight: normal;
+      visibility: visible;
+    }
+
+    /* All Class hooks */
+    #classes { color: #ddd; }
+    html.tk-loading #classes .Loading,
+    html.tk-active #classes .Active,
+    html.tk-inactive #classes .Inactive,
+    html.tk-DroidSans-loading #classes .DroidSansLoading,
+    html.tk-DroidSans-active #classes .DroidSansActive,
+    html.tk-DroidSans-failed #classes .DroidSansFailed,
+    html.tk-Tangerine-loading #classes .TangerineLoading,
+    html.tk-Tangerine-active #classes .TangerineActive,
+    html.tk-Tangerine-failed #classes .TangerineFailed {
+      color: #000;
+    }
+
+  </style>
+</head>
+<body>
+  <h1 class="droid">
+    Hello World. I am Droid Sans.
+  </h1>
+  <h1 class="tangerine">
+    Hello World. I am Tangerine.
+  </h1>
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/events.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is to show all of the font loading event callbacks.
+  </p>
+  <h2>CSS Hook Status</h2>
+  <ul id="classes">
+    <li class="Loading">Loading</li>
+    <li class="Active">Active</li>
+    <li class="Inactive">Inactive</li>
+    <li class="DroidSansLoading">Droid Sans Loading</li>
+    <li class="DroidSansActive">Droid Sans Active</li>
+    <li class="DroidSansFailed">Droid Sans Failed</li>
+    <li class="TangerineLoading">Tangerine Loading</li>
+    <li class="TangerineActive">Tangerine Active</li>
+    <li class="TangerineFailed">Tangerine Failed</li>
+  </ul>
+  <h2>JavaScript Event Progress</h2>
+  <ol id="events"></ol>
+</body>
+</html>

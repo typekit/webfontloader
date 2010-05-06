@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+  <link href="/basic.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/fonts.js"></script>
+  <script type="text/javascript">
+    WebFont.load({
+      google: {
+        family: ['Droid Sans'],
+        api: '/fonts/api'
+      },
+
+      /*
+       * Style the document while fonts are loading.
+       */
+      loading: function() {
+        // The <body> doesn't exist yet, so wait a moment.
+        setTimeout(function() {
+          document.body.style.color = '#999';
+        }, 10);
+      },
+
+      /*
+       * When fonts are rendered, hide the loading message, show the
+       * content, and change the style of the document.
+       */
+      active: function() {
+        var loadingMessage = document.getElementById('loading-message');
+        var content = document.getElementById('content');
+        loadingMessage.style.display = 'none';
+        content.style.display = 'block';
+        document.body.style.color = '#000';
+      }
+
+    });
+  </script>
+  <style type="text/css">
+    h1 {
+      font-family: 'Droid Sans';
+    }
+  </style>
+</head>
+<body>
+  <h1 id="loading-message">
+    I'm loading!
+  </h1>
+  <h1 id="content" style="display:none;">
+    Hello World. I am Droid Sans.
+  </h1>
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/js-js-loading.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is to use JavaScript to manipulate the DOM while
+    fonts are loading, and once they have all rendered.
+  </p>
+</body>
+</html>

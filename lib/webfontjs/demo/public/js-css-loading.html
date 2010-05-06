@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <link href="/basic.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/fonts.js"></script>
+  <script type="text/javascript">
+    WebFont.load({
+      google: {
+        family: ['Droid Sans'],
+        api: '/fonts/api',
+        blocking: false
+      }
+    });
+  </script>
+  <style type="text/css">
+
+    /* Show and style the loading message while fonts are loading */
+    html.tk-loading #loading-message {
+      display: block;
+      color: #999;
+    }
+
+    /* Hide the content while fonts are loading */
+    html.tk-loading #content {
+      display: none;
+    }
+
+    /* Hide the loading message after fonts render */
+    html.tk-active #loading-message {
+      display: none;
+    }
+    html.tk-active h1 {
+      font-family: 'Droid Sans';
+    }
+  </style>
+</head>
+<body>
+  <h1 id="loading-message">
+    I'm loading!
+  </h1>
+  <h1 id="content">
+    Hello World. I am Droid Sans.
+  </h1>
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/js-css-loading.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is to use CSS to show a loading message while the 
+    headline's font is loading, then hide the loading message and show the 
+    headline once the font has rendered.
+  </p>
+</body>
+</html>

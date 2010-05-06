@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Show me Fonts</title>
+
+  <!--
+    An external stylesheet will block page rendering in IE
+  -->
+  <link href="/fonts/api?family=Droid+Sans" rel="stylesheet" type="text/css">
+
+  <style type="text/css">
+    .serif {
+      font-family: serif;
+    }
+    .droid {
+      font-family: 'Droid Sans', serif;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="serif">
+    I am a serif font.
+  </h1>
+  <h1 class="droid">
+    I am Droid Sans.
+  </h1>
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/ie-slow-link.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is to show that by default, MSIE will block the entire
+    page while an external font loads.
+  </p>
+</body>
+</html>

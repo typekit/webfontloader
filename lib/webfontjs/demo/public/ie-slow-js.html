@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Show me Fonts</title>
+
+  <!--
+    An external script will block page rendering in IE. Normally we fix that
+    behavior, but here we'll undo the override.
+  -->
+  <script type="text/javascript" src="/fonts.js"></script>
+  <script type="text/javascript">
+    WebFont.load({
+      google: {
+        family: ['Droid Sans'],
+        blocking: true,
+        api: '/fonts/api'
+      }
+    });
+  </script>
+
+  <style type="text/css">
+    .serif {
+      font-family: serif;
+    }
+    .droid {
+      font-family: 'Droid Sans', serif;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="serif">
+    I am a serif font.
+  </h1>
+  <h1 class="droid">
+    I am Droid Sans.
+  </h1>
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/ie-slow-js.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is to restore blocking behavior in MSIE. This causes
+    IE to block the entire page while loading fonts.
+  </p>
+</body>
+</html>

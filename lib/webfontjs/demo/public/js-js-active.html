@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <link href="/basic.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/fonts.js"></script>
+  <script type="text/javascript">
+    WebFont.load({
+      google: {
+        family: ['Droid Sans'],
+        api: '/fonts/api'
+      },
+      active: function(fontFamilyName) {
+        var h1 = document.getElementsByTagName('h1')[0];
+        h1.style.visibility = 'visible';
+        h1.style.fontFamily = 'Droid Sans';
+      }
+    });
+  </script>
+  <style type="text/css">
+    h1 {
+      visibility: hidden;
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    Hello World. I am Droid Sans.
+  </h1>
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/js-js-active.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is to use a combination of JavaScript and CSS to
+    hide the headline until its font has completely rendered.
+  </p>
+</body>
+</html>
