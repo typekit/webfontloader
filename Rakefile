@@ -83,3 +83,13 @@ task :test => ["tmp/jsTestDriver.conf"] do |t|
   system "java -jar #{JsTestJar} --config #{config} --server #{JsTestServer} --tests all --captureConsole --verbose"
 end
 
+desc "Start the demo server"
+task :demo => "target/webfont.js" do |t|
+  js = t.prerequisites.first
+  exec "bin/webfontjs-demos -F --compiled_js #{js}"
+end
+
+desc "Start the demo server for development"
+task :demodev do
+  exec "bin/webfontjs-demos -F -L --modules"
+end
