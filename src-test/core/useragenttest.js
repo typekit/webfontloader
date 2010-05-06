@@ -324,3 +324,31 @@ UserAgentTest.prototype.testBrowserGeckoNoSubVerShouldNotSupportWebFont = functi
   assertEquals("1.9", userAgent.getEngineVersion());
   assertFalse(userAgent.isSupportingWebFont());
 };
+
+UserAgentTest.prototype.testBrowserGeckoHighMinorVerShouldNotSupportWebFont = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:0.10.1) " +
+      "Gecko/20091016 (.NET CLR 3.5.30729)");
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Mozilla", userAgent.getName());
+  assertEquals("Unknown", userAgent.getVersion());
+  assertEquals("Windows", userAgent.getPlatform());
+  assertEquals("Gecko", userAgent.getEngine());
+  assertEquals("0.10.1", userAgent.getEngineVersion());
+  assertFalse(userAgent.isSupportingWebFont());
+};
+
+UserAgentTest.prototype.testBrowserGeckoHighSubVerShouldNotSupportWebFont = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:0.3.42) " +
+      "Gecko/20091016 (.NET CLR 3.5.30729)");
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Mozilla", userAgent.getName());
+  assertEquals("Unknown", userAgent.getVersion());
+  assertEquals("Windows", userAgent.getPlatform());
+  assertEquals("Gecko", userAgent.getEngine());
+  assertEquals("0.3.42", userAgent.getEngineVersion());
+  assertFalse(userAgent.isSupportingWebFont());
+};

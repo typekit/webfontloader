@@ -176,8 +176,8 @@ webfont.UserAgentParser.prototype.parseGeckoUserAgentString_ = function() {
       var subVersion = parseInt(this.getFirstMatchingGroup_(geckoVersion, /\d+\.\d+\.(\d+)/));
 
       supportWebFont = majorVersion > 1 ||
-          intMinorVersion > 9 ||
-          subVersion >= 2 ||
+          majorVersion == 1 && intMinorVersion > 9 ||
+          majorVersion == 1 && intMinorVersion == 9 && subVersion >= 2 ||
           geckoVersion.match(/1\.9\.1b[123]/) != null ||
           geckoVersion.match(/1\.9\.1\.[\d\.]+/) != null;
     }
