@@ -3,31 +3,41 @@
 <head>
 </head>
 <body>
-  <h1>webfontslib</h1>
+  <h1>WebFont JS Demos</h1>
   <p>
     Demonstrations of pure CSS and JavaScript-enhanced use of @font-face.
   </p>
+  <p>
+    Note that many of these demonstrations use a <strong>slow proxy</strong> to
+    increase the amount of time it takes to load a font. We do this to make it
+    more obvious that the events system is working. It <em>does not</em> represent
+    real world usage.
+  </p>
+
   <h2>Pure CSS</h2>
   <ol>
     <li><a href="/css-basic.html">Basic</a>: Simplest possible font embedding with pure CSS.</li>
   </ol>
+
   <h2>JavaScript Enhanced</h2>
   <ol>
-    <li><a href="/js-basic.html">Basic</a>: Simplest font embedding with JavaScript API.</li>
+    <li><a href="/js-basic.html">Basic</a>: Simplest font embedding with WebFont JS.</li>
     <li><a href="/js-css-active.html">Show when rendered (CSS)</a>: Use CSS to show part of the page only when the font has rendered.</li>
     <li><a href="/js-js-active.html">Show when rendered (JS)</a>: Use JS to show part of the page only when the font has rendered.</li>
     <li><a href="/js-css-loading.html">Show loading message (CSS)</a>: Use CSS to show a message while the font loads.</li>
     <li><a href="/js-js-loading.html">Show loading message (JS)</a>: Use JS to show a message while the font loads.</li>
   </ol>
+
   <h2>More JavaScript samples</h2>
   <ol>
     <li><a href="/events.html">Events</a>: A demonstration of the full CSS and JS event cycle.</li>
     <li><a href="/js-css-active-multiple.html">Multiple font loads</a>: Use CSS to track each font load.</li>
   </ol>
+
   <h2>IE Behavior</h2>
   <ol>
-    <li><a href="/ie-slow-link.html">Slow Link</a>: Demonstrate the IE blocks the whole page when loading fonts via a LINK tag.</li>
-    <li><a href="/ie-fast-js.html">Fast JS</a>: Workaround the default IE loading behavior.</li>
+    <li><a href="/ie-slow-link.html">Slow Link</a>: Demonstrate that IE blocks the whole page when loading fonts via a LINK tag.</li>
+    <li><a href="/ie-fast-js.html">Fast JS</a>: By default, WebFont JS works around the default IE loading behavior.</li>
     <li><a href="/ie-slow-js.html">Slow JS</a>: Restore the default IE loading behavior.</li>
   </ol>
 </body>

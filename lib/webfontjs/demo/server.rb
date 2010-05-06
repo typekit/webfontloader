@@ -22,7 +22,7 @@ module WebFontJS
         File.read(File.join(DemoRoot, "public", "index.html"))
       end
 
-      get '/fonts.js' do
+      get '/webfont.js' do
         headers 'Content-Type' => "application/javascript"
         headers 'Cache-Control' => 'max-age=300'
         get_js_code

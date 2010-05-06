@@ -4,9 +4,18 @@ require 'rubygems'
 
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__) + "/../lib")
 require 'webfontjs'
-require 'webfontjs/demo/server'
 
-require 'vegas'
+begin
+  require 'webfontjs/demo/server'
+rescue LoadError => e
+  abort "Please gem install sinatra"
+end
+
+begin
+  require 'vegas'
+rescue LoadError => e
+  abort "Please gem install vegas"
+end
 
 Vegas::Runner.new(WebFontJS::Demo::Server, 'font-demos') do |runner, opts, app|
   opts.on('--compiled_js FILE', "Dynamically build the JS with the given modules") { |file|
