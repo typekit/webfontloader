@@ -7,7 +7,7 @@ webfont.EventDispatcher = function(domHelper, htmlElement, callbacks,
   this.cssClassName_ = new webfont.CssClassName('-');
 };
 
-webfont.EventDispatcher.DEFAULT_NAMESPACE = 'tk';
+webfont.EventDispatcher.DEFAULT_NAMESPACE = 'wf';
 webfont.EventDispatcher.LOADING = 'loading';
 webfont.EventDispatcher.ACTIVE = 'active';
 webfont.EventDispatcher.INACTIVE = 'inactive';
