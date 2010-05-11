@@ -28,10 +28,13 @@ TypekitScriptTest.prototype.testSupportAndLoadLifecycle = function() {
 
   assertNotNull(global.__typekitScriptModules__);
   assertNotNull(global.__typekitScriptModules__['abc']);
-  assertNotNull(global.__typekitScriptModules__['abc']['init']);
-  assertEquals('user agent', global.__typekitScriptModules__['abc']['ua']);
 
-  global.__typekitScriptModules__['abc']['init'](true, ['Font1', 'Font2']);
+  // Typekit script calls initializer.
+  global.__typekitScriptModules__['abc'](function(ua, init) {
+    assertEquals('user agent', ua);
+    assertNotNull(init);
+    init(true, ['Font1', 'Font2']);
+  });
   assertEquals(true, isSupport);
 
   // load

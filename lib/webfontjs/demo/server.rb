@@ -54,11 +54,11 @@ module WebFontJS
           if (window.__typekitScriptModules__) {
             var module = window.__typekitScriptModules__['#{kit_id}'];
             if (module) {
-              var ua = module['ua'];
-              var init = module['init'];
-              if (ua && init) {
+              module(function(userAgent, init) {
+                // Here you may use the userAgent object to determine
+                // browser support.
                 init(true, ['Arial Black']);
-              }
+              });
             }
           }
         JS

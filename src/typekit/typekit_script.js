@@ -24,12 +24,12 @@ webfont.TypekitScript.prototype.supportUserAgent = function(userAgent, support) 
 
     // Typekit will call 'init' to indicate whether it supports fonts
     // and what fonts will be provided.
-    this.global_.__typekitScriptModules__[kitId] = {
-      'ua': userAgent,
-      'init': function(typekitSupports, fontFamilies) {
+    this.global_.__typekitScriptModules__[kitId] = function(callback) {
+      var init = function(typekitSupports, fontFamilies) {
         self.fontFamilies_ = fontFamilies;
         support(typekitSupports);
-      }
+      };
+      callback(userAgent, init);
     };
 
     // Load the Typekit script.
