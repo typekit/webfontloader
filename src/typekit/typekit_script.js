@@ -6,6 +6,7 @@ webfont.TypekitScript = function(global, domHelper, configuration) {
 };
 
 webfont.TypekitScript.NAME = 'typekit';
+webfont.TypekitScript.HOOK = '__typekitScriptModules__';
 
 webfont.TypekitScript.prototype.getScriptSrc = function(kitId) {
   var api = this.configuration_['api'] || 'http://use.typekit.com';
@@ -18,18 +19,17 @@ webfont.TypekitScript.prototype.supportUserAgent = function(userAgent, support) 
 
   if (kitId) {
     // Provide WebFont JS data to Typekit for processing.
-    if (!this.global_.__typekitScriptModules__) {
-      this.global_.__typekitScriptModules__ = {};
+    if (!this.global_[webfont.TypekitScript.HOOK]) {
+      this.global_[webfont.TypekitScript.HOOK] = {};
     }
 
     // Typekit will call 'init' to indicate whether it supports fonts
     // and what fonts will be provided.
-    this.global_.__typekitScriptModules__[kitId] = function(callback) {
-      var init = function(typekitSupports, fontFamilies) {
+    this.global_[webfont.TypekitScript.HOOK][kitId] = function(callback) {
+      callback(userAgent, function(typekitSupports, fontFamilies) {
         self.fontFamilies_ = fontFamilies;
         support(typekitSupports);
-      };
-      callback(userAgent, init);
+      });
     };
 
     // Load the Typekit script.
@@ -37,7 +37,6 @@ webfont.TypekitScript.prototype.supportUserAgent = function(userAgent, support) 
     this.domHelper_.insertInto('head', script);
 
   } else {
-    // NOTE: is this right?
     support(true);
   }
 };
