@@ -1,6 +1,9 @@
 var TypekitScriptTest = TestCase('TypeKitScriptTest');
 
-TypekitScriptTest.prototype.testInsertProperScriptTag = function() {
+TypekitScriptTest.prototype.testInsertScriptTag = function() {
+  var configuration = {
+    'id': 'abc'
+  };
   var insert = '';
   var src = '';
   var fakeDomHelper = {
@@ -11,7 +14,7 @@ TypekitScriptTest.prototype.testInsertProperScriptTag = function() {
         src = srcLink;
       }
   };
-  var typeKit = new webfont.TypekitScript('abc', {}, fakeDomHelper);
+  var typeKit = new webfont.TypekitScript({}, fakeDomHelper, configuration);
   var fonts = null;
 
   typeKit.load(function(fontFamilies) { fonts = fontFamilies; });
@@ -19,7 +22,33 @@ TypekitScriptTest.prototype.testInsertProperScriptTag = function() {
   assertEquals('http://use.typekit.com/abc.js', src);
 };
 
-TypekitScriptTest.prototype.testInsertProperScriptTag = function() {
+TypekitScriptTest.prototype.testInsertScriptTagWithAlternativeApi = function() {
+  var configuration = {
+    'id': 'abc',
+    'api': '/test'
+  };
+  var insert = '';
+  var src = '';
+  var fakeDomHelper = {
+      insertInto: function(tag, e) {
+        insert = tag;
+      },
+      createScriptSrc: function(srcLink) {
+        src = srcLink;
+      }
+  };
+  var typeKit = new webfont.TypekitScript({}, fakeDomHelper, configuration);
+  var fonts = null;
+
+  typeKit.load(function(fontFamilies) { fonts = fontFamilies; });
+  assertEquals('head', insert);
+  assertEquals('/test/abc.js', src);
+};
+
+TypekitScriptTest.prototype.testCallbackExecution = function() {
+  var configuration = {
+    'id': 'abc'
+  };
   var insert = '';
   var src = '';
   var fakeDomHelper = {
@@ -31,7 +60,7 @@ TypekitScriptTest.prototype.testInsertProperScriptTag = function() {
       }
   };
   var global = {};
-  var typeKit = new webfont.TypekitScript('abc', global, fakeDomHelper);
+  var typeKit = new webfont.TypekitScript(global, fakeDomHelper, configuration);
   var fonts = null;
 
   typeKit.load(function(fontFamilies) { fonts = fontFamilies; });
