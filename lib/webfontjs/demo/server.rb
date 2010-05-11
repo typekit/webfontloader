@@ -52,9 +52,13 @@ module WebFontJS
         headers 'Cache-Control' => 'max-age=300'
         <<-JS
           if (window.__typekitScriptModules__) {
-            var onReady = window.__typekitScriptModules__['#{kit_id}'];
-            if (onReady) {
-              onReady(['Arial Black']);
+            var module = window.__typekitScriptModules__['#{kit_id}'];
+            if (module) {
+              var ua = module['ua'];
+              var init = module['init'];
+              if (ua && init) {
+                init(true, ['Arial Black']);
+              }
             }
           }
         JS
