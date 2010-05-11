@@ -71,3 +71,33 @@ TypekitScriptTest.prototype.testAlternateApi = function() {
   assertEquals('head', insert);
   assertEquals('/test/abc.js', src);
 };
+
+TypekitScriptTest.prototype.testNoKitId = function() {
+  var configuration = {
+    'id': null,
+  };
+  var insert = null;
+  var src = null;
+  var fakeDomHelper = {
+      insertInto: function(tag, e) {
+        insert = tag;
+      },
+      createScriptSrc: function(srcLink) {
+        src = srcLink;
+      }
+  };
+  var typeKit = new webfont.TypekitScript({}, fakeDomHelper, configuration);
+  var userAgent = 'user agent';
+  var isSupport = null;
+
+  // supportUserAgent
+  typeKit.supportUserAgent(userAgent, function(support) { isSupport = support; });
+  assertNull(insert);
+  assertNull(src);
+  assertEquals(true, isSupport);
+
+  // load
+  typeKit.load(function(fontFamilies) { fonts = fontFamilies; });
+
+  assertEquals([], fonts);
+};
