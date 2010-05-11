@@ -47,6 +47,19 @@ module WebFontJS
         response.read
       end
 
+      get %r[/typekit/(\w+)\.js] do |kit_id|
+        headers 'Content-Type' => 'application/javascript'
+        headers 'Cache-Control' => 'max-age=300'
+        <<-JS
+          if (window.__typekitScriptModules__) {
+            var onReady = window.__typekitScriptModules__['#{kit_id}'];
+            if (onReady) {
+              onReady(['Arial Black']);
+            }
+          }
+        JS
+      end
+
     protected
 
       def get_js_code
