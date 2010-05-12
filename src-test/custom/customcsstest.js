@@ -1,6 +1,6 @@
-var DefaultModuleTest = TestCase('DefaultModuleTest');
+var CustomCssTest = TestCase('CustomCssTest');
 
-DefaultModuleTest.prototype.testFoo = function() {
+CustomCssTest.prototype.testFoo = function() {
   var links = [];
   var head = '';
 
@@ -12,7 +12,7 @@ DefaultModuleTest.prototype.testFoo = function() {
       head = tag;
     }
   };
-  var defaultModule = new webfont.DefaultModule(fakeDomHelper, {
+  var defaultModule = new webfont.CustomCss(fakeDomHelper, {
       families: [ 'Font1', 'Font2', 'Font3' ], urls: [ 'http://moo',
           'http://meuh' ]});
   var fonts = null;

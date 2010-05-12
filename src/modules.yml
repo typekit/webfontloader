@@ -7,7 +7,6 @@ core:
   - core/fontmoduleloader.js
   - core/fontwatcher.js
   - core/font.js
-  - core/defaultmodule.js
   - core/cssclassname.js
 
 google:
@@ -16,3 +15,6 @@ google:
 
 typekit:
   - typekit/typekit_script.js
+
+custom:
+  - custom/customcss.js

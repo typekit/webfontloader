@@ -1,16 +1,19 @@
 /**
  *
  * WebFont.load({
- *   default: { families: ['Font1', 'Font2'],
- *       urls: [ 'http://moo', 'http://meuh' ] }
+ *   custom: {
+ *     families: ['Font1', 'Font2'],
+ *    urls: [ 'http://moo', 'http://meuh' ] }
  * });
  */
-webfont.DefaultModule = function(domHelper, configuration) {
+webfont.CustomCss = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
 };
 
-webfont.DefaultModule.prototype.load = function(onReady) {
+webfont.CustomCss.NAME = 'custom';
+
+webfont.CustomCss.prototype.load = function(onReady) {
   var urls = this.configuration_.urls;
   var length = urls.length;
 
@@ -22,7 +25,7 @@ webfont.DefaultModule.prototype.load = function(onReady) {
   onReady(this.configuration_.families);
 };
 
-WebFont.addModule('default', function(configuration) {
-  return new webfont.DefaultModule(new webfont.DomHelper(document),
+WebFont.addModule(webfont.CustomCss.NAME, function(configuration) {
+  return new webfont.CustomCss(new webfont.DomHelper(document),
       configuration);
 });
