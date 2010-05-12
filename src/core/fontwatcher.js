@@ -8,6 +8,7 @@ webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
   this.currentlyWatched_ = 0;
   this.last_ = false;
   this.success_ = false;
+  this.nameHelper_ = new webfont.CssFontFamilyName();
 };
 
 webfont.FontWatcher.DEFAULT_FONT = 'DEFAULT_FONT';
@@ -87,11 +88,12 @@ webfont.FontWatcher.prototype.getDefaultFontSize_ = function() {
 
 webfont.FontWatcher.prototype.createHiddenElementWithFont_ = function(
     fontFamily) {
+  var quotedName = this.nameHelper_.quote(fontFamily);
   var span = this.domHelper_.createElement('span', {
     // IE must have a fallback font option, else sometimes the loaded font
     // won't be detected - typically in the fully cached case.
     'style': "position:absolute;top:-999px;font-size:300px;font-family:" +
-        "'" + fontFamily + "'," + webfont.FontWatcher.DEFAULT_FONT + ";"
+        quotedName + "," + webfont.FontWatcher.DEFAULT_FONT + ";"
   }, 'Mm');
 
   this.domHelper_.insertInto('html', span);
