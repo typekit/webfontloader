@@ -89,7 +89,7 @@ window['WebFont'] = function() {
   var userAgent = userAgentParser.parse();
 
   return new webfont.WebFont(domHelper, new webfont.FontModuleLoader(),
-      document.getElementsByTagName('html')[0], function(func, timeout) {
+      document.documentElement, function(func, timeout) {
         setTimeout(func, timeout);
       }, userAgent);
 }();

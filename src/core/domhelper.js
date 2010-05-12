@@ -57,21 +57,19 @@ webfont.DomHelper.prototype.removeElement = function(node) {
 webfont.DomHelper.prototype.createCssLink = function(src) {
   return this.createElement('link', {
     'rel': 'stylesheet',
-    'type': 'text/css',
     'href': src
   });
 };
 
 webfont.DomHelper.prototype.createScriptSrc = function(src) {
   return this.createElement('script', {
-    'type': 'text/javascript',
     'src': src
   });
 };
 
 webfont.DomHelper.prototype.appendClassName = function(e, name) {
-  var classes = e.className.split(' ');
-  for (var i = 0; i < classes.length; i++) {
+  var classes = e.className.split(/\s+/);
+  for (var i = 0, len = classes.length; i < len; i++) {
     if (classes[i] == name) {
       return;
     }
@@ -81,9 +79,9 @@ webfont.DomHelper.prototype.appendClassName = function(e, name) {
 };
 
 webfont.DomHelper.prototype.removeClassName = function(e, name) {
-  var classes = e.className.split(' ');
+  var classes = e.className.split(/\s+/);
   var remainingClasses = [];
-  for (var i = 0; i < classes.length; i++) {
+  for (var i = 0, len = classes.length; i < len; i++) {
     if (classes[i] != name) {
       remainingClasses.push(classes[i]);
     }

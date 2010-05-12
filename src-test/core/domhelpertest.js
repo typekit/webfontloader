@@ -49,14 +49,12 @@ DomHelperTest.prototype.testCreateCssLink = function() {
   var cssLink = this.domHelper_.createCssLink('http://moo/somecss.css');
 
   assertEquals('stylesheet', cssLink.rel);
-  assertEquals('text/css', cssLink.type);
   assertEquals('http://moo/somecss.css', cssLink.href);
 };
 
 DomHelperTest.prototype.testCreateScriptSrc = function() {
   var cssLink = this.domHelper_.createScriptSrc('http://moo/somescript.js');
 
-  assertEquals('text/javascript', cssLink.type);
   assertEquals('http://moo/somescript.js', cssLink.src);
 };
 
@@ -69,4 +67,14 @@ DomHelperTest.prototype.testAppendAndRemoveClassNames = function() {
   assertEquals('moo meuh', div.className);
   this.domHelper_.removeClassName(div, 'moo');
   assertEquals('meuh', div.className);
+
+  this.domHelper_.removeClassName(div, 'meuh');
+  this.domHelper_.appendClassName(div, 'spaces and	tabs');
+
+  this.domHelper_.removeClassName(div, 'and');
+  assertEquals('spaces tabs', div.className);
+  this.domHelper_.removeClassName(div, 'spaces');
+  this.domHelper_.removeClassName(div, 'tabs');
+  assertEquals('', div.className);
+
 };
