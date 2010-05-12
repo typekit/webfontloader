@@ -27,6 +27,24 @@ DomHelperTest.prototype.testCreateElementWithAttrInnerHtml = function() {
   assertEquals('hello', span.innerHTML);
 };
 
+DomHelperTest.prototype.testCreateElementWithPrototypeAugments = function(){
+
+  Object.prototype.extrastuff = function(){ return 'I am a troublemaker.'; }
+
+  var span = this.domHelper_.createElement('span', { id : "augmented" });
+  var spanPar = this.domHelper_.createElement('div', { id : "augmentedpar" });
+  spanPar.appendChild(span);
+
+
+  assertNotNull(span);
+  assertSame(false,!!span.getAttribute('extrastuff'));
+  assertSame(-1,spanPar.innerHTML.indexOf('extrastuff'))
+
+
+  delete Object.prototype.extrastuff;
+  span = spanPar = undefined;
+}
+
 DomHelperTest.prototype.testCreateCssLink = function() {
   var cssLink = this.domHelper_.createCssLink('http://moo/somecss.css');
 

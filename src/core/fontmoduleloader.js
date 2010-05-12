@@ -10,10 +10,12 @@ webfont.FontModuleLoader.prototype.getModules = function(configuration) {
   var modules = [];
 
   for (var key in configuration) {
-    var moduleFactory = this.modules_[key];
+    if (configuration.hasOwnProperty(key)) {
+      var moduleFactory = this.modules_[key];
 
-    if (moduleFactory) {
-      modules.push(moduleFactory(configuration[key]));
+      if (moduleFactory) {
+        modules.push(moduleFactory(configuration[key]));
+      }
     }
   }
   return modules;

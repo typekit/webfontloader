@@ -8,7 +8,10 @@ webfont.DomHelper.prototype.createElement = function(elem, opt_attr,
 
   if (opt_attr) {
     for (var attr in opt_attr) {
-      domElement.setAttribute(attr, opt_attr[attr]);
+      // protect against native prototype augmentations
+      if (opt_attr.hasOwnProperty(attr)) {
+        domElement.setAttribute(attr, opt_attr[attr]);
+      }
     }
   }
   if (opt_innerHtml) {
