@@ -24,7 +24,7 @@ webfont.GoogleFontApi.prototype.load = function(onReady) {
   fontApiUrlBuilder.setFontFamilies(fontFamilies);
 
   if (nonBlockingIe) {
-    domHelper.whenExists('body', function() {
+    domHelper.whenBodyExists(function() {
       domHelper.insertInto('head', domHelper.createCssLink(
           fontApiUrlBuilder.build()));
     });

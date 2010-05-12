@@ -32,11 +32,9 @@ webfont.DomHelper.prototype.insertInto = function(tagName, e) {
   return false;
 };
 
-webfont.DomHelper.prototype.whenExists = function(tagName, callback) {
-  var self = this;
-  var doc = this.document_;
+webfont.DomHelper.prototype.whenBodyExists = function(callback) {
   var check = function() {
-    if (doc.getElementsByTagName(tagName)[0]) {
+    if (document.body) {
       callback();
     } else {
       setTimeout(check, 0);
