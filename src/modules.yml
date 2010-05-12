@@ -8,6 +8,7 @@ core:
   - core/fontwatcher.js
   - core/font.js
   - core/cssclassname.js
+  - core/cssfontfamilyname.js
 
 google:
   - google/fontapiurlbuilder.js
