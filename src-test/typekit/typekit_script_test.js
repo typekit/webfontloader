@@ -30,8 +30,9 @@ TypekitScriptTest.prototype.testSupportAndLoadLifecycle = function() {
   assertNotNull(global.__webfonttypekitmodule__['abc']);
 
   // Typekit script calls initializer.
-  global.__webfonttypekitmodule__['abc'](function(ua, init) {
+  global.__webfonttypekitmodule__['abc'](function(ua, config, init) {
     assertEquals('user agent', ua);
+    assertEquals(config, configuration);
     assertNotNull(init);
     init(true, ['Font1', 'Font2']);
   });

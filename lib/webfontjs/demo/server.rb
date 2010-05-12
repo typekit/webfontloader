@@ -54,7 +54,7 @@ module WebFontJS
           if (window.__webfonttypekitmodule__) {
             var module = window.__webfonttypekitmodule__['#{kit_id}'];
             if (module) {
-              module(function(userAgent, init) {
+              module(function(userAgent, configuration, init) {
                 // Here you may use the userAgent object to determine
                 // browser support.
                 init(true, ['Arial Black']);

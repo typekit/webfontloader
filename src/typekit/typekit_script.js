@@ -15,6 +15,7 @@ webfont.TypekitScript.prototype.getScriptSrc = function(kitId) {
 
 webfont.TypekitScript.prototype.supportUserAgent = function(userAgent, support) {
   var kitId = this.configuration_['id'];
+  var configuration = this.configuration_;
   var self = this;
 
   if (kitId) {
@@ -26,10 +27,11 @@ webfont.TypekitScript.prototype.supportUserAgent = function(userAgent, support) 
     // Typekit will call 'init' to indicate whether it supports fonts
     // and what fonts will be provided.
     this.global_[webfont.TypekitScript.HOOK][kitId] = function(callback) {
-      callback(userAgent, function(typekitSupports, fontFamilies) {
+      var init = function(typekitSupports, fontFamilies) {
         self.fontFamilies_ = fontFamilies;
         support(typekitSupports);
-      });
+      };
+      callback(userAgent, configuration, init);
     };
 
     // Load the Typekit script.
