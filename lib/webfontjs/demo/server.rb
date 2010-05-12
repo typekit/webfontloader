@@ -51,8 +51,8 @@ module WebFontJS
         headers 'Content-Type' => 'application/javascript'
         headers 'Cache-Control' => 'max-age=300'
         <<-JS
-          if (window.__typekitScriptModules__) {
-            var module = window.__typekitScriptModules__['#{kit_id}'];
+          if (window.__webfonttypekitmodule__) {
+            var module = window.__webfonttypekitmodule__['#{kit_id}'];
             if (module) {
               module(function(userAgent, init) {
                 // Here you may use the userAgent object to determine

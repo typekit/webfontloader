@@ -6,7 +6,7 @@ webfont.TypekitScript = function(global, domHelper, configuration) {
 };
 
 webfont.TypekitScript.NAME = 'typekit';
-webfont.TypekitScript.HOOK = '__typekitScriptModules__';
+webfont.TypekitScript.HOOK = '__webfonttypekitmodule__';
 
 webfont.TypekitScript.prototype.getScriptSrc = function(kitId) {
   var api = this.configuration_['api'] || 'http://use.typekit.com';

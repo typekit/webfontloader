@@ -26,11 +26,11 @@ TypekitScriptTest.prototype.testSupportAndLoadLifecycle = function() {
   assertEquals('http://use.typekit.com/abc.js', src);
   assertEquals(null, isSupport);
 
-  assertNotNull(global.__typekitScriptModules__);
-  assertNotNull(global.__typekitScriptModules__['abc']);
+  assertNotNull(global.__webfonttypekitmodule__);
+  assertNotNull(global.__webfonttypekitmodule__['abc']);
 
   // Typekit script calls initializer.
-  global.__typekitScriptModules__['abc'](function(ua, init) {
+  global.__webfonttypekitmodule__['abc'](function(ua, init) {
     assertEquals('user agent', ua);
     assertNotNull(init);
     init(true, ['Font1', 'Font2']);
