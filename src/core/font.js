@@ -58,11 +58,12 @@ webfont.WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher
 };
 
 webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {
-  var modules = this.fontModuleLoader_.getModules(configuration);
-  var length = modules.length;
+  var modules = this.fontModuleLoader_.getModules(configuration),
+      self = this;
+
   this.moduleLoading_ = length;
   this.moduleFailedLoading_ = length;
-  var self = this;
+
   var fontWatcher = new webfont.FontWatcher(this.domHelper_,
       eventDispatcher, {
         getWidth: function(elem) {
@@ -71,7 +72,7 @@ webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {
           return +new Date();
         });
 
-  for (var i = 0; i < length; i++) {
+  for (var i = 0, len = modules.length; i < len; i++) {
     var module = modules[i];
 
     module.supportUserAgent(this.userAgent_,

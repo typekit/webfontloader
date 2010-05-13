@@ -25,6 +25,10 @@ webfont.CustomCss.prototype.load = function(onReady) {
   onReady(this.configuration_.families);
 };
 
+webfont.CustomCss.prototype.supportUserAgent = function(userAgent, support) {
+  return support(userAgent.isSupportingWebFont());
+};
+
 WebFont.addModule(webfont.CustomCss.NAME, function(configuration) {
   return new webfont.CustomCss(new webfont.DomHelper(document),
       configuration);
