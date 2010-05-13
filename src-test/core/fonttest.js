@@ -27,7 +27,10 @@ FontTest.prototype.testFontLoad = function() {
       this.loadCalled = false;
       this.supportUserAgentCalled = false;
    };
-   testModule.load = function(onReady) { this.loadCalled = true; onReady([]) };
+   testModule.load = function(onReady) {
+     this.loadCalled = true;
+     onReady([]);
+    };
    testModule.supportUserAgent = function(ua, support) {
      this.supportUserAgentCalled = true;
      support(true);
@@ -35,6 +38,9 @@ FontTest.prototype.testFontLoad = function() {
    return testModule;
   });
   var loadingEventCalled = false;
+
+  assertEquals(0, font.moduleFailedLoading_);
+  assertEquals(0, font.moduleLoading_);
 
   font.load({
       test: {
@@ -44,7 +50,10 @@ FontTest.prototype.testFontLoad = function() {
         loadingEventCalled = true;
       }
   });
-  assertNotNull(testModule)
+
+  assertEquals(1, font.moduleFailedLoading_);
+  assertEquals(0, font.moduleLoading_);
+  assertNotNull(testModule);
   assertNotUndefined(testModule.conf);
   assertNotNull(testModule.conf);
   assertEquals('in french a cow says meuh', testModule.conf.somedata);
