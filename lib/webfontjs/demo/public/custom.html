@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+  <title>Custom Module</title>
+  <script type="text/javascript" src="/webfont.js"></script>
+  <script type="text/javascript">
+    function progress(message) {
+      var output = document.getElementById('events');
+      if (output) {
+        var e = document.createElement('li');
+        e.innerHTML = message;
+        output.appendChild(e);
+      }
+      if (console && console.log) {
+        console.log(message);
+      }
+    }
+    WebFont.load({
+      custom: {
+        families: ['Tagesschrift'],
+        urls : ['http://paulirish.com/tagesschrift.css']
+      },
+      loading: function() {
+        progress('loading');
+      },
+      active: function() {
+        progress('active');
+      },
+      inactive: function(fontFamily) {
+        progress('inactive: ' + fontFamily);
+      },
+      familyloading: function(fontFamily) {
+        progress('familyloading: ' + fontFamily);
+      },
+      familyactive: function(fontFamily) {
+        progress('familyactive: ' + fontFamily);
+      },
+      familyfailed: function(fontFamily) {
+        progress('familyfailed: ' + fontFamily);
+      }
+    });
+  </script>
+  <style type="text/css">
+   /*
+    h1 {
+      visibility: hidden;
+    }
+    .wf-Tagesschrift-active h1 {
+      font-family: 'Tagesschrift';
+      font-weight: normal;
+      visibility: visible;
+    }
+    */
+    h1 { font-family: 'Tagesschrift';}
+    /* All Class hooks */
+    #classes { color: #ddd; }
+    html.wf-loading #classes .Loading,
+    html.wf-active #classes .Active,
+    html.wf-inactive #classes .Inactive,
+    html.wf-Tagesschrift-loading #classes .TagesschriftLoading,
+    html.wf-Tagesschrift-active #classes .TagesschriftActive,
+    html.wf-Tagesschrift-failed #classes .TagesschriftFailed {
+      color: #000;
+    }
+
+  </style>
+</head>
+<body>
+  <h1 class="tagesschrift">
+    Hello World. I am Tagesschrift.
+  </h1>
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/custom.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is to show how fonts load from a custom module.
+  </p>
+  <h2>CSS Hook Status</h2>
+  <ul id="classes">
+    <li class="Loading">Loading</li>
+    <li class="Active">Active</li>
+    <li class="Inactive">Inactive</li>
+    <li class="TagesschriftLoading">Tagesschrift Loading</li>
+    <li class="TagesschriftActive">Tagesschrift Active</li>
+    <li class="TagesschriftFailed">Tagesschrift Failed</li>
+  </ul>
+  <h2>JavaScript Event Progress</h2>
+  <ol id="events"></ol>
+</body>
+</html>
