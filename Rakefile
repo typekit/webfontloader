@@ -93,3 +93,18 @@ desc "Start the demo server for development"
 task :demodev do
   exec "bin/webfontjs-demos -F -L --modules"
 end
+
+desc "Find out how many bytes the source is"
+task :bytes => "target/webfont.js" do |t|
+  js = t.prerequisites.first
+  bytes = File.read(js).size
+  puts "#{bytes} bytes uncompressed"
+end
+
+desc "Find out how many bytes the source is when gzipped"
+task :gzipbytes => "target/webfont.js" do |t|
+  require 'zlib'
+  js = t.prerequisites.first
+  bytes = Zlib::Deflate.deflate(File.read(js)).size
+  puts "#{bytes} bytes gzipped"
+end
