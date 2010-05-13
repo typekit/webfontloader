@@ -44,22 +44,22 @@ EventDispatcherTest.prototype.testClassNamesOnActiveLoad = function() {
   this.eventDispatcher_.dispatchLoading();
   assertEquals('ns-loading', this.fakeHtmlElement_.className);
   this.eventDispatcher_.dispatchFamilyLoading('My Family');
-  assertEquals('ns-loading ns-MyFamily-loading', this.fakeHtmlElement_.className);
+  assertEquals('ns-loading ns-myfamily-loading', this.fakeHtmlElement_.className);
   this.eventDispatcher_.dispatchFamilyActive('My Family');
-  assertEquals('ns-loading ns-MyFamily-active', this.fakeHtmlElement_.className);
+  assertEquals('ns-loading ns-myfamily-active', this.fakeHtmlElement_.className);
   this.eventDispatcher_.dispatchActive();
-  assertEquals('ns-MyFamily-active ns-active', this.fakeHtmlElement_.className);
+  assertEquals('ns-myfamily-active ns-active', this.fakeHtmlElement_.className);
 };
 
 EventDispatcherTest.prototype.testClassNamesOnInactiveLoad = function() {
   this.eventDispatcher_.dispatchLoading();
   assertEquals('ns-loading', this.fakeHtmlElement_.className);
   this.eventDispatcher_.dispatchFamilyLoading('My Family');
-  assertEquals('ns-loading ns-MyFamily-loading', this.fakeHtmlElement_.className);
+  assertEquals('ns-loading ns-myfamily-loading', this.fakeHtmlElement_.className);
   this.eventDispatcher_.dispatchFamilyFailed('My Family');
-  assertEquals('ns-loading ns-MyFamily-failed', this.fakeHtmlElement_.className);
+  assertEquals('ns-loading ns-myfamily-failed', this.fakeHtmlElement_.className);
   this.eventDispatcher_.dispatchActive();
-  assertEquals('ns-MyFamily-failed ns-active', this.fakeHtmlElement_.className);
+  assertEquals('ns-myfamily-failed ns-active', this.fakeHtmlElement_.className);
 };
 
 EventDispatcherTest.prototype.testEventsOnActiveLoad = function() {

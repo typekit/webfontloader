@@ -5,7 +5,7 @@ webfont.CssClassName = function(opt_joinChar) {
 webfont.CssClassName.DEFAULT_JOIN_CHAR = '-';
 
 webfont.CssClassName.prototype.sanitize = function(name) {
-  return name.replace(/[\W_]+/g, '');
+  return name.replace(/[\W_]+/g, '').toLowerCase();
 };
 
 webfont.CssClassName.prototype.build = function(__args__) {

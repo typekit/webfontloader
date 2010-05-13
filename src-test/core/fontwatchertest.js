@@ -362,9 +362,9 @@ FontWatcherTest.prototype.testWatchMultipleFontsAlreadyLoadedAndLastBatchOnDone
   assertEquals('fontFamily2', this.fontFamilyActive_[1]);
   assertEquals('fontFamily3', this.fontFamilyActive_[2]);
   assertEquals(1, this.activeEventCalled_);
-  assertEquals(true, this.classNames_['ns-fontFamily1-active']);
-  assertEquals(true, this.classNames_['ns-fontFamily2-active']);
-  assertEquals(true, this.classNames_['ns-fontFamily3-active']);
+  assertEquals(true, this.classNames_['ns-fontfamily1-active']);
+  assertEquals(true, this.classNames_['ns-fontfamily2-active']);
+  assertEquals(true, this.classNames_['ns-fontfamily3-active']);
   assertEquals(true, this.classNames_['ns-active']);
   assertEquals(4, this.classNamesCount_);
 };
@@ -420,9 +420,9 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndLastBatchOnDone =
   assertEquals('fontFamily2', this.fontFamilyActive_[1]);
   assertEquals('fontFamily3', this.fontFamilyActive_[2]);
   assertEquals(1, this.activeEventCalled_);
-  assertEquals(true, this.classNames_['ns-fontFamily1-active']);
-  assertEquals(true, this.classNames_['ns-fontFamily2-active']);
-  assertEquals(true, this.classNames_['ns-fontFamily3-active']);
+  assertEquals(true, this.classNames_['ns-fontfamily1-active']);
+  assertEquals(true, this.classNames_['ns-fontfamily2-active']);
+  assertEquals(true, this.classNames_['ns-fontfamily3-active']);
   assertEquals(true, this.classNames_['ns-active']);
   assertEquals(4, this.classNamesCount_);
 };
