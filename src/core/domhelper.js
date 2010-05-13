@@ -23,6 +23,10 @@ webfont.DomHelper.prototype.createElement = function(elem, opt_attr,
 webfont.DomHelper.prototype.insertInto = function(tagName, e) {
   var t = this.document_.getElementsByTagName(tagName)[0];
 
+  if (!t) { // opera allows documents without a head
+    t = document.documentElement;
+  }
+
   if (t && t.lastChild) {
     // This is safer than appendChild in IE. appendChild causes random
     // JS errors in IE. Sometimes errors in other JS exectution, sometimes
