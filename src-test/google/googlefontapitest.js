@@ -13,7 +13,7 @@ GoogleFontApiTest.prototype.testCallOnReadyWithFontFamilyLoading = function() {
   };
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
   var googleFontApi = new webfont.GoogleFontApi(userAgent, fakeDomHelper,
-      { family: [ 'Font1', 'Font2' ] });
+      { families: [ 'Font1', 'Font2' ] });
   var fonts = null;
 
   googleFontApi.load(function(fontFamilies) { fonts = fontFamilies; });
@@ -40,7 +40,7 @@ GoogleFontApiTest.prototype.testCallOnReadyWithFontFamilyLoadingApiUrlChanged =
   };
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
   var googleFontApi = new webfont.GoogleFontApi(userAgent, fakeDomHelper,
-      { api: 'http://moo',  family: [ 'Font1', 'Font2' ] });
+      { api: 'http://moo',  families: [ 'Font1', 'Font2' ] });
   var fonts = null;
 
   googleFontApi.load(function(fontFamilies) { fonts = fontFamilies; });
