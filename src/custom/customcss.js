@@ -14,15 +14,15 @@ webfont.CustomCss = function(domHelper, configuration) {
 webfont.CustomCss.NAME = 'custom';
 
 webfont.CustomCss.prototype.load = function(onReady) {
-  var urls = this.configuration_.urls;
-  var length = urls.length;
+  var urls = this.configuration_['urls'] || [];
+  var families = this.configuration_['families'] || [];
 
-  for (var i = 0; i < length; i++) {
+  for (var i = 0, len = urls.length; i < len; i++) {
     var url = urls[i];
 
     this.domHelper_.insertInto('head', this.domHelper_.createCssLink(url));
   }
-  onReady(this.configuration_.families);
+  onReady(families);
 };
 
 webfont.CustomCss.prototype.supportUserAgent = function(userAgent, support) {
