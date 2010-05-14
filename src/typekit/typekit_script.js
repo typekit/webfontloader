@@ -19,7 +19,7 @@ webfont.TypekitScript.prototype.supportUserAgent = function(userAgent, support) 
   var self = this;
 
   if (kitId) {
-    // Provide WebFont JS data to Typekit for processing.
+    // Provide data to Typekit for processing.
     if (!this.global_[webfont.TypekitScript.HOOK]) {
       this.global_[webfont.TypekitScript.HOOK] = {};
     }

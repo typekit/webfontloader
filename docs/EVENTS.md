@@ -1,7 +1,8 @@
 # Events
 
-WebFont JS provides an event system that developers can hook into. It gives
-you notifications of the font loading sequence in both CSS and JavaScript.
+WebFont Loader provides an event system that developers can hook into. It
+gives you notifications of the font loading sequence in both CSS and
+JavaScript.
 
 ## The Events
 
@@ -64,13 +65,13 @@ event will be triggered, else the `Inative` even will be triggered.
 Every web browser has varying levels of support for fonts linked via
 @font-face.
 
-> If WebFont JS determines that the current browser does not support
+> If WebFont Loader determines that the current browser does not support
 `@font-face`, the `Inactive` event will be triggered.
 
 When loading fonts from multiple providers, each provider may or may not
 support a given browser.
 
-> If WebFont JS determines that the current browser can support
+> If WebFont Loader determines that the current browser can support
 `@font-face`, and *at least* one provider is able to serve fonts,
 the fonts from that provide will be loaded. When finished, the `Active` event
 will be triggered.

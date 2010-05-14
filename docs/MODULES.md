@@ -1,6 +1,6 @@
 # Modules
 
-WebFont JS provides a generic module system so that any web font provider 
+WebFont Loader provides a generic module system so that any web font provider
 may be used. The specifics of each provider are documented here.
 
 ## Google
