@@ -18,7 +18,7 @@ GoogleFontApiTest.prototype.testCallOnReadyWithFontFamilyLoading = function() {
 
   googleFontApi.load(function(fontFamilies) { fonts = fontFamilies; });
   assertEquals('head', insert);
-  assertEquals('http://themes.googleusercontent.com/fonts/api?family=' +
+  assertEquals('//fonts.googleapis.com/css?family=' +
       'Font1%7CFont2', link);
   assertNotNull(fonts);
   assertEquals(2, fonts.length);
