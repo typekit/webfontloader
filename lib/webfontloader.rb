@@ -1,8 +1,8 @@
 require 'yaml'
 
-require 'webfontjs/modules'
+require 'webfontloader/modules'
 
-module WebFontJS
+module WebFontLoader
   VERSION = '0.0.0'
 
   ProjectRoot = File.expand_path(File.dirname(__FILE__) + "/..")

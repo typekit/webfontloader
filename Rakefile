@@ -1,7 +1,7 @@
 require 'rake/clean'
 
 $LOAD_PATH.unshift File.dirname(__FILE__) + "/lib"
-require 'webfontjs'
+require 'webfontloader'
 
 #
 # Setup
@@ -24,7 +24,7 @@ AllJs = FileList["{src,src-test}/**/*"]
 SourceJs  = FileList["src/**/*"]
 
 # JS Source loader
-@modules = WebFontJS::Modules.new
+@modules = WebFontLoader::Modules.new
 
 #
 # Build
@@ -86,12 +86,12 @@ end
 desc "Start the demo server"
 task :demo => "target/webfont.js" do |t|
   js = t.prerequisites.first
-  exec "bin/webfontjs-demos -F --compiled_js #{js}"
+  exec "bin/webfontloader-demos -F --compiled_js #{js}"
 end
 
 desc "Start the demo server for development"
 task :demodev do
-  exec "bin/webfontjs-demos -F -L --modules"
+  exec "bin/webfontloader-demos -F -L --modules"
 end
 
 desc "Find out how many bytes the source is"

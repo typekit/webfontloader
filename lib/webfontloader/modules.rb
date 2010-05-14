@@ -1,8 +1,8 @@
-module WebFontJS
+module WebFontLoader
   class Modules
 
     def initialize(*modules)
-      @project_root = WebFontJS::ProjectRoot
+      @project_root = WebFontLoader::ProjectRoot
       @js_src = "src"
       @js_test = "src-test"
       @modules = modules.empty? ? config.keys : modules

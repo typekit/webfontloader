@@ -1,7 +1,7 @@
 require 'sinatra/base'
 require 'open-uri'
 
-module WebFontJS
+module WebFontLoader
   module Demo
     class Server < Sinatra::Base
 
@@ -70,7 +70,7 @@ module WebFontJS
         if settings.compiled_js
           settings.compiled_js
         elsif settings.modules
-          settings.modules.all_source_files.map { |file| File.read(File.join(WebFontJS::ProjectRoot, file)) }
+          settings.modules.all_source_files.map { |file| File.read(File.join(WebFontLoader::ProjectRoot, file)) }
         else
           "alert('No JavaScript has been configured in the demo server');"
         end
