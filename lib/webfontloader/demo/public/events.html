@@ -33,8 +33,8 @@
       familyactive: function(fontFamily) {
         progress('familyactive: ' + fontFamily);
       },
-      familyfailed: function(fontFamily) {
-        progress('familyfailed: ' + fontFamily);
+      familyinactive: function(fontFamily) {
+        progress('familyinactive: ' + fontFamily);
       }
     });
   </script>
@@ -60,10 +60,10 @@
     html.wf-inactive #classes .Inactive,
     html.wf-droidsans-loading #classes .DroidSansLoading,
     html.wf-droidsans-active #classes .DroidSansActive,
-    html.wf-droidsans-failed #classes .DroidSansFailed,
+    html.wf-droidsans-inactive #classes .DroidSansInactive,
     html.wf-tangerine-loading #classes .TangerineLoading,
     html.wf-tangerine-active #classes .TangerineActive,
-    html.wf-tangerine-failed #classes .TangerineFailed {
+    html.wf-tangerine-inactive #classes .TangerineInactive {
       color: #000;
     }
 
@@ -91,10 +91,10 @@
     <li class="Inactive">Inactive</li>
     <li class="DroidSansLoading">Droid Sans Loading</li>
     <li class="DroidSansActive">Droid Sans Active</li>
-    <li class="DroidSansFailed">Droid Sans Failed</li>
+    <li class="DroidSansInactive">Droid Sans Inactive</li>
     <li class="TangerineLoading">Tangerine Loading</li>
     <li class="TangerineActive">Tangerine Active</li>
-    <li class="TangerineFailed">Tangerine Failed</li>
+    <li class="TangerineInactive">Tangerine Inactive</li>
   </ul>
   <h2>JavaScript Event Progress</h2>
   <ol id="events"></ol>

@@ -11,10 +11,7 @@ webfont.EventDispatcher.DEFAULT_NAMESPACE = 'wf';
 webfont.EventDispatcher.LOADING = 'loading';
 webfont.EventDispatcher.ACTIVE = 'active';
 webfont.EventDispatcher.INACTIVE = 'inactive';
-webfont.EventDispatcher.FAILED = 'failed';
-webfont.EventDispatcher.FAMILY_LOADING = 'familyloading';
-webfont.EventDispatcher.FAMILY_ACTIVE = 'familyactive';
-webfont.EventDispatcher.FAMILY_FAILED = 'familyfailed';
+webfont.EventDispatcher.FAMILY = 'family';
 
 webfont.EventDispatcher.prototype.dispatchLoading = function() {
   this.domHelper_.appendClassName(this.htmlElement_,
@@ -27,7 +24,8 @@ webfont.EventDispatcher.prototype.dispatchFamilyLoading = function(fontFamily) {
   this.domHelper_.appendClassName(this.htmlElement_,
       this.cssClassName_.build(
           this.namespace_, fontFamily, webfont.EventDispatcher.LOADING));
-  this.dispatch_(webfont.EventDispatcher.FAMILY_LOADING, fontFamily);
+  this.dispatch_(
+      webfont.EventDispatcher.FAMILY + webfont.EventDispatcher.LOADING, fontFamily);
 };
 
 webfont.EventDispatcher.prototype.dispatchFamilyActive = function(fontFamily) {
@@ -37,17 +35,19 @@ webfont.EventDispatcher.prototype.dispatchFamilyActive = function(fontFamily) {
   this.domHelper_.appendClassName(this.htmlElement_,
       this.cssClassName_.build(
           this.namespace_, fontFamily, webfont.EventDispatcher.ACTIVE));
-  this.dispatch_(webfont.EventDispatcher.FAMILY_ACTIVE, fontFamily);
+  this.dispatch_(
+      webfont.EventDispatcher.FAMILY + webfont.EventDispatcher.ACTIVE, fontFamily);
 };
 
-webfont.EventDispatcher.prototype.dispatchFamilyFailed = function(fontFamily) {
+webfont.EventDispatcher.prototype.dispatchFamilyInactive = function(fontFamily) {
   this.domHelper_.removeClassName(this.htmlElement_,
       this.cssClassName_.build(
           this.namespace_, fontFamily, webfont.EventDispatcher.LOADING));
   this.domHelper_.appendClassName(this.htmlElement_,
       this.cssClassName_.build(
-          this.namespace_, fontFamily, webfont.EventDispatcher.FAILED));
-  this.dispatch_(webfont.EventDispatcher.FAMILY_FAILED, fontFamily);
+          this.namespace_, fontFamily, webfont.EventDispatcher.INACTIVE));
+  this.dispatch_(
+      webfont.EventDispatcher.FAMILY + webfont.EventDispatcher.INACTIVE, fontFamily);
 };
 
 webfont.EventDispatcher.prototype.dispatchInactive = function() {

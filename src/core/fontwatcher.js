@@ -63,7 +63,7 @@ webfont.FontWatcher.prototype.check_ = function(started, originalSize,
     this.asyncCheck_(started, originalSize, requestedFont, fontFamily);
   } else {
     this.domHelper_.removeElement(requestedFont);
-    this.eventDispatcher_.dispatchFamilyFailed(fontFamily);
+    this.eventDispatcher_.dispatchFamilyInactive(fontFamily);
     this.decreaseCurrentlyWatched_();
   }
 };

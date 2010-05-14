@@ -34,8 +34,8 @@ FontWatcherTest.prototype.setUp = function() {
   this.fontFamilyLoading_ = [];
   this.familyActiveEventCalled_ = 0;
   this.fontFamilyActive_ = [];
-  this.familyFailedEventCalled_ = 0;
-  this.fontFamilyFailed_ = [];
+  this.familyInactvieEventCalled_ = 0;
+  this.fontFamilyInactive_ = [];
   this.activeEventCalled_ = 0;
 
   var namespace = 'ns';
@@ -55,9 +55,9 @@ FontWatcherTest.prototype.setUp = function() {
         self.familyActiveEventCalled_++;
         self.fontFamilyActive_.push(fontFamily);
       },
-      familyfailed: function(fontFamily) {
-        self.familyFailedEventCalled_++;
-        self.fontFamilyFailed_.push(fontFamily);
+      familyinactive: function(fontFamily) {
+        self.familyInactvieEventCalled_++;
+        self.fontFamilyInactive_.push(fontFamily);
       }
   };
   this.eventDispatcher_ = new webfont.EventDispatcher(this.fakeDomHelper_,
@@ -273,9 +273,9 @@ FontWatcherTest.prototype.testWatchOneFontWaitForLoadInactive = function() {
   assertEquals(1, this.familyLoadingEventCalled_);
   assertEquals(1, this.fontFamilyLoading_.length);
   assertEquals('fontFamily1', this.fontFamilyLoading_[0]);
-  assertEquals(1, this.familyFailedEventCalled_);
-  assertEquals(1, this.fontFamilyFailed_.length);
-  assertEquals('fontFamily1', this.fontFamilyFailed_[0]);
+  assertEquals(1, this.familyInactvieEventCalled_);
+  assertEquals(1, this.fontFamilyInactive_.length);
+  assertEquals('fontFamily1', this.fontFamilyInactive_[0]);
 };
 
 FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndInactive =
@@ -330,8 +330,8 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndInactive =
   assertEquals(2, this.fontFamilyActive_.length);
   assertEquals('fontFamily1', this.fontFamilyActive_[0]);
   assertEquals('fontFamily3', this.fontFamilyActive_[1]);
-  assertEquals(1, this.familyFailedEventCalled_);
-  assertEquals('fontFamily2', this.fontFamilyFailed_[0]);
+  assertEquals(1, this.familyInactvieEventCalled_);
+  assertEquals('fontFamily2', this.fontFamilyInactive_[0]);
 };
 
 FontWatcherTest.prototype.testWatchMultipleFontsAlreadyLoadedAndLastBatchOnDone

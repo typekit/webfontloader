@@ -16,7 +16,7 @@
     html.wf-inactive #classes .Inactive,
     html.wf-tagesschrift-loading #classes .TagesschriftLoading,
     html.wf-tagesschrift-active #classes .TagesschriftActive,
-    html.wf-tagesschrift-failed #classes .TagesschriftFailed {
+    html.wf-tagesschrift-inactive #classes .TagesschriftInactive {
       color: #000;
     }
 
@@ -41,7 +41,7 @@
     <li class="Inactive">Inactive</li>
     <li class="TagesschriftLoading">Tagesschrift Loading</li>
     <li class="TagesschriftActive">Tagesschrift Active</li>
-    <li class="TagesschriftFailed">Tagesschrift Failed</li>
+    <li class="TagesschriftInactive">Tagesschrift Inactive</li>
   </ul>
   <h2>JavaScript Event Progress</h2>
   <ol id="events"></ol>
@@ -79,8 +79,8 @@
       familyactive: function(fontFamily) {
         progress('familyactive: ' + fontFamily);
       },
-      familyfailed: function(fontFamily) {
-        progress('familyfailed: ' + fontFamily);
+      familyinactive: function(fontFamily) {
+        progress('familyinactive: ' + fontFamily);
       }
     });
   </script>

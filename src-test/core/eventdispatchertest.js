@@ -7,8 +7,8 @@ EventDispatcherTest.prototype.setUp = function() {
   this.fontFamilyLoading_ = '';
   this.familyActiveEventCalled_ = false;
   this.fontFamilyActive_ = '';
-  this.familyFailedEventCalled_ = false;
-  this.fontFamilyFailed_ = '';
+  this.familyInactvieEventCalled_ = false;
+  this.fontFamilyInactive_ = '';
   this.activeEventCalled_ = false;
   this.inactiveEventCalled_ = false;
   var namespace = 'ns';
@@ -33,9 +33,9 @@ EventDispatcherTest.prototype.setUp = function() {
           self.familyActiveEventCalled_ = true;
           self.fontFamilyActive_ = fontFamily;
         },
-        familyfailed: function(fontFamily) {
-          self.familyFailedEventCalled_ = true;
-          self.fontFamilyFailed_ = fontFamily;
+        familyinactive: function(fontFamily) {
+          self.familyInactvieEventCalled_ = true;
+          self.fontFamilyInactive_ = fontFamily;
         }
   }, namespace);
 };
@@ -56,10 +56,10 @@ EventDispatcherTest.prototype.testClassNamesOnInactiveLoad = function() {
   assertEquals('ns-loading', this.fakeHtmlElement_.className);
   this.eventDispatcher_.dispatchFamilyLoading('My Family');
   assertEquals('ns-loading ns-myfamily-loading', this.fakeHtmlElement_.className);
-  this.eventDispatcher_.dispatchFamilyFailed('My Family');
-  assertEquals('ns-loading ns-myfamily-failed', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFamilyInactive('My Family');
+  assertEquals('ns-loading ns-myfamily-inactive', this.fakeHtmlElement_.className);
   this.eventDispatcher_.dispatchActive();
-  assertEquals('ns-myfamily-failed ns-active', this.fakeHtmlElement_.className);
+  assertEquals('ns-myfamily-inactive ns-active', this.fakeHtmlElement_.className);
 };
 
 EventDispatcherTest.prototype.testEventsOnActiveLoad = function() {
@@ -81,9 +81,9 @@ EventDispatcherTest.prototype.testEventsOnInactiveLoad = function() {
   this.eventDispatcher_.dispatchFamilyLoading('fontFamilyLoading');
   assertTrue(this.familyLoadingEventCalled_);
   assertEquals('fontFamilyLoading', this.fontFamilyLoading_);
-  this.eventDispatcher_.dispatchFamilyFailed('fontFamilyInactive');
-  assertTrue(this.familyFailedEventCalled_);
-  assertEquals('fontFamilyInactive', this.fontFamilyFailed_);
+  this.eventDispatcher_.dispatchFamilyInactive('fontFamilyInactive');
+  assertTrue(this.familyInactvieEventCalled_);
+  assertEquals('fontFamilyInactive', this.fontFamilyInactive_);
   this.eventDispatcher_.dispatchActive();
   assertTrue(this.activeEventCalled_);
 };
