@@ -19,13 +19,13 @@ CSS events are implemented as classes on the `html` element.
     html.wf-loading
     html.wf-active
     html.wf-inactive
-    html.wf-FAMILYNAME-loading
-    html.wf-FAMILYNAME-active
-    html.wf-FAMILYNAME-inactive
+    html.wf-familyname-loading
+    html.wf-familyname-active
+    html.wf-familyname-inactive
 
-`FAMILYNAME` is a sanitized version of the name of each font family. In most
-cases, spaces and underscores are removed from the name. For example, `Droid
-Sans` becomes `DroidSans`.
+`FAMILYNAME` is a sanitized version of the name of each font family. Spaces
+and underscores are removed from the name, and all characters are converted to
+lower case. For example, `Droid Sans` becomes `droidsans`.
 
 ### JavaScript Flavored
 
