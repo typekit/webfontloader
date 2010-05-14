@@ -6,32 +6,39 @@
   <script type="text/javascript">
     WebFont.load({
       google: {
-        family: ['Droid Sans'],
-        api: '/fonts/api'
+        families: ['Droid Sans', 'Tangerine']
       }
     });
   </script>
   <style type="text/css">
     h1 {
-      font-family: sans-serif;
+      visibility: hidden;
     }
-    html.wf-active h1 {
+    html.wf-droidsans-active h1.droid {
+      visibility: visible;
       font-family: 'Droid Sans';
+    }
+    html.wf-tangerine-active h1.tangerine {
+      visibility: visible;
+      font-family: 'Tangerine';
     }
   </style>
 </head>
 <body>
-  <h1>
+  <h1 class="droid">
     Hello World. I am Droid Sans.
+  </h1>
+  <h1 class="tangerine">
+    Hello World. I am Tangerine.
   </h1>
   <hr>
   <p>
     <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
-    <a href="/js-css-inactive.html">Reload Cached</a>
+    <a href="/event-css-active-multiple.html">Reload Cached</a>
   </p>
   <p>
-    The goal of this page is to use CSS to present a fallback font until the custom font
-    has completely rendered.
+    The goal of this page is to use CSS to show each part of the page when
+    its font has loaded.
   </p>
 </body>
 </html>

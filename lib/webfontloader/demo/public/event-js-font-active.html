@@ -9,31 +9,32 @@
         families: ['Droid Sans'],
         api: '/fonts/api'
       },
-      active: function(fontFamilyName) {
-        var h1 = document.getElementsByTagName('h1')[0];
-        h1.style.visibility = 'visible';
-        h1.style.fontFamily = 'Droid Sans';
+      familyactive: function(fontFamilyName) {
+        if (fontFamilyName == 'Droid Sans') {
+          var h1 = document.getElementsByTagName('h1')[0];
+          h1.innerHTML = 'Hello World. I am ' + fontFamilyName;
+        }
       }
     });
   </script>
   <style type="text/css">
     h1 {
-      visibility: hidden;
+      font-family: 'Droid Sans';
     }
   </style>
 </head>
 <body>
   <h1>
-    Hello World. I am Droid Sans.
+    Hello World.
   </h1>
   <hr>
   <p>
     <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
-    <a href="/js-js-active.html">Reload Cached</a>
+    <a href="/event-js-font-active.html">Reload Cached</a>
   </p>
   <p>
-    The goal of this page is to use a combination of JavaScript and CSS to
-    hide the headline until its font has completely rendered.
+    The goal of this page is to use JavaScript to manipulate the page when
+    a particular font loads.
   </p>
 </body>
 </html>

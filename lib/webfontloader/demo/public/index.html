@@ -14,42 +14,46 @@
     real world usage.
   </p>
 
-  <h2>Pure CSS</h2>
+  <h2>Modules</h2>
+  <p>
+    WebFont Loader provides modules to load fonts from many places. 
+  </p>
   <ol>
-    <li><a href="/css-basic.html">Basic</a>: Simplest possible font embedding with pure CSS.</li>
+    <li><a href="/google-css.html">Google / CSS Link</a>: Load fonts from Google with a <code>link</code> tag. Consider this a base case for font loading.</li>
+    <li><a href="/google.html">Google / WebFont Loader</a>: Load fonts from Google with WebFont Loader.</li>
+    <li><a href="/typekit.html">Typekit / WebFont Loader</a>: Load fonts from Typekit with WebFont Loader.</li>
+    <li><a href="/custom.html">Custom / WebFont Loader</a>: Load fonts from your own CSS with WebFont Loader.</li>
   </ol>
 
-  <h2>JavaScript Enhanced</h2>
+  <h2>Events</h2>
+  <p>
+    WebFont Loader provides events to help control font rendering across browsers. Here are some sample uses.
+  </p>
   <ol>
-    <li><a href="/js-basic.html">Basic</a>: Simplest font embedding with WebFont Loader.</li>
-    <li><a href="/js-css-active.html">Show when rendered (CSS)</a>: Use CSS to show part of the page only when the font has rendered. (Webkit style)</li>
-    <li><a href="/js-js-active.html">Show when rendered (JS)</a>: Use JS to show part of the page only when the font has rendered. (Webkit style)</li>
-    <li><a href="/js-css-inactive.html">Fallback before rendered (CSS)</a>: Use CSS to show fallback font before the font has rendered. (Mozilla style)</li>
-    <li><a href="/js-css-loading.html">Show loading message (CSS)</a>: Use CSS to show a message while the font loads.</li>
-    <li><a href="/js-js-loading.html">Show loading message (JS)</a>: Use JS to show a message while the font loads.</li>
+    <li><a href="/event-css-active.html">Show when rendered (CSS)</a>: Use CSS to show part of the page only when the font has rendered. (Webkit style)</li>
+    <li><a href="/event-js-active.html">Show when rendered (JS)</a>: Use JS to show part of the page only when the font has rendered. (Webkit style)</li>
+    <li><a href="/event-css-inactive.html">Fallback before rendered (CSS)</a>: Use CSS to show fallback font before the font has rendered. (Mozilla style)</li>
+    <li><a href="/event-css-loading.html">Show loading message (CSS)</a>: Use CSS to show a message while the font loads.</li>
+    <li><a href="/event-js-loading.html">Show loading message (JS)</a>: Use JS to show a message while the font loads.</li>
   </ol>
 
-  <h2>More JavaScript samples</h2>
+  <h2>More Events</h2>
+  <p>
+    More complex samples using events.
+  </p>
   <ol>
-    <li><a href="/events.html">Events</a>: A demonstration of the full CSS and JS event cycle.</li>
-    <li><a href="/js-css-active-multiple.html">Multiple font loads</a>: Use CSS to track each font load.</li>
+    <li><a href="/events.html">All events</a>: A demonstration of the full CSS and JS event cycle.</li>
+    <li><a href="/event-css-active-multiple.html">Multiple font loads</a>: Use CSS to track each font load.</li>
   </ol>
 
   <h2>IE Behavior</h2>
+  <p>
+    WebFont Loader helps workaround IE's page blocking behavior.
+  </p>
   <ol>
     <li><a href="/ie-slow-link.html">Slow Link</a>: Demonstrate that IE blocks the whole page when loading fonts via a LINK tag.</li>
     <li><a href="/ie-fast-js.html">Fast JS</a>: By default, WebFont Loader works around the default IE loading behavior.</li>
     <li><a href="/ie-slow-js.html">Slow JS</a>: Restore the default IE loading behavior.</li>
-  </ol>
-
-  <h2>Typekit</h2>
-  <ol>
-    <li><a href="/typekit.html">Typekit</a>: Demonstration of using fonts from Typekit.</li>
-  </ol>
-
-  <h2>Custom Module</h2>
-  <ol>
-    <li><a href="/custom.html">Custom</a>: Demonstration of using fonts from a custom module.</li>
   </ol>
 
 </body>

@@ -6,17 +6,16 @@
   <script type="text/javascript">
     WebFont.load({
       google: {
-        families: ['Droid Sans'],
+        family: ['Droid Sans'],
         api: '/fonts/api'
       }
     });
   </script>
   <style type="text/css">
     h1 {
-      visibility: hidden;
+      font-family: sans-serif;
     }
     html.wf-active h1 {
-      visibility: visible;
       font-family: 'Droid Sans';
     }
   </style>
@@ -28,10 +27,10 @@
   <hr>
   <p>
     <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
-    <a href="/js-css-active.html">Reload Cached</a>
+    <a href="/event-css-inactive.html">Reload Cached</a>
   </p>
   <p>
-    The goal of this page is to use CSS to hide the headline until its font
+    The goal of this page is to use CSS to present a fallback font until the custom font
     has completely rendered.
   </p>
 </body>

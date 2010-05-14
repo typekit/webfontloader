@@ -2,15 +2,9 @@
 <html>
 <head>
   <link href="/basic.css" rel="stylesheet" type="text/css">
-  <script type="text/javascript" src="/webfont.js"></script>
-  <script type="text/javascript">
-    WebFont.load({
-      google: {
-        families: ['Droid Sans'],
-        api: '/fonts/api'
-      }
-    });
-  </script>
+
+  <link href="/fonts/api?family=Droid+Sans" rel="stylesheet" type="text/css">
+
   <style type="text/css">
     h1 {
       font-family: 'Droid Sans';
@@ -24,10 +18,10 @@
   <hr>
   <p>
     <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
-    <a href="/js-basic.html">Reload Cached</a>
+    <a href="/google-css.html">Reload Cached</a>
   </p>
   <p>
-    The goal of this page is simply to use fonts via the JavaScript API.
+    The goal of this page is simply to use fonts directly via CSS.
   </p>
 </body>
 </html>
