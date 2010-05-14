@@ -3,7 +3,7 @@ webfont.FontApiUrlBuilder = function(apiUrl) {
   this.fontFamilies_ = null;
 };
 
-webfont.FontApiUrlBuilder.DEFAULT_API_URL = 'http://themes.googleusercontent.com/fonts/api';
+webfont.FontApiUrlBuilder.DEFAULT_API_URL = '//themes.googleusercontent.com/fonts/api';
 
 webfont.FontApiUrlBuilder.prototype.setFontFamilies = function(fontFamilies) {
   // maybe clone?
