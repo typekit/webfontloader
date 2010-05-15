@@ -32,8 +32,30 @@ webfont.GoogleFontApi.prototype.load = function(onReady) {
     domHelper.insertInto('head', domHelper.createCssLink(
         fontApiUrlBuilder.build()));
   }
+  var fontApiParser = new webfont.FontApiParser(fontFamilies);
 
-  onReady(fontFamilies);
+  fontApiParser.parse();
+  onReady(fontApiParser.getFontFamilies(), fontApiParser.getVariations(), function(_fontFamily, _variation) {
+    var sb = [];
+    var styleGroup = _variation.match(/font-style: (\w+);?/);
+    var weightGroup = _variation.match(/font-weight: (\w+);?/);
+
+    if (weightGroup && weightGroup[1]) {
+      if (weightGroup[1] != 'normal') {
+        sb.push(' ');
+        sb.push(weightGroup[1]);
+      }
+    }
+    if (styleGroup && styleGroup[1]) {
+      if (styleGroup[1] != 'normal') {
+        if (sb.length == 0) {
+          sb.push(' ');
+        }
+        sb.push(styleGroup[1]);
+      }
+    }
+    return _fontFamily + sb.join('');
+  });
 };
 
 WebFont.addModule(webfont.GoogleFontApi.NAME, function(configuration) {

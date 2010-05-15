@@ -12,6 +12,7 @@ core:
 
 google:
   - google/fontapiurlbuilder.js
+  - google/fontapiparser.js
   - google/googlefontapi.js
 
 typekit:

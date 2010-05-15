@@ -10,6 +10,10 @@ webfont.FontApiUrlBuilder.prototype.setFontFamilies = function(fontFamilies) {
   this.fontFamilies_ = fontFamilies;
 };
 
+webfont.FontApiUrlBuilder.prototype.webSafe = function(string) {
+  return string.replace(/ /g, '+');
+};
+
 webfont.FontApiUrlBuilder.prototype.build = function() {
   if (!this.fontFamilies_) {
     throw new Error('No fonts to load !');
@@ -18,7 +22,7 @@ webfont.FontApiUrlBuilder.prototype.build = function() {
   var sb = [];
 
   for (var i = 0; i < length; i++) {
-    sb.push(encodeURIComponent(this.fontFamilies_[i]));
+    sb.push(this.webSafe(this.fontFamilies_[i]));
   }
   var url = this.apiUrl_ + '?family=' + sb.join('%7C'); // '|' escaped.
 

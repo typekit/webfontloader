@@ -426,3 +426,80 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndLastBatchOnDone =
   assertEquals(true, this.classNames_['ns-active']);
   assertEquals(4, this.classNamesCount_);
 };
+
+FontWatcherTest.prototype
+    .testWatchMultipleFontsWaitForLoadAndLastBatchOnDoneWithVariations =
+    function() {
+  var async = 0;
+  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
+      this.eventDispatcher_, {
+
+        fontFamily1Count_: 0,
+        fontFamily2Count_: 0,
+        fontFamily3Count_: 0,
+
+        getWidth: function(element) {
+          var fontFamily = element.style.fontFamily;
+          var requestedFont = fontFamily.substring(0, fontFamily.indexOf(','));
+
+          if (requestedFont.indexOf("DEFAULT_FONT") != -1) {
+            return 1;
+          } else if (requestedFont.indexOf("fontFamily1") != -1 &&
+              this.fontFamily1Count_ != 2) {
+            this.fontFamily1Count_++;
+            return 1;
+          } else if (requestedFont.indexOf("fontFamily2") != -1 &&
+              this.fontFamily2Count_ != 1) {
+            this.fontFamily2Count_++;
+            return 1;
+          } else if (requestedFont.indexOf("fontFamily3") != -1 &&
+              this.fontFamily3Count_ != 5) {
+            this.fontFamily3Count_++;
+            return 1;
+          } else {
+            return 2;
+	  }
+        }
+  }, function(func, timeout) {
+    async++;
+    func();
+  }, function() { return 0; });
+  var fontFamilies = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
+
+  fontWatcher.watch(fontFamilies, true, { 'fontFamily1': [ 'font-style: italic;font-weight: bold' ],
+      'fontFamily2': null,
+      'fontFamily3': [ 'font-style: normal;font-weight: normal',
+          'font-style: italic', 'font-weight: bold' ]},
+          function(family, variation) {
+            return family + ' (' + variation + ')';
+          });
+  assertEquals(8, async);
+  assertEquals(5, this.familyLoadingEventCalled_);
+  assertEquals(5, this.fontFamilyLoading_.length);
+  assertEquals('fontFamily1 (font-style: italic;font-weight: bold)',
+      this.fontFamilyLoading_[0]);
+  assertEquals('fontFamily2', this.fontFamilyLoading_[1]);
+  assertEquals('fontFamily3 (font-style: normal;font-weight: normal)',
+      this.fontFamilyLoading_[2]);
+  assertEquals('fontFamily3 (font-style: italic)', this.fontFamilyLoading_[3]);
+  assertEquals('fontFamily3 (font-weight: bold)', this.fontFamilyLoading_[4]);
+  assertEquals(5, this.familyActiveEventCalled_);
+  assertEquals(5, this.fontFamilyActive_.length);
+  assertEquals('fontFamily1 (font-style: italic;font-weight: bold)',
+      this.fontFamilyActive_[0]);
+  assertEquals('fontFamily2', this.fontFamilyActive_[1]);
+  assertEquals('fontFamily3 (font-style: normal;font-weight: normal)',
+      this.fontFamilyActive_[2]);
+  assertEquals('fontFamily3 (font-style: italic)', this.fontFamilyActive_[3]);
+  assertEquals('fontFamily3 (font-weight: bold)', this.fontFamilyActive_[4]);
+  assertEquals(1, this.activeEventCalled_);
+  assertEquals(6, this.classNamesCount_);
+  assertEquals(true, this.classNames_[
+      'ns-fontfamily1fontstyleitalicfontweightbold-active']);
+  assertEquals(true, this.classNames_['ns-fontfamily2-active']);
+  assertEquals(true, this.classNames_[
+      'ns-fontfamily3fontstylenormalfontweightnormal-active']);
+  assertEquals(true, this.classNames_['ns-fontfamily3fontstyleitalic-active']);
+  assertEquals(true, this.classNames_['ns-fontfamily3fontweightbold-active']);
+  assertEquals(true, this.classNames_['ns-active']);
+};
