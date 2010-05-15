@@ -14,7 +14,7 @@ load fonts from Google.
     <script>
       WebFont.load({
         google: {
-          family: ['Droid Sans', 'Droid Serif']
+          families: ['Droid Sans', 'Droid Serif']
         }
       });
     </script>
