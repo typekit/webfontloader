@@ -44,6 +44,12 @@ FontVariationDescriptionTest.prototype.testCompactAllProperties = function() {
   assertEquals('i7', this.fvd_.compact('  font-style:   italic   ;\n\nfont-weight   : bold;  '));
 };
 
+FontVariationDescriptionTest.prototype.testInvalidProperties = function() {
+  assertEquals('n4', this.fvd_.compact('src: url(/font.otf);'));
+  assertEquals('n9', this.fvd_.compact('font-weight: 900; src: url(/font.otf);'));
+  assertEquals('n8', this.fvd_.compact('font-weight: 800; font-stretch:condensed'));
+};
+
 FontVariationDescriptionTest.prototype.testExpandFontStyle = function() {
   assertEquals('font-style:normal;font-weight:400;', this.fvd_.expand('n4'));
   assertEquals('font-style:italic;font-weight:400;', this.fvd_.expand('i4'));

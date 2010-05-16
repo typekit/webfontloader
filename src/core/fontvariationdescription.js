@@ -63,7 +63,9 @@ webfont.FontVariationDescription.prototype.compact = function(input) {
       var property = pair[0];
       var value = pair[1];
       var item = this.getItem_(property);
-      item.compact(result, value);
+      if (item) {
+        item.compact(result, value);
+      }
     }
   }
 
