@@ -43,3 +43,21 @@ FontVariationDescriptionTest.prototype.testCompactAllProperties = function() {
   assertEquals('i7', this.fvd_.compact('font-style:italic;font-weight:bold;'));
   assertEquals('i7', this.fvd_.compact('  font-style:   italic   ;\n\nfont-weight   : bold;  '));
 };
+
+FontVariationDescriptionTest.prototype.testExpandFontStyle = function() {
+  assertEquals('font-style:normal;font-weight:400;', this.fvd_.expand('n4'));
+  assertEquals('font-style:italic;font-weight:400;', this.fvd_.expand('i4'));
+  assertEquals('font-style:oblique;font-weight:400;', this.fvd_.expand('o4'));
+};
+
+FontVariationDescriptionTest.prototype.testExpandFontWeight = function() {
+  assertEquals('font-style:normal;font-weight:100;', this.fvd_.expand('n1'));
+  assertEquals('font-style:normal;font-weight:200;', this.fvd_.expand('n2'));
+  assertEquals('font-style:normal;font-weight:300;', this.fvd_.expand('n3'));
+  assertEquals('font-style:normal;font-weight:400;', this.fvd_.expand('n4'));
+  assertEquals('font-style:normal;font-weight:500;', this.fvd_.expand('n5'));
+  assertEquals('font-style:normal;font-weight:600;', this.fvd_.expand('n6'));
+  assertEquals('font-style:normal;font-weight:700;', this.fvd_.expand('n7'));
+  assertEquals('font-style:normal;font-weight:800;', this.fvd_.expand('n8'));
+  assertEquals('font-style:normal;font-weight:900;', this.fvd_.expand('n9'));
+};

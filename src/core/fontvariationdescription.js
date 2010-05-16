@@ -4,7 +4,7 @@ webfont.FontVariationDescription = function() {
 };
 
 webfont.FontVariationDescription.PROPERTIES = [
-  'font-style', 
+  'font-style',
   'font-weight'
 ];
 
@@ -35,10 +35,19 @@ webfont.FontVariationDescription.Item = function(index, property, values) {
   this.values_ = values;
 }
 
-webfont.FontVariationDescription.Item.prototype.compact = function(fvd, value) {
+webfont.FontVariationDescription.Item.prototype.compact = function(output, value) {
   for (var i = 0; i < this.values_.length; i++) {
     if (value == this.values_[i][1]) {
-      fvd[this.index_] = this.values_[i][0];
+      output[this.index_] = this.values_[i][0];
+      return;
+    }
+  }
+}
+
+webfont.FontVariationDescription.Item.prototype.expand = function(output, value) {
+  for (var i = 0; i < this.values_.length; i++) {
+    if (value == this.values_[i][0]) {
+      output[this.index_] = this.property_ + ':' + this.values_[i][1];
       return;
     }
   }
@@ -61,6 +70,20 @@ webfont.FontVariationDescription.prototype.compact = function(input) {
   return result.join('');
 };
 
+webfont.FontVariationDescription.prototype.expand = function(fvd) {
+  var result = ['', ''];
+
+  for (var i = 0, len = this.properties_.length; i < len; i++) {
+    var property = this.properties_[i];
+    var key = fvd.substr(i, 1);
+    var values = this.values_[property];
+    var item = new webfont.FontVariationDescription.Item(i, property, values);
+    item.expand(result, key);
+  }
+
+  return result.join(';') + ';';
+}
+
 webfont.FontVariationDescription.prototype.getItem_ = function(property) {
   for (var i = 0; i < this.properties_.length; i++) {
     if (property == this.properties_[i]) {
@@ -68,5 +91,6 @@ webfont.FontVariationDescription.prototype.getItem_ = function(property) {
       return new webfont.FontVariationDescription.Item(i, property, values);
     }
   }
+
   return null;
 };
