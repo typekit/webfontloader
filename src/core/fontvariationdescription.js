@@ -73,7 +73,11 @@ webfont.FontVariationDescription.prototype.compact = function(input) {
 };
 
 webfont.FontVariationDescription.prototype.expand = function(fvd) {
-  var result = ['', ''];
+  if (fvd.length != 2) {
+    return null;
+  }
+
+  var result = [null, null];
 
   for (var i = 0, len = this.properties_.length; i < len; i++) {
     var property = this.properties_[i];
@@ -83,7 +87,11 @@ webfont.FontVariationDescription.prototype.expand = function(fvd) {
     item.expand(result, key);
   }
 
-  return result.join(';') + ';';
+  if (result[0] && result[1]) {
+    return result.join(';') + ';';
+  } else {
+    return null;
+  }
 }
 
 webfont.FontVariationDescription.prototype.getItem_ = function(property) {
