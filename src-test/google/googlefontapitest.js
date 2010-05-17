@@ -14,16 +14,16 @@ GoogleFontApiTest.prototype.testCallOnReadyWithFontFamilyLoading = function() {
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
   var googleFontApi = new webfont.GoogleFontApi(userAgent, fakeDomHelper,
       { families: [ 'Font1', 'Font2' ] });
-  var fonts = null;
+  var families = null;
 
-  googleFontApi.load(function(fontFamilies) { fonts = fontFamilies; });
+  googleFontApi.load(function(fontFamilies) { families = fontFamilies; });
   assertEquals('head', insert);
   assertEquals('//fonts.googleapis.com/css?family=' +
       'Font1%7CFont2', link);
-  assertNotNull(fonts);
-  assertEquals(2, fonts.length);
-  assertEquals('Font1', fonts[0]);
-  assertEquals('Font2', fonts[1]);
+  assertNotNull(families);
+  assertEquals(2, families.length);
+  assertEquals('Font1', families[0]);
+  assertEquals('Font2', families[1]);
 };
 
 GoogleFontApiTest.prototype.testCallOnReadyWithFontFamilyLoadingApiUrlChanged =
@@ -41,15 +41,15 @@ GoogleFontApiTest.prototype.testCallOnReadyWithFontFamilyLoadingApiUrlChanged =
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
   var googleFontApi = new webfont.GoogleFontApi(userAgent, fakeDomHelper,
       { api: 'http://moo',  families: [ 'Font1', 'Font2' ] });
-  var fonts = null;
+  var families = null;
 
-  googleFontApi.load(function(fontFamilies) { fonts = fontFamilies; });
+  googleFontApi.load(function(fontFamilies) { families = fontFamilies; });
   assertEquals('head', insert);
   assertEquals('http://moo?family=Font1%7CFont2', link);
-  assertNotNull(fonts);
-  assertEquals(2, fonts.length);
-  assertEquals('Font1', fonts[0]);
-  assertEquals('Font2', fonts[1]);
+  assertNotNull(families);
+  assertEquals(2, families.length);
+  assertEquals('Font1', families[0]);
+  assertEquals('Font2', families[1]);
 };
 
 GoogleFontApiTest.prototype.testSpacesReplacedByPlus = function() {
@@ -66,15 +66,15 @@ GoogleFontApiTest.prototype.testSpacesReplacedByPlus = function() {
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
   var googleFontApi = new webfont.GoogleFontApi(userAgent, fakeDomHelper,
       { families: [ 'Font1 WithSpace', 'Font2 WithSpaceToo' ] });
-  var fonts = null;
+  var families = null;
 
-  googleFontApi.load(function(fontFamilies) { fonts = fontFamilies; });
+  googleFontApi.load(function(fontFamilies) { families = fontFamilies; });
   assertEquals('head', insert);
   assertEquals('//fonts.googleapis.com/css?family=Font1+WithSpace%7CFont2+WithSpaceToo', link);
-  assertNotNull(fonts);
-  assertEquals(2, fonts.length);
-  assertEquals('Font1 WithSpace', fonts[0]);
-  assertEquals('Font2 WithSpaceToo', fonts[1]);
+  assertNotNull(families);
+  assertEquals(2, families.length);
+  assertEquals('Font1 WithSpace', families[0]);
+  assertEquals('Font2 WithSpaceToo', families[1]);
 };
 
 GoogleFontApiTest.prototype.testLoadWithVariations = function() {
@@ -91,37 +91,29 @@ GoogleFontApiTest.prototype.testLoadWithVariations = function() {
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
   var googleFontApi = new webfont.GoogleFontApi(userAgent, fakeDomHelper,
       { families: [ 'Font1 WithSpace:bi', 'Font2 WithSpaceToo:b,r' ] });
-  var fonts = null;
-  var variations = null;
-  var transformName = null;
+  var families = null;
+  var descriptions = null;
 
-  googleFontApi.load(function(fontFamilies, opt_variations,
-      opt_transformName) {
-      fonts = fontFamilies;
-      variations = opt_variations;
-      transformName = opt_transformName
+  googleFontApi.load(function(fontFamilies, fontDescriptions) {
+      families = fontFamilies;
+      descriptions = fontDescriptions;
   });
   assertEquals('head', insert);
   assertEquals('//fonts.googleapis.com/css?family=Font1+WithSpace:bi%7CFont2+WithSpaceToo:b,r', link);
-  assertNotNull(fonts);
-  assertEquals(2, fonts.length);
-  assertEquals('Font1 WithSpace', fonts[0]);
-  assertEquals('Font2 WithSpaceToo', fonts[1]);
-  assertNotNull(variations);
-  var font1 = variations['Font1 WithSpace'];
+  assertNotNull(families);
+  assertEquals(2, families.length);
+  assertEquals('Font1 WithSpace', families[0]);
+  assertEquals('Font2 WithSpaceToo', families[1]);
+  assertNotNull(descriptions);
+  var font1Descriptions = descriptions['Font1 WithSpace'];
 
-  assertNotNull(font1);
-  assertEquals(1, font1.length);
-  assertEquals('i7', font1[0]);
-  var font2 = variations['Font2 WithSpaceToo'];
+  assertNotNull(font1Descriptions);
+  assertEquals(1, font1Descriptions.length);
+  assertEquals('i7', font1Descriptions[0]);
+  var font2Descriptions = descriptions['Font2 WithSpaceToo'];
 
-  assertNotNull(font2);
-  assertEquals(2, font2.length);
-  assertEquals('n7', font2[0]);
-  assertEquals('n4', font2[1]);
-  assertNotNull(transformName);
-  assertEquals('Font2 WithSpaceToo n7', transformName('Font2 WithSpaceToo',
-      font2[0]));
-  assertEquals('Font2 WithSpaceToo n4', transformName('Font2 WithSpaceToo',
-      font2[1]));
+  assertNotNull(font2Descriptions);
+  assertEquals(2, font2Descriptions.length);
+  assertEquals('n7', font2Descriptions[0]);
+  assertEquals('n4', font2Descriptions[1]);
 };

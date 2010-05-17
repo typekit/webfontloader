@@ -35,9 +35,7 @@ webfont.GoogleFontApi.prototype.load = function(onReady) {
   var fontApiParser = new webfont.FontApiParser(fontFamilies);
 
   fontApiParser.parse();
-  onReady(fontApiParser.getFontFamilies(), fontApiParser.getVariations(), function(_fontFamily, _variation) {
-    return _fontFamily + ' ' + _variation;
-  });
+  onReady(fontApiParser.getFontFamilies(), fontApiParser.getVariations());
 };
 
 WebFont.addModule(webfont.GoogleFontApi.NAME, function(configuration) {
