@@ -25,11 +25,11 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions, l
   }
   for (var i = 0; i < length; i++) {
     var fontFamily = fontFamilies[i];
-    var availableDescriptions = fontDescriptions[fontFamily] || [ '' ];
+    var availableDescriptions = fontDescriptions[fontFamily] || [webfont.FontWatcher.DEFAULT_FVD];
     var fontDescriptionsLength = availableDescriptions.length;
 
     for (var j = 0; j < fontDescriptionsLength; j++) {
-      var fontDescription = availableDescriptions[j] || webfont.FontWatcher.DEFAULT_FVD;
+      var fontDescription = availableDescriptions[j];
 
       this.watch_(fontFamily, fontDescription, originalSize);
     }
