@@ -39,14 +39,14 @@ TypekitScriptTest.prototype.testSupportAndLoadLifecycle = function() {
   assertEquals(true, isSupport);
 
   // load
-  var fonts = null;
+  var families = null;
 
-  typeKit.load(function(fontFamilies) { fonts = fontFamilies; });
+  typeKit.load(function(fontFamilies) { families = fontFamilies; });
 
-  assertNotNull(fonts);
-  assertEquals(2, fonts.length);
-  assertEquals('Font1', fonts[0]);
-  assertEquals('Font2', fonts[1]);
+  assertNotNull(families);
+  assertEquals(2, families.length);
+  assertEquals('Font1', families[0]);
+  assertEquals('Font2', families[1]);
 };
 
 TypekitScriptTest.prototype.testAlternateApi = function() {
@@ -98,7 +98,7 @@ TypekitScriptTest.prototype.testNoKitId = function() {
   assertEquals(true, isSupport);
 
   // load
-  typeKit.load(function(fontFamilies) { fonts = fontFamilies; });
+  typeKit.load(function(fontFamilies) { families = fontFamilies; });
 
-  assertEquals([], fonts);
+  assertEquals([], families);
 };

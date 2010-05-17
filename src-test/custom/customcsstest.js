@@ -15,16 +15,16 @@ CustomCssTest.prototype.testFoo = function() {
   var defaultModule = new webfont.CustomCss(fakeDomHelper, {
       families: [ 'Font1', 'Font2', 'Font3' ], urls: [ 'http://moo',
           'http://meuh' ]});
-  var fonts = null;
+  var families = null;
 
-  defaultModule.load(function(fontFamilies) { fonts = fontFamilies; });
+  defaultModule.load(function(fontFamilies) { families = fontFamilies; });
   assertEquals('head', head);
   assertEquals(2, links.length);
   assertEquals('http://moo', links[0]);
   assertEquals('http://meuh', links[1]);
-  assertNotNull(fonts);
-  assertEquals(3, fonts.length);
-  assertEquals('Font1', fonts[0]);
-  assertEquals('Font2', fonts[1]);
-  assertEquals('Font3', fonts[2]);
+  assertNotNull(families);
+  assertEquals(3, families.length);
+  assertEquals('Font1', families[0]);
+  assertEquals('Font2', families[1]);
+  assertEquals('Font3', families[2]);
 };
