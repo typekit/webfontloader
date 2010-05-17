@@ -6,21 +6,6 @@ webfont.FontApiParser = function(fontFamilies) {
 };
 
 webfont.FontApiParser.VARIATIONS = {
-  'ultralight': 'ultralight',
-  'light': 'light',
-  'regular': 'regular',
-  'bold': 'bold',
-  'italic': 'italic',
-  'bolditalic': 'bolditalic',
-  'ul': 'ultralight',
-  'l': 'light',
-  'r': 'regular',
-  'b': 'bold',
-  'i': 'italic',
-  'bi': 'bolditalic'
-};
-
-webfont.FontApiParser.VARIATIONS = {
   'ultralight': 'n2',
   'light': 'n3',
   'regular': 'i4',
@@ -33,15 +18,6 @@ webfont.FontApiParser.VARIATIONS = {
   'b': 'n7',
   'i': 'i4',
   'bi': 'i7'
-};
-
-webfont.FontApiParser.VARIATIONS_TO_CSS = {
-  'ultralight': 'font-weight: 200',
-  'light': 'font-weight: 300',
-  'regular': 'font-style: normal;font-weight: normal',
-  'bold': 'font-weight: bold',
-  'italic': 'font-style: italic',
-  'bolditalic': 'font-style: italic;font-weight: bold'
 };
 
 webfont.FontApiParser.prototype.parse = function() {
