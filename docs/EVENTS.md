@@ -9,9 +9,9 @@ JavaScript.
   * `Loading` - This event is triggered when all fonts have been requested.
   * `Active` - This event is triggered when all of the fonts have rendered.
   * `Inactive` - This event is triggered when the browser does not support linked fonts.
-  * `Family Loading` - This event is triggered once for each family that's loaded.
-  * `Family Active` - This event is triggered once for each family that renders.
-  * `Family Inactive` - This event is triggered if the font.
+  * `Font Loading` - This event is triggered once for each font that's loaded.
+  * `Font Active` - This event is triggered once for each font that renders.
+  * `Font Inactive` - This event is triggered if the font can't be loaded.
 
 ### CSS Flavored
 
@@ -20,13 +20,32 @@ CSS events are implemented as classes on the `html` element.
     html.wf-loading
     html.wf-active
     html.wf-inactive
-    html.wf-familyname-loading
-    html.wf-familyname-active
-    html.wf-familyname-inactive
+    html.wf-familyname-fvd-loading
+    html.wf-familyname-fvd-active
+    html.wf-familyname-fvd-inactive
 
-`FAMILYNAME` is a sanitized version of the name of each font family. Spaces
+`familyname` is a sanitized version of the name of each font family. Spaces
 and underscores are removed from the name, and all characters are converted to
 lower case. For example, `Droid Sans` becomes `droidsans`.
+
+`fvd` is a *Font Variation Description*. Put simply, it's a shorthand for
+describing the style and weight of a particular font. Here are a few examples:
+
+    @font-face {
+      font-style: normal;
+      font-weight: normal;
+    }
+    => n4
+
+    @font-face {
+      font-style: italic;
+      font-weight: bold;
+    }
+    => i7
+
+If no style/weight is specified, the default "n4" (font-style: normal;
+font-weight: normal;) will be used.
+
 
 ### JavaScript Flavored
 
@@ -40,11 +59,11 @@ function.
       },
       inactive: function() {
       },
-      familyloading: function(familyName) {
+      fontloading: function(familyName, fvd) {
       },
-      familyactive: function(familyName) {
+      fontactive: function(familyName, fvd) {
       },
-      familyinactive: function(familyName) {
+      fontinactive: function(familyName, fvd) {
       }
     })
 
@@ -56,7 +75,7 @@ function.
 Since the Internet is not 100% reliable, it's possible that a font fails to
 load. You can use events to gracefully degrade in this situation.
 
-> The `Family Inactive` event will be triggered after 5 seconds if the font
+> The `Font Inactive` event will be triggered after 5 seconds if the font
 fails to render. If *at least* one font succesfully renders, the `Active`
 event will be triggered, else the `Inative` even will be triggered.
 
@@ -76,20 +95,20 @@ support a given browser.
 the fonts from that provide will be loaded. When finished, the `Active` event
 will be triggered.
 
-> For fonts loaded from supported providers, the `Family Active` event will be
-triggered. For fonts loaded from a provider that *does not* support the current
-browser, the `Family Inactive` event will be triggered.
+> For fonts loaded from supported providers, the `Font Active` event will be
+triggered. For fonts loaded from a provider that *does not* support the
+current browser, the `Font Inactive` event will be triggered.
 
 For example:
 
     WebFont.load({
-      providerA: 'Font1'
-      providerB: 'Font2'
+      providerA: 'Family1'
+      providerB: 'Family2'
     });
 
 > If `providerA` can serve fonts to a browser, but `providerB` cannot, The
-`Family Inactive` event will be triggered for `Font2`. The `Family Active`
-event will be triggered for `Font1` once it loads, as will the `Active`
+`Font Inactive` event will be triggered for `Family2`. The `Font Active`
+event will be triggered for `Family1` once it loads, as will the `Active`
 event.
 
 
