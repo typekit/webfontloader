@@ -10,8 +10,8 @@
         e.innerHTML = message;
         output.appendChild(e);
       }
-      if (console && console.log) {
-        console.log(message);
+      if (window.console && window.console.log) {
+        window.console.log(message);
       }
     }
     WebFont.load({
