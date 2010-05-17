@@ -37,7 +37,7 @@ webfont.WebFont.prototype.isModuleSupportingUserAgent_ = function(module, eventD
         eventDispatcher.dispatchLoading();
       }
     }
-    fontWatcher.watch([], allModulesLoaded);
+    fontWatcher.watch([], {}, allModulesLoaded);
     return;
   }
   module.load(webfont.bind(this, this.onModuleReady_, eventDispatcher,
@@ -52,8 +52,8 @@ webfont.WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher
     eventDispatcher.dispatchLoading();
   }
   this.asyncCall_(webfont.bind(this, function(_fontWatcher, _fontFamilies,
-      _allModulesLoaded, _fontDescriptions) {
-    _fontWatcher.watch(_fontFamilies, _fontDescriptions, _allModulesLoaded);
+      _fontDescriptions, _allModulesLoaded) {
+    _fontWatcher.watch(_fontFamilies, _fontDescriptions || {}, _allModulesLoaded);
   }, fontWatcher, fontFamilies, opt_fontDescriptions, allModulesLoaded));
 };
 
