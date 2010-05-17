@@ -67,3 +67,10 @@ FontVariationDescriptionTest.prototype.testExpandFontWeight = function() {
   assertEquals('font-style:normal;font-weight:800;', this.fvd_.expand('n8'));
   assertEquals('font-style:normal;font-weight:900;', this.fvd_.expand('n9'));
 };
+
+FontVariationDescriptionTest.prototype.testExpandInvalid = function() {
+  assertEquals(null, this.fvd_.expand(''));
+  assertEquals(null, this.fvd_.expand('n'));
+  assertEquals(null, this.fvd_.expand('1'));
+  assertEquals(null, this.fvd_.expand('n1x'));
+};
