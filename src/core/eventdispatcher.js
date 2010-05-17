@@ -11,7 +11,7 @@ webfont.EventDispatcher.DEFAULT_NAMESPACE = 'wf';
 webfont.EventDispatcher.LOADING = 'loading';
 webfont.EventDispatcher.ACTIVE = 'active';
 webfont.EventDispatcher.INACTIVE = 'inactive';
-webfont.EventDispatcher.FAMILY = 'family';
+webfont.EventDispatcher.FONT = 'font';
 
 webfont.EventDispatcher.prototype.dispatchLoading = function() {
   this.domHelper_.appendClassName(this.htmlElement_,
@@ -20,34 +20,34 @@ webfont.EventDispatcher.prototype.dispatchLoading = function() {
   this.dispatch_(webfont.EventDispatcher.LOADING);
 };
 
-webfont.EventDispatcher.prototype.dispatchFamilyLoading = function(fontFamily) {
+webfont.EventDispatcher.prototype.dispatchFontLoading = function(fontFamily, fontDescription) {
   this.domHelper_.appendClassName(this.htmlElement_,
       this.cssClassName_.build(
-          this.namespace_, fontFamily, webfont.EventDispatcher.LOADING));
+          this.namespace_, fontFamily, fontDescription, webfont.EventDispatcher.LOADING));
   this.dispatch_(
-      webfont.EventDispatcher.FAMILY + webfont.EventDispatcher.LOADING, fontFamily);
+      webfont.EventDispatcher.FONT + webfont.EventDispatcher.LOADING, fontFamily, fontDescription);
 };
 
-webfont.EventDispatcher.prototype.dispatchFamilyActive = function(fontFamily) {
+webfont.EventDispatcher.prototype.dispatchFontActive = function(fontFamily, fontDescription) {
   this.domHelper_.removeClassName(this.htmlElement_,
       this.cssClassName_.build(
-          this.namespace_, fontFamily, webfont.EventDispatcher.LOADING));
+          this.namespace_, fontFamily, fontDescription, webfont.EventDispatcher.LOADING));
   this.domHelper_.appendClassName(this.htmlElement_,
       this.cssClassName_.build(
-          this.namespace_, fontFamily, webfont.EventDispatcher.ACTIVE));
+          this.namespace_, fontFamily, fontDescription, webfont.EventDispatcher.ACTIVE));
   this.dispatch_(
-      webfont.EventDispatcher.FAMILY + webfont.EventDispatcher.ACTIVE, fontFamily);
+      webfont.EventDispatcher.FONT + webfont.EventDispatcher.ACTIVE, fontFamily, fontDescription);
 };
 
-webfont.EventDispatcher.prototype.dispatchFamilyInactive = function(fontFamily) {
+webfont.EventDispatcher.prototype.dispatchFontInactive = function(fontFamily, fontDescription) {
   this.domHelper_.removeClassName(this.htmlElement_,
       this.cssClassName_.build(
-          this.namespace_, fontFamily, webfont.EventDispatcher.LOADING));
+          this.namespace_, fontFamily, fontDescription, webfont.EventDispatcher.LOADING));
   this.domHelper_.appendClassName(this.htmlElement_,
       this.cssClassName_.build(
-          this.namespace_, fontFamily, webfont.EventDispatcher.INACTIVE));
+          this.namespace_, fontFamily, fontDescription, webfont.EventDispatcher.INACTIVE));
   this.dispatch_(
-      webfont.EventDispatcher.FAMILY + webfont.EventDispatcher.INACTIVE, fontFamily);
+      webfont.EventDispatcher.FONT + webfont.EventDispatcher.INACTIVE, fontFamily, fontDescription);
 };
 
 webfont.EventDispatcher.prototype.dispatchInactive = function() {
@@ -68,8 +68,8 @@ webfont.EventDispatcher.prototype.dispatchActive = function() {
   this.dispatch_(webfont.EventDispatcher.ACTIVE);
 };
 
-webfont.EventDispatcher.prototype.dispatch_ = function(event, opt_arg) {
+webfont.EventDispatcher.prototype.dispatch_ = function(event, opt_arg1, opt_arg2) {
   if (this.callbacks_[event]) {
-    this.callbacks_[event](opt_arg);
+    this.callbacks_[event](opt_arg1, opt_arg2);
   }
 };
