@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+  <script type="text/javascript" src="/webfont.js"></script>
+  <script type="text/javascript">
+    function progress(message) {
+      var output = document.getElementById('events');
+      if (output) {
+        var e = document.createElement('li');
+        e.innerHTML = message;
+        output.appendChild(e);
+      }
+      if (console && console.log) {
+        console.log(message);
+      }
+    }
+    WebFont.load({
+      google: {
+        families: ['Droid Serif:r,i,b,bi']
+      },
+      loading: function() {
+        progress('loading');
+      },
+      active: function() {
+        progress('active');
+      },
+      inactive: function() {
+        progress('inactive');
+      },
+      fontloading: function(fontFamily, fontDescription) {
+        progress('fontloading: ' + fontFamily + ' (' + fontDescription + ')');
+      },
+      fontactive: function(fontFamily, fontDescription) {
+        progress('fontactive: ' + fontFamily + ' (' + fontDescription + ')');
+      },
+      fontinactive: function(fontFamily, fontDescription) {
+        progress('fontinactive: ' + fontFamily + ' (' + fontDescription + ')');
+      }
+    });
+  </script>
+  <style type="text/css">
+
+    .droid p {
+      font-family: 'Droid Serif';
+      font-size: 2em;
+      margin-bottom: 0;
+      visibility: hidden;
+    }
+    
+    .wf-droidserif-n4-active #droidregular {
+      visibility: visible;
+    }
+    .wf-droidserif-i4-active #droiditalic {
+      visibility: visible;
+    }
+    .wf-droidserif-n7-active #droidbold {
+      visibility: visible;
+    }
+    .wf-droidserif-i7-active #droidbolditalic {
+      visibility: visible;
+    }
+
+    /* All Class hooks */
+    #classes { color: #ddd; }
+    html.wf-loading #classes .Loading,
+    html.wf-active #classes .Active,
+    html.wf-inactive #classes .Inactive,
+    html.wf-droidserif-n4-loading #classes #DroidSerifRegularLoading,
+    html.wf-droidserif-n4-active #classes #DroidSerifRegularActive,
+    html.wf-droidserif-n4-inactive #classes #DroidSerifRegularInactive,
+    html.wf-droidserif-i4-loading #classes #DroidSerifItalicLoading,
+    html.wf-droidserif-i4-active #classes #DroidSerifItalicActive,
+    html.wf-droidserif-i4-inactive #classes #DroidSerifItalicInactive,
+    html.wf-droidserif-n7-loading #classes #DroidSerifBoldLoading,
+    html.wf-droidserif-n7-active #classes #DroidSerifBoldActive,
+    html.wf-droidserif-n7-inactive #classes #DroidSerifBoldInactive,
+    html.wf-droidserif-i7-loading #classes #DroidSerifBoldItalicLoading,
+    html.wf-droidserif-i7-active #classes #DroidSerifBoldItalicActive,
+    html.wf-droidserif-i7-inactive #classes #DroidSerifBoldItalicInactive {
+      color: #000;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="droid">
+    <p id="droidregular">
+      Droid Serif Regular
+    </p>
+    <p id="droiditalic">
+      <em>Droid Serif Italic</em>
+    </p>
+    <p id="droidbold">
+      <strong>Droid Serif Bold</strong>
+    </p>
+    <p id="droidbolditalic">
+      <strong><em>Droid Serif Bold Italic</em></strong>
+    </p>
+  </div>
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/events-styles.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is to show all of the font loading event callbacks when using
+    multiple weights and styles of one typeface.
+  </p>
+  <h2>CSS Hook Status</h2>
+  <ul id="classes">
+    <li class="Loading">Loading</li>
+    <li class="Active">Active</li>
+    <li class="Inactive">Inactive</li>
+    <li id="DroidSerifRegularLoading">Droid Serif Regular Loading</li>
+    <li id="DroidSerifRegularActive">Droid Serif Regular Active</li>
+    <li id="DroidSerifRegularInactive">Droid Serif Regular Inactive</li>
+    <li id="DroidSerifItalicLoading">Droid Serif Italic Loading</li>
+    <li id="DroidSerifItalicActive">Droid Serif Italic Active</li>
+    <li id="DroidSerifItalicInactive">Droid Serif Italic Inactive</li>
+    <li id="DroidSerifBoldLoading">Droid Serif Bold Loading</li>
+    <li id="DroidSerifBoldActive">Droid Serif Bold Active</li>
+    <li id="DroidSerifBoldInactive">Droid Serif Bold Inactive</li>
+    <li id="DroidSerifBoldItalicLoading">Droid Serif Bold Italic Loading</li>
+    <li id="DroidSerifBoldItalicActive">Droid Serif Bold Italic Active</li>
+    <li id="DroidSerifBoldItalicInactive">Droid Serif Bold Italic Inactive</li>
+  </ul>
+  <h2>JavaScript Event Progress</h2>
+  <ol id="events"></ol>
+</body>
+</html>
