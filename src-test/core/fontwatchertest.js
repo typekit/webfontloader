@@ -49,27 +49,15 @@ FontWatcherTest.prototype.setUp = function() {
       },
       fontloading: function(fontFamily, fontDescription) {
         self.fontLoadingEventCalled_++;
-        if (fontDescription) {
-          self.fontLoading_.push(fontFamily + ' ' + fontDescription);
-        } else {
-          self.fontLoading_.push(fontFamily);
-        }
+        self.fontLoading_.push(fontFamily + ' ' + fontDescription);
       },
       fontactive: function(fontFamily, fontDescription) {
         self.fontActiveEventCalled_++;
-        if (fontDescription) {
-          self.fontActive_.push(fontFamily + ' ' + fontDescription);
-        } else {
-          self.fontActive_.push(fontFamily);
-        }
+        self.fontActive_.push(fontFamily + ' ' + fontDescription);
       },
       fontinactive: function(fontFamily, fontDescription) {
         self.fontInactvieEventCalled_++;
-        if (fontDescription) {
-          self.fontInactive_.push(fontFamily + ' ' + fontDescription);
-        } else {
-          self.fontInactive_.push(fontFamily);
-        }
+        self.fontInactive_.push(fontFamily + ' ' + fontDescription);
       }
   };
   this.eventDispatcher_ = new webfont.EventDispatcher(this.fakeDomHelper_,
@@ -95,10 +83,10 @@ FontWatcherTest.prototype.testWatchOneFontAlreadyLoaded = function() {
   fontWatcher.watch(fontFamilies, {}, false);
   assertEquals(1, this.fontLoadingEventCalled_);
   assertEquals(1, this.fontLoading_.length);
-  assertEquals('fontFamily1', this.fontLoading_[0]);
+  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
   assertEquals(1, this.fontActiveEventCalled_);
   assertEquals(1, this.fontActive_.length);
-  assertEquals('fontFamily1', this.fontActive_[0]);
+  assertEquals('fontFamily1 n4', this.fontActive_[0]);
 };
 
 FontWatcherTest.prototype.testWatchMultipleFontsAlreadyLoaded = function() {
@@ -119,14 +107,14 @@ FontWatcherTest.prototype.testWatchMultipleFontsAlreadyLoaded = function() {
   fontWatcher.watch(fontFamilies, {}, false);
   assertEquals(3, this.fontLoadingEventCalled_);
   assertEquals(3, this.fontLoading_.length);
-  assertEquals('fontFamily1', this.fontLoading_[0]);
-  assertEquals('fontFamily2', this.fontLoading_[1]);
-  assertEquals('fontFamily3', this.fontLoading_[2]);
+  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
+  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
+  assertEquals('fontFamily3 n4', this.fontLoading_[2]);
   assertEquals(3, this.fontActiveEventCalled_);
   assertEquals(3, this.fontActive_.length);
-  assertEquals('fontFamily1', this.fontActive_[0]);
-  assertEquals('fontFamily2', this.fontActive_[1]);
-  assertEquals('fontFamily3', this.fontActive_[2]);
+  assertEquals('fontFamily1 n4', this.fontActive_[0]);
+  assertEquals('fontFamily2 n4', this.fontActive_[1]);
+  assertEquals('fontFamily3 n4', this.fontActive_[2]);
 };
 
 FontWatcherTest.prototype.testWatchOneFontWaitForLoad = function() {
@@ -159,10 +147,10 @@ FontWatcherTest.prototype.testWatchOneFontWaitForLoad = function() {
   assertTrue(async);
   assertEquals(1, this.fontLoadingEventCalled_);
   assertEquals(1, this.fontLoading_.length);
-  assertEquals('fontFamily1', this.fontLoading_[0]);
+  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
   assertEquals(1, this.fontActiveEventCalled_);
   assertEquals(1, this.fontActive_.length);
-  assertEquals('fontFamily1', this.fontActive_[0]);
+  assertEquals('fontFamily1 n4', this.fontActive_[0]);
 };
 
 FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoad = function() {
@@ -206,14 +194,14 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoad = function() {
   assertEquals(8, async);
   assertEquals(3, this.fontLoadingEventCalled_);
   assertEquals(3, this.fontLoading_.length);
-  assertEquals('fontFamily1', this.fontLoading_[0]);
-  assertEquals('fontFamily2', this.fontLoading_[1]);
-  assertEquals('fontFamily3', this.fontLoading_[2]);
+  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
+  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
+  assertEquals('fontFamily3 n4', this.fontLoading_[2]);
   assertEquals(3, this.fontActiveEventCalled_);
   assertEquals(3, this.fontActive_.length);
-  assertEquals('fontFamily1', this.fontActive_[0]);
-  assertEquals('fontFamily2', this.fontActive_[1]);
-  assertEquals('fontFamily3', this.fontActive_[2]);
+  assertEquals('fontFamily1 n4', this.fontActive_[0]);
+  assertEquals('fontFamily2 n4', this.fontActive_[1]);
+  assertEquals('fontFamily3 n4', this.fontActive_[2]);
 };
 
 FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndLoaded =
@@ -253,14 +241,14 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndLoaded =
   assertEquals(7, async);
   assertEquals(3, this.fontLoadingEventCalled_);
   assertEquals(3, this.fontLoading_.length);
-  assertEquals('fontFamily1', this.fontLoading_[0]);
-  assertEquals('fontFamily2', this.fontLoading_[1]);
-  assertEquals('fontFamily3', this.fontLoading_[2]);
+  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
+  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
+  assertEquals('fontFamily3 n4', this.fontLoading_[2]);
   assertEquals(3, this.fontActiveEventCalled_);
   assertEquals(3, this.fontActive_.length);
-  assertEquals('fontFamily1', this.fontActive_[0]);
-  assertEquals('fontFamily2', this.fontActive_[1]);
-  assertEquals('fontFamily3', this.fontActive_[2]);
+  assertEquals('fontFamily1 n4', this.fontActive_[0]);
+  assertEquals('fontFamily2 n4', this.fontActive_[1]);
+  assertEquals('fontFamily3 n4', this.fontActive_[2]);
 };
 
 FontWatcherTest.prototype.testWatchOneFontWaitForLoadInactive = function() {
@@ -284,10 +272,10 @@ FontWatcherTest.prototype.testWatchOneFontWaitForLoadInactive = function() {
   fontWatcher.watch(fontFamilies, {}, false);
   assertEquals(1, this.fontLoadingEventCalled_);
   assertEquals(1, this.fontLoading_.length);
-  assertEquals('fontFamily1', this.fontLoading_[0]);
+  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
   assertEquals(1, this.fontInactvieEventCalled_);
   assertEquals(1, this.fontInactive_.length);
-  assertEquals('fontFamily1', this.fontInactive_[0]);
+  assertEquals('fontFamily1 n4', this.fontInactive_[0]);
 };
 
 FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndInactive =
@@ -335,15 +323,15 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndInactive =
   assertEquals(9, async);
   assertEquals(3, this.fontLoadingEventCalled_);
   assertEquals(3, this.fontLoading_.length);
-  assertEquals('fontFamily1', this.fontLoading_[0]);
-  assertEquals('fontFamily2', this.fontLoading_[1]);
-  assertEquals('fontFamily3', this.fontLoading_[2]);
+  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
+  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
+  assertEquals('fontFamily3 n4', this.fontLoading_[2]);
   assertEquals(2, this.fontActiveEventCalled_);
   assertEquals(2, this.fontActive_.length);
-  assertEquals('fontFamily1', this.fontActive_[0]);
-  assertEquals('fontFamily3', this.fontActive_[1]);
+  assertEquals('fontFamily1 n4', this.fontActive_[0]);
+  assertEquals('fontFamily3 n4', this.fontActive_[1]);
   assertEquals(1, this.fontInactvieEventCalled_);
-  assertEquals('fontFamily2', this.fontInactive_[0]);
+  assertEquals('fontFamily2 n4', this.fontInactive_[0]);
 };
 
 FontWatcherTest.prototype.testWatchMultipleFontsAlreadyLoadedAndLastBatchOnDone
@@ -365,19 +353,19 @@ FontWatcherTest.prototype.testWatchMultipleFontsAlreadyLoadedAndLastBatchOnDone
   fontWatcher.watch(fontFamilies, {}, true);
   assertEquals(3, this.fontLoadingEventCalled_);
   assertEquals(3, this.fontLoading_.length);
-  assertEquals('fontFamily1', this.fontLoading_[0]);
-  assertEquals('fontFamily2', this.fontLoading_[1]);
-  assertEquals('fontFamily3', this.fontLoading_[2]);
+  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
+  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
+  assertEquals('fontFamily3 n4', this.fontLoading_[2]);
   assertEquals(3, this.fontActiveEventCalled_);
   assertEquals(3, this.fontActive_.length);
-  assertEquals('fontFamily1', this.fontActive_[0]);
-  assertEquals('fontFamily2', this.fontActive_[1]);
-  assertEquals('fontFamily3', this.fontActive_[2]);
+  assertEquals('fontFamily1 n4', this.fontActive_[0]);
+  assertEquals('fontFamily2 n4', this.fontActive_[1]);
+  assertEquals('fontFamily3 n4', this.fontActive_[2]);
   assertEquals(1, this.activeEventCalled_);
   assertEquals(4, this.classNamesCount_);
-  assertEquals(true, this.classNames_['ns-fontfamily1--active']);
-  assertEquals(true, this.classNames_['ns-fontfamily2--active']);
-  assertEquals(true, this.classNames_['ns-fontfamily3--active']);
+  assertEquals(true, this.classNames_['ns-fontfamily1-n4-active']);
+  assertEquals(true, this.classNames_['ns-fontfamily2-n4-active']);
+  assertEquals(true, this.classNames_['ns-fontfamily3-n4-active']);
   assertEquals(true, this.classNames_['ns-active']);
 };
 
@@ -423,18 +411,18 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndLastBatchOnDone =
   assertEquals(8, async);
   assertEquals(3, this.fontLoadingEventCalled_);
   assertEquals(3, this.fontLoading_.length);
-  assertEquals('fontFamily1', this.fontLoading_[0]);
-  assertEquals('fontFamily2', this.fontLoading_[1]);
-  assertEquals('fontFamily3', this.fontLoading_[2]);
+  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
+  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
+  assertEquals('fontFamily3 n4', this.fontLoading_[2]);
   assertEquals(3, this.fontActiveEventCalled_);
   assertEquals(3, this.fontActive_.length);
-  assertEquals('fontFamily1', this.fontActive_[0]);
-  assertEquals('fontFamily2', this.fontActive_[1]);
-  assertEquals('fontFamily3', this.fontActive_[2]);
+  assertEquals('fontFamily1 n4', this.fontActive_[0]);
+  assertEquals('fontFamily2 n4', this.fontActive_[1]);
+  assertEquals('fontFamily3 n4', this.fontActive_[2]);
   assertEquals(1, this.activeEventCalled_);
-  assertEquals(true, this.classNames_['ns-fontfamily1--active']);
-  assertEquals(true, this.classNames_['ns-fontfamily2--active']);
-  assertEquals(true, this.classNames_['ns-fontfamily3--active']);
+  assertEquals(true, this.classNames_['ns-fontfamily1-n4-active']);
+  assertEquals(true, this.classNames_['ns-fontfamily2-n4-active']);
+  assertEquals(true, this.classNames_['ns-fontfamily3-n4-active']);
   assertEquals(true, this.classNames_['ns-active']);
   assertEquals(4, this.classNamesCount_);
 };
@@ -488,7 +476,7 @@ FontWatcherTest.prototype
   assertEquals(5, this.fontLoading_.length);
   assertEquals('fontFamily1 i7',
       this.fontLoading_[0]);
-  assertEquals('fontFamily2', this.fontLoading_[1]);
+  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
   assertEquals('fontFamily3 n4',
       this.fontLoading_[2]);
   assertEquals('fontFamily3 i4', this.fontLoading_[3]);
@@ -497,7 +485,7 @@ FontWatcherTest.prototype
   assertEquals(5, this.fontActive_.length);
   assertEquals('fontFamily1 i7',
       this.fontActive_[0]);
-  assertEquals('fontFamily2', this.fontActive_[1]);
+  assertEquals('fontFamily2 n4', this.fontActive_[1]);
   assertEquals('fontFamily3 n4',
       this.fontActive_[2]);
   assertEquals('fontFamily3 i4', this.fontActive_[3]);
@@ -505,7 +493,7 @@ FontWatcherTest.prototype
   assertEquals(1, this.activeEventCalled_);
   assertEquals(6, this.classNamesCount_);
   assertEquals(true, this.classNames_['ns-fontfamily1-i7-active']);
-  assertEquals(true, this.classNames_['ns-fontfamily2--active']);
+  assertEquals(true, this.classNames_['ns-fontfamily2-n4-active']);
   assertEquals(true, this.classNames_['ns-fontfamily3-n4-active']);
   assertEquals(true, this.classNames_['ns-fontfamily3-i4-active']);
   assertEquals(true, this.classNames_['ns-fontfamily3-n7-active']);

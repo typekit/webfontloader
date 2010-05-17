@@ -13,6 +13,7 @@ webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
 };
 
 webfont.FontWatcher.DEFAULT_FONT = 'DEFAULT_FONT';
+webfont.FontWatcher.DEFAULT_FVD = 'n4';
 
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions, last) {
   var originalSize = this.getDefaultFontSize_();
@@ -28,7 +29,7 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions, l
     var fontDescriptionsLength = availableDescriptions.length;
 
     for (var j = 0; j < fontDescriptionsLength; j++) {
-      var fontDescription = availableDescriptions[j];
+      var fontDescription = availableDescriptions[j] || webfont.FontWatcher.DEFAULT_FVD;
 
       this.watch_(fontFamily, fontDescription, originalSize);
     }
