@@ -13,44 +13,34 @@ webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
 };
 
 webfont.FontWatcher.DEFAULT_FONT = 'DEFAULT_FONT';
-webfont.FontWatcher.DEFAULT_FVD = 'n4';
+webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
 
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions, last) {
   var originalSize = this.getDefaultFontSize_();
   var length = fontFamilies.length;
 
-  this.currentlyWatched_ += this.calculateFontNumberToWatch(fontFamilies, fontDescriptions);
+  for (var i = 0; i < length; i++) {
+    var fontFamily = fontFamilies[i];
+    if (!fontDescriptions[fontFamily]) {
+      fontDescriptions[fontFamily] = [webfont.FontWatcher.DEFAULT_VARIATION];
+    }
+    this.currentlyWatched_ += fontDescriptions[fontFamily].length;
+  }
+
   if (last) {
     this.last_ = last;
   }
+
   for (var i = 0; i < length; i++) {
     var fontFamily = fontFamilies[i];
-    var availableDescriptions = fontDescriptions[fontFamily] || [webfont.FontWatcher.DEFAULT_FVD];
-    var fontDescriptionsLength = availableDescriptions.length;
+    var descriptions = fontDescriptions[fontFamily];
 
-    for (var j = 0; j < fontDescriptionsLength; j++) {
-      var fontDescription = availableDescriptions[j];
+    for (var j = 0, len = descriptions.length; j < len; j++) {
+      var fontDescription = descriptions[j];
 
       this.watch_(fontFamily, fontDescription, originalSize);
     }
   }
-};
-
-webfont.FontWatcher.prototype.calculateFontNumberToWatch = function(
-    fontFamilies, fontDescriptions) {
-  var length = fontFamilies.length;
-  var number = 0;
-
-  for (var i = 0; i < length; i++) {
-    var availableDescriptions = fontDescriptions[fontFamilies[i]];
-
-    if (availableDescriptions) {
-      number += availableDescriptions.length;
-    } else {
-      number++;
-    }
-  }
-  return number;
 };
 
 webfont.FontWatcher.prototype.watch_ = function(fontFamily, fontDescription, originalSize) {
@@ -108,7 +98,7 @@ webfont.FontWatcher.prototype.asyncCheck_ = function(started, originalSize,
 
 webfont.FontWatcher.prototype.getDefaultFontSize_ = function() {
   var defaultFont = this.createHiddenElementWithFont_(
-      webfont.FontWatcher.DEFAULT_FONT, 'n4');
+      webfont.FontWatcher.DEFAULT_FONT, webfont.FontWatcher.DEFAULT_VARIATION);
   var size = this.fontSizer_.getWidth(defaultFont);
 
   this.domHelper_.removeElement(defaultFont);
@@ -118,12 +108,11 @@ webfont.FontWatcher.prototype.getDefaultFontSize_ = function() {
 webfont.FontWatcher.prototype.createHiddenElementWithFont_ = function(
     fontFamily, fontDescription) {
   var quotedName = this.nameHelper_.quote(fontFamily);
+  var variationCss = this.fvd_.expand(fontDescription);
   var styleString = "position:absolute;top:-999px;font-size:300px;font-family:" +
-      quotedName + "," + webfont.FontWatcher.DEFAULT_FONT + ";";
+      quotedName + "," + webfont.FontWatcher.DEFAULT_FONT + ";" +
+      variationCss;
 
-  if (fontDescription) {
-    styleString += this.fvd_.expand(fontDescription);
-  }
   var span = this.domHelper_.createElement('span', {
     // IE must have a fallback font option, else sometimes the loaded font
     // won't be detected - typically in the fully cached case.
