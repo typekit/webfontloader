@@ -16,7 +16,6 @@ webfont.FontWatcher.DEFAULT_FONT = 'DEFAULT_FONT';
 webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
 
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions, last) {
-  var originalSize = this.getDefaultFontSize_();
   var length = fontFamilies.length;
 
   for (var i = 0; i < length; i++) {
@@ -37,6 +36,7 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions, l
 
     for (var j = 0, len = descriptions.length; j < len; j++) {
       var fontDescription = descriptions[j];
+      var originalSize = this.getDefaultFontSize_(fontDescription);
 
       this.watch_(fontFamily, fontDescription, originalSize);
     }
@@ -96,9 +96,9 @@ webfont.FontWatcher.prototype.asyncCheck_ = function(started, originalSize,
   }(this, this.check_), 50);
 };
 
-webfont.FontWatcher.prototype.getDefaultFontSize_ = function() {
+webfont.FontWatcher.prototype.getDefaultFontSize_ = function(fontDescription) {
   var defaultFont = this.createHiddenElementWithFont_(
-      webfont.FontWatcher.DEFAULT_FONT, webfont.FontWatcher.DEFAULT_VARIATION);
+      webfont.FontWatcher.DEFAULT_FONT, fontDescription);
   var size = this.fontSizer_.getWidth(defaultFont);
 
   this.domHelper_.removeElement(defaultFont);
