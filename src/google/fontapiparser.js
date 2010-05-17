@@ -53,10 +53,10 @@ webfont.FontApiParser.prototype.parse = function() {
     var variations = null;
 
     if (pair.length == 2) {
-      var cssRules = this.parseVariations_(pair[1]);
+      var fvds = this.parseVariations_(pair[1]);
 
-      if (cssRules.length > 0) {
-        variations = cssRules;
+      if (fvds.length > 0) {
+        variations = fvds;
       }
     }
     this.parsedFontFamilies_.push(fontFamily);
@@ -64,7 +64,7 @@ webfont.FontApiParser.prototype.parse = function() {
   }
 };
 
-webfont.FontApiParser.prototype.generateCssRule_ = function(variation) {
+webfont.FontApiParser.prototype.generateFontVariationDescription_ = function(variation) {
   if (!variation.match(/^[\w ]+$/)) {
     return '';
   }
@@ -72,14 +72,19 @@ webfont.FontApiParser.prototype.generateCssRule_ = function(variation) {
   var fvd = webfont.FontApiParser.VARIATIONS[variation];
 
   if (fvd) {
-    return this.fvd_.expand(fvd);
+    return fvd;
   } else {
     var groups = variation.match(/^(\d*)(\w*)$/);
     var numericMatch = groups[1];
     var styleMatch = groups[2];
     var s = styleMatch ? styleMatch : 'n';
     var w = numericMatch ? numericMatch.substr(0, 1) : '4';
-    return this.fvd_.expand([s, w].join(''));
+    var css = this.fvd_.expand([s, w].join(''));
+    if (css) {
+      return this.fvd_.compact(css);
+    } else {
+      return null;
+    }
   }
 };
 
@@ -90,10 +95,10 @@ webfont.FontApiParser.prototype.parseVariations_ = function(variations) {
 
   for (var i = 0; i < length; i++) {
     var variation = providedVariations[i];
-    var cssRule = this.generateCssRule_(variation);
+    var fvd = this.generateFontVariationDescription_(variation);
 
-    if (cssRule) {
-      finalVariations.push(cssRule);
+    if (fvd) {
+      finalVariations.push(fvd);
     }
   }
   return finalVariations;

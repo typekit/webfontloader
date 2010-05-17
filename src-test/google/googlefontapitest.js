@@ -112,13 +112,13 @@ GoogleFontApiTest.prototype.testLoadWithVariations = function() {
 
   assertNotNull(font1);
   assertEquals(1, font1.length);
-  assertEquals('font-style:italic;font-weight:700;', font1[0]);
+  assertEquals('i7', font1[0]);
   var font2 = variations['Font2 WithSpaceToo'];
 
   assertNotNull(font2);
   assertEquals(2, font2.length);
-  assertEquals('font-style:normal;font-weight:700;', font2[0]);
-  assertEquals('font-style:normal;font-weight:400;', font2[1]);
+  assertEquals('n7', font2[0]);
+  assertEquals('n4', font2[1]);
   assertNotNull(transformName);
   assertEquals('Font2 WithSpaceToo n7', transformName('Font2 WithSpaceToo',
       font2[0]));

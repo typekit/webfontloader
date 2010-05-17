@@ -36,9 +36,7 @@ webfont.GoogleFontApi.prototype.load = function(onReady) {
 
   fontApiParser.parse();
   onReady(fontApiParser.getFontFamilies(), fontApiParser.getVariations(), function(_fontFamily, _variation) {
-    var fvd = new webfont.FontVariationDescription();
-    var description = fvd.compact(_variation);
-    return _fontFamily + ' ' + description;
+    return _fontFamily + ' ' + _variation;
   });
 };
 

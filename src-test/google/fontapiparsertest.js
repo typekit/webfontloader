@@ -22,21 +22,21 @@ FontApiParserTest.prototype.testParsedValuesAreCoherent = function() {
 
   assertNotNull(droidSerif);
   assertEquals(1, droidSerif.length);
-  assertEquals('font-style:italic;font-weight:700;', droidSerif[0]);
+  assertEquals('i7', droidSerif[0]);
   var yanoneKaffeesatz = variations['Yanone Kaffeesatz'];
 
   assertNotNull(yanoneKaffeesatz);
   assertEquals(4, yanoneKaffeesatz.length);
-  assertEquals('font-style:normal;font-weight:200;', yanoneKaffeesatz[0]);
-  assertEquals('font-style:normal;font-weight:300;', yanoneKaffeesatz[1]);
-  assertEquals('font-style:normal;font-weight:400;', yanoneKaffeesatz[2]);
-  assertEquals('font-style:normal;font-weight:700;', yanoneKaffeesatz[3]);
+  assertEquals('n2', yanoneKaffeesatz[0]);
+  assertEquals('n3', yanoneKaffeesatz[1]);
+  assertEquals('n4', yanoneKaffeesatz[2]);
+  assertEquals('n7', yanoneKaffeesatz[3]);
   var cantarell = variations['Cantarell'];
 
   assertNotNull(cantarell);
   assertEquals(2, cantarell.length);
-  assertEquals('font-style:italic;font-weight:400;', cantarell[0]);
-  assertEquals('font-style:normal;font-weight:700;', cantarell[1]);
+  assertEquals('i4', cantarell[0]);
+  assertEquals('n7', cantarell[1]);
 };
 
 FontApiParserTest.prototype.testMixOfNumericWeightAndStyle = function() {
@@ -53,10 +53,10 @@ FontApiParserTest.prototype.testMixOfNumericWeightAndStyle = function() {
 
   assertNotNull(nobile);
   assertEquals(4, nobile.length);
-  assertEquals('font-style:italic;font-weight:700;', nobile[0]);
-  assertEquals('font-style:normal;font-weight:700;', nobile[1]);
-  assertEquals('font-style:italic;font-weight:200;', nobile[2]);
-  assertEquals('font-style:normal;font-weight:400;', nobile[3]);
+  assertEquals('i7', nobile[0]);
+  assertEquals('n7', nobile[1]);
+  assertEquals('i2', nobile[2]);
+  assertEquals('n4', nobile[3]);
 };
 
 FontApiParserTest.prototype.testTypoBildInsteadOfBold = function() {
