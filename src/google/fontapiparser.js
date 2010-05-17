@@ -34,6 +34,8 @@ webfont.FontApiParser.prototype.parse = function() {
       if (fvds.length > 0) {
         variations = fvds;
       }
+    } else {
+      variations = ['n4'];
     }
     this.parsedFontFamilies_.push(fontFamily);
     this.variations_[fontFamily] = variations;
