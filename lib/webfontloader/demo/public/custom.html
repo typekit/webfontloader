@@ -70,17 +70,17 @@
       active: function() {
         progress('active');
       },
-      inactive: function(fontFamily) {
-        progress('inactive: ' + fontFamily);
+      inactive: function() {
+        progress('inactive');
       },
-      familyloading: function(fontFamily) {
-        progress('familyloading: ' + fontFamily);
+      fontloading: function(fontFamily, fontDescription) {
+        progress('fontloading: ' + fontFamily + ' (' + fontDescription + ')');
       },
-      familyactive: function(fontFamily) {
-        progress('familyactive: ' + fontFamily);
+      fontactive: function(fontFamily, fontDescription) {
+        progress('fontactive: ' + fontFamily + ' (' + fontDescription + ')');
       },
-      familyinactive: function(fontFamily) {
-        progress('familyinactive: ' + fontFamily);
+      fontinactive: function(fontFamily, fontDescription) {
+        progress('fontinactive: ' + fontFamily + ' (' + fontDescription + ')');
       }
     });
   </script>
