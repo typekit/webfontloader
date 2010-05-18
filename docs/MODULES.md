@@ -3,15 +3,18 @@
 WebFont Loader provides a generic module system so that any web font provider
 may be used. The specifics of each provider are documented here.
 
+
 ## Google
 
 Using Google's Font API, name the font families you'd like to load.
 
     WebFont.load({
       google: {
-        family: ['Droid Sans', 'Droid Serif']
+        families: ['Droid Sans', 'Droid Serif']
       }
     });
+
+Learn more about the [Google Font API][gfontapi].
 
 
 ## Typekit
@@ -25,11 +28,13 @@ ID within Typekit's Kit Editor interface.
       }
     });
 
-  
+Learn more about [Typekit][tk].
+
+
 ## Custom
 
 To load fonts from any external stylesheet, use the `custom` module. Here you'll
-need to specify both the url of the stylesheet as well as the font families it 
+need to specify both the url of the stylesheet as well as the font families it
 provides.
 
     WebFont.load({
@@ -38,4 +43,7 @@ provides.
         urls: ['/fonts.css']
       }
     });
-  
+
+
+[gfontapi]: https://code.google.com/apis/webfonts/docs/getting_started.html
+[tk]: http://typekit.com/

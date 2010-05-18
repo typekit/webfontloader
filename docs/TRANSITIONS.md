@@ -19,7 +19,7 @@ You can get started with web fonts quickly and easily by just using Google.
     <script type="text/javascript">
       WebFont.load({
         google: {
-          family: ['Droid Sans']
+          families: ['Droid Sans']
         }
       });
     </script>
@@ -35,7 +35,7 @@ to add fonts from Typekit.
     <script type="text/javascript">
       WebFont.load({
         google: {
-          family: ['Droid Sans']
+          families: ['Droid Sans']
         },
         typekit: {
           id: 'abc1def'

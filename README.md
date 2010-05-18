@@ -5,12 +5,15 @@ WebFont Loader gives you added control when using linked fonts via
 the source, then adds a standard set of events you may use to control the
 loading experience.
 
+
 ## Get Started
 
-Link to the WebFont Loader library, then tell it which fonts to load. Here we'll
-load fonts from Google.
+(These samples use WebFont Loader hosted on [Google's AJAX APIs][gajax].)
 
-    <script src="http://ajax.googleapis.com/ajax/libs/webfont/1.0.0/webfont.js"></script>
+Link to the WebFont Loader library, then tell it which fonts to load. Here we'll
+load fonts from [Google's Font API][gfontapi].
+
+    <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
     <script>
       WebFont.load({
         google: {
@@ -21,7 +24,7 @@ load fonts from Google.
 
 Alternatively, load fonts from Typekit. Just specify your Kit ID.
 
-    <script src="http://ajax.googleapis.com/ajax/libs/webfont/1.0.0/webfont.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
     <script>
       WebFont.load({
         typekit: {
@@ -40,10 +43,11 @@ WebFont Loader gives you control over how fonts are loaded. If you're
 frustrated by the "flash of unstyled text" typically seen in FireFox, try
 this.
 
+    <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
     <script>
       WebFont.load({
         google: {
-          family: ['Droid Sans']
+          families: ['Droid Sans']
         }
       });
     </script>
@@ -98,8 +102,10 @@ Browse the demos [source code][demos].
 WebFont Loader is released under the [Apache 2.0][lic] license.
 
 
-[mod]: http://github.com/typekit/webfontjs/blob/master/docs/MODULES.md
-[trn]: http://github.com/typekit/webfontjs/blob/master/docs/TRANSITIONS.md
-[evt]: http://github.com/typekit/webfontjs/blob/master/docs/EVENTS.md
-[lic]: http://github.com/typekit/webfontjs/blob/master/LICENSE
-[demos]: http://github.com/typekit/webfontjs/blob/master/lib/webfontjs/demo/public
+[mod]: http://github.com/typekit/webfontloader/blob/master/docs/MODULES.md
+[trn]: http://github.com/typekit/webfontloader/blob/master/docs/TRANSITIONS.md
+[evt]: http://github.com/typekit/webfontloader/blob/master/docs/EVENTS.md
+[lic]: http://github.com/typekit/webfontloader/blob/master/LICENSE
+[demos]: http://github.com/typekit/webfontloader/blob/master/lib/webfontloader/demo/public
+[gfontapi]: https://code.google.com/apis/webfonts/
+[gajax]: http://code.google.com/apis/ajax/
