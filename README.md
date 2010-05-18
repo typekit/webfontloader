@@ -8,7 +8,7 @@ loading experience.
 
 ## Get Started
 
-(These samples use WebFont Loader hosted on [Google's AJAX APIs][gajax].)
+(These samples use WebFont Loader hosted on [Google's AJAX Libraries][gajax].)
 
 Link to the WebFont Loader library, then tell it which fonts to load. Here we'll
 load fonts from [Google's Font API][gfontapi].
@@ -143,6 +143,6 @@ WebFont Loader is released under the [Apache 2.0][lic] license.
 [lic]: http://github.com/typekit/webfontloader/blob/master/LICENSE
 [demos]: http://github.com/typekit/webfontloader/blob/master/lib/webfontloader/demo/public
 [gfontapi]: https://code.google.com/apis/webfonts/
-[gajax]: http://code.google.com/apis/ajax/
+[gajax]: http://code.google.com/apis/ajaxlibs/
 [jstestdriver]: http://code.google.com/p/js-test-driver/
 [issues]: https://github.com/typekit/webfontloader/issues
