@@ -8,8 +8,8 @@ module WebFontLoader
       DemoRoot = File.expand_path(File.join(File.dirname(__FILE__)))
       ProjectRoot = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", ".."))
 
-      GoogleApi = "http://themes.googleusercontent.com/fonts/api"
-      GoogleFontApi = "http://themes.googleusercontent.com/fonts/font"
+      GoogleApi = "http://fonts.googleapis.com/css"
+      GoogleFontApi = "http://themes.googleusercontent.com/font"
 
       set :app_file, __FILE__
       set :sessions, false
