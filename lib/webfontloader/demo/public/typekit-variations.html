@@ -6,36 +6,45 @@
   <script type="text/javascript">
     WebFont.load({
       typekit: {
-        id: 'kitwitharialblack',
+        id: 'kitwithgeorgia',
         api: '/typekit'
       }
     });
   </script>
   <style type="text/css">
     /* Use classes to prove that Typekit triggers the event system correctly */
-    h1 {
+    .georgia p {
+      font-family: 'Georgia';
+      font-size: 3em;
       visibility: hidden;
     }
-    .wf-arialblack-n4-active h1 {
-      font-family: 'Arial Black';
+    .wf-georgia-i4-active #georgiaitalic {
+      visibility: visible;
+    }
+    .wf-georgia-i7-active #georgiabolditalic {
       visibility: visible;
     }
   </style>
 </head>
 <body>
-  <h1>
-    Hello World. I am Arial Black.
-  </h1>
+  <div class="georgia">
+    <p id="georgiaitalic">
+      <em>Georgia Italic</em>
+    </p>
+    <p id="georgiabolditalic">
+      <strong><em>Georgia Bold Italic</em></strong>
+    </p>
+  </div>
   <hr>
   <p>
     <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
-    <a href="/typekit.html">Reload Cached</a>
+    <a href="/typekit-variations.html">Reload Cached</a>
   </p>
   <p>
     The goal of this page is to show how Typekit fonts load. Note that it uses
     a minimal Typekit script in order to reduce dependencies. This script
-    simply provides the system font 'Arial Black' instead of loading a web
-    font.
+    simply provides the system font 'Georgia' in italic and bold italic
+    instead of loading a web font.
   </p>
 </body>
 </html>

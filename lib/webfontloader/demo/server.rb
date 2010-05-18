@@ -50,6 +50,17 @@ module WebFontLoader
       get %r[/typekit/(\w+)\.js] do |kit_id|
         headers 'Content-Type' => 'application/javascript'
         headers 'Cache-Control' => 'max-age=300'
+        case kit_id
+        when "kitwitharialblack"
+          families = "['Arial Black']"
+          variations = "{}"
+        when "kitwithgeorgia"
+          families = "['Georgia']"
+          variations = "{ 'Georgia': ['i4', 'i7' ]}"
+        else
+          families = "[]"
+          variations = "{}"
+        end
         <<-JS
           if (window.__webfonttypekitmodule__) {
             var module = window.__webfonttypekitmodule__['#{kit_id}'];
@@ -57,7 +68,7 @@ module WebFontLoader
               module(function(userAgent, configuration, init) {
                 // Here you may use the userAgent object to determine
                 // browser support.
-                init(true, ['Arial Black']);
+                init(true, #{families}, #{variations});
               });
             }
           }
