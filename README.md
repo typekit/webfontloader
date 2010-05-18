@@ -92,10 +92,45 @@ You may need a few rubygems to run the server. Get them with [Bundler](http://ge
 Browse the demos [source code][demos].
 
 
+## Problems?
+
+Please open [an issue][issues]. Sample pages are greatly appreciated.
+
+
+## Developing
+
+Is there something else WebFont Loader should do? Did you find a bug and want
+to fix it?
+
+### Testing
+
+WebFont Loader has an extensive test suite that runs via
+[jsTestDriver][jstestdriver]. Please add tests for any changes.
+
+To run tests, first boot the test server. This open a browser
+and start listing for test executions. You can register multiple browsers.
+
+    rake test:boot
+
+Then, run the tests.
+
+    rake test
+
+## Contributing
+
+* Fork webfontloader
+* Create a topic branch - `git checkout -b my_branch`
+* Push to your branch - `git push origin my_branch`
+* Create an [issue][issues] with a link to your branch
+* That's it!
+
+
+
 ## Authors
 
 * Ryan Carver / ryan@typekit.com
 * Jeremie Lenfant-engelmann /  jeremiele@google.com
+
 
 ## License
 
@@ -109,3 +144,5 @@ WebFont Loader is released under the [Apache 2.0][lic] license.
 [demos]: http://github.com/typekit/webfontloader/blob/master/lib/webfontloader/demo/public
 [gfontapi]: https://code.google.com/apis/webfonts/
 [gajax]: http://code.google.com/apis/ajax/
+[jstestdriver]: http://code.google.com/p/js-test-driver/
+[issues]: https://github.com/typekit/webfontloader/issues
