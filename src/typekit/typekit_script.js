@@ -3,6 +3,7 @@ webfont.TypekitScript = function(global, domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
   this.fontFamilies_ = [];
+  this.fontVariations_ = {};
 };
 
 webfont.TypekitScript.NAME = 'typekit';
@@ -27,8 +28,9 @@ webfont.TypekitScript.prototype.supportUserAgent = function(userAgent, support) 
     // Typekit will call 'init' to indicate whether it supports fonts
     // and what fonts will be provided.
     this.global_[webfont.TypekitScript.HOOK][kitId] = function(callback) {
-      var init = function(typekitSupports, fontFamilies) {
+      var init = function(typekitSupports, fontFamilies, fontVariations) {
         self.fontFamilies_ = fontFamilies;
+        self.fontVariations_ = fontVariations;
         support(typekitSupports);
       };
       callback(userAgent, configuration, init);
@@ -44,7 +46,7 @@ webfont.TypekitScript.prototype.supportUserAgent = function(userAgent, support) 
 };
 
 webfont.TypekitScript.prototype.load = function(onReady) {
-  onReady(this.fontFamilies_);
+  onReady(this.fontFamilies_, this.fontVariations_);
 };
 
 WebFont.addModule(webfont.TypekitScript.NAME, function(configuration) {
