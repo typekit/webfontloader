@@ -8,7 +8,8 @@ JavaScript.
 
   * `Loading` - This event is triggered when all fonts have been requested.
   * `Active` - This event is triggered when all of the fonts have rendered.
-  * `Inactive` - This event is triggered when the browser does not support linked fonts.
+  * `Inactive` - This event is triggered when the browser does not support
+      linked fonts *or* if none of the fonts could be loaded.
   * `Font Loading` - This event is triggered once for each font that's loaded.
   * `Font Active` - This event is triggered once for each font that renders.
   * `Font Inactive` - This event is triggered if the font can't be loaded.
@@ -102,7 +103,7 @@ current browser, the `Font Inactive` event will be triggered.
 For example:
 
     WebFont.load({
-      providerA: 'Family1'
+      providerA: 'Family1',
       providerB: 'Family2'
     });
 
