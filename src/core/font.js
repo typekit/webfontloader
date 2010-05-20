@@ -79,17 +79,3 @@ webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {
         eventDispatcher, fontWatcher));
   }
 };
-
-window['webfont']['WebFont'] = webfont.WebFont;
-webfont.WebFont.prototype['load'] = webfont.WebFont.prototype.load;
-webfont.WebFont.prototype['addModule'] = webfont.WebFont.prototype.addModule;
-window['WebFont'] = function() {
-  var domHelper = new webfont.DomHelper(document);
-  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent);
-  var userAgent = userAgentParser.parse();
-
-  return new webfont.WebFont(domHelper, new webfont.FontModuleLoader(),
-      document.documentElement, function(func, timeout) {
-        setTimeout(func, timeout);
-      }, userAgent);
-}();

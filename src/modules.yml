@@ -10,6 +10,7 @@ core:
   - core/cssclassname.js
   - core/cssfontfamilyname.js
   - core/fontvariationdescription.js
+  - core/initialize.js
 
 google:
   - google/fontapiurlbuilder.js
