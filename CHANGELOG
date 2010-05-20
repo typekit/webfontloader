@@ -1,0 +1,7 @@
+v1.0.1 (May 20, 2010)
+* Fix namespace pollution by wrapping all of the code in a closure.
+
+v1.0.0 (May 19, 2010)
+* Initial release!
+* Modules: google, typekit, custom
+* Events: loading, active, inactive, fontloading, fontactive, fontintactive
