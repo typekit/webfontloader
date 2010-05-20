@@ -46,8 +46,22 @@ desc "Compile the JavaScript into target/webfont.js"
 task :compile => "target/webfont.js"
 
 file "target/webfont.js" => SourceJs + ["target"] do |t|
-  files = @modules.all_source_files.join(" --js ")
-  system "java -jar #{JsCompilerJar} --compilation_level ADVANCED_OPTIMIZATIONS --js #{files} --js_output_file #{t.name}"
+
+  output_marker = "%output%"
+  output_wrapper = @modules.js_output_wrapper(output_marker)
+
+  args = [
+    ["-jar", JsCompilerJar],
+    ["--compilation_level", "ADVANCED_OPTIMIZATIONS"],
+    ["--js_output_file", t.name],
+    ["--output_wrapper_marker", %("#{output_marker}")],
+    ["--output_wrapper", %("#{output_wrapper}")]
+  ]
+
+  source = @modules.all_source_files
+  args.concat source.map { |f| ["--js", f] }
+
+  system "java #{args.flatten.join(' ')}"
 end
 
 desc "Creates debug version into target/webfont.js"
