@@ -8,8 +8,8 @@ webfont.FontApiParser = function(fontFamilies) {
 webfont.FontApiParser.VARIATIONS = {
   'ultralight': 'n2',
   'light': 'n3',
-  'regular': 'i4',
-  'bold': 'i7',
+  'regular': 'n4',
+  'bold': 'n7',
   'italic': 'i4',
   'bolditalic': 'i7',
   'ul': 'n2',
