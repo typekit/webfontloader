@@ -1,5 +1,11 @@
 webfont.FontApiUrlBuilder = function(apiUrl) {
-  this.apiUrl_ = apiUrl || webfont.FontApiUrlBuilder.DEFAULT_API_URL;
+  if (apiUrl) {
+    this.apiUrl_ = apiUrl;
+  } else {
+    var protocol = 'https:' == window.location.protocol ? 'https:' : 'http:';
+
+    this.apiUrl_ = protocol + webfont.FontApiUrlBuilder.DEFAULT_API_URL;
+  }  
   this.fontFamilies_ = null;
 };
 
