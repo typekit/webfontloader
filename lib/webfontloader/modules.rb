@@ -16,7 +16,7 @@ module WebFontLoader
 
     def all_source_files
       @all_source_files ||= begin
-        modules.map { |mod| config[mod] }.compact.flatten.map { |f| File.join(js_src, f) }
+        modules.map { |mod| config[mod] }.compact.flatten.map { |f| File.join(js_src, f) }.push File.join(js_src, "async_load.js")
       end
     end
 
