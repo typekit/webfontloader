@@ -1,3 +1,3 @@
-if (window['webFontConfiguration']) {
-  window['WebFont']['load'](window['webFontConfiguration']);
+if (window['WebFontConfig']) {
+  window['WebFont']['load'](window['WebFontConfig']);
 }
