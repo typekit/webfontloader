@@ -68,7 +68,7 @@ webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {
         getWidth: function(elem) {
           return elem.offsetWidth;
         }}, self.asyncCall_, function() {
-          return new Date();
+          return new Date().getTime();
         });
 
   for (var i = 0, len = modules.length; i < len; i++) {
