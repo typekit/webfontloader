@@ -110,8 +110,7 @@ webfont.FontWatcher.prototype.createHiddenElementWithFont_ = function(
   var quotedName = this.nameHelper_.quote(fontFamily);
   var variationCss = this.fvd_.expand(fontDescription);
   var styleString = "position:absolute;top:-999px;font-size:300px;font-family:" +
-      quotedName + "," + webfont.FontWatcher.DEFAULT_FONT + ";" +
-      variationCss;
+      quotedName + ";" + variationCss;
 
   var span = this.domHelper_.createElement('span', {
     // IE must have a fallback font option, else sometimes the loaded font
