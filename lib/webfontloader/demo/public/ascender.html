@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <link href="/basic.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/webfont.js"></script>
+  <style type="text/css">
+    /* Use classes to prove that Ascender module triggers the event system correctly */
+    h1 {
+      visibility: hidden;
+    }
+    .wf-arialblack-n4-active h1 {
+      font-family: 'Arial Black';
+      visibility: visible;
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    Hello World. I am Arial Black.
+  </h1>
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/ascender.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is to show how fonts load from Ascender. This script
+    simply provides the system font 'Arial Black' instead of loading a web
+    font.
+  </p>
+  <h2>JavaScript Event Progress</h2>
+  <ol id="events"></ol>
+
+  <script type="text/javascript">
+    function progress(message) {
+      var output = document.getElementById('events');
+      if (output) {
+        var e = document.createElement('li');
+        e.innerHTML = message;
+        output.appendChild(e);
+      }
+      if (window.console && window.console.log) {
+        window.console.log(message);
+      }
+    }
+
+    //Families must match families 
+    //that are included in provided CSS
+    WebFont.load({
+      ascender: {
+        cssKey:'cssKeyFromAscender',
+        families:['Arial Black']
+      },
+      loading: function() {
+        progress('loading');
+      },
+      active: function() {
+        progress('active');
+      },
+      inactive: function() {
+        progress('inactive');
+      },
+      fontloading: function(fontFamily, fontDescription) {
+        progress('fontloading: ' + fontFamily + ' (' + fontDescription + ')');
+      },
+      fontactive: function(fontFamily, fontDescription) {
+        progress('fontactive: ' + fontFamily + ' (' + fontDescription + ')');
+      },
+      fontinactive: function(fontFamily, fontDescription) {
+        progress('fontinactive: ' + fontFamily + ' (' + fontDescription + ')');
+      }
+    });
+  </script>
+
+</body>
+</html>
