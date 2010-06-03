@@ -1,5 +1,6 @@
-webfont.DomHelper = function(doc) {
+webfont.DomHelper = function(doc, userAgent) {
   this.document_ = doc;
+  this.userAgent_ = userAgent;
 };
 
 webfont.DomHelper.prototype.createElement = function(elem, opt_attr,
@@ -10,7 +11,11 @@ webfont.DomHelper.prototype.createElement = function(elem, opt_attr,
     for (var attr in opt_attr) {
       // protect against native prototype augmentations
       if (opt_attr.hasOwnProperty(attr)) {
-        domElement.setAttribute(attr, opt_attr[attr]);
+        if (attr == "style" && this.userAgent_.getName() == "MSIE") {
+          domElement.style.cssText = opt_attr[attr];
+        } else {
+          domElement.setAttribute(attr, opt_attr[attr]);
+        }
       }
     }
   }

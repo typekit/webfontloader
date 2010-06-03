@@ -111,12 +111,8 @@ webfont.FontWatcher.prototype.createHiddenElementWithFont_ = function(
   var variationCss = this.fvd_.expand(fontDescription);
   var styleString = "position:absolute;top:-999px;font-size:300px;font-family:" +
       quotedName + ";" + variationCss;
+  var span = this.domHelper_.createElement('span', { 'style': styleString }, 'Mm');
 
-  var span = this.domHelper_.createElement('span', {
-    // IE must have a fallback font option, else sometimes the loaded font
-    // won't be detected - typically in the fully cached case.
-    'style': styleString }, 'Mm');
-
-  this.domHelper_.insertInto('html', span);
+  this.domHelper_.insertInto('body', span);
   return span;
 };

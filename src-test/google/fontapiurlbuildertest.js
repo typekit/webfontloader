@@ -23,6 +23,6 @@ FontApiUrlBuilderTest.prototype.testBuildProperDefaultUrl = function() {
   var fontApiUrlBuilder = new webfont.FontApiUrlBuilder();
 
   fontApiUrlBuilder.setFontFamilies([ 'Font1', 'Font2' ]);
-  assertEquals(webfont.FontApiUrlBuilder.DEFAULT_API_URL +
+  assertEquals("http:" + webfont.FontApiUrlBuilder.DEFAULT_API_URL +
       '?family=Font1%7CFont2', fontApiUrlBuilder.build());
 };
