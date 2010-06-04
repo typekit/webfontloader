@@ -110,7 +110,7 @@ webfont.FontWatcher.prototype.createHiddenElementWithFont_ = function(
     fontFamily, fontDescription) {
   var variationCss = this.fvd_.expand(fontDescription);
   var styleString = "position:absolute;top:-999px;font-size:300px;font-family:" +
-      fontFamily +  ";" + variationCss;
+      fontFamily + "," + webfont.FontWatcher.DEFAULT_FONT + ";" + variationCss;
   var span = this.domHelper_.createElement('span', { 'style': styleString }, 'Mm');
 
   this.domHelper_.insertInto('body', span);
