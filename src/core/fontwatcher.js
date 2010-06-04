@@ -12,7 +12,7 @@ webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
   this.fvd_ = new webfont.FontVariationDescription();
 };
 
-webfont.FontWatcher.DEFAULT_FONT = 'serif';
+webfont.FontWatcher.DEFAULT_FONT = '_,arial,helvetica';
 webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
 
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions, last) {
