@@ -3,7 +3,7 @@ var AscenderScriptTest = TestCase('AscenderScriptTest');
 AscenderScriptTest.prototype.testLoadAndFamilyVariations = function(){
 
   var insert, css, element;
-  var cssKey = 'e8e3d05f-2a8b-4835-8889-7b8bb3351c61';
+  var key = 'ec2de397-11ae-4c10-937f-bf94283a70c1';
   var onReadyTriggered = false;
   
   var fakeDomHelper = {
@@ -18,7 +18,7 @@ AscenderScriptTest.prototype.testLoadAndFamilyVariations = function(){
   };
 
   var configuration = {
-    cssKey:cssKey,
+    key:key,
     families: ['AndyBold','Arial:bold,regular']
   };
   
@@ -31,8 +31,8 @@ AscenderScriptTest.prototype.testLoadAndFamilyVariations = function(){
   assertFalse(onReadyTriggered);
   as.load(fakeOnReady);
   
-  assertEquals('http://webfonts.fontslive.com/css/' + cssKey + '.css', css);
-  assertEquals('<link href="http://webfonts.fontslive.com/css/' + cssKey + '.css" type="text/css" />', element);
+  assertEquals('http://webfonts.fontslive.com/css/' + key + '.css', css);
+  assertEquals('<link href="http://webfonts.fontslive.com/css/' + key + '.css" type="text/css" />', element);
   assertEquals('head', insert);
   assertTrue(onReadyTriggered);
   
