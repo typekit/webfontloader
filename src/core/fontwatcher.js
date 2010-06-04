@@ -12,7 +12,7 @@ webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
   this.fvd_ = new webfont.FontVariationDescription();
 };
 
-webfont.FontWatcher.DEFAULT_FONT = 'DEFAULT_FONT';
+webfont.FontWatcher.DEFAULT_FONT = 'serif';
 webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
 
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions, last) {
@@ -45,7 +45,8 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions, l
 
 webfont.FontWatcher.prototype.watch_ = function(fontFamily, fontDescription, originalSize) {
   this.eventDispatcher_.dispatchFontLoading(fontFamily, fontDescription);
-  var requestedFont = this.createHiddenElementWithFont_(fontFamily, fontDescription);
+  var requestedFont = this.createHiddenElementWithFont_(this.nameHelper_.quote(fontFamily),
+      fontDescription);
   var size = this.fontSizer_.getWidth(requestedFont);
 
   if (originalSize != size) {
@@ -107,10 +108,9 @@ webfont.FontWatcher.prototype.getDefaultFontSize_ = function(fontDescription) {
 
 webfont.FontWatcher.prototype.createHiddenElementWithFont_ = function(
     fontFamily, fontDescription) {
-  var quotedName = this.nameHelper_.quote(fontFamily);
   var variationCss = this.fvd_.expand(fontDescription);
   var styleString = "position:absolute;top:-999px;font-size:300px;font-family:" +
-      quotedName + ";" + variationCss;
+      fontFamily +  ";" + variationCss;
   var span = this.domHelper_.createElement('span', { 'style': styleString }, 'Mm');
 
   this.domHelper_.insertInto('body', span);
