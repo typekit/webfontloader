@@ -33,6 +33,17 @@ Alternatively, load fonts from Typekit. Just specify your Kit ID.
       });
     </script>
 
+Load fonts from Fonts.com Web fonts. Just specify your Project ID.
+
+    <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
+    <script>
+      WebFont.load({
+        monotype: {
+           projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'///this is your Fonts.com Web fonts projectId
+        }
+      });
+    </script>
+
 Learn more about the
 [modules][mod].
 
