@@ -78,6 +78,41 @@ Or as pure Typekit
       Typekit.load();
     </script>
 
+## From Google Fonts to Fonts.com Web fonts
+
+### Step 1: Use Google with WebFont Loader
+
+You can get started with web fonts quickly and easily by just using Google.
+
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      WebFont.load({
+        google: {
+          families: ['Droid Sans']
+        }
+      });
+    </script>
+
+### Step 2: Add Fonts.com Web fonts
+
+If you discover that Google doesn't have your preferred typeface, you may wish
+to add fonts from <a href="webfonts.fonts.com">Fonts.com Web fonts</a>.
+
+(first sign up for <a href="webfonts.fonts.com">Fonts.com Web fonts</a>, add fonts and retrieve your Project ID)
+
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      WebFont.load({
+        monotype: {
+          projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+        }
+      });
+    </script>
+
+
+Or as pure <a href="webfonts.fonts.com">Fonts.com Web fonts</a> API
+
+    <script type="text/javascript" src="http://fast.fonts.com/jsapi/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.js"></script>
 
 ## Add events to self-hosted fonts
 

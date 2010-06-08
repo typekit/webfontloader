@@ -82,7 +82,7 @@ Learn more about [events][evt].
 ## A common ground
 
 WebFont Loader aims to provide a common interface for font loading. Today it
-works with Google, Typekit, and your own CSS. Learn more in
+works with Google, Typekit, Fonts.com Web fonts and your own CSS. Learn more in
 [transitions][trn].
 
 
