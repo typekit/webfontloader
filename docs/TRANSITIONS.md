@@ -96,9 +96,9 @@ You can get started with web fonts quickly and easily by just using Google.
 ### Step 2: Add Fonts.com Web fonts
 
 If you discover that Google doesn't have your preferred typeface, you may wish
-to add fonts from <a href="webfonts.fonts.com">Fonts.com Web fonts</a>.
+to add fonts from <a href="http://webfonts.fonts.com">Fonts.com Web fonts</a>.
 
-(first sign up for <a href="webfonts.fonts.com">Fonts.com Web fonts</a>, add fonts and retrieve your Project ID)
+(first sign up for <a href="http://webfonts.fonts.com">Fonts.com Web fonts</a>, add fonts and retrieve your Project ID)
 
     <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <script type="text/javascript">
@@ -110,7 +110,7 @@ to add fonts from <a href="webfonts.fonts.com">Fonts.com Web fonts</a>.
     </script>
 
 
-Or as pure <a href="webfonts.fonts.com">Fonts.com Web fonts</a> API
+Or as pure <a href="http://webfonts.fonts.com">Fonts.com Web fonts</a> API
 
     <script type="text/javascript" src="http://fast.fonts.com/jsapi/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.js"></script>
 
