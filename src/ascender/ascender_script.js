@@ -31,11 +31,11 @@ webfont.AscenderScript.prototype.supportUserAgent = function(userAgent, support)
 };
 
 webfont.AscenderScript.prototype.load = function(onReady) {
-  var key = this.configuration_.key;
+  var key = this.configuration_['key'];
   var protocol = (('https:' == document.location.protocol) ? 'https:' : 'http:');
   var url = protocol + '//webfonts.fontslive.com/css/' + key + '.css';
   this.domHelper_.insertInto('head', this.domHelper_.createCssLink(url));
-  var fv = this.parseFamiliesAndVariations(this.configuration_.families);
+  var fv = this.parseFamiliesAndVariations(this.configuration_['families']);
   onReady(fv.families, fv.variations);
 };
 
