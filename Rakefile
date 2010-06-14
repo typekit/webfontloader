@@ -122,3 +122,26 @@ task :gzipbytes => "target/webfont.js" do |t|
   bytes = Zlib::Deflate.deflate(File.read(js)).size
   puts "#{bytes} bytes gzipped"
 end
+
+#
+# Release
+#
+
+def name
+  @name ||= "webfontloader"
+end
+
+def version
+  line = File.read("lib/#{name}.rb")[/^\s*VERSION\s*=\s*.*/]
+  line.match(/.*VERSION\s*=\s*['"](.*)['"]/)[1]
+end
+
+task :release do
+  unless `git branch` =~ /^\* master$/
+    puts "You must be on the master branch to release!"
+    exit!
+  end
+  sh "git commit --allow-empty -a -m 'Release #{version}'"
+  sh "git tag -a v#{version}"
+  sh "git push origin master --tags"
+end
