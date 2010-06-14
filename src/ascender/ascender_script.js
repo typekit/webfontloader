@@ -2,8 +2,8 @@
  *
  * WebFont.load({
  *   ascender: {
- *     cssKey:'e8e3d05f-2a8b-4835-8889-7b8bb3351c61',
- *     families:['AndyBold:bold']
+ *     key:'ec2de397-11ae-4c10-937f-bf94283a70c1',
+ *     families:['AyitaPro:regular,bold,bolditalic,italic']
  *   }
  * });
  *
@@ -31,11 +31,11 @@ webfont.AscenderScript.prototype.supportUserAgent = function(userAgent, support)
 };
 
 webfont.AscenderScript.prototype.load = function(onReady) {
-  var cssKey = this.configuration_.cssKey;
+  var key = this.configuration_['key'];
   var protocol = (('https:' == document.location.protocol) ? 'https:' : 'http:');
-  var url = protocol + '//webfonts.fontslive.com/css/' + cssKey + '.css';
+  var url = protocol + '//webfonts.fontslive.com/css/' + key + '.css';
   this.domHelper_.insertInto('head', this.domHelper_.createCssLink(url));
-  var fv = this.parseFamiliesAndVariations(this.configuration_.families);
+  var fv = this.parseFamiliesAndVariations(this.configuration_['families']);
   onReady(fv.families, fv.variations);
 };
 

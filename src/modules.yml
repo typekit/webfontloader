@@ -12,6 +12,9 @@ core:
   - core/fontvariationdescription.js
   - core/initialize.js
 
+ascender:
+  - ascender/ascender_script.js
+
 google:
   - google/fontapiurlbuilder.js
   - google/fontapiparser.js
