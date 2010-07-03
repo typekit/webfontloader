@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.EventDispatcher = function(domHelper, htmlElement, callbacks,
     opt_namespace) {
   this.domHelper_ = domHelper;

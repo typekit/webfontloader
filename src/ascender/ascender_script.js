@@ -7,6 +7,7 @@
  *   }
  * });
  *
+ * @constructor
  */
 webfont.AscenderScript = function(domHelper, configuration) {
   this.domHelper_ = domHelper;

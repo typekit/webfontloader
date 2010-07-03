@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
     asyncCall, getTime) {
   this.domHelper_ = domHelper;

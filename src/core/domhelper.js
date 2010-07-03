@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.DomHelper = function(doc, userAgent) {
   this.document_ = doc;
   this.userAgent_ = userAgent;

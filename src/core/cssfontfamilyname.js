@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.CssFontFamilyName = function() {
   this.quote_ = '"';
 };

@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.GoogleFontApi = function(userAgent, domHelper, configuration) {
   this.userAgent_ = userAgent;
   this.domHelper_ = domHelper;

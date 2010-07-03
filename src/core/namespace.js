@@ -1,4 +1,4 @@
-webfont = {};
+var webfont = {};
 
 webfont.bind = function(context, func, opt_args) {
   var args = arguments.length > 2 ?

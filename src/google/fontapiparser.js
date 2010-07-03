@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.FontApiParser = function(fontFamilies) {
   this.fontFamilies_ = fontFamilies;
   this.parsedFontFamilies_ = [];

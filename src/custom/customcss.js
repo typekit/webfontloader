@@ -5,6 +5,8 @@
  *     families: ['Font1', 'Font2'],
  *    urls: [ 'http://moo', 'http://meuh' ] }
  * });
+ *
+ * @constructor
  */
 webfont.CustomCss = function(domHelper, configuration) {
   this.domHelper_ = domHelper;

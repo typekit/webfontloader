@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.FontVariationDescription = function() {
   this.properties_ = webfont.FontVariationDescription.PROPERTIES;
   this.values_ = webfont.FontVariationDescription.VALUES;
@@ -29,6 +32,9 @@ webfont.FontVariationDescription.VALUES = {
   ]
 };
 
+/**
+ * @constructor
+ */
 webfont.FontVariationDescription.Item = function(index, property, values) {
   this.index_ = index;
   this.property_ = property;

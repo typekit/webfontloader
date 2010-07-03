@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.FontModuleLoader = function() {
   this.modules_ = {};
 };

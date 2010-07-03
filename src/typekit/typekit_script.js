@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.TypekitScript = function(global, domHelper, configuration) {
   this.global_ = global;
   this.domHelper_ = domHelper;
@@ -52,3 +55,4 @@ webfont.TypekitScript.prototype.load = function(onReady) {
 WebFont.addModule(webfont.TypekitScript.NAME, function(configuration) {
   return new webfont.TypekitScript(window, new webfont.DomHelper(document), configuration);
 });
+

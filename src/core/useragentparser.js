@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.UserAgentParser = function(userAgent) {
   this.userAgent_ = userAgent;
 };

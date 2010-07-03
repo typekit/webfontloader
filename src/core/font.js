@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.WebFont = function(domHelper, fontModuleLoader, htmlElement, asyncCall,
     userAgent) {
   this.domHelper_ = domHelper;

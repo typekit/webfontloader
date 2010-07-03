@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.UserAgent = function(name, version, engine, engineVersion, platform,
     webFontSupport) {
   this.name_ = name;

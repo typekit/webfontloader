@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.CssClassName = function(opt_joinChar) {
   this.joinChar_ = opt_joinChar || webfont.CssClassName.DEFAULT_JOIN_CHAR;
 };

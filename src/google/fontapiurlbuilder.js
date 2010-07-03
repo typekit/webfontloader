@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.FontApiUrlBuilder = function(apiUrl) {
   if (apiUrl) {
     this.apiUrl_ = apiUrl;
