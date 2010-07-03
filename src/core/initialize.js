@@ -15,3 +15,11 @@ window[globalName] = (function() {
 // Export the public API.
 window[globalName]['load'] = window[globalName].load;
 window[globalName]['addModule'] = window[globalName].addModule;
+
+// Export the UserAgent API because we pass this object to external modules.
+webfont.UserAgent.prototype['getName'] = webfont.UserAgent.prototype.getName;
+webfont.UserAgent.prototype['getVersion'] = webfont.UserAgent.prototype.getVersion;
+webfont.UserAgent.prototype['getEngine'] = webfont.UserAgent.prototype.getEngine;
+webfont.UserAgent.prototype['getEngineVersion'] = webfont.UserAgent.prototype.getEngineVersion;
+webfont.UserAgent.prototype['getPlatform'] = webfont.UserAgent.prototype.getPlatform;
+webfont.UserAgent.prototype['isSupportingWebFont'] = webfont.UserAgent.prototype.isSupportingWebFont;
