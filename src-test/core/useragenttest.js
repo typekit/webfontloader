@@ -9,6 +9,7 @@ UserAgentTest.prototype.testBrowserIsFirefox = function() {
   assertEquals("Firefox", userAgent.getName());
   assertEquals("3.6.3", userAgent.getVersion());
   assertEquals("Macintosh", userAgent.getPlatform());
+  assertEquals("10.5", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
   assertEquals("1.9.2.3", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -23,6 +24,7 @@ UserAgentTest.prototype.testBrowserIsChrome = function() {
   assertEquals("Chrome", userAgent.getName());
   assertEquals("5.0.342.9", userAgent.getVersion());
   assertEquals("Macintosh", userAgent.getPlatform());
+  assertEquals("10_5_8", userAgent.getPlatformVersion());
   assertEquals("AppleWebKit", userAgent.getEngine());
   assertEquals("533.2", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -38,6 +40,7 @@ UserAgentTest.prototype.testBrowserIsSafari = function() {
   assertEquals("Safari", userAgent.getName());
   assertEquals("4.0.4", userAgent.getVersion());
   assertEquals("Macintosh", userAgent.getPlatform());
+  assertEquals("10_5_8", userAgent.getPlatformVersion());
   assertEquals("AppleWebKit", userAgent.getEngine());
   assertEquals("531.21.8", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -52,6 +55,7 @@ UserAgentTest.prototype.testBrowserIsIE = function() {
   assertEquals("MSIE", userAgent.getName());
   assertEquals("7.0", userAgent.getVersion());
   assertEquals("Windows", userAgent.getPlatform());
+  assertEquals("5.1", userAgent.getPlatformVersion());
   assertEquals("MSIE", userAgent.getEngine());
   assertEquals("7.0", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -67,6 +71,7 @@ UserAgentTest.prototype.testBrowserIsIPhone = function() {
   assertEquals("Safari", userAgent.getName());
   assertEquals("4.0", userAgent.getVersion());
   assertEquals("iPhone", userAgent.getPlatform());
+  assertEquals("3_1_2", userAgent.getPlatformVersion());
   assertEquals("AppleWebKit", userAgent.getEngine());
   assertEquals("528.18", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -82,6 +87,7 @@ UserAgentTest.prototype.testBrowserIsAndroid = function() {
   assertEquals("Safari", userAgent.getName());
   assertEquals("4.0", userAgent.getVersion());
   assertEquals("Android", userAgent.getPlatform());
+  assertEquals("2.1-update1", userAgent.getPlatformVersion());
   assertEquals("AppleWebKit", userAgent.getEngine());
   assertEquals("530.17", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -96,6 +102,7 @@ UserAgentTest.prototype.testBrowserIsFirefoxLettersVersion = function() {
   assertEquals("Firefox", userAgent.getName());
   assertEquals("3.6a1pre", userAgent.getVersion());
   assertEquals("Linux", userAgent.getPlatform());
+  assertEquals("i686", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
   assertEquals("1.9.2a1pre", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -110,6 +117,7 @@ UserAgentTest.prototype.testBrowserIsFirefoxNoVersion = function() {
   assertEquals("Firefox", userAgent.getName());
   assertEquals("Unknown", userAgent.getVersion());
   assertEquals("Linux", userAgent.getPlatform());
+  assertEquals("i686", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
   assertEquals("1.8.1.19", userAgent.getEngineVersion());
   assertFalse(userAgent.isSupportingWebFont());
@@ -125,6 +133,7 @@ UserAgentTest.prototype.testBrowserIsIELetterVersion = function() {
   assertEquals("MSIE", userAgent.getName());
   assertEquals("7.0b", userAgent.getVersion());
   assertEquals("Windows", userAgent.getPlatform());
+  assertEquals("5.1", userAgent.getPlatformVersion());
   assertEquals("MSIE", userAgent.getEngine());
   assertEquals("7.0b", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -138,6 +147,7 @@ UserAgentTest.prototype.testBrowserIsOpera = function() {
   assertEquals("Opera", userAgent.getName());
   assertEquals("10.51", userAgent.getVersion());
   assertEquals("Linux", userAgent.getPlatform());
+  assertEquals("i686", userAgent.getPlatformVersion());
   assertEquals("Presto", userAgent.getEngine());
   assertEquals("2.5.22", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -151,6 +161,7 @@ UserAgentTest.prototype.testBrowserIsOperaFirefoxInUAString = function() {
   assertEquals("Opera", userAgent.getName());
   assertEquals("9.70", userAgent.getVersion());
   assertEquals("Linux", userAgent.getPlatform());
+  assertEquals("i686", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
   assertEquals("1.8.1", userAgent.getEngineVersion());
   assertFalse(userAgent.isSupportingWebFont());
@@ -164,6 +175,7 @@ UserAgentTest.prototype.testBrowserIsOperaBeforeVersion10 = function() {
   assertEquals("Opera", userAgent.getName());
   assertEquals("9.64", userAgent.getVersion());
   assertEquals("Linux", userAgent.getPlatform());
+  assertEquals("i686", userAgent.getPlatformVersion());
   assertEquals("Presto", userAgent.getEngine());
   assertEquals("2.1.1", userAgent.getEngineVersion());
   assertFalse(userAgent.isSupportingWebFont());
@@ -177,6 +189,7 @@ UserAgentTest.prototype.testBrowserIsIEOnMac = function() {
   assertEquals("MSIE", userAgent.getName());
   assertEquals("5.23", userAgent.getVersion());
   assertEquals("Macintosh", userAgent.getPlatform());
+  assertEquals("Mac_PowerPC", userAgent.getPlatformVersion());
   assertEquals("MSIE", userAgent.getEngine());
   assertEquals("5.23", userAgent.getEngineVersion());
   assertFalse(userAgent.isSupportingWebFont());
@@ -192,6 +205,7 @@ UserAgentTest.prototype.testBrowserIsIPad = function() {
   assertEquals("Safari", userAgent.getName());
   assertEquals("4.0.4", userAgent.getVersion());
   assertEquals("iPad", userAgent.getPlatform());
+  assertEquals("3_2", userAgent.getPlatformVersion());
   assertEquals("AppleWebKit", userAgent.getEngine());
   assertEquals("531.21.10", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -206,6 +220,7 @@ UserAgentTest.prototype.testBrowserIsIPod = function() {
   assertEquals("Unknown", userAgent.getName());
   assertEquals("Unknown", userAgent.getVersion());
   assertEquals("iPod", userAgent.getPlatform());
+  assertEquals("2_2_1", userAgent.getPlatformVersion());
   assertEquals("AppleWebKit", userAgent.getEngine());
   assertEquals("525.18.1", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -220,6 +235,7 @@ UserAgentTest.prototype.testBrowserIsSafariWithPlusVersion = function() {
   assertEquals("Safari", userAgent.getName());
   assertEquals("4.0dp1", userAgent.getVersion());
   assertEquals("Macintosh", userAgent.getPlatform());
+  assertEquals("10_4_11", userAgent.getPlatformVersion());
   assertEquals("AppleWebKit", userAgent.getEngine());
   assertEquals("528.4+", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -234,6 +250,7 @@ UserAgentTest.prototype.testBrowserIsIEWithTridentVersion = function() {
   assertEquals("MSIE", userAgent.getName());
   assertEquals("8.0", userAgent.getVersion());
   assertEquals("Windows", userAgent.getPlatform());
+  assertEquals("6.1", userAgent.getPlatformVersion());
   assertEquals("MSIE", userAgent.getEngine());
   assertEquals("8.0", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -264,6 +281,7 @@ UserAgentTest.prototype.testBrowserGeckoNotExistingVersionShouldSupportWebFont =
   assertEquals("Mozilla", userAgent.getName());
   assertEquals("Unknown", userAgent.getVersion());
   assertEquals("Windows", userAgent.getPlatform());
+  assertEquals("5.1", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
   assertEquals("2.5.8", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -278,6 +296,7 @@ UserAgentTest.prototype.testBrowserGeckoVer110ShouldSupportWebFont = function() 
   assertEquals("Mozilla", userAgent.getName());
   assertEquals("Unknown", userAgent.getVersion());
   assertEquals("Windows", userAgent.getPlatform());
+  assertEquals("5.1", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
   assertEquals("1.10.1b", userAgent.getEngineVersion());
   assertTrue(userAgent.isSupportingWebFont());
@@ -292,6 +311,7 @@ UserAgentTest.prototype.testBrowserGeckoWeirdVerShouldNotSupportWebFont = functi
   assertEquals("Mozilla", userAgent.getName());
   assertEquals("Unknown", userAgent.getVersion());
   assertEquals("Windows", userAgent.getPlatform());
+  assertEquals("5.1", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
   assertEquals("1.b", userAgent.getEngineVersion());
   assertFalse(userAgent.isSupportingWebFont());
@@ -306,6 +326,7 @@ UserAgentTest.prototype.testBrowserGeckoYetAnotherWeirdVerShouldNotSupportWebFon
   assertEquals("Mozilla", userAgent.getName());
   assertEquals("Unknown", userAgent.getVersion());
   assertEquals("Windows", userAgent.getPlatform());
+  assertEquals("5.1", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
   assertEquals("1.b", userAgent.getEngineVersion());
   assertFalse(userAgent.isSupportingWebFont());
@@ -320,6 +341,7 @@ UserAgentTest.prototype.testBrowserGeckoNoSubVerShouldNotSupportWebFont = functi
   assertEquals("Mozilla", userAgent.getName());
   assertEquals("Unknown", userAgent.getVersion());
   assertEquals("Windows", userAgent.getPlatform());
+  assertEquals("5.1", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
   assertEquals("1.9", userAgent.getEngineVersion());
   assertFalse(userAgent.isSupportingWebFont());
@@ -334,6 +356,7 @@ UserAgentTest.prototype.testBrowserGeckoHighMinorVerShouldNotSupportWebFont = fu
   assertEquals("Mozilla", userAgent.getName());
   assertEquals("Unknown", userAgent.getVersion());
   assertEquals("Windows", userAgent.getPlatform());
+  assertEquals("5.1", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
   assertEquals("0.10.1", userAgent.getEngineVersion());
   assertFalse(userAgent.isSupportingWebFont());
@@ -348,6 +371,7 @@ UserAgentTest.prototype.testBrowserGeckoHighSubVerShouldNotSupportWebFont = func
   assertEquals("Mozilla", userAgent.getName());
   assertEquals("Unknown", userAgent.getVersion());
   assertEquals("Windows", userAgent.getPlatform());
+  assertEquals("5.1", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
   assertEquals("0.3.42", userAgent.getEngineVersion());
   assertFalse(userAgent.isSupportingWebFont());
