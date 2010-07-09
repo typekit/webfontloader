@@ -1,3 +1,3 @@
 ;(function(window,document,undefined){
-  {{source}}
+{{source}}
 })(this,document);

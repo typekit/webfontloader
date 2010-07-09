@@ -2,7 +2,7 @@ var DomHelperTest = TestCase('DomHelperTest');
 
 DomHelperTest.prototype.setUp = function() {
   this.domHelper_ = new webfont.DomHelper(document, new webfont.UserAgent("name", "version",
-      "engine", "engineVersion", "platform", true));
+      "engine", "engineVersion", "platform", "platformVersion", true));
 };
 
 DomHelperTest.prototype.testCreateElementNoAttr = function() {

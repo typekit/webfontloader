@@ -2,12 +2,13 @@
  * @constructor
  */
 webfont.UserAgent = function(name, version, engine, engineVersion, platform,
-    webFontSupport) {
+    platformVersion, webFontSupport) {
   this.name_ = name;
   this.version_ = version;
   this.engine_ = engine;
   this.engineVersion_ = engineVersion;
   this.platform_ = platform;
+  this.platformVersion_ = platformVersion;
   this.webFontSupport_ = webFontSupport;
 };
 
@@ -29,6 +30,10 @@ webfont.UserAgent.prototype.getEngineVersion = function() {
 
 webfont.UserAgent.prototype.getPlatform = function() {
   return this.platform_;
+};
+
+webfont.UserAgent.prototype.getPlatformVersion = function() {
+  return this.platformVersion_;
 };
 
 webfont.UserAgent.prototype.isSupportingWebFont = function() {
