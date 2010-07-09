@@ -197,6 +197,20 @@ UserAgentTest.prototype.testBrowserIsIPad = function() {
   assertTrue(userAgent.isSupportingWebFont());
 };
 
+UserAgentTest.prototype.testBrowserIsIPadAlt = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B360 Safari/531.21.10");
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Safari", userAgent.getName());
+  assertEquals("4.0.4", userAgent.getVersion());
+  assertEquals("iPad", userAgent.getPlatform());
+  assertEquals("3_2", userAgent.getPlatformVersion());
+  assertEquals("AppleWebKit", userAgent.getEngine());
+  assertEquals("531.21.10", userAgent.getEngineVersion());
+  assertTrue(userAgent.isSupportingWebFont());
+};
+
 UserAgentTest.prototype.testBrowserIsIPadWithoutIPhone = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.10");
