@@ -22,4 +22,5 @@ webfont.UserAgent.prototype['getVersion'] = webfont.UserAgent.prototype.getVersi
 webfont.UserAgent.prototype['getEngine'] = webfont.UserAgent.prototype.getEngine;
 webfont.UserAgent.prototype['getEngineVersion'] = webfont.UserAgent.prototype.getEngineVersion;
 webfont.UserAgent.prototype['getPlatform'] = webfont.UserAgent.prototype.getPlatform;
+webfont.UserAgent.prototype['getPlatformVersion'] = webfont.UserAgent.prototype.getPlatformVersion;
 webfont.UserAgent.prototype['isSupportingWebFont'] = webfont.UserAgent.prototype.isSupportingWebFont;
