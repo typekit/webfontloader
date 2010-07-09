@@ -64,8 +64,8 @@ webfont.UserAgentParser.prototype.getPlatformVersion_ = function() {
   if (linuxVersion) {
     return linuxVersion;
   }
-  var iVersion = this.getFirstMatchingGroup_(this.userAgent_,
-      /iPhone OS ([\d_]+)/);
+  var iVersion = this.getMatchingGroup_(this.userAgent_,
+      /(iPhone )?OS ([\d_]+)/, 2);
   if (iVersion) {
     return iVersion;
   }
@@ -240,10 +240,15 @@ webfont.UserAgentParser.prototype.getMajorVersion_ = function(version) {
 
 webfont.UserAgentParser.prototype.getFirstMatchingGroup_ = function(str,
     regexp) {
+  return this.getMatchingGroup_(str, regexp, 1);
+};
+
+webfont.UserAgentParser.prototype.getMatchingGroup_ = function(str,
+    regexp, index) {
   var groups = str.match(regexp);
 
-  if (groups && groups[1]) {
-    return groups[1];
+  if (groups && groups[index]) {
+    return groups[index];
   }
   return "";
 };
