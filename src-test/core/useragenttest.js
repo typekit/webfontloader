@@ -225,6 +225,20 @@ UserAgentTest.prototype.testBrowserIsIPod = function() {
   assertTrue(userAgent.isSupportingWebFont());
 };
 
+UserAgentTest.prototype.testBrowserIsIPodSafari = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (iPod; U; CPU iPhone OS 3_1 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7C144 Safari/528.16");
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Safari", userAgent.getName());
+  assertEquals("4.0", userAgent.getVersion());
+  assertEquals("iPod", userAgent.getPlatform());
+  assertEquals("3_1", userAgent.getPlatformVersion());
+  assertEquals("AppleWebKit", userAgent.getEngine());
+  assertEquals("528.18", userAgent.getEngineVersion());
+  assertTrue(userAgent.isSupportingWebFont());
+};
+
 UserAgentTest.prototype.testBrowserIsSafariWithPlusVersion = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10_4_11; tr) AppleWebKit/528.4+ (KHTML, like Gecko) Version/4.0dp1 Safari/526.11.2");
