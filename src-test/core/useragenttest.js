@@ -177,7 +177,7 @@ UserAgentTest.prototype.testBrowserIsIEOnMac = function() {
   assertEquals("MSIE", userAgent.getName());
   assertEquals("5.23", userAgent.getVersion());
   assertEquals("Macintosh", userAgent.getPlatform());
-  assertEquals("Mac_PowerPC", userAgent.getPlatformVersion());
+  assertEquals("Unknown", userAgent.getPlatformVersion());
   assertEquals("MSIE", userAgent.getEngine());
   assertEquals("5.23", userAgent.getEngineVersion());
   assertFalse(userAgent.isSupportingWebFont());

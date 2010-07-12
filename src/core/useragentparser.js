@@ -44,35 +44,20 @@ webfont.UserAgentParser.prototype.getPlatform_ = function() {
 };
 
 webfont.UserAgentParser.prototype.getPlatformVersion_ = function() {
-  var macVersion = this.getFirstMatchingGroup_(this.userAgent_,
-      /OS X ([^;]+)/);
+  var macVersion = this.getMatchingGroup_(this.userAgent_,
+      /(OS X|Windows NT|Android) ([^;]+)/, 2);
   if (macVersion) {
     return macVersion;
-  }
-  var ppcVersion = this.getFirstMatchingGroup_(this.userAgent_,
-      /(Mac_PowerPC)/);
-  if (ppcVersion) {
-    return ppcVersion;
-  }
-  var winVersion = this.getFirstMatchingGroup_(this.userAgent_,
-      /Windows NT ([^;]+)/);
-  if (winVersion) {
-    return winVersion;
-  }
-  var linuxVersion = this.getFirstMatchingGroup_(this.userAgent_,
-      /Linux ([i\d]+)/);
-  if (linuxVersion) {
-    return linuxVersion;
   }
   var iVersion = this.getMatchingGroup_(this.userAgent_,
       /(iPhone )?OS ([\d_]+)/, 2);
   if (iVersion) {
     return iVersion;
   }
-  var androidVersion = this.getFirstMatchingGroup_(this.userAgent_,
-      /Android ([^;]+)/);
-  if (androidVersion) {
-    return androidVersion;
+  var linuxVersion = this.getMatchingGroup_(this.userAgent_,
+      /Linux ([i\d]+)/, 1);
+  if (linuxVersion) {
+    return linuxVersion;
   }
 
   return webfont.UserAgentParser.UNKNOWN;
