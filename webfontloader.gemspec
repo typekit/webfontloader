@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
   s.version           = '1.0.4'
-  s.date              = '2010-06-14'
+  s.date              = '2010-07-12'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -48,7 +48,7 @@ DESC
   ## Specify any RDoc options here. You'll want to add your README and
   ## LICENSE files to the extra_rdoc_files list.
   s.rdoc_options = ["--charset=UTF-8"]
-  s.extra_rdoc_files = %w[README.md]
+  s.extra_rdoc_files = %w[README.md] + Dir["docs/*.md"]
 
   ## List your runtime dependencies here. Runtime dependencies are those
   ## that are needed for an end user to actually USE your code.
@@ -56,7 +56,9 @@ DESC
 
   ## List your development dependencies here. Development dependencies are
   ## those that are only needed during development
-  # s.add_development_dependency('thin', ["~>1.2.7"])
+  s.add_development_dependency('rack', ["~>1.2.1"])
+  s.add_development_dependency('sinatra', ["~>1.0"])
+  s.add_development_dependency('vegas', ["~>0.1.6"])
 
   ## Leave this section as-is. It will be automatically generated from the
   ## contents of your Git repository via the gemspec task. DO NOT REMOVE
@@ -132,6 +134,7 @@ DESC
     src/typekit/typekit_script.js
     tools/compiler/compiler.jar
     tools/jstestdriver/JsTestDriver-1.2.1.jar
+    webfontloader.gemspec
   ]
   # = MANIFEST =
 
