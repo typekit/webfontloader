@@ -139,6 +139,11 @@ namespace :test do
   task :capture do
     system "open #{JsTestServer}/capture?strict"
   end
+  desc "Execute tests against a running server"
+  task :run => ["tmp/jsTestDriver.conf"] do |t|
+    config = t.prerequisites.first
+    system "java -jar #{JsTestJar} --config #{config} --server #{JsTestServer} --tests all --captureConsole --verbose"
+  end
   desc "Boot the test server and capture a browser"
   multitask :boot => ['test:server', 'test:capture']
 end
@@ -146,7 +151,7 @@ end
 desc "Run all tests"
 task :test => ["tmp/jsTestDriver.conf"] do |t|
   config = t.prerequisites.first
-  system "java -jar #{JsTestJar} --config #{config} --server #{JsTestServer} --tests all --captureConsole --verbose"
+  system "java -jar #{JsTestJar} --port #{JsTestPort} --config #{config} --server #{JsTestServer} --browser open --tests all --captureConsole --verbose"
 end
 
 desc "Start the demo server"
