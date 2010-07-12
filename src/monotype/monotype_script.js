@@ -1,60 +1,72 @@
 ﻿/**
-*WebFont.load({
-*  monotype: {
-*    projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'///this is your Fonts.com Web fonts projectId
-*}
-*});
+webfont.load({
+monotype: {
+projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'///this is your Fonts.com Web fonts projectId
+}
+});
 */
+//Register namespace for monotype.
+webfont.monotype = {};
 
-webfont.monotypeScript = function (global, domHelper, configuration) {
-  this.global_ = global;
-  this.domHelper_ = domHelper;
-  this.configuration_ = configuration;
-  this.fontFamilies_ = [];
-  this.fontVariations_ = {};
+//class FontApi
+webfont.monotype.FontApi = function (userAgent, docHelper, configuration) {
+    this.userAgent_ = userAgent;
+    this.docHelper_ = docHelper;
+    this.configuration_ = configuration;
 };
 
-webfont.monotypeScript.NAME = 'monotype';
-webfont.monotypeScript.HOOK = '__monotypemodule__';
+webfont.monotype.FontApi.NAME = 'monotype';
+webfont.monotype.FontApi.HOOK = '__monotypemodule__';//not sure if it is used at all?
 
-webfont.monotypeScript.prototype.getScriptSrc = function (projectId) {
-  var p = (('https:' == document.location.protocol) ? 'https:' : 'http:');
-  var api = this.configuration_['api'] || p + '//fast.fonts.com/jsapi';
-  return api + '/' + projectId + '.js';
+webfont.monotype.FontApi.prototype.supportUserAgent = function (userAgent, support) { //.P
+	var configuration = this.configuration_;
+	var self = this;
+	return support(userAgent.isSupportingwebfont());
+	//return support(true);
 };
 
-webfont.monotypeScript.prototype.Y = function (userAgent, support) {//replace Y with "supportUserAgent"
-  var projectId = this.configuration_['projectId'];
-  var configuration = this.configuration_;
-  var self = this;
-  if (projectId) {
-    // Provide data to monotype for processing.
-    if (!this.global_[webfont.monotypeScript.HOOK]) {
-      this.global_[webfont.monotypeScript.HOOK] = {};
+webfont.monotype.FontApi.prototype.getScriptSrc = function (projectId) {
+    var p = (('https:' == this.docHelper_.protocol()) ? 'https:' : 'http:');
+    var api = this.configuration_['api'] || p + '//fast.fonts.com/jsapi';
+    return api + '/' + projectId + '.js';
+};
+
+webfont.monotype.FontApi.prototype.load = function (onReady) {
+    var projectId = this.configuration_['projectId'];
+    if (projectId) {
+
+        /// To do:
+        /// Research if font families and descriptions can be obtained from the script.
+        this.docHelper_.write('<scr' + 'ipt src="' + this.getScriptSrc(projectId) + '" type="text/javascript">' + '</scr' + 'ipt>');
+
+        this.fontFamilies_ = [];
+        this.fontVariations_ = [];
+        onReady(this.fontFamilies_, this.fontVariations_);
     }
-
-    // monotype will call 'init' to indicate whether it supports fonts
-    // and what fonts will be provided.
-    this.global_[webfont.monotypeScript.HOOK][projectId] = function (callback) {
-      var init = function (monotypeSupports, fontFamilies, fontVariations) {
-        self.fontFamilies_ = fontFamilies;
-        self.fontVariations_ = fontVariations;
-        support(monotypeSupports);
-      };
-      callback(userAgent, configuration, init);
-    };
-
-    // Load the monotype script.
-    document.write('<scr' + 'ipt src="' + this.getScriptSrc(projectId) + '" type="text/javascript">' + '</scr' + 'ipt>');
-
-  } else {
-    support(true);
-  }
 };
+//end class
 
-webfont.monotypeScript.prototype.load = function (onReady) {
-  onReady(this.fontFamilies_, this.fontVariations_);
-};
-WebFont.addModule(webfont.monotypeScript.NAME, function (configuration) {
-  return new webfont.monotypeScript(window, new webfont.DomHelper(document), configuration);
+//class DocumentHelper
+webfont.monotype.DocumentHelper = function (doc) {
+    this.doc_ = doc;
+}
+
+webfont.monotype.DocumentHelper.prototype.write = function (str) {
+    this.doc_.write(str);
+}
+
+webfont.monotype.DocumentHelper.prototype.protocol = function () {
+    if (this.doc_.location) {
+        return this.doc_.location.protocol;
+    }
+    return "http:";
+}
+//end class
+
+//Add monotype FontApi module to google webfonts
+WebFont.addModule(webfont.monotype.FontApi.NAME, function(configuration) {
+  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent); //.e(navigator.userAgent);
+  var userAgent = userAgentParser.parse();
+  return new webfont.monotype.FontApi(userAgent,
+      new webfont.monotype.DocumentHelper(document), configuration);
 });
