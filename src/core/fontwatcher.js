@@ -15,9 +15,25 @@ webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
   this.fvd_ = new webfont.FontVariationDescription();
 };
 
+/**
+ * @type {string}
+ * @const
+ */
 webfont.FontWatcher.DEFAULT_FONT = '_,arial,helvetica';
+
+/**
+ * @type {string}
+ * @const
+ */
 webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
 
+/**
+ * Watches a set of font families.
+ * @param {Array.<string>} fontFamilies The font family names to watch.
+ * @param {Object.<string, Array.<string>>} fontDescriptions The font variations
+ *    of each family to watch. Described with FVD.
+ * @param {boolean} last True if this is the last set of families to watch.
+ */
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions, last) {
   var length = fontFamilies.length;
 
@@ -46,6 +62,9 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions, l
   }
 };
 
+/**
+ * @private
+ */
 webfont.FontWatcher.prototype.watch_ = function(fontFamily, fontDescription, originalSize) {
   this.eventDispatcher_.dispatchFontLoading(fontFamily, fontDescription);
   var requestedFont = this.createHiddenElementWithFont_(this.nameHelper_.quote(fontFamily),
@@ -63,6 +82,9 @@ webfont.FontWatcher.prototype.watch_ = function(fontFamily, fontDescription, ori
   }
 };
 
+/**
+ * @private
+ */
 webfont.FontWatcher.prototype.decreaseCurrentlyWatched_ = function() {
   if (--this.currentlyWatched_ == 0 && this.last_) {
     if (this.success_) {
@@ -73,6 +95,9 @@ webfont.FontWatcher.prototype.decreaseCurrentlyWatched_ = function() {
   }
 };
 
+/**
+ * @private
+ */
 webfont.FontWatcher.prototype.check_ = function(started, originalSize,
     requestedFont, fontFamily, fontDescription) {
   var size = this.fontSizer_.getWidth(requestedFont);
@@ -91,6 +116,9 @@ webfont.FontWatcher.prototype.check_ = function(started, originalSize,
   }
 };
 
+/**
+ * @private
+ */
 webfont.FontWatcher.prototype.asyncCheck_ = function(started, originalSize,
     requestedFont, fontFamily, fontDescription) {
   this.asyncCall_(function(context, func) {
@@ -100,6 +128,9 @@ webfont.FontWatcher.prototype.asyncCheck_ = function(started, originalSize,
   }(this, this.check_), 50);
 };
 
+/**
+ * @private
+ */
 webfont.FontWatcher.prototype.getDefaultFontSize_ = function(fontDescription) {
   var defaultFont = this.createHiddenElementWithFont_(
       webfont.FontWatcher.DEFAULT_FONT, fontDescription);
@@ -109,6 +140,9 @@ webfont.FontWatcher.prototype.getDefaultFontSize_ = function(fontDescription) {
   return size;
 };
 
+/**
+ * @private
+ */
 webfont.FontWatcher.prototype.createHiddenElementWithFont_ = function(
     fontFamily, fontDescription) {
   var variationCss = this.fvd_.expand(fontDescription);

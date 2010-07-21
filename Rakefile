@@ -107,13 +107,15 @@ file "target/webfont.js" => SourceJs + ["target"] do |t|
     ["--compilation_level", "ADVANCED_OPTIMIZATIONS"],
     ["--js_output_file", t.name],
     ["--output_wrapper_marker", %("#{output_marker}")],
-    ["--output_wrapper", %("#{output_wrapper}")]
+    ["--output_wrapper", %("#{output_wrapper}")],
+    ["--warning_level", "VERBOSE"],
+    ["--summary_detail_level", "3"]
   ]
 
   source = @modules.all_source_files
   args.concat source.map { |f| ["--js", f] }
 
-  system "java #{args.flatten.join(' ')}"
+  sh "java #{args.flatten.join(' ')}"
 end
 
 desc "Creates debug version into target/webfont.js"
@@ -166,16 +168,16 @@ task :demodev do
 end
 
 desc "Find out how many bytes the source is"
-task :bytes => "target/webfont.js" do |t|
-  js = t.prerequisites.first
+task :bytes => [:clean, "target/webfont.js"] do |t|
+  js = t.prerequisites.last
   bytes = File.read(js).size
   puts "#{bytes} bytes uncompressed"
 end
 
 desc "Find out how many bytes the source is when gzipped"
-task :gzipbytes => "target/webfont.js" do |t|
+task :gzipbytes => [:clean, "target/webfont.js"] do |t|
   require 'zlib'
-  js = t.prerequisites.first
+  js = t.prerequisites.last
   bytes = Zlib::Deflate.deflate(File.read(js)).size
   puts "#{bytes} bytes gzipped"
 end

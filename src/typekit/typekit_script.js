@@ -52,7 +52,10 @@ webfont.TypekitScript.prototype.load = function(onReady) {
   onReady(this.fontFamilies_, this.fontVariations_);
 };
 
-WebFont.addModule(webfont.TypekitScript.NAME, function(configuration) {
-  return new webfont.TypekitScript(window, new webfont.DomHelper(document), configuration);
+window['WebFont'].addModule(webfont.TypekitScript.NAME, function(configuration) {
+  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent);
+  var userAgent = userAgentParser.parse();
+  var domHelper = new webfont.DomHelper(document, userAgent);
+  return new webfont.TypekitScript(window, domHelper, configuration);
 });
 

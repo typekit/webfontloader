@@ -78,7 +78,9 @@ webfont.AscenderScript.prototype.parseVariations = function(source){
   return variations;
 };
 
-WebFont.addModule(webfont.AscenderScript.NAME, function(configuration) {
-  return new webfont.AscenderScript(new webfont.DomHelper(document),
-      configuration);
+window['WebFont'].addModule(webfont.AscenderScript.NAME, function(configuration) {
+  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent);
+  var userAgent = userAgentParser.parse();
+  var domHelper = new webfont.DomHelper(document, userAgent);
+  return new webfont.AscenderScript(domHelper, configuration);
 });

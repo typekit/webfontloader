@@ -1,5 +1,10 @@
 var webfont = {};
 
+/**
+ * @param {Object} context
+ * @param {function(...[*])} func
+ * @param {...*} opt_args
+ */
 webfont.bind = function(context, func, opt_args) {
   var args = arguments.length > 2 ?
       Array.prototype.slice.call(arguments, 2) : [];

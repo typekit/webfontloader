@@ -1,4 +1,11 @@
 /**
+ * @param {string} name
+ * @param {string} version
+ * @param {string} engine
+ * @param {string} engineVersion
+ * @param {string} platform
+ * @param {string} platformVersion
+ * @param {boolean} webFontSupport
  * @constructor
  */
 webfont.UserAgent = function(name, version, engine, engineVersion, platform,
@@ -12,30 +19,51 @@ webfont.UserAgent = function(name, version, engine, engineVersion, platform,
   this.webFontSupport_ = webFontSupport;
 };
 
+/**
+ * @return {string}
+ */
 webfont.UserAgent.prototype.getName = function() {
   return this.name_;
 };
 
+/**
+ * @return {string}
+ */
 webfont.UserAgent.prototype.getVersion = function() {
   return this.version_;
 };
 
+/**
+ * @return {string}
+ */
 webfont.UserAgent.prototype.getEngine = function() {
   return this.engine_;
 };
 
+/**
+ * @return {string}
+ */
 webfont.UserAgent.prototype.getEngineVersion = function() {
   return this.engineVersion_;
 };
 
+/**
+ * @return {string}
+ */
 webfont.UserAgent.prototype.getPlatform = function() {
   return this.platform_;
 };
 
+/**
+ * @return {string}
+ */
 webfont.UserAgent.prototype.getPlatformVersion = function() {
   return this.platformVersion_;
 };
 
+/**
+ * @return {boolean}
+ */
 webfont.UserAgent.prototype.isSupportingWebFont = function() {
   return this.webFontSupport_;
 };

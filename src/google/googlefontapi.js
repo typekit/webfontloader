@@ -41,9 +41,9 @@ webfont.GoogleFontApi.prototype.load = function(onReady) {
   onReady(fontApiParser.getFontFamilies(), fontApiParser.getVariations());
 };
 
-WebFont.addModule(webfont.GoogleFontApi.NAME, function(configuration) {
+window['WebFont'].addModule(webfont.GoogleFontApi.NAME, function(configuration) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent);
   var userAgent = userAgentParser.parse();
   return new webfont.GoogleFontApi(userAgent,
-      new webfont.DomHelper(document), configuration);
+      new webfont.DomHelper(document, userAgent), configuration);
 });

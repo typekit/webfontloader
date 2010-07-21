@@ -1,4 +1,8 @@
 /**
+ * Handles common DOM manipulation tasks. The aim of this library is to cover
+ * the needs of typical font loading. Not more, not less.
+ * @param {HTMLDocument} doc The HTML document we'll manipulate.
+ * @param {webfont.UserAgent} userAgent The current user agent.
  * @constructor
  */
 webfont.DomHelper = function(doc, userAgent) {
@@ -6,6 +10,13 @@ webfont.DomHelper = function(doc, userAgent) {
   this.userAgent_ = userAgent;
 };
 
+/**
+ * Creates an element.
+ * @param {string} elem The element type.
+ * @param {Object=} opt_attr A hash of attribute key/value pairs.
+ * @param {string=} opt_innerHtml Contents of the element.
+ * @return {Element} the new element.
+ */
 webfont.DomHelper.prototype.createElement = function(elem, opt_attr,
     opt_innerHtml) {
   var domElement = this.document_.createElement(elem);
@@ -28,6 +39,13 @@ webfont.DomHelper.prototype.createElement = function(elem, opt_attr,
   return domElement;
 };
 
+/**
+ * Inserts an element into the document. This is intended for unambiguous
+ * elements such as html, body, head.
+ * @param {string} tagName The element name.
+ * @param {Element} e The element to append.
+ * @return {boolean} True if the element was inserted.
+ */
 webfont.DomHelper.prototype.insertInto = function(tagName, e) {
   var t = this.document_.getElementsByTagName(tagName)[0];
 
@@ -47,6 +65,10 @@ webfont.DomHelper.prototype.insertInto = function(tagName, e) {
   return false;
 };
 
+/**
+ * Calls a function when the body tag exists.
+ * @param {function()} callback The function to call.
+ */
 webfont.DomHelper.prototype.whenBodyExists = function(callback) {
   var check = function() {
     if (document.body) {
@@ -58,6 +80,11 @@ webfont.DomHelper.prototype.whenBodyExists = function(callback) {
   check();
 };
 
+/**
+ * Removes an element from the DOM.
+ * @param {Element} node The element to remove.
+ * @return {boolean} True if the element was removed.
+ */
 webfont.DomHelper.prototype.removeElement = function(node) {
   if (node.parentNode) {
     node.parentNode.removeChild(node);
@@ -66,6 +93,11 @@ webfont.DomHelper.prototype.removeElement = function(node) {
   return false;
 };
 
+/**
+ * Creates a link to a CSS document.
+ * @param {string} src The URL of the stylesheet.
+ * @return {Element} a link element.
+ */
 webfont.DomHelper.prototype.createCssLink = function(src) {
   return this.createElement('link', {
     'rel': 'stylesheet',
@@ -73,12 +105,22 @@ webfont.DomHelper.prototype.createCssLink = function(src) {
   });
 };
 
+/**
+ * Creates a link to a javascript document.
+ * @param {string} src The URL of the script.
+ * @return {Element} a script element.
+ */
 webfont.DomHelper.prototype.createScriptSrc = function(src) {
   return this.createElement('script', {
     'src': src
   });
 };
 
+/**
+ * Appends a name to an element's class attribute.
+ * @param {Element} e The element.
+ * @param {string} name The class name to add.
+ */
 webfont.DomHelper.prototype.appendClassName = function(e, name) {
   var classes = e.className.split(/\s+/);
   for (var i = 0, len = classes.length; i < len; i++) {
@@ -90,6 +132,11 @@ webfont.DomHelper.prototype.appendClassName = function(e, name) {
   e.className = classes.join(' ').replace(/^\s+/, '');
 };
 
+/**
+ * Removes a name to an element's class attribute.
+ * @param {Element} e The element.
+ * @param {string} name The class name to remove.
+ */
 webfont.DomHelper.prototype.removeClassName = function(e, name) {
   var classes = e.className.split(/\s+/);
   var remainingClasses = [];
