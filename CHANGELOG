@@ -1,0 +1,24 @@
+v1.0.6 (July 20, 2010)          
+* Add JsDoc comments and type annotations for the Closure compiler. Fixes
+  several small bugs caught by the compiler in doing so.
+
+v1.0.5 (July 12, 2010) 
+* webfont.UserAgent now provides getPlatformVersion. WebFont Loader is now
+  packaged as a ruby gem.
+
+v1.0.4 (June 14, 2010)
+* Add a module for Ascender's Fonts Live.
+
+v1.0.3 (June 6, 2010)
+* IE fixes.
+
+v1.0.2 (June 1, 2010)
+* Added a way of loading the WebFont Loader script asynchronously.
+
+v1.0.1 (May 20, 2010)
+* Fix namespace pollution by wrapping all of the code in a closure.
+
+v1.0.0 (May 19, 2010)
+* Initial release!
+* Modules: google, typekit, custom
+* Events: loading, active, inactive, fontloading, fontactive, fontintactive
