@@ -42,7 +42,7 @@ webfont.GoogleFontApi.prototype.load = function(onReady) {
 };
 
 window['WebFont'].addModule(webfont.GoogleFontApi.NAME, function(configuration) {
-  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent);
+  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
   return new webfont.GoogleFontApi(userAgent,
       new webfont.DomHelper(document, userAgent), configuration);

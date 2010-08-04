@@ -3,7 +3,7 @@ var globalName = 'WebFont';
 
 // Provide an instance of WebFont in the global namespace.
 window[globalName] = (function() {
-  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent);
+  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
   var domHelper = new webfont.DomHelper(document, userAgent);
   var asyncCall = function(func, timeout) { setTimeout(func, timeout); };
@@ -23,4 +23,5 @@ webfont.UserAgent.prototype['getEngine'] = webfont.UserAgent.prototype.getEngine
 webfont.UserAgent.prototype['getEngineVersion'] = webfont.UserAgent.prototype.getEngineVersion;
 webfont.UserAgent.prototype['getPlatform'] = webfont.UserAgent.prototype.getPlatform;
 webfont.UserAgent.prototype['getPlatformVersion'] = webfont.UserAgent.prototype.getPlatformVersion;
+webfont.UserAgent.prototype['getDocumentMode'] = webfont.UserAgent.prototype.getDocumentMode;
 webfont.UserAgent.prototype['isSupportingWebFont'] = webfont.UserAgent.prototype.isSupportingWebFont;
