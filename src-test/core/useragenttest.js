@@ -14,6 +14,20 @@ UserAgentTest.prototype.testBrowserIsFirefox = function() {
   assertTrue(userAgent.isSupportingWebFont());
 };
 
+UserAgentTest.prototype.testBrowserIsFirefox4beta = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:2.0b1) Gecko/20100630 Firefox/4.0b1");
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Firefox", userAgent.getName());
+  assertEquals("4.0b1", userAgent.getVersion());
+  assertEquals("Macintosh", userAgent.getPlatform());
+  assertEquals("10.6", userAgent.getPlatformVersion());
+  assertEquals("Gecko", userAgent.getEngine());
+  assertEquals("2.0b1", userAgent.getEngineVersion());
+  assertTrue(userAgent.isSupportingWebFont());
+};
+
 UserAgentTest.prototype.testBrowserIsChrome = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/5.0.342.9 Safari/533.2");
