@@ -4,6 +4,7 @@ FontTest.prototype.setUp = function() {
   this.fakeHtmlElement_ = { className: '' };
   this.fakeDomHelper_ = {
     appendClassName: function() {},
+    removeClassName: function() {},
     createElement: function(name) {
       return document.createElement(name);
     },

@@ -1,3 +1,7 @@
+master
+* Fix that wf-loading was not removed in the case of wf-inactive because of 
+  a timeout.
+
 v1.0.6 (July 20, 2010)          
 * Add JsDoc comments and type annotations for the Closure compiler. Fixes
   several small bugs caught by the compiler in doing so.
