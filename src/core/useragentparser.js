@@ -24,7 +24,7 @@ webfont.UserAgentParser.UNKNOWN_USER_AGENT = new webfont.UserAgent(
     webfont.UserAgentParser.UNKNOWN,
     webfont.UserAgentParser.UNKNOWN,
     webfont.UserAgentParser.UNKNOWN,
-    webfont.UserAgentParser.UNKNOWN,
+    null,
     false);
 
 /**
@@ -298,12 +298,7 @@ webfont.UserAgentParser.prototype.getMatchingGroup_ = function(str,
  * @private
  */
 webfont.UserAgentParser.prototype.getDocumentMode_ = function(doc) {
-  try {
-    if (doc.documentMode){
-      return String(doc.documentMode);
-    }
-  }catch(e){}
-
-  return webfont.UserAgentParser.UNKNOWN;
+  if (doc.documentMode) return doc.documentMode;
+  return null;
 };
 

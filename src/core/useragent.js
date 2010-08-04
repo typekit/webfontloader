@@ -5,7 +5,7 @@
  * @param {string} engineVersion
  * @param {string} platform
  * @param {string} platformVersion
- * @param {string} documentMode
+ * @param {int} documentMode
  * @param {boolean} webFontSupport
  * @constructor
  */
