@@ -1,107 +1,166 @@
 var monotypeFontApiTest = TestCase('monotypeFontApiTest');
 
-monotypeFontApiTest.prototype.test_document_helper_write = function () {
-    var output = null;
-    var fakeDocument = {
-        write: function (str) {
-            output = str;
-        }
-    }
-
-    var docHelper = new webfont.monotype.DocumentHelper(fakeDocument);
-    var input = "Test123 Test123";
-    docHelper.write(input);
-    assertEquals(input, output);
+monotypeFontApiTest.prototype.testDocumentHelperProtocol = function () {
+  var fakeDocument = {
+    location: { protocol: "https:" }
+  }
+  var docHelper = new webfont.MonotypeDocumentHelper(fakeDocument);
+  assertEquals("https:", docHelper.protocol());
 }
 
-monotypeFontApiTest.prototype.test_document_helper_protocol = function () {
-    var fakeDocument = {
-        location: { protocol: "https:" }
+monotypeFontApiTest.prototype.testIfScriptTagIsAdded = function () {
+  var fakedom = { 'head': [], 'body': [] };
+  var script = null;
+  var global = {}; // should be window in actual situation.
+  var script = null;
+  var families = null;
+  var config = { projectId: '01e2ff27-25bf-4801-a23e-73d328e6c7cc', api: "http://fast.fonts.com/jsapidev" };
+
+  var fakeDomHelper = {
+    createScriptSrc: function (s) {
+      script = { src: s };
+      return script;
+    },
+    insertInto: function (tag, elem) {
+      fakedom[tag].push(elem);
+      global[webfont.MonotypeFontApi.HOOK + config.projectId] = function () {
+        return ["aachen bold", "kid print regualr"];
+      }
+      if (script.onload) {
+        script.onload();
+      }
     }
-    var docHelper = new webfont.monotype.DocumentHelper(fakeDocument);
-    assertEquals("https:", docHelper.protocol());
-}
+  };
 
-monotypeFontApiTest.prototype.test_if_script_tag_is_added = function () {
-    var fakeDocumentWriter = {
-        write: function (str) {
-            script = str;
-        },
-        protocol: function () {
-            return "http:";
+  var fakeDocHelper = {
+    protocol: function () {
+      return "http:";
+    }
+  };
+
+  function getElementById(Id) {
+    for (p in fakedom) {
+      if (fakedom[p].length > 0) {
+        for (i = 0; i < fakedom[p].length; i++) {
+          if (fakedom[p][i].id == Id) {
+            return fakedom[p][i];
+          }
         }
-    };
+      }
+    }
+    return null;
+  }
+  var isSupport = null;
+  var userAgent = new webfont.UserAgent("Test", "1.0", true);
+  var monotypeFontApi = new webfont.MonotypeFontApi(global, userAgent, fakeDomHelper, fakeDocHelper, config);
+  monotypeFontApi.supportUserAgent(userAgent, function (support) { isSupport = support; });
+  monotypeFontApi.load(function (fontFamilies) {
+    families = fontFamilies;
+  });
+  script = getElementById(webfont.MonotypeFontApi.SCRIPTID + config.projectId);
 
-    var userAgent = new webfont.UserAgent("Test", "1.0", true);
-    var monotypeFontApi = new webfont.monotype.FontApi(userAgent, fakeDocumentWriter, { projectId: '1234', api: "http://fonts.com" });
-
-    var families = null;
-    var descriptions = null;
-
-    monotypeFontApi.load(function (fontFamilies, fontDescriptions) {
-        families = fontFamilies;
-        descriptions = fontDescriptions;
-    });
-
-    assertNotNull(families);
-    assertEquals(0, families.length);
-
-    assertNotNull(script);
-    assertEquals('<script src="http://fonts.com/1234.js" type="text/javascript"></script>', script);
+  assertEquals(null, isSupport);
+  assertNotNull(script);
+  assertEquals(script.src, "http://fast.fonts.com/jsapidev/01e2ff27-25bf-4801-a23e-73d328e6c7cc.js");
+  assertEquals(2, families.length);
 };
 
-monotypeFontApiTest.prototype.test_if_script_tag_is_added_without_apiurl = function () {
-    var script = null;
-    var fakeDocumentWriter = {
-        write: function (str) {
-            script = str;
-        },
-        protocol: function () {
-            return "http:";
+monotypeFontApiTest.prototype.testIfScriptTagIsAddedWithoutApiurl = function () {
+  var fakedom = { 'head': [], 'body': [] };
+  var global = { }; // should be window in actual situation.
+  var script = null;
+  var families = null;
+  var config = { projectId: '01e2ff27-25bf-4801-a23e-73d328e6c7cc' };
+
+  var fakeDomHelper = {
+    createScriptSrc: function (s) {
+      script = { src: s };
+      return script;
+    },
+    insertInto: function (tag, elem) {
+      fakedom[tag].push(elem);
+      global[webfont.MonotypeFontApi.HOOK + config.projectId] = function () {
+        return ["aachen bold", "kid print regualr"];
+      }
+      if (script.onload) {
+        script.onload();
+      }
+    }
+  };
+
+  var fakeDocHelper = {
+    protocol: function () {
+      return "http:";
+    }
+  }
+
+  function  getElementById(Id) {
+    for (p in fakedom) {
+      if (fakedom[p].length > 0) {
+        for (i = 0; i < fakedom[p].length; i++) {
+          if (fakedom[p][i].id == Id) {
+            return fakedom[p][i];
+          }
         }
-    };
+      }
+    }
+    return null;
+  }
 
-    var userAgent = new webfont.UserAgent("Test", "1.0", true);
-    var monotypeFontApi = new webfont.monotype.FontApi(userAgent, fakeDocumentWriter, { projectId: '1234'});
+  var userAgent = new webfont.UserAgent("Test", "1.0", true);
+  var monotypeFontApi = new webfont.MonotypeFontApi(global, userAgent, fakeDomHelper, fakeDocHelper, config);
+  monotypeFontApi.supportUserAgent(userAgent, function (support) { isSupport = support; });
+  var families = null;
 
-    var families = null;
-    var descriptions = null;
+  monotypeFontApi.load(function (fontFamilies) {
+    families = fontFamilies;
+  });
+  //just for testing purpose
+  script = getElementById(webfont.MonotypeFontApi.SCRIPTID + config.projectId);
 
-    monotypeFontApi.load(function (fontFamilies, fontDescriptions) {
-        families = fontFamilies;
-        descriptions = fontDescriptions;
-    });
-
-    assertNotNull(families);
-    assertEquals(0, families.length);
-
-    assertNotNull(script);
-    assertEquals('<script src="http://fast.fonts.com/jsapi/1234.js" type="text/javascript"></script>', script);
+  assertNotNull(script);
+  assertEquals("http://fast.fonts.com/jsapi/01e2ff27-25bf-4801-a23e-73d328e6c7cc.js", script.src);
+  assertEquals(2, families.length);
 };
 
+//if no projectId is provided in config, the script should not be added.
+monotypeFontApiTest.prototype.testWithoutProjectId = function () {
+  var fakedom = { 'head': [], 'body': [] };
+  var global = {}; // should be window in actual situation.
+  var script = null;
+  var families = null;
+  var config = {};
 
-monotypeFontApiTest.prototype.test_without_projectId = function () {
-    var script = null;
-    var fakeDocumentWriter = {
-        write: function (str) {
-            script = str;
-        },
-        protocol: function () {
-            return "http:";
-        }
-    };
+  var fakeDomHelper = {
+    createScriptSrc: function (s) {
+      script = { src: s };
+      return script;
+    },
+    insertInto: function (tag, elem) {
+      fakedom[tag].push(elem);
+      global[webfont.MonotypeFontApi.HOOK + config.projectId] = function () {
+        return ["aachen bold", "kid print regualr"];
+      }
+      if (script.onload) {
+        script.onload();
+      }
+    }
+  };
 
-    var userAgent = new webfont.UserAgent("Test", "1.0", true);
-    var monotypeFontApi = new webfont.monotype.FontApi(userAgent, fakeDocumentWriter, {});
+  var fakeDocHelper = {
+    protocol: function () {
+      return "http:";
+    }
+  }
 
-    var families = null;
-    var descriptions = null;
+  var userAgent = new webfont.UserAgent("Test", "1.0", true);
+  var monotypeFontApi = new webfont.MonotypeFontApi(global, userAgent, fakeDomHelper, fakeDocHelper, config);
+  monotypeFontApi.supportUserAgent(userAgent, function (support) { isSupport = support; });
+  var families = null;
 
-    monotypeFontApi.load(function (fontFamilies, fontDescriptions) {
-        families = fontFamilies;
-        descriptions = fontDescriptions;
-    });
-
-    assertEquals(null, families);
-    assertEquals(null, script);
+  monotypeFontApi.load(function (fontFamilies) {
+    families = fontFamilies;
+  });
+  assertNull(script);
+  assertEquals(0, families.length);
 };
