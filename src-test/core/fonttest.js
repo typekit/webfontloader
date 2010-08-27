@@ -16,7 +16,7 @@ FontTest.prototype.setUp = function() {
 
 FontTest.prototype.testFontLoad = function() {
   var userAgent = new webfont.UserAgent('Firefox', '3.6', 'Gecko', '1.9.2',
-      'Macintosh', '10.6', null, true);
+      'Macintosh', '10.6', undefined, true);
   var font = new webfont.WebFont(this.fakeDomHelper_, this.fontModuleLoader_,
       this.fakeHtmlElement_, function(func, timeout) { func(); }, userAgent);
   var self = this;
