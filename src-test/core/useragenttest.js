@@ -22,7 +22,8 @@ UserAgentTest.prototype.testBrowserIsFirefox = function() {
 
 UserAgentTest.prototype.testBrowserIsFirefox4beta = function() {
   var userAgentParser = new webfont.UserAgentParser(
-      "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:2.0b1) Gecko/20100630 Firefox/4.0b1");
+      "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:2.0b1) Gecko/20100630 Firefox/4.0b1",
+      this.defaultDocument_);
   var userAgent = userAgentParser.parse();
 
   assertEquals("Firefox", userAgent.getName());
@@ -30,7 +31,8 @@ UserAgentTest.prototype.testBrowserIsFirefox4beta = function() {
   assertEquals("Macintosh", userAgent.getPlatform());
   assertEquals("10.6", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
-  assertEquals("2.0b1", userAgent.getEngineVersion());
+  assertEquals("2.0b1", userAgent.getEngineVersion
+  assertEquals(undefined, userAgent.getDocumentMode());
   assertTrue(userAgent.isSupportingWebFont());
 };
 
