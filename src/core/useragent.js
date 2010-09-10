@@ -64,7 +64,7 @@ webfont.UserAgent.prototype.getPlatformVersion = function() {
 };
 
 /**
- * @return {string}
+ * @return {number|undefined}
  */
 webfont.UserAgent.prototype.getDocumentMode = function() {
   return this.documentMode_;

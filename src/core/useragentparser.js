@@ -171,7 +171,7 @@ webfont.UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
   }
   return new webfont.UserAgent("Opera", webfont.UserAgentParser.UNKNOWN,
       engineName, engineVersion, this.getPlatform_(),
-      this.getPlatformVersion_(this.doc_), this.getDocumentMode_(this.doc_), false);
+      this.getPlatformVersion_(), this.getDocumentMode_(this.doc_), false);
 };
 
 /**
