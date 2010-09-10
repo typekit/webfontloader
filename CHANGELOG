@@ -1,5 +1,8 @@
 master
 
+v1.0.8 (September 10, 2010)
+* Bugfix: fix type definitions
+
 v1.0.7 (August 31, 2010)
 * Fix that wf-loading was not removed in the case of wf-inactive because of
   a timeout.
