@@ -112,6 +112,12 @@ file "target/webfont.js" => SourceJs + ["target"] do |t|
     ["--summary_detail_level", "3"]
   ]
 
+  # Extra args to add warnings.
+  args.concat([
+    ["--warning_level", "VERBOSE"],
+    ["--summary_detail_level", "1"]
+  ])
+
   source = @modules.all_source_files
   args.concat source.map { |f| ["--js", f] }
 
