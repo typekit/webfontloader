@@ -31,7 +31,7 @@ UserAgentTest.prototype.testBrowserIsFirefox4beta = function() {
   assertEquals("Macintosh", userAgent.getPlatform());
   assertEquals("10.6", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
-  assertEquals("2.0b1", userAgent.getEngineVersion
+  assertEquals("2.0b1", userAgent.getEngineVersion());
   assertEquals(undefined, userAgent.getDocumentMode());
   assertTrue(userAgent.isSupportingWebFont());
 };
