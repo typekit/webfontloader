@@ -48,7 +48,7 @@ webfont.WebFont.prototype.isModuleSupportingUserAgent_ = function(module, eventD
 };
 
 webfont.WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher,
-    fontFamilies, opt_fontDescriptions) {
+    fontFamilies, opt_fontDescriptions, opt_fontTestStrings) {
   var allModulesLoaded = --this.moduleLoading_ == 0;
 
   if (allModulesLoaded) {
@@ -56,8 +56,10 @@ webfont.WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher
   }
   this.asyncCall_(webfont.bind(this, function(_fontWatcher, _fontFamilies,
       _fontDescriptions, _allModulesLoaded) {
-    _fontWatcher.watch(_fontFamilies, _fontDescriptions || {}, _allModulesLoaded);
-  }, fontWatcher, fontFamilies, opt_fontDescriptions, allModulesLoaded));
+    _fontWatcher.watch(_fontFamilies, _fontDescriptions || {},
+        opt_fontTestStrings || {}, _allModulesLoaded);
+  }, fontWatcher, fontFamilies, opt_fontDescriptions, opt_fontTestStrings,
+      allModulesLoaded));
 };
 
 webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {
