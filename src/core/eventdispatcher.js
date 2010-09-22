@@ -94,6 +94,9 @@ webfont.EventDispatcher.prototype.dispatchFontInactive = function(fontFamily, fo
 };
 
 webfont.EventDispatcher.prototype.dispatchInactive = function() {
+  this.domHelper_.removeClassName(this.htmlElement_,
+      this.cssClassName_.build(
+          this.namespace_, webfont.EventDispatcher.LOADING));
   this.domHelper_.appendClassName(this.htmlElement_,
       this.cssClassName_.build(
         this.namespace_, webfont.EventDispatcher.INACTIVE));
