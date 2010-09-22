@@ -199,6 +199,8 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
     name = "Chrome";
   } else if (this.userAgent_.indexOf("Safari") != -1) {
     name = "Safari";
+  } else if (this.userAgent_.indexOf("AdobeAIR") != -1) {
+    name = "AdobeAIR";
   }
   var version = webfont.UserAgentParser.UNKNOWN;
 
@@ -208,13 +210,23 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
   } else if (name == "Chrome") {
     version = this.getMatchingGroup_(this.userAgent_,
         /Chrome\/([\d\.]+)/, 1);
+  } else if (name == "AdobeAIR") {
+    version = this.getMatchingGroup_(this.userAgent_,
+        /AdobeAIR\/([\d\.]+)/, 1);
   }
-  var minor = this.getMatchingGroup_(webKitVersion, /\d+\.(\d+)/, 1);
+  var supportWebFont = false;
+  if (name == "AdobeAIR") {
+    var minor = this.getMatchingGroup_(version, /\d+\.(\d+)/, 1);
+    supportWebFont = this.getMajorVersion_(version) > 2 ||
+      this.getMajorVersion_(version) == 2 && parseInt(minor, 10) >= 5;
+  } else {
+    var minor = this.getMatchingGroup_(webKitVersion, /\d+\.(\d+)/, 1);
+    supportWebFont = this.getMajorVersion_(webKitVersion) >= 526 ||
+      this.getMajorVersion_(webKitVersion) >= 525 && parseInt(minor, 10) >= 13;
+  }
 
   return new webfont.UserAgent(name, version, "AppleWebKit", webKitVersion,
-      platform, platformVersion, this.getDocumentMode_(this.doc_),
-      this.getMajorVersion_(webKitVersion) >= 526 ||
-      this.getMajorVersion_(webKitVersion) >= 525 && parseInt(minor, 10) >= 13);
+      platform, platformVersion, this.getDocumentMode_(this.doc_), supportWebFont);
 };
 
 /**
@@ -301,4 +313,3 @@ webfont.UserAgentParser.prototype.getDocumentMode_ = function(doc) {
   if (doc.documentMode) return doc.documentMode;
   return undefined;
 };
-
