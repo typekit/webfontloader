@@ -90,7 +90,6 @@ webfont.FontWatcher.prototype.watch_ = function(fontFamily, fontDescription,
  * @private
  */
 webfont.FontWatcher.prototype.decreaseCurrentlyWatched_ = function() {
-  alert('this.currentlyWatched_: ' + (this.currentlyWatched_ - 1) + ' ' + this.last_);
   if (--this.currentlyWatched_ == 0 && this.last_) {
     if (this.success_) {
       this.eventDispatcher_.dispatchActive();
