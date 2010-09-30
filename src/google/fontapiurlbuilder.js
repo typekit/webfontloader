@@ -27,6 +27,9 @@ webfont.FontApiUrlBuilder.prototype.build = function() {
   if (!this.fontFamilies_) {
     throw new Error('No fonts to load !');
   }
+  if (this.apiUrl_.indexOf("kit=") != -1) {
+    return this.apiUrl_;
+  }
   var length = this.fontFamilies_.length;
   var sb = [];
 
