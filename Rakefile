@@ -121,7 +121,8 @@ file "target/webfont.js" => SourceJs + ["target"] do |t|
   source = @modules.all_source_files
   args.concat source.map { |f| ["--js", f] }
 
-  sh "java #{args.flatten.join(' ')}"
+  output = `java #{args.flatten.join(' ')} 2>&1`
+  fail output unless output.empty?
 end
 
 desc "Creates debug version into target/webfont.js"
@@ -139,6 +140,9 @@ end
 #
 # Run
 #
+
+desc "Test everything"
+task :default => [:clean, :gzipbytes, :test]
 
 namespace :test do
   task :server do
