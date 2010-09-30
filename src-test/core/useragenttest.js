@@ -4,6 +4,38 @@ UserAgentTest.prototype.setUp = function() {
   this.ie8Document_ = { documentMode: 8 };
 };
 
+UserAgentTest.prototype.testBrowserIsAir = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/531.9 (KHTML, like Gecko) AdobeAIR/2.5",
+      this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("AdobeAIR", userAgent.getName());
+  assertEquals("2.5", userAgent.getVersion());
+  assertEquals("Macintosh", userAgent.getPlatform());
+  assertEquals("Unknown", userAgent.getPlatformVersion());
+  assertEquals("AppleWebKit", userAgent.getEngine());
+  assertEquals("531.9", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertTrue(userAgent.isSupportingWebFont());
+};
+
+UserAgentTest.prototype.testBrowserIsUnsupportedAir = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/531.9 (KHTML, like Gecko) AdobeAIR/2.0",
+      this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("AdobeAIR", userAgent.getName());
+  assertEquals("2.0", userAgent.getVersion());
+  assertEquals("Macintosh", userAgent.getPlatform());
+  assertEquals("Unknown", userAgent.getPlatformVersion());
+  assertEquals("AppleWebKit", userAgent.getEngine());
+  assertEquals("531.9", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertFalse(userAgent.isSupportingWebFont());
+};
+
 UserAgentTest.prototype.testBrowserIsFirefox = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.1",
