@@ -5,6 +5,7 @@ webfont.FontApiParser = function(fontFamilies) {
   this.fontFamilies_ = fontFamilies;
   this.parsedFontFamilies_ = [];
   this.variations_ = {};
+  this.fontTestStrings_ = {};
   this.fvd_ = new webfont.FontVariationDescription();
 };
 
@@ -21,6 +22,10 @@ webfont.FontApiParser.VARIATIONS = {
   'b': 'n7',
   'i': 'i4',
   'bi': 'i7'
+};
+
+webfont.FontApiParser.INT_FONTS = {
+  'Hanuman': '&#x1780;&#x1781;&#x1782;'
 };
 
 webfont.FontApiParser.prototype.parse = function() {
@@ -41,6 +46,11 @@ webfont.FontApiParser.prototype.parse = function() {
       variations = ['n4'];
     }
     this.parsedFontFamilies_.push(fontFamily);
+    var fontTestString = webfont.FontApiParser.INT_FONTS[fontFamily];
+
+    if (fontTestString) {
+      this.fontTestStrings_[fontFamily] = fontTestString;
+    }
     this.variations_[fontFamily] = variations;
   }
 };
@@ -91,4 +101,8 @@ webfont.FontApiParser.prototype.getFontFamilies = function() {
 
 webfont.FontApiParser.prototype.getVariations = function() {
   return this.variations_;
+};
+
+webfont.FontApiParser.prototype.getFontTestStrings = function() {
+  return this.fontTestStrings_;
 };
