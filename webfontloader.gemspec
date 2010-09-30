@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.0.9'
-  s.date              = '2010-09-11'
+  s.version           = '1.0.13'
+  s.date              = '2010-09-30'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
