@@ -17,27 +17,29 @@ webfont.GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) 
 };
 
 webfont.GoogleFontApi.prototype.load = function(onReady) {
-  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder(
-      this.configuration_['api']);
-  var fontFamilies = this.configuration_['families'];
   var domHelper = this.domHelper_;
   var nonBlockingIe = this.userAgent_.getName() == 'MSIE' &&
       this.configuration_['blocking'] != true;
 
+  if (nonBlockingIe) {
+    domHelper.whenBodyExists(webfont.bind(this, this.insertLink_, onReady));
+  } else {
+    this.insertLink_(onReady);
+  }
+};
+
+webfont.GoogleFontApi.prototype.insertLink_ = function(onReady) {
+  var domHelper = this.domHelper_;
+  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder(
+      this.configuration_['api']);
+  var fontFamilies = this.configuration_['families'];
   fontApiUrlBuilder.setFontFamilies(fontFamilies);
 
-  if (nonBlockingIe) {
-    domHelper.whenBodyExists(function() {
-      domHelper.insertInto('head', domHelper.createCssLink(
-          fontApiUrlBuilder.build()));
-    });
-  } else {
-    domHelper.insertInto('head', domHelper.createCssLink(
-        fontApiUrlBuilder.build()));
-  }
   var fontApiParser = new webfont.FontApiParser(fontFamilies);
-
   fontApiParser.parse();
+
+  domHelper.insertInto('head', domHelper.createCssLink(
+      fontApiUrlBuilder.build()));
   onReady(fontApiParser.getFontFamilies(), fontApiParser.getVariations(),
       fontApiParser.getFontTestStrings());
 };

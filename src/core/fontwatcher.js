@@ -31,7 +31,9 @@ webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
  * Watches a set of font families.
  * @param {Array.<string>} fontFamilies The font family names to watch.
  * @param {Object.<string, Array.<string>>} fontDescriptions The font variations
- *    of each family to watch. Described with FVD.
+ *     of each family to watch. Described with FVD.
+ * @param {Object.<string, string>} fontTestStrings The font test strings for
+ *     each family.
  * @param {boolean} last True if this is the last set of families to watch.
  */
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
