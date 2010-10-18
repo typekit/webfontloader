@@ -116,6 +116,22 @@ UserAgentTest.prototype.testBrowserIsIE = function() {
   assertTrue(userAgent.isSupportingWebFont());
 };
 
+UserAgentTest.prototype.testBrowserIsIEMinimal = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)",
+      this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("MSIE", userAgent.getName());
+  assertEquals("7.0", userAgent.getVersion());
+  assertEquals("Windows", userAgent.getPlatform());
+  assertEquals("5.1", userAgent.getPlatformVersion());
+  assertEquals("MSIE", userAgent.getEngine());
+  assertEquals("7.0", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertTrue(userAgent.isSupportingWebFont());
+};
+
 UserAgentTest.prototype.testBrowserIsIPhone = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_1_2 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7D11 Safari/528.16",

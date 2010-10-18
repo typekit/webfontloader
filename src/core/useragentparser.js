@@ -72,7 +72,7 @@ webfont.UserAgentParser.prototype.getPlatform_ = function() {
  */
 webfont.UserAgentParser.prototype.getPlatformVersion_ = function() {
   var macVersion = this.getMatchingGroup_(this.userAgent_,
-      /(OS X|Windows NT|Android) ([^;]+)/, 2);
+      /(OS X|Windows NT|Android) ([^;)]+)/, 2);
   if (macVersion) {
     return macVersion;
   }
