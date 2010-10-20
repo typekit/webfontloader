@@ -1,4 +1,5 @@
-master
+v1.0.15 (October 14, 2010)
+* Fix an error parsing platform version in IE, when it has no items following the platform in the UA string.
 
 v1.0.14 (October 14, 2010)
 * Bugfix: fixed IE issue in google module.
