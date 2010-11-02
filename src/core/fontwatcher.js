@@ -19,7 +19,13 @@ webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
  * @type {string}
  * @const
  */
-webfont.FontWatcher.DEFAULT_FONT = '_,arial,helvetica';
+webfont.FontWatcher.DEFAULT_FONTS_A = 'arial,sans-serif';
+
+/**
+ * @type {string}
+ * @const
+ */
+webfont.FontWatcher.DEFAULT_FONTS_B = 'times,serif';
 
 /**
  * @type {string}
@@ -140,7 +146,7 @@ webfont.FontWatcher.prototype.asyncCheck_ = function(started, originalSize,
 webfont.FontWatcher.prototype.getDefaultFontSize_ = function(fontDescription,
     fontTestString) {
   var defaultFont = this.createHiddenElementWithFont_(
-      webfont.FontWatcher.DEFAULT_FONT, fontDescription, fontTestString);
+      null, fontDescription, fontTestString);
   var size = this.fontSizer_.getWidth(defaultFont);
 
   this.domHelper_.removeElement(defaultFont);
@@ -152,11 +158,20 @@ webfont.FontWatcher.prototype.getDefaultFontSize_ = function(fontDescription,
  */
 webfont.FontWatcher.prototype.createHiddenElementWithFont_ = function(
     fontFamily, fontDescription, fontTestString) {
-  var variationCss = this.fvd_.expand(fontDescription);
-  var styleString = "position:absolute;top:-999px;font-size:300px;font-family:" +
-      fontFamily + "," + webfont.FontWatcher.DEFAULT_FONT + ";" + variationCss;
-  var span = this.domHelper_.createElement('span', { 'style': styleString },
+  fontFamily = fontFamily ? fontFamily + "," : "";
+  var styleStringA = "font-family:" + fontFamily + webfont.FontWatcher.DEFAULT_FONTS_A + ";";
+  var spanA = this.domHelper_.createElement('span', { 'style': styleStringA },
       fontTestString);
+  var styleStringB = "font-family:" + fontFamily + webfont.FontWatcher.DEFAULT_FONTS_B + ";";
+  var spanB = this.domHelper_.createElement('span', { 'style': styleStringB },
+      fontTestString);
+
+  var variationCss = this.fvd_.expand(fontDescription);
+  var styleString = "position:absolute;top:-999px;font-size:300px;" + variationCss;
+  var span = this.domHelper_.createElement('span', { 'style': styleString });
+  // TODO (sean): Replace appendChild with something from domHelper
+  span.appendChild(spanA);
+  span.appendChild(spanB);
 
   this.domHelper_.insertInto('body', span);
   return span;

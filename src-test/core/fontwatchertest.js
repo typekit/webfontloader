@@ -69,11 +69,10 @@ FontWatcherTest.prototype.testWatchOneFontAlreadyLoaded = function() {
   var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
       this.eventDispatcher_, {
         getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-          var fonts = fontFamily.split(',');
-          var size = fonts.length;
+          var spanA = element.getElementsByTagName('span')[0];
+          var fontFamily = spanA.style.fontFamily;
 
-          if (size == 6) {
+          if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
           } else {
             return 2;
@@ -94,11 +93,10 @@ FontWatcherTest.prototype.testWatchOneFontAlreadyLoaded = function() {
 FontWatcherTest.prototype.testWatchMultipleFontsAlreadyLoaded = function() {
   var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.eventDispatcher_,{
         getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-          var fonts = fontFamily.split(',');
-          var size = fonts.length;
+          var spanA = element.getElementsByTagName('span')[0];
+          var fontFamily = spanA.style.fontFamily;
 
-          if (size == 6) {
+          if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
           } else {
             return 2;
@@ -128,18 +126,17 @@ FontWatcherTest.prototype.testWatchOneFontWaitForLoad = function() {
         count_: 0,
 
         getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-          var fonts = fontFamily.split(',');
-          var size = fonts.length;
+          var spanA = element.getElementsByTagName('span')[0];
+          var fontFamily = spanA.style.fontFamily;
 
-          if (size == 6) {
+          if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
           } else if (this.count_ == 0) {
             this.count_++;
             return 1;
           } else if (this.count_ == 1) {
             return 2;
-	  }
+	        }
         }
   }, function(func, timeout) {
     async = true;
@@ -167,27 +164,26 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoad = function() {
         font3Count_: 0,
 
         getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-          var fonts = fontFamily.split(',');
-          var size = fonts.length;
+          var spanA = element.getElementsByTagName('span')[0];
+          var fontFamily = spanA.style.fontFamily;
 
-          if (size == 6) {
+          if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
-          } else if (fonts[0].indexOf("fontFamily1") != -1 &&
+          } else if (fontFamily.indexOf("fontFamily1") != -1 &&
               this.font1Count_ != 2) {
             this.font1Count_++;
             return 1;
-          } else if (fonts[0].indexOf("fontFamily2") != -1 &&
+          } else if (fontFamily.indexOf("fontFamily2") != -1 &&
               this.font2Count_ != 1) {
             this.font2Count_++;
             return 1;
-          } else if (fonts[0].indexOf("fontFamily3") != -1 &&
+          } else if (fontFamily.indexOf("fontFamily3") != -1 &&
               this.font3Count_ != 5) {
             this.font3Count_++;
             return 1;
           } else {
             return 2;
-	  }
+	        }
         }
   }, function(func, timeout) {
     async++;
@@ -219,17 +215,16 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndLoaded =
         font3Count_: 0,
 
         getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-          var fonts = fontFamily.split(',');
-          var size = fonts.length;
+          var spanA = element.getElementsByTagName('span')[0];
+          var fontFamily = spanA.style.fontFamily;
 
-          if (size == 6) {
+          if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
-          } else if (fonts[0].indexOf("fontFamily1") != -1 &&
+          } else if (fontFamily.indexOf("fontFamily1") != -1 &&
               this.font1Count_ != 2) {
             this.font1Count_++;
             return 1;
-          } else if (fonts[0].indexOf("fontFamily3") != -1 &&
+          } else if (fontFamily.indexOf("fontFamily3") != -1 &&
               this.font3Count_ != 5) {
             this.font3Count_++;
             return 1;
@@ -295,25 +290,24 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndInactive =
         font3Count_: 0,
 
         getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-          var fonts = fontFamily.split(',');
-          var size = fonts.length;
+          var spanA = element.getElementsByTagName('span')[0];
+          var fontFamily = spanA.style.fontFamily;
 
-          if (size == 6) {
+          if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
-          } else if (fonts[0].indexOf("fontFamily1") != -1 &&
+          } else if (fontFamily.indexOf("fontFamily1") != -1 &&
               this.font1Count_ != 2) {
             this.font1Count_++;
             return 1;
-          } else if (fonts[0].indexOf("fontFamily2") != -1) {
+          } else if (fontFamily.indexOf("fontFamily2") != -1) {
             return 1;
-          } else if (fonts[0].indexOf("fontFamily3") != -1 &&
+          } else if (fontFamily.indexOf("fontFamily3") != -1 &&
               this.font3Count_ != 5) {
             this.font3Count_++;
             return 1;
           } else {
             return 2;
-	  }
+	        }
         }
   }, function(func, timeout) {
     async++;
@@ -345,11 +339,10 @@ FontWatcherTest.prototype.testWatchMultipleFontsAlreadyLoadedAndLastBatchOnDone
     = function() {
   var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.eventDispatcher_,{
         getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-          var fonts = fontFamily.split(',');
-          var size = fonts.length;
+          var spanA = element.getElementsByTagName('span')[0];
+          var fontFamily = spanA.style.fontFamily;
 
-          if (size == 6) {
+          if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
           } else {
             return 2;
@@ -388,21 +381,20 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndLastBatchOnDone =
         font3Count_: 0,
 
         getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-          var fonts = fontFamily.split(',');
-          var size = fonts.length;
- 
-          if (size == 6) {
+          var spanA = element.getElementsByTagName('span')[0];
+          var fontFamily = spanA.style.fontFamily;
+
+          if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
-          } else if (fonts[0].indexOf("fontFamily1") != -1 &&
+          } else if (fontFamily.indexOf("fontFamily1") != -1 &&
               this.font1Count_ != 2) {
             this.font1Count_++;
             return 1;
-          } else if (fonts[0].indexOf("fontFamily2") != -1 &&
+          } else if (fontFamily.indexOf("fontFamily2") != -1 &&
               this.font2Count_ != 1) {
             this.font2Count_++;
             return 1;
-          } else if (fonts[0].indexOf("fontFamily3") != -1 &&
+          } else if (fontFamily.indexOf("fontFamily3") != -1 &&
               this.font3Count_ != 5) {
             this.font3Count_++;
             return 1;
@@ -448,21 +440,20 @@ FontWatcherTest.prototype
         font3Count_: 0,
 
         getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-          var fonts = fontFamily.split(',');
-          var size = fonts.length;
+          var spanA = element.getElementsByTagName('span')[0];
+          var fontFamily = spanA.style.fontFamily;
 
-          if (size == 6) {
+          if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
-          } else if (fonts[0].indexOf("fontFamily1") != -1 &&
+          } else if (fontFamily.indexOf("fontFamily1") != -1 &&
               this.font1Count_ != 2) {
             this.font1Count_++;
             return 1;
-          } else if (fonts[0].indexOf("fontFamily2") != -1 &&
+          } else if (fontFamily.indexOf("fontFamily2") != -1 &&
               this.font2Count_ != 1) {
             this.font2Count_++;
             return 1;
-          } else if (fonts[0].indexOf("fontFamily3") != -1 &&
+          } else if (fontFamily.indexOf("fontFamily3") != -1 &&
               this.font3Count_ != 5) {
             this.font3Count_++;
             return 1;
@@ -515,12 +506,11 @@ FontWatcherTest.prototype.testTestStringIsNotDefault = function() {
   var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
       this.eventDispatcher_, {
         getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-          var fonts = fontFamily.split(',');
-          var size = fonts.length;
+          var spanA = element.getElementsByTagName('span')[0];
+          var fontFamily = spanA.style.fontFamily;
 
-          testString = element.innerHTML;
-          if (size == 6) {
+          testString = spanA.innerHTML;
+          if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
           } else {
             return 2;
@@ -538,12 +528,11 @@ FontWatcherTest.prototype.testTestStringIsDefault = function() {
   var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
       this.eventDispatcher_, {
         getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-          var fonts = fontFamily.split(',');
-          var size = fonts.length;
+          var spanA = element.getElementsByTagName('span')[0];
+          var fontFamily = spanA.style.fontFamily;
 
-          testString = element.innerHTML;
-          if (size == 6) {
+          testString = spanA.innerHTML;
+          if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
           } else {
             return 2;
