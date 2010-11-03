@@ -69,8 +69,7 @@ FontWatcherTest.prototype.testWatchOneFontAlreadyLoaded = function() {
   var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
       this.eventDispatcher_, {
         getWidth: function(element) {
-          var spanA = element.getElementsByTagName('span')[0];
-          var fontFamily = spanA.style.fontFamily;
+          var fontFamily = element.style.fontFamily;
 
           if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
@@ -93,8 +92,7 @@ FontWatcherTest.prototype.testWatchOneFontAlreadyLoaded = function() {
 FontWatcherTest.prototype.testWatchMultipleFontsAlreadyLoaded = function() {
   var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.eventDispatcher_,{
         getWidth: function(element) {
-          var spanA = element.getElementsByTagName('span')[0];
-          var fontFamily = spanA.style.fontFamily;
+          var fontFamily = element.style.fontFamily;
 
           if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
@@ -126,15 +124,15 @@ FontWatcherTest.prototype.testWatchOneFontWaitForLoad = function() {
         count_: 0,
 
         getWidth: function(element) {
-          var spanA = element.getElementsByTagName('span')[0];
-          var fontFamily = spanA.style.fontFamily;
+          var fontFamily = element.style.fontFamily;
 
-          if (fontFamily.indexOf('fontFamily') == -1) {
+          if (fontFamily.indexOf('fontFamily') == -1 ||
+              fontFamily.indexOf(webfont.FontWatcher.DEFAULT_FONTS_A) == -1) {
             return 1;
-          } else if (this.count_ == 0) {
+          } else if (this.count_ < 1) {
             this.count_++;
             return 1;
-          } else if (this.count_ == 1) {
+          } else {
             return 2;
 	        }
         }
@@ -164,10 +162,10 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoad = function() {
         font3Count_: 0,
 
         getWidth: function(element) {
-          var spanA = element.getElementsByTagName('span')[0];
-          var fontFamily = spanA.style.fontFamily;
+          var fontFamily = element.style.fontFamily;
 
-          if (fontFamily.indexOf('fontFamily') == -1) {
+          if (fontFamily.indexOf('fontFamily') == -1 ||
+              fontFamily.indexOf(webfont.FontWatcher.DEFAULT_FONTS_A) == -1) {
             return 1;
           } else if (fontFamily.indexOf("fontFamily1") != -1 &&
               this.font1Count_ != 2) {
@@ -215,10 +213,10 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndLoaded =
         font3Count_: 0,
 
         getWidth: function(element) {
-          var spanA = element.getElementsByTagName('span')[0];
-          var fontFamily = spanA.style.fontFamily;
+          var fontFamily = element.style.fontFamily;
 
-          if (fontFamily.indexOf('fontFamily') == -1) {
+          if (fontFamily.indexOf('fontFamily') == -1 ||
+              fontFamily.indexOf(webfont.FontWatcher.DEFAULT_FONTS_A) == -1) {
             return 1;
           } else if (fontFamily.indexOf("fontFamily1") != -1 &&
               this.font1Count_ != 2) {
@@ -290,10 +288,10 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndInactive =
         font3Count_: 0,
 
         getWidth: function(element) {
-          var spanA = element.getElementsByTagName('span')[0];
-          var fontFamily = spanA.style.fontFamily;
+          var fontFamily = element.style.fontFamily;
 
-          if (fontFamily.indexOf('fontFamily') == -1) {
+          if (fontFamily.indexOf('fontFamily') == -1 ||
+              fontFamily.indexOf(webfont.FontWatcher.DEFAULT_FONTS_A) == -1) {
             return 1;
           } else if (fontFamily.indexOf("fontFamily1") != -1 &&
               this.font1Count_ != 2) {
@@ -339,8 +337,7 @@ FontWatcherTest.prototype.testWatchMultipleFontsAlreadyLoadedAndLastBatchOnDone
     = function() {
   var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.eventDispatcher_,{
         getWidth: function(element) {
-          var spanA = element.getElementsByTagName('span')[0];
-          var fontFamily = spanA.style.fontFamily;
+          var fontFamily = element.style.fontFamily;
 
           if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
@@ -381,10 +378,10 @@ FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndLastBatchOnDone =
         font3Count_: 0,
 
         getWidth: function(element) {
-          var spanA = element.getElementsByTagName('span')[0];
-          var fontFamily = spanA.style.fontFamily;
+          var fontFamily = element.style.fontFamily;
 
-          if (fontFamily.indexOf('fontFamily') == -1) {
+          if (fontFamily.indexOf('fontFamily') == -1 ||
+              fontFamily.indexOf(webfont.FontWatcher.DEFAULT_FONTS_A) == -1) {
             return 1;
           } else if (fontFamily.indexOf("fontFamily1") != -1 &&
               this.font1Count_ != 2) {
@@ -440,10 +437,10 @@ FontWatcherTest.prototype
         font3Count_: 0,
 
         getWidth: function(element) {
-          var spanA = element.getElementsByTagName('span')[0];
-          var fontFamily = spanA.style.fontFamily;
+          var fontFamily = element.style.fontFamily;
 
-          if (fontFamily.indexOf('fontFamily') == -1) {
+          if (fontFamily.indexOf('fontFamily') == -1 ||
+              fontFamily.indexOf(webfont.FontWatcher.DEFAULT_FONTS_A) == -1) {
             return 1;
           } else if (fontFamily.indexOf("fontFamily1") != -1 &&
               this.font1Count_ != 2) {
@@ -506,10 +503,9 @@ FontWatcherTest.prototype.testTestStringIsNotDefault = function() {
   var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
       this.eventDispatcher_, {
         getWidth: function(element) {
-          var spanA = element.getElementsByTagName('span')[0];
-          var fontFamily = spanA.style.fontFamily;
+          var fontFamily = element.style.fontFamily;
 
-          testString = spanA.innerHTML;
+          testString = element.innerHTML;
           if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
           } else {
@@ -528,10 +524,9 @@ FontWatcherTest.prototype.testTestStringIsDefault = function() {
   var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
       this.eventDispatcher_, {
         getWidth: function(element) {
-          var spanA = element.getElementsByTagName('span')[0];
-          var fontFamily = spanA.style.fontFamily;
+          var fontFamily = element.style.fontFamily;
 
-          testString = spanA.innerHTML;
+          testString = element.innerHTML;
           if (fontFamily.indexOf('fontFamily') == -1) {
             return 1;
           } else {

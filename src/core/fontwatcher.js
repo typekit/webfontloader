@@ -25,7 +25,7 @@ webfont.FontWatcher.DEFAULT_FONTS_A = 'arial,sans-serif';
  * @type {string}
  * @const
  */
-webfont.FontWatcher.DEFAULT_FONTS_B = 'times,serif';
+webfont.FontWatcher.DEFAULT_FONTS_B = 'Georgia,"Century Schoolbook L",serif';
 
 /**
  * @type {string}
@@ -65,10 +65,17 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
 
     for (var j = 0, len = descriptions.length; j < len; j++) {
       var fontDescription = descriptions[j];
-      var originalSize = this.getDefaultFontSize_(fontDescription,
-          fontTestString);
 
-      this.watch_(fontFamily, fontDescription, fontTestString, originalSize);
+      var defaultFontsA = webfont.FontWatcher.DEFAULT_FONTS_A;
+      var originalSizeA = this.getDefaultFontSize_(defaultFontsA,
+          fontDescription, fontTestString);
+
+      var defaultFontsB = webfont.FontWatcher.DEFAULT_FONTS_B;
+      var originalSizeB = this.getDefaultFontSize_(defaultFontsB,
+          fontDescription, fontTestString);;
+
+      this.watch_(fontFamily, fontDescription, fontTestString,
+          originalSizeA, defaultFontsA, originalSizeB, defaultFontsB);
     }
   }
 };
@@ -77,20 +84,25 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
  * @private
  */
 webfont.FontWatcher.prototype.watch_ = function(fontFamily, fontDescription,
-    fontTestString, originalSize) {
+    fontTestString, originalSizeA, defaultFontsA, originalSizeB, defaultFontsB) {
   this.eventDispatcher_.dispatchFontLoading(fontFamily, fontDescription);
-  var requestedFont = this.createHiddenElementWithFont_(this.nameHelper_.quote(fontFamily),
-      fontDescription, fontTestString);
-  var size = this.fontSizer_.getWidth(requestedFont);
+  var requestedFontA = this.createHiddenElementWithFont_(this.nameHelper_.quote(fontFamily),
+      defaultFontsA, fontDescription, fontTestString);
+  var sizeA = this.fontSizer_.getWidth(requestedFontA);
 
-  if (originalSize != size) {
-    //this.domHelper_.removeElement(requestedFont);
+  var requestedFontB = this.createHiddenElementWithFont_(this.nameHelper_.quote(fontFamily),
+      defaultFontsB, fontDescription, fontTestString);
+  var sizeB = this.fontSizer_.getWidth(requestedFontB);
+
+  if (originalSizeA != sizeA || originalSizeB != sizeB) {
+    this.domHelper_.removeElement(requestedFontA);
+    this.domHelper_.removeElement(requestedFontB);
     this.eventDispatcher_.dispatchFontActive(fontFamily, fontDescription);
     this.success_ = true;
     this.decreaseCurrentlyWatched_();
   } else {
-    this.asyncCheck_(this.getTime_(), originalSize, requestedFont,
-        fontFamily, fontDescription);
+    this.asyncCheck_(this.getTime_(), fontFamily, fontDescription,
+        originalSizeA, requestedFontA, originalSizeB, requestedFontB);
   }
 };
 
@@ -110,19 +122,23 @@ webfont.FontWatcher.prototype.decreaseCurrentlyWatched_ = function() {
 /**
  * @private
  */
-webfont.FontWatcher.prototype.check_ = function(started, originalSize,
-    requestedFont, fontFamily, fontDescription) {
-  var size = this.fontSizer_.getWidth(requestedFont);
+webfont.FontWatcher.prototype.check_ = function(started, fontFamily,
+    fontDescription, originalSizeA, requestedFontA, originalSizeB, requestedFontB) {
+  var sizeA = this.fontSizer_.getWidth(requestedFontA);
+  var sizeB = this.fontSizer_.getWidth(requestedFontB);
 
-  if (originalSize != size) {
-    //this.domHelper_.removeElement(requestedFont);
+  if (originalSizeA != sizeA || originalSizeB != sizeB) {
+    this.domHelper_.removeElement(requestedFontA);
+    this.domHelper_.removeElement(requestedFontB);
     this.eventDispatcher_.dispatchFontActive(fontFamily, fontDescription);
     this.success_ = true;
     this.decreaseCurrentlyWatched_();
   } else if ((this.getTime_() - started) < 5000) {
-    this.asyncCheck_(started, originalSize, requestedFont, fontFamily, fontDescription);
+    this.asyncCheck_(started, fontFamily, fontDescription, originalSizeA,
+        requestedFontA, originalSizeB, requestedFontB);
   } else {
-    //this.domHelper_.removeElement(requestedFont);
+    this.domHelper_.removeElement(requestedFontA);
+    this.domHelper_.removeElement(requestedFontB);
     this.eventDispatcher_.dispatchFontInactive(fontFamily, fontDescription);
     this.decreaseCurrentlyWatched_();
   }
@@ -131,11 +147,12 @@ webfont.FontWatcher.prototype.check_ = function(started, originalSize,
 /**
  * @private
  */
-webfont.FontWatcher.prototype.asyncCheck_ = function(started, originalSize,
-    requestedFont, fontFamily, fontDescription) {
+webfont.FontWatcher.prototype.asyncCheck_ = function(started, fontFamily,
+    fontDescription, originalSizeA, requestedFontA, originalSizeB, requestedFontB) {
   this.asyncCall_(function(context, func) {
     return function() {
-      func.call(context, started, originalSize, requestedFont, fontFamily, fontDescription);
+      func.call(context, started, fontFamily, fontDescription, originalSizeA,
+          requestedFontA, originalSizeB, requestedFontB);
     }
   }(this, this.check_), 50);
 };
@@ -143,13 +160,13 @@ webfont.FontWatcher.prototype.asyncCheck_ = function(started, originalSize,
 /**
  * @private
  */
-webfont.FontWatcher.prototype.getDefaultFontSize_ = function(fontDescription,
-    fontTestString) {
+webfont.FontWatcher.prototype.getDefaultFontSize_ = function(defaultFonts,
+    fontDescription, fontTestString) {
   var defaultFont = this.createHiddenElementWithFont_(
-      null, fontDescription, fontTestString);
+      null, defaultFonts, fontDescription, fontTestString);
   var size = this.fontSizer_.getWidth(defaultFont);
 
-  //this.domHelper_.removeElement(defaultFont);
+  this.domHelper_.removeElement(defaultFont);
   return size;
 };
 
@@ -157,21 +174,13 @@ webfont.FontWatcher.prototype.getDefaultFontSize_ = function(fontDescription,
  * @private
  */
 webfont.FontWatcher.prototype.createHiddenElementWithFont_ = function(
-    fontFamily, fontDescription, fontTestString) {
+    fontFamily, defaultFonts, fontDescription, fontTestString) {
   fontFamily = fontFamily ? fontFamily + "," : "";
-  var styleStringA = "font-family:" + fontFamily + webfont.FontWatcher.DEFAULT_FONTS_A + ";";
-  var spanA = this.domHelper_.createElement('span', { 'style': styleStringA },
-      fontTestString);
-  var styleStringB = "font-family:" + fontFamily + webfont.FontWatcher.DEFAULT_FONTS_B + ";";
-  var spanB = this.domHelper_.createElement('span', { 'style': styleStringB },
-      fontTestString);
-
   var variationCss = this.fvd_.expand(fontDescription);
-  var styleString = "position:absolute;top:-999px;font-size:300px;" + variationCss;
-  var span = this.domHelper_.createElement('span', { 'style': styleString });
-  // TODO (sean): Replace appendChild with something from domHelper
-  span.appendChild(spanA);
-  span.appendChild(spanB);
+  var styleString = "position:absolute;top:-999px;font-size:300px;font-family:" +
+      fontFamily + defaultFonts + ";" + variationCss;
+  var span = this.domHelper_.createElement('span', { 'style': styleString },
+      fontTestString);
 
   this.domHelper_.insertInto('body', span);
   return span;
