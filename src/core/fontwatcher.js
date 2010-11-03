@@ -84,7 +84,7 @@ webfont.FontWatcher.prototype.watch_ = function(fontFamily, fontDescription,
   var size = this.fontSizer_.getWidth(requestedFont);
 
   if (originalSize != size) {
-    this.domHelper_.removeElement(requestedFont);
+    //this.domHelper_.removeElement(requestedFont);
     this.eventDispatcher_.dispatchFontActive(fontFamily, fontDescription);
     this.success_ = true;
     this.decreaseCurrentlyWatched_();
@@ -115,14 +115,14 @@ webfont.FontWatcher.prototype.check_ = function(started, originalSize,
   var size = this.fontSizer_.getWidth(requestedFont);
 
   if (originalSize != size) {
-    this.domHelper_.removeElement(requestedFont);
+    //this.domHelper_.removeElement(requestedFont);
     this.eventDispatcher_.dispatchFontActive(fontFamily, fontDescription);
     this.success_ = true;
     this.decreaseCurrentlyWatched_();
   } else if ((this.getTime_() - started) < 5000) {
     this.asyncCheck_(started, originalSize, requestedFont, fontFamily, fontDescription);
   } else {
-    this.domHelper_.removeElement(requestedFont);
+    //this.domHelper_.removeElement(requestedFont);
     this.eventDispatcher_.dispatchFontInactive(fontFamily, fontDescription);
     this.decreaseCurrentlyWatched_();
   }
@@ -149,7 +149,7 @@ webfont.FontWatcher.prototype.getDefaultFontSize_ = function(fontDescription,
       null, fontDescription, fontTestString);
   var size = this.fontSizer_.getWidth(defaultFont);
 
-  this.domHelper_.removeElement(defaultFont);
+  //this.domHelper_.removeElement(defaultFont);
   return size;
 };
 
