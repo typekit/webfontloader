@@ -72,7 +72,7 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
 
       var defaultFontsB = webfont.FontWatcher.DEFAULT_FONTS_B;
       var originalSizeB = this.getDefaultFontSize_(defaultFontsB,
-          fontDescription, fontTestString);;
+          fontDescription, fontTestString);
 
       this.watch_(fontFamily, fontDescription, fontTestString,
           originalSizeA, defaultFontsA, originalSizeB, defaultFontsB);
