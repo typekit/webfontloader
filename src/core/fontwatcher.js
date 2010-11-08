@@ -40,6 +40,15 @@ webfont.FontWatcher.DEFAULT_FONTS_A = 'arial,"URW Gothic L",sans-serif';
 webfont.FontWatcher.DEFAULT_FONTS_B = 'Georgia,"Century Schoolbook L",serif';
 
 /**
+ * Default test string. Characters are chosen so that their widths vary a lot
+ * between the fonts in the default stacks. We want each fallback stack
+ * to always start out at a different width than the other.
+ * @type {string}
+ * @const
+ */
+webfont.FontWatcher.DEFAULT_TEST_STRING = 'BESs';
+
+/**
  * @type {string}
  * @const
  */
@@ -73,7 +82,7 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
   for (var i = 0; i < length; i++) {
     var fontFamily = fontFamilies[i];
     var descriptions = fontDescriptions[fontFamily];
-    var fontTestString  = fontTestStrings[fontFamily] || 'Mm';
+    var fontTestString  = fontTestStrings[fontFamily] || webfont.FontWatcher.DEFAULT_TEST_STRING;
 
     for (var j = 0, len = descriptions.length; j < len; j++) {
       var fontDescription = descriptions[j];
