@@ -16,12 +16,24 @@ webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
 };
 
 /**
+ * A set of sans-serif fonts and a generic family that cover most platforms:
+ * Windows - arial - 99.71%
+ * Mac - arial - 97.67%
+ * Linux - 97.67%
+ * (Based on http://www.codestyle.org/css/font-family/sampler-CombinedResults.shtml)
  * @type {string}
  * @const
  */
-webfont.FontWatcher.DEFAULT_FONTS_A = 'arial,sans-serif';
+webfont.FontWatcher.DEFAULT_FONTS_A = 'arial,"URW Gothic L",sans-serif';
 
 /**
+ * A set of serif fonts and a generic family that cover most platforms. We
+ * want each of these fonts to have a different width when rendering the test
+ * string than each of the fonts in DEFAULT_FONTS_A:
+ * Windows - Georgia - 98.98%
+ * Mac - Georgia - 95.60%
+ * Linux - Century Schoolbook L - 97.97%
+ * (Based on http://www.codestyle.org/css/font-family/sampler-CombinedResults.shtml)
  * @type {string}
  * @const
  */
