@@ -537,5 +537,5 @@ FontWatcherTest.prototype.testTestStringIsDefault = function() {
   var fontFamilies = [ 'fontFamily1' ];
 
   fontWatcher.watch(fontFamilies, {}, {}, false);
-  assertEquals('Mm', testString);
+  assertEquals('BESs', testString);
 };
