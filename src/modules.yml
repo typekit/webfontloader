@@ -6,6 +6,7 @@ core:
   - core/eventdispatcher.js
   - core/fontmoduleloader.js
   - core/fontwatcher.js
+  - core/fontwatchrunner.js
   - core/font.js
   - core/cssclassname.js
   - core/cssfontfamilyname.js

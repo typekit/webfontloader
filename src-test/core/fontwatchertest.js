@@ -3,539 +3,244 @@ var FontWatcherTest = TestCase('FontWatcherTest');
 FontWatcherTest.prototype.setUp = function() {
   var self = this;
 
-  this.classNames_ = {};
-  this.classNamesCount_ = 0;
-  this.fakeDomHelper_ = {
-    removeElement: function() {},
-    createElement: function(name, attrs, innerHtml) {
-      var element = document.createElement(name);
-
-      for (var attr in attrs) {
-        element.setAttribute(attr, attrs[attr]);
-      }
-      element.innerHTML = innerHtml;
-      return element;
-    },
-    insertInto: function() {},
-    appendClassName: function(e, name) {
-      self.classNames_[name] = true;
-      self.classNamesCount_++;
-    },
-    removeClassName: function(e, name) {
-      var exists = self.classNames_[name];
-      if (exists) {
-        self.classNames_[name] = false;
-        self.classNamesCount_--;
-      }
-    }
-  };
-  this.fakeHtmlElement_ = { className: '' };
-  this.loadingEventCalled_ = false;
   this.fontLoadingEventCalled_ = 0;
-  this.fontLoading_ = [];
+  this.fontLoading_ = {};
   this.fontActiveEventCalled_ = 0;
-  this.fontActive_ = [];
+  this.fontActive_ = {};
   this.fontInactvieEventCalled_ = 0;
-  this.fontInactive_ = [];
+  this.fontInactive_ = {};
   this.activeEventCalled_ = 0;
-
-  var namespace = 'ns';
-
-  this.callbacks_ = {
-      loading: function() {
-        self.loadingEventCalled_ = true;
-      },
-      active: function() {
-        self.activeEventCalled_++;
-      },
-      fontloading: function(fontFamily, fontDescription) {
-        self.fontLoadingEventCalled_++;
-        self.fontLoading_.push(fontFamily + ' ' + fontDescription);
-      },
-      fontactive: function(fontFamily, fontDescription) {
-        self.fontActiveEventCalled_++;
-        self.fontActive_.push(fontFamily + ' ' + fontDescription);
-      },
-      fontinactive: function(fontFamily, fontDescription) {
-        self.fontInactvieEventCalled_++;
-        self.fontInactive_.push(fontFamily + ' ' + fontDescription);
-      }
-  };
-  this.eventDispatcher_ = new webfont.EventDispatcher(this.fakeDomHelper_,
-      this.fakeHtmlElement_, this.callbacks_, namespace);
-};
-
-FontWatcherTest.prototype.testWatchOneFontAlreadyLoaded = function() {
-  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
-      this.eventDispatcher_, {
-        getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-
-          if (fontFamily.indexOf('fontFamily') == -1) {
-            return 1;
-          } else {
-            return 2;
-          }
-        }
-  }, function() {}, function() { return 0; });
-  var fontFamilies = [ 'fontFamily1' ];
-
-  fontWatcher.watch(fontFamilies, {}, {}, false);
-  assertEquals(1, this.fontLoadingEventCalled_);
-  assertEquals(1, this.fontLoading_.length);
-  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
-  assertEquals(1, this.fontActiveEventCalled_);
-  assertEquals(1, this.fontActive_.length);
-  assertEquals('fontFamily1 n4', this.fontActive_[0]);
-};
-
-FontWatcherTest.prototype.testWatchMultipleFontsAlreadyLoaded = function() {
-  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.eventDispatcher_,{
-        getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-
-          if (fontFamily.indexOf('fontFamily') == -1) {
-            return 1;
-          } else {
-            return 2;
-          }
-        }
-  }, function() {}, function() { return 0; });
-  var fontFamilies = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
-
-  fontWatcher.watch(fontFamilies, {}, {}, false);
-  assertEquals(3, this.fontLoadingEventCalled_);
-  assertEquals(3, this.fontLoading_.length);
-  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
-  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
-  assertEquals('fontFamily3 n4', this.fontLoading_[2]);
-  assertEquals(3, this.fontActiveEventCalled_);
-  assertEquals(3, this.fontActive_.length);
-  assertEquals('fontFamily1 n4', this.fontActive_[0]);
-  assertEquals('fontFamily2 n4', this.fontActive_[1]);
-  assertEquals('fontFamily3 n4', this.fontActive_[2]);
-};
-
-FontWatcherTest.prototype.testWatchOneFontWaitForLoad = function() {
-  var async = false;
-  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
-      this.eventDispatcher_, {
-
-        count_: 0,
-
-        getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-
-          if (fontFamily.indexOf('fontFamily') == -1 ||
-              fontFamily.indexOf(webfont.FontWatcher.DEFAULT_FONTS_A) == -1) {
-            return 1;
-          } else if (this.count_ < 1) {
-            this.count_++;
-            return 1;
-          } else {
-            return 2;
-	        }
-        }
-  }, function(func, timeout) {
-    async = true;
-    func();
-  }, function() { return 0; });
-  var fontFamilies = [ 'fontFamily1' ];
-
-  fontWatcher.watch(fontFamilies, {}, {}, false);
-  assertTrue(async);
-  assertEquals(1, this.fontLoadingEventCalled_);
-  assertEquals(1, this.fontLoading_.length);
-  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
-  assertEquals(1, this.fontActiveEventCalled_);
-  assertEquals(1, this.fontActive_.length);
-  assertEquals('fontFamily1 n4', this.fontActive_[0]);
-};
-
-FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoad = function() {
-  var async = 0;
-  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
-      this.eventDispatcher_, {
-
-        font1Count_: 0,
-        font2Count_: 0,
-        font3Count_: 0,
-
-        getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-
-          if (fontFamily.indexOf('fontFamily') == -1 ||
-              fontFamily.indexOf(webfont.FontWatcher.DEFAULT_FONTS_A) == -1) {
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily1") != -1 &&
-              this.font1Count_ != 2) {
-            this.font1Count_++;
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily2") != -1 &&
-              this.font2Count_ != 1) {
-            this.font2Count_++;
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily3") != -1 &&
-              this.font3Count_ != 5) {
-            this.font3Count_++;
-            return 1;
-          } else {
-            return 2;
-	        }
-        }
-  }, function(func, timeout) {
-    async++;
-    func();
-  }, function() { return 0; });
-  var fontFamilies = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
-
-  fontWatcher.watch(fontFamilies, {}, {}, false);
-  assertEquals(8, async);
-  assertEquals(3, this.fontLoadingEventCalled_);
-  assertEquals(3, this.fontLoading_.length);
-  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
-  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
-  assertEquals('fontFamily3 n4', this.fontLoading_[2]);
-  assertEquals(3, this.fontActiveEventCalled_);
-  assertEquals(3, this.fontActive_.length);
-  assertEquals('fontFamily1 n4', this.fontActive_[0]);
-  assertEquals('fontFamily2 n4', this.fontActive_[1]);
-  assertEquals('fontFamily3 n4', this.fontActive_[2]);
-};
-
-FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndLoaded =
-    function() {
-  var async = 0;
-  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
-      this.eventDispatcher_, {
-
-        font1Count_: 0,
-        font3Count_: 0,
-
-        getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-
-          if (fontFamily.indexOf('fontFamily') == -1 ||
-              fontFamily.indexOf(webfont.FontWatcher.DEFAULT_FONTS_A) == -1) {
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily1") != -1 &&
-              this.font1Count_ != 2) {
-            this.font1Count_++;
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily3") != -1 &&
-              this.font3Count_ != 5) {
-            this.font3Count_++;
-            return 1;
-          } else {
-            return 2;
-	  }
-        }
-  }, function(func, timeout) {
-    async++;
-    func();
-  }, function() { return 0; });
-  var fontFamilies = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
-
-  fontWatcher.watch(fontFamilies, {}, {}, false);
-  assertEquals(7, async);
-  assertEquals(3, this.fontLoadingEventCalled_);
-  assertEquals(3, this.fontLoading_.length);
-  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
-  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
-  assertEquals('fontFamily3 n4', this.fontLoading_[2]);
-  assertEquals(3, this.fontActiveEventCalled_);
-  assertEquals(3, this.fontActive_.length);
-  assertEquals('fontFamily1 n4', this.fontActive_[0]);
-  assertEquals('fontFamily2 n4', this.fontActive_[1]);
-  assertEquals('fontFamily3 n4', this.fontActive_[2]);
-};
-
-FontWatcherTest.prototype.testWatchOneFontWaitForLoadInactive = function() {
-  var time = 0;
-  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
-      this.eventDispatcher_, {
-
-        count_: 0,
-
-        getWidth: function(element) {
-          return 1;
-        }
-  }, function(func, timeout) {
-    func();
-  }, function() {
-    time += 2500;
-    return time;
-  });
-  var fontFamilies = [ 'fontFamily1' ];
-
-  fontWatcher.watch(fontFamilies, {}, {}, false);
-  assertEquals(1, this.fontLoadingEventCalled_);
-  assertEquals(1, this.fontLoading_.length);
-  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
-  assertEquals(1, this.fontInactvieEventCalled_);
-  assertEquals(1, this.fontInactive_.length);
-  assertEquals('fontFamily1 n4', this.fontInactive_[0]);
-};
-
-FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndInactive =
-    function() {
-  var count = 0;
-  var async = 0;
-  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
-      this.eventDispatcher_, {
-
-        font1Count_: 0,
-        font3Count_: 0,
-
-        getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-
-          if (fontFamily.indexOf('fontFamily') == -1 ||
-              fontFamily.indexOf(webfont.FontWatcher.DEFAULT_FONTS_A) == -1) {
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily1") != -1 &&
-              this.font1Count_ != 2) {
-            this.font1Count_++;
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily2") != -1) {
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily3") != -1 &&
-              this.font3Count_ != 5) {
-            this.font3Count_++;
-            return 1;
-          } else {
-            return 2;
-	        }
-        }
-  }, function(func, timeout) {
-    async++;
-    func();
-  }, function() {
-    if (++count == 5) {
-      return 5001;
+  this.inactiveEventCalled_ = 0;
+  this.fakeEventDispatcher_ = {
+    dispatchLoading: function() {
+      fail('dispatchLoading should not be called by FontWatcher.');
+    },
+    dispatchFontLoading: function(fontFamily, fontDescription) {
+      self.fontLoadingEventCalled_++;
+      self.fontLoading_[fontFamily + ' ' + fontDescription] = true;
+    },
+    dispatchFontActive: function(fontFamily, fontDescription) {
+      self.fontActiveEventCalled_++;
+      self.fontActive_[fontFamily + ' ' + fontDescription] = true;
+    },
+    dispatchFontInactive: function(fontFamily, fontDescription) {
+      self.fontInactvieEventCalled_++;
+      self.fontInactive_[fontFamily + ' ' + fontDescription] = true;
+    },
+    dispatchActive: function() {
+      self.activeEventCalled_++;
+    },
+    dispatchInactive: function() {
+      self.inactiveEventCalled_++;
     }
-    return 0;
-  });
-  var fontFamilies = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
+  };
+
+  this.fakeFontSizer_ = {
+    getWidth: function() {
+      fail('Fake getWidth should not be called.');
+    }
+  };
+
+  this.fakeAsyncCall_ = function() {
+    fail('Fake asyncCall should not be called.');
+  };
+
+  this.fakeGetTime_ = function() {
+    fail('Fake getTime should not be called.');
+  };
+
+  // Mock out FontWatchRunner to return active/inactive for families we give it
+  this.originalFontWatchRunner_ = webfont.FontWatchRunner;
+  this.fontWatchRunnerActiveFamilies_ = [];
+  this.testStringCount_ = 0;
+  this.testStrings_ = {};
+  webfont.FontWatchRunner = function(fontWatcher, domHelper, fontSizer, asyncCall,
+      getTime, fontFamily, fontDescription, opt_fontTestString) {
+    if (opt_fontTestString) {
+      self.testStringCount_++;
+      self.testStrings_[fontFamily] = opt_fontTestString;
+    }
+
+    if (self.fontWatchRunnerActiveFamilies_.indexOf(fontFamily) > -1) {
+      fontWatcher.fontActive(fontFamily, fontDescription);
+    } else {
+      fontWatcher.fontInactive(fontFamily, fontDescription);
+    }
+
+  };
+
+};
+
+FontWatcherTest.prototype.tearDown = function() {
+  // Replace the original FontWatchRunner implementation
+  webfont.FontWatchRunner = this.originalFontWatchRunner_;
+};
+
+FontWatcherTest.prototype.testWatchOneFontNotLast = function() {
+  var fontFamilies = [ 'fontFamily1' ];
+  this.fontWatchRunnerActiveFamilies_ = [ 'fontFamily1' ];
+
+  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.fakeEventDispatcher_,
+      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
   fontWatcher.watch(fontFamilies, {}, {}, false);
-  assertEquals(9, async);
-  assertEquals(3, this.fontLoadingEventCalled_);
-  assertEquals(3, this.fontLoading_.length);
-  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
-  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
-  assertEquals('fontFamily3 n4', this.fontLoading_[2]);
-  assertEquals(2, this.fontActiveEventCalled_);
-  assertEquals(2, this.fontActive_.length);
-  assertEquals('fontFamily1 n4', this.fontActive_[0]);
-  assertEquals('fontFamily3 n4', this.fontActive_[1]);
+
+  assertEquals(0, this.fontInactvieEventCalled_);
+  assertEquals(0, this.activeEventCalled_);
+  assertEquals(0, this.inactiveEventCalled_);
+};
+
+FontWatcherTest.prototype.testWatchOneFontActive = function() {
+  var fontFamilies = [ 'fontFamily1' ];
+  this.fontWatchRunnerActiveFamilies_ = [ 'fontFamily1' ];
+
+  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.fakeEventDispatcher_,
+      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
+
+  fontWatcher.watch(fontFamilies, {}, {}, true);
+
+  assertEquals(1, this.fontLoadingEventCalled_);
+  assertEquals(true, this.fontLoading_['fontFamily1 n4']);
+  assertEquals(1, this.fontActiveEventCalled_);
+  assertEquals(true, this.fontActive_['fontFamily1 n4']);
+  assertEquals(0, this.fontInactvieEventCalled_);
+  assertEquals(1, this.activeEventCalled_);
+  assertEquals(0, this.inactiveEventCalled_);
+};
+
+FontWatcherTest.prototype.testWatchOneFontInactive = function() {
+  var fontFamilies = [ 'fontFamily1' ];
+  this.fontWatchRunnerActiveFamilies_ = [];
+
+  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.fakeEventDispatcher_,
+      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
+
+  fontWatcher.watch(fontFamilies, {}, {}, true);
+
+  assertEquals(1, this.fontLoadingEventCalled_);
+  assertEquals(true, this.fontLoading_['fontFamily1 n4']);
+  assertEquals(0, this.fontActiveEventCalled_);
   assertEquals(1, this.fontInactvieEventCalled_);
-  assertEquals('fontFamily2 n4', this.fontInactive_[0]);
+  assertEquals(true, this.fontInactive_['fontFamily1 n4']);
+  assertEquals(0, this.activeEventCalled_);
+  assertEquals(1, this.inactiveEventCalled_);
 };
 
-FontWatcherTest.prototype.testWatchMultipleFontsAlreadyLoadedAndLastBatchOnDone
-    = function() {
-  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.eventDispatcher_,{
-        getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-
-          if (fontFamily.indexOf('fontFamily') == -1) {
-            return 1;
-          } else {
-            return 2;
-          }
-        }
-  }, function() {}, function() { return 0; });
+FontWatcherTest.prototype.testWatchMultipleFontsActive = function() {
   var fontFamilies = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
+  this.fontWatchRunnerActiveFamilies_ = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
+
+  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.fakeEventDispatcher_,
+      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
   fontWatcher.watch(fontFamilies, {}, {}, true);
+
   assertEquals(3, this.fontLoadingEventCalled_);
-  assertEquals(3, this.fontLoading_.length);
-  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
-  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
-  assertEquals('fontFamily3 n4', this.fontLoading_[2]);
+  assertEquals(true, this.fontLoading_['fontFamily1 n4']);
+  assertEquals(true, this.fontLoading_['fontFamily2 n4']);
+  assertEquals(true, this.fontLoading_['fontFamily3 n4']);
   assertEquals(3, this.fontActiveEventCalled_);
-  assertEquals(3, this.fontActive_.length);
-  assertEquals('fontFamily1 n4', this.fontActive_[0]);
-  assertEquals('fontFamily2 n4', this.fontActive_[1]);
-  assertEquals('fontFamily3 n4', this.fontActive_[2]);
+  assertEquals(true, this.fontActive_['fontFamily1 n4']);
+  assertEquals(true, this.fontActive_['fontFamily2 n4']);
+  assertEquals(true, this.fontActive_['fontFamily3 n4']);
+  assertEquals(0, this.fontInactvieEventCalled_);
   assertEquals(1, this.activeEventCalled_);
-  assertEquals(4, this.classNamesCount_);
-  assertEquals(true, this.classNames_['ns-fontfamily1-n4-active']);
-  assertEquals(true, this.classNames_['ns-fontfamily2-n4-active']);
-  assertEquals(true, this.classNames_['ns-fontfamily3-n4-active']);
-  assertEquals(true, this.classNames_['ns-active']);
+  assertEquals(0, this.inactiveEventCalled_);
 };
 
-FontWatcherTest.prototype.testWatchMultipleFontsWaitForLoadAndLastBatchOnDone =
-    function() {
-  var async = 0;
-  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
-      this.eventDispatcher_, {
-
-        font1Count_: 0,
-        font2Count_: 0,
-        font3Count_: 0,
-
-        getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-
-          if (fontFamily.indexOf('fontFamily') == -1 ||
-              fontFamily.indexOf(webfont.FontWatcher.DEFAULT_FONTS_A) == -1) {
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily1") != -1 &&
-              this.font1Count_ != 2) {
-            this.font1Count_++;
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily2") != -1 &&
-              this.font2Count_ != 1) {
-            this.font2Count_++;
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily3") != -1 &&
-              this.font3Count_ != 5) {
-            this.font3Count_++;
-            return 1;
-          } else {
-            return 2;
-	  }
-        }
-  }, function(func, timeout) {
-    async++;
-    func();
-  }, function() { return 0; });
+FontWatcherTest.prototype.testWatchMultipleFontsInactive = function() {
   var fontFamilies = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
+  this.fontWatchRunnerActiveFamilies_ = [];
+
+  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.fakeEventDispatcher_,
+      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
   fontWatcher.watch(fontFamilies, {}, {}, true);
-  assertEquals(8, async);
+
   assertEquals(3, this.fontLoadingEventCalled_);
-  assertEquals(3, this.fontLoading_.length);
-  assertEquals('fontFamily1 n4', this.fontLoading_[0]);
-  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
-  assertEquals('fontFamily3 n4', this.fontLoading_[2]);
-  assertEquals(3, this.fontActiveEventCalled_);
-  assertEquals(3, this.fontActive_.length);
-  assertEquals('fontFamily1 n4', this.fontActive_[0]);
-  assertEquals('fontFamily2 n4', this.fontActive_[1]);
-  assertEquals('fontFamily3 n4', this.fontActive_[2]);
-  assertEquals(1, this.activeEventCalled_);
-  assertEquals(true, this.classNames_['ns-fontfamily1-n4-active']);
-  assertEquals(true, this.classNames_['ns-fontfamily2-n4-active']);
-  assertEquals(true, this.classNames_['ns-fontfamily3-n4-active']);
-  assertEquals(true, this.classNames_['ns-active']);
-  assertEquals(4, this.classNamesCount_);
+  assertEquals(true, this.fontLoading_['fontFamily1 n4']);
+  assertEquals(true, this.fontLoading_['fontFamily2 n4']);
+  assertEquals(true, this.fontLoading_['fontFamily3 n4']);
+  assertEquals(0, this.fontActiveEventCalled_);
+  assertEquals(3, this.fontInactvieEventCalled_);
+  assertEquals(true, this.fontInactive_['fontFamily1 n4']);
+  assertEquals(true, this.fontInactive_['fontFamily2 n4']);
+  assertEquals(true, this.fontInactive_['fontFamily3 n4']);
+  assertEquals(0, this.activeEventCalled_);
+  assertEquals(1, this.inactiveEventCalled_);
 };
 
-FontWatcherTest.prototype
-    .testWatchMultipleFontsWaitForLoadAndLastBatchOnDoneWithVariations =
-    function() {
-  var async = 0;
-  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
-      this.eventDispatcher_, {
-
-        font1Count_: 0,
-        font2Count_: 0,
-        font3Count_: 0,
-
-        getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
-
-          if (fontFamily.indexOf('fontFamily') == -1 ||
-              fontFamily.indexOf(webfont.FontWatcher.DEFAULT_FONTS_A) == -1) {
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily1") != -1 &&
-              this.font1Count_ != 2) {
-            this.font1Count_++;
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily2") != -1 &&
-              this.font2Count_ != 1) {
-            this.font2Count_++;
-            return 1;
-          } else if (fontFamily.indexOf("fontFamily3") != -1 &&
-              this.font3Count_ != 5) {
-            this.font3Count_++;
-            return 1;
-          } else {
-            return 2;
-	  }
-        }
-  }, function(func, timeout) {
-    async++;
-    func();
-  }, function() { return 0; });
+FontWatcherTest.prototype.testWatchMultipleFontsMixed = function() {
   var fontFamilies = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
+  this.fontWatchRunnerActiveFamilies_ = [ 'fontFamily1', 'fontFamily3' ];
 
-  fontWatcher.watch(fontFamilies, {
-      'fontFamily1': ['i7'],
-      'fontFamily2': null,
-      'fontFamily3': ['n4', 'i4', 'n7'] }, {}, true);
+  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.fakeEventDispatcher_,
+      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
-  assertEquals(8, async);
+  fontWatcher.watch(fontFamilies, {}, {}, true);
+
+  assertEquals(3, this.fontLoadingEventCalled_);
+  assertEquals(true, this.fontLoading_['fontFamily1 n4']);
+  assertEquals(true, this.fontLoading_['fontFamily2 n4']);
+  assertEquals(true, this.fontLoading_['fontFamily3 n4']);
+  assertEquals(2, this.fontActiveEventCalled_);
+  assertEquals(true, this.fontActive_['fontFamily1 n4']);
+  assertEquals(true, this.fontActive_['fontFamily3 n4']);
+  assertEquals(1, this.fontInactvieEventCalled_);
+  assertEquals(true, this.fontInactive_['fontFamily2 n4']);
+  assertEquals(1, this.activeEventCalled_);
+  assertEquals(0, this.inactiveEventCalled_);
+};
+
+FontWatcherTest.prototype.testWatchMultipleFontsWithDescriptions = function() {
+  var fontFamilies = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
+  this.fontWatchRunnerActiveFamilies_ = [ 'fontFamily1', 'fontFamily2' ];
+
+  var fontDescriptions = {
+    'fontFamily1': ['i7'],
+    'fontFamily2': null,
+    'fontFamily3': ['n4', 'i4', 'n7']
+  };
+
+  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.fakeEventDispatcher_,
+      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
+
+  fontWatcher.watch(fontFamilies, fontDescriptions, {}, true);
+
   assertEquals(5, this.fontLoadingEventCalled_);
-  assertEquals(5, this.fontLoading_.length);
-  assertEquals('fontFamily1 i7',
-      this.fontLoading_[0]);
-  assertEquals('fontFamily2 n4', this.fontLoading_[1]);
-  assertEquals('fontFamily3 n4',
-      this.fontLoading_[2]);
-  assertEquals('fontFamily3 i4', this.fontLoading_[3]);
-  assertEquals('fontFamily3 n7', this.fontLoading_[4]);
-  assertEquals(5, this.fontActiveEventCalled_);
-  assertEquals(5, this.fontActive_.length);
-  assertEquals('fontFamily1 i7',
-      this.fontActive_[0]);
-  assertEquals('fontFamily2 n4', this.fontActive_[1]);
-  assertEquals('fontFamily3 n4',
-      this.fontActive_[2]);
-  assertEquals('fontFamily3 i4', this.fontActive_[3]);
-  assertEquals('fontFamily3 n7', this.fontActive_[4]);
+  assertEquals(true, this.fontLoading_['fontFamily1 i7']);
+  assertEquals(true, this.fontLoading_['fontFamily2 n4']);
+  assertEquals(true, this.fontLoading_['fontFamily3 n4']);
+  assertEquals(true, this.fontLoading_['fontFamily3 i4']);
+  assertEquals(true, this.fontLoading_['fontFamily3 n7']);
+  assertEquals(2, this.fontActiveEventCalled_);
+  assertEquals(true, this.fontActive_['fontFamily1 i7']);
+  assertEquals(true, this.fontActive_['fontFamily2 n4']);
+  assertEquals(3, this.fontInactvieEventCalled_);
+  assertEquals(true, this.fontInactive_['fontFamily3 n4']);
+  assertEquals(true, this.fontInactive_['fontFamily3 i4']);
+  assertEquals(true, this.fontInactive_['fontFamily3 n7']);
   assertEquals(1, this.activeEventCalled_);
-  assertEquals(6, this.classNamesCount_);
-  assertEquals(true, this.classNames_['ns-fontfamily1-i7-active']);
-  assertEquals(true, this.classNames_['ns-fontfamily2-n4-active']);
-  assertEquals(true, this.classNames_['ns-fontfamily3-n4-active']);
-  assertEquals(true, this.classNames_['ns-fontfamily3-i4-active']);
-  assertEquals(true, this.classNames_['ns-fontfamily3-n7-active']);
-  assertEquals(true, this.classNames_['ns-active']);
+  assertEquals(0, this.inactiveEventCalled_);
 };
 
-FontWatcherTest.prototype.testTestStringIsNotDefault = function() {
-  var testString = '';
-  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
-      this.eventDispatcher_, {
-        getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
+FontWatcherTest.prototype.testWatchMultipleFontsWithTestStrings = function() {
+  var fontFamilies = [ 'fontFamily1', 'fontFamily2', 'fontFamily3', 'fontFamily4' ];
+  this.fontWatchRunnerActiveFamilies_ = [ 'fontFamily1', 'fontFamily2' ];
 
-          testString = element.innerHTML;
-          if (fontFamily.indexOf('fontFamily') == -1) {
-            return 1;
-          } else {
-            return 2;
-          }
-        }
-  }, function() {}, function() { return 0; });
-  var fontFamilies = [ 'fontFamily1' ];
+  var fontTestStrings = {
+    'fontFamily1': 'testString1',
+    'fontFamily2': null,
+    'fontFamily3': 'testString3',
+    'fontFamily4': null
+  };
 
-  fontWatcher.watch(fontFamilies, {}, { 'fontFamily1': 'testString!' }, false);
-  assertEquals('testString!', testString);
-};
+  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_, this.fakeEventDispatcher_,
+      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
-FontWatcherTest.prototype.testTestStringIsDefault = function() {
-  var testString = '';
-  var fontWatcher = new webfont.FontWatcher(this.fakeDomHelper_,
-      this.eventDispatcher_, {
-        getWidth: function(element) {
-          var fontFamily = element.style.fontFamily;
+  fontWatcher.watch(fontFamilies, {}, fontTestStrings, true);
 
-          testString = element.innerHTML;
-          if (fontFamily.indexOf('fontFamily') == -1) {
-            return 1;
-          } else {
-            return 2;
-          }
-        }
-  }, function() {}, function() { return 0; });
-  var fontFamilies = [ 'fontFamily1' ];
-
-  fontWatcher.watch(fontFamilies, {}, {}, false);
-  assertEquals('BESs', testString);
+  assertEquals(2, this.testStringCount_);
+  assertEquals('testString1', this.testStrings_['fontFamily1']);
+  assertEquals('testString3', this.testStrings_['fontFamily3']);
 };
