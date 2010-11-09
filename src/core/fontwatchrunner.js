@@ -1,5 +1,13 @@
 /**
  * @constructor
+ * @param {webfont.FontWatcher} fontWatcher
+ * @param {webfont.DomHelper} domHelper
+ * @param {Object.<string, function(Object): number>} fontSizer
+ * @param {function(function(), number=)} asyncCall
+ * @param {function(): number} getTime
+ * @param {string} fontFamily
+ * @param {string} fontDescription
+ * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(fontWatcher, domHelper, fontSizer, asyncCall,
     getTime, fontFamily, fontDescription, opt_fontTestString) {
@@ -60,6 +68,7 @@ webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESs';
 
 /**
  * @private
+ * @param {boolean=} opt_first
  */
 webfont.FontWatchRunner.prototype.check_ = function(opt_first) {
   var sizeA = this.fontSizer_.getWidth(this.requestedFontA_);
@@ -87,6 +96,7 @@ webfont.FontWatchRunner.prototype.asyncCheck_ = function() {
 
 /**
  * @private
+ * @param {boolean} active
  */
 webfont.FontWatchRunner.prototype.finish_ = function(active) {
   this.domHelper_.removeElement(this.requestedFontA_);
@@ -100,6 +110,7 @@ webfont.FontWatchRunner.prototype.finish_ = function(active) {
 
 /**
  * @private
+ * @param {string} defaultFonts
  */
 webfont.FontWatchRunner.prototype.getDefaultFontSize_ = function(defaultFonts) {
   var defaultFont = this.createHiddenElementWithFont_(defaultFonts, true);
@@ -111,6 +122,8 @@ webfont.FontWatchRunner.prototype.getDefaultFontSize_ = function(defaultFonts) {
 
 /**
  * @private
+ * @param {string} defaultFonts
+ * @param {boolean=} opt_withoutFontFamily
  */
 webfont.FontWatchRunner.prototype.createHiddenElementWithFont_ = function(
     defaultFonts, opt_withoutFontFamily) {

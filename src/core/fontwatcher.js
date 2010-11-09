@@ -1,5 +1,10 @@
 /**
  * @constructor
+ * @param {webfont.DomHelper} domHelper
+ * @param {webfont.EventDispatcher} eventDispatcher
+ * @param {Object.<string, function(Object): number>} fontSizer
+ * @param {function(function(), number=)} asyncCall
+ * @param {function(): number} getTime
  */
 webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
     asyncCall, getTime) {
@@ -60,12 +65,22 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
   }
 };
 
+/**
+ * Called by a FontWatchRunner when a font has been detected as active.
+ * @param {string} fontFamily
+ * @param {string} fontDescription
+ */
 webfont.FontWatcher.prototype.fontActive = function(fontFamily, fontDescription) {
   this.eventDispatcher_.dispatchFontActive(fontFamily, fontDescription);
   this.success_ = true;
   this.decreaseCurrentlyWatched_();
 };
 
+/**
+ * Called by a FontWatchRunner when a font has been detected as inactive.
+ * @param {string} fontFamily
+ * @param {string} fontDescription
+ */
 webfont.FontWatcher.prototype.fontInactive = function(fontFamily, fontDescription) {
   this.eventDispatcher_.dispatchFontInactive(fontFamily, fontDescription);
   this.decreaseCurrentlyWatched_();
