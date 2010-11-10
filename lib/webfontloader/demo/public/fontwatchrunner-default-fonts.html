@@ -2,13 +2,14 @@
 <html>
 <head>
   <link href="/basic.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/jquery.min.js"></script>
   <script type="text/javascript" src="/webfont-fontwatchrunner.js"></script>
   <style type="text/css">
     #results {
       font-family: arial, sans-serif;
       font-size: 16px;
     }
-    h1 {
+    .test-case {
       font-size: 300px;
     }
   </style>
@@ -22,7 +23,6 @@
 </head>
 <body>
   <p id="results">Calculating...</p>
-
   <p>
     The goal of this page is to verify that the two default font stacks in
     FontWatchRunner have different widths on a given platform when rendering the
@@ -31,65 +31,55 @@
     widths.
   </p>
   <hr>
-  <h1 style="font-weight: normal; font-style: normal;">
-    <span class="default-fonts-a"></span>
-    <span class="default-fonts-b"></span>
-  </h1>
-  <h1 style="font-weight: normal; font-style: italic;">
-
-    <span class="default-fonts-a"></span>
-    <span class="default-fonts-b"></span>
-  </h1>
-  <h1 style="font-weight: bold; font-style: normal;">
-    <span class="default-fonts-a"></span>
-    <span class="default-fonts-b"></span>
-  </h1>
-  <h1 style="font-weight: bold; font-style: italic;">
-    <span class="default-fonts-a"></span>
-
-    <span class="default-fonts-b"></span>
-  </h1>
-  <h1 style="font-weight: normal; font-style: normal; text-rendering: optimizeLegibility;">
-    <span class="default-fonts-a"></span>
-    <span class="default-fonts-b"></span>
-  </h1>
-  <h1 style="font-weight: normal; font-style: italic; text-rendering: optimizeLegibility;">
-    <span class="default-fonts-a"></span>
-    <span class="default-fonts-b"></span>
-
-  </h1>
-  <h1 style="font-weight: bold; font-style: normal; text-rendering: optimizeLegibility;">
-    <span class="default-fonts-a"></span>
-    <span class="default-fonts-b"></span>
-  </h1>
-  <h1 style="font-weight: bold; font-style: italic; text-rendering: optimizeLegibility;">
-    <span class="default-fonts-a"></span>
-    <span class="default-fonts-b"></span>
-  </h1>
-
+  <div id="test-cases"></div>
   <script type="text/javascript">
-    // Populate spans with default test string
-    var h1s = document.getElementsByTagName('h1');
-    for (var i = 0; i < h1s.length; i++) {
-      var spans = h1s[i].getElementsByTagName('span');
-      spans[0].innerHTML = webfont.FontWatchRunner.DEFAULT_TEST_STRING;
-      spans[1].innerHTML = webfont.FontWatchRunner.DEFAULT_TEST_STRING;
+    // Calculate all the different combinations of styles to test
+    var styles = {
+      'font-weight': [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000],
+      'font-style': ['normal', 'italic'],
+      'text-rendering': [null, 'optimizeLegibility']
+    };
+    function calculateStyleCombos(props, styles) {
+      if (props.length <= 0) {
+        return [{}]
+      }
+      var remainingProps = $.extend(true, [], props);
+      var prop = remainingProps.pop();
+      var remainingCombos = calculateStyleCombos(remainingProps, styles);
+      var combos = [];
+      for (var i = 0; i < remainingCombos.length; i++) {
+        for (var j = 0; j < styles[prop].length; j++) {
+          var combo = {};
+          if (styles[prop][j] !== null) {
+            combo[prop] = styles[prop][j];
+          }
+          combos.push($.extend(combo, remainingCombos[i]));
+        }
+      }
+      return combos;
+    }
+    var styleCombos = calculateStyleCombos(['font-weight', 'font-style', 'text-rendering'], styles);
+
+    // Create test cases with default test strings for each style combo
+    var testCases = $('#test-cases');
+    for (var i = 0; i < styleCombos.length; i++) {
+      var test = $('<div class="test-case"></div>').css(styleCombos[i]);
+      test.append($('<span class="default-fonts-a"></span>').text(webfont.FontWatchRunner.DEFAULT_TEST_STRING));
+      test.append($('<span class="default-fonts-b"></span>').text(webfont.FontWatchRunner.DEFAULT_TEST_STRING));
+      testCases.append(test);
     }
 
-    // Calculate the width of the spans
+    // Calculate the width of the spans after timeout
     setTimeout(function() {
-      var h1s = document.getElementsByTagName('h1');
-      var comparisons = '';
+      var comparisons = $('<span></span>');
       var allPassed = true;
-      for (var i = 0; i < h1s.length; i++) {
-        var spans = h1s[i].getElementsByTagName('span');
-        var a = spans[0].offsetWidth;
-        var b = spans[1].offsetWidth;
-        comparisons += '<span style="color: ' + (a != b ? 'green' : 'red') + ';">' + a + '/' + b + '</span> ';
+      $('.test-case').each(function() {
+        var a = $(this).find('span').first().width();
+        var b = $(this).find('span').last().width();
+        comparisons.append($('<span></span>').css('color', a != b ? 'green' : 'red').text(a - b)).append(' ');
         allPassed = allPassed && a != b;
-      }
-      var out = (allPassed ? 'SUCCESS | ' : 'FAIL | ') + comparisons;
-      document.getElementById('results').innerHTML = out;
+      });
+      $('#results').text(allPassed ? 'SUCCESS | ' : 'FAIL | ').append(comparisons);
     }, 500);
   </script>
 </body>
