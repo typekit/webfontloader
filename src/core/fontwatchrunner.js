@@ -42,7 +42,7 @@ webfont.FontWatchRunner = function(fontWatcher, domHelper, fontSizer, asyncCall,
  * @type {string}
  * @const
  */
-webfont.FontWatchRunner.DEFAULT_FONTS_A = 'arial,"URW Gothic L",sans-serif';
+webfont.FontWatchRunner.DEFAULT_FONTS_A = "arial,'URW Gothic L',sans-serif";
 
 /**
  * A set of serif fonts and a generic family that cover most platforms. We
@@ -55,7 +55,7 @@ webfont.FontWatchRunner.DEFAULT_FONTS_A = 'arial,"URW Gothic L",sans-serif';
  * @type {string}
  * @const
  */
-webfont.FontWatchRunner.DEFAULT_FONTS_B = 'Georgia,"Century Schoolbook L",serif';
+webfont.FontWatchRunner.DEFAULT_FONTS_B = "Georgia,'Century Schoolbook L',serif";
 
 /**
  * Default test string. Characters are chosen so that their widths vary a lot
