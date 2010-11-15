@@ -32,7 +32,7 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.requestedFontB_ = this.createHiddenElementWithFont_(
       webfont.FontWatchRunner.DEFAULT_FONTS_B);
   this.started_ = getTime();
-  this.check_(true);
+  this.check_();
 };
 
 /**
@@ -70,15 +70,14 @@ webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESs';
 
 /**
  * @private
- * @param {boolean=} opt_first
  */
-webfont.FontWatchRunner.prototype.check_ = function(opt_first) {
+webfont.FontWatchRunner.prototype.check_ = function() {
   var sizeA = this.fontSizer_.getWidth(this.requestedFontA_);
   var sizeB = this.fontSizer_.getWidth(this.requestedFontB_);
 
   if (this.originalSizeA_ != sizeA || this.originalSizeB_ != sizeB) {
     this.finish_(this.activeCallback_);
-  } else if (opt_first || (this.getTime_() - this.started_) < 5000) {
+  } else if (this.getTime_() - this.started_ < 5000) {
     this.asyncCheck_();
   } else {
     this.finish_(this.inactiveCallback_);
