@@ -54,17 +54,17 @@ FontWatcherTest.prototype.setUp = function() {
   this.fontWatchRunnerActiveFamilies_ = [];
   this.testStringCount_ = 0;
   this.testStrings_ = {};
-  webfont.FontWatchRunner = function(fontWatcher, domHelper, fontSizer, asyncCall,
-      getTime, fontFamily, fontDescription, opt_fontTestString) {
+  webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
+      fontSizer, asyncCall, getTime, fontFamily, fontDescription, opt_fontTestString) {
     if (opt_fontTestString) {
       self.testStringCount_++;
       self.testStrings_[fontFamily] = opt_fontTestString;
     }
 
     if (self.fontWatchRunnerActiveFamilies_.indexOf(fontFamily) > -1) {
-      fontWatcher.fontActive(fontFamily, fontDescription);
+      activeCallback(fontFamily, fontDescription);
     } else {
-      fontWatcher.fontInactive(fontFamily, fontDescription);
+      inactiveCallback(fontFamily, fontDescription);
     }
 
   };

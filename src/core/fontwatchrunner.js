@@ -1,6 +1,7 @@
 /**
  * @constructor
- * @param {webfont.FontWatcher} fontWatcher
+ * @param {function(string, string)} activeCallback
+ * @param {function(string, string)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
  * @param {Object.<string, function(Object): number>} fontSizer
  * @param {function(function(), number=)} asyncCall
@@ -9,9 +10,10 @@
  * @param {string} fontDescription
  * @param {string=} opt_fontTestString
  */
-webfont.FontWatchRunner = function(fontWatcher, domHelper, fontSizer, asyncCall,
-    getTime, fontFamily, fontDescription, opt_fontTestString) {
-  this.fontWatcher_ = fontWatcher;
+webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
+    fontSizer, asyncCall, getTime, fontFamily, fontDescription, opt_fontTestString) {
+  this.activeCallback_ = activeCallback;
+  this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
   this.fontSizer_ = fontSizer;
   this.asyncCall_ = asyncCall;
@@ -75,11 +77,11 @@ webfont.FontWatchRunner.prototype.check_ = function(opt_first) {
   var sizeB = this.fontSizer_.getWidth(this.requestedFontB_);
 
   if (this.originalSizeA_ != sizeA || this.originalSizeB_ != sizeB) {
-    this.finish_(true);
+    this.finish_(this.activeCallback_);
   } else if (opt_first || (this.getTime_() - this.started_) < 5000) {
     this.asyncCheck_();
   } else {
-    this.finish_(false);
+    this.finish_(this.inactiveCallback_);
   }
 };
 
@@ -96,16 +98,12 @@ webfont.FontWatchRunner.prototype.asyncCheck_ = function() {
 
 /**
  * @private
- * @param {boolean} active
+ * @param {function(string, string)} callback
  */
-webfont.FontWatchRunner.prototype.finish_ = function(active) {
+webfont.FontWatchRunner.prototype.finish_ = function(callback) {
   this.domHelper_.removeElement(this.requestedFontA_);
   this.domHelper_.removeElement(this.requestedFontB_);
-  if (active) {
-    this.fontWatcher_.fontActive(this.fontFamily_, this.fontDescription_);
-  } else {
-    this.fontWatcher_.fontInactive(this.fontFamily_, this.fontDescription_);
-  }
+  callback(this.fontFamily_, this.fontDescription_);
 };
 
 /**

@@ -59,8 +59,11 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
 
       this.eventDispatcher_.dispatchFontLoading(fontFamily, fontDescription);
 
-      new webfont.FontWatchRunner(this, this.domHelper_, this.fontSizer_,
-          this.asyncCall_, this.getTime_, fontFamily, fontDescription, fontTestString);
+      var activeCallback = webfont.bind(this, this.fontActive_);
+      var inactiveCallback = webfont.bind(this, this.fontInactive_)
+      new webfont.FontWatchRunner(activeCallback, inactiveCallback,
+          this.domHelper_, this.fontSizer_, this.asyncCall_, this.getTime_,
+          fontFamily, fontDescription, fontTestString);
     }
   }
 };
@@ -69,8 +72,9 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
  * Called by a FontWatchRunner when a font has been detected as active.
  * @param {string} fontFamily
  * @param {string} fontDescription
+ * @private
  */
-webfont.FontWatcher.prototype.fontActive = function(fontFamily, fontDescription) {
+webfont.FontWatcher.prototype.fontActive_ = function(fontFamily, fontDescription) {
   this.eventDispatcher_.dispatchFontActive(fontFamily, fontDescription);
   this.success_ = true;
   this.decreaseCurrentlyWatched_();
@@ -80,8 +84,9 @@ webfont.FontWatcher.prototype.fontActive = function(fontFamily, fontDescription)
  * Called by a FontWatchRunner when a font has been detected as inactive.
  * @param {string} fontFamily
  * @param {string} fontDescription
+ * @private
  */
-webfont.FontWatcher.prototype.fontInactive = function(fontFamily, fontDescription) {
+webfont.FontWatcher.prototype.fontInactive_ = function(fontFamily, fontDescription) {
   this.eventDispatcher_.dispatchFontInactive(fontFamily, fontDescription);
   this.decreaseCurrentlyWatched_();
 };

@@ -7,15 +7,13 @@ FontWatchRunnerTest.prototype.setUp = function() {
   this.fontActive_ = {};
   this.fontInactiveCalled_ = 0;
   this.fontInactive_ = {};
-  this.fakeFontWatcher_ = {
-    fontActive: function(fontFamily, fontDescription) {
-      self.fontActiveCalled_++;
-      self.fontActive_[fontFamily + ' ' + fontDescription] = true;
-    },
-    fontInactive: function(fontFamily, fontDescription) {
-      self.fontInactiveCalled_++;
-      self.fontInactive_[fontFamily + ' ' + fontDescription] = true;
-    }
+  this.activeCallback_ = function(fontFamily, fontDescription) {
+    self.fontActiveCalled_++;
+    self.fontActive_[fontFamily + ' ' + fontDescription] = true;
+  };
+  this.inactiveCallback_ = function(fontFamily, fontDescription) {
+    self.fontInactiveCalled_++;
+    self.fontInactive_[fontFamily + ' ' + fontDescription] = true;
   };
 
   this.createElementCalled_ = 0;
@@ -88,9 +86,9 @@ FontWatchRunnerTest.prototype.testWatchFontAlreadyLoaded = function() {
   this.timesToCheckWidthsBeforeChange_ = 0;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
-  new webfont.FontWatchRunner(this.fakeFontWatcher_, this.fakeDomHelper_,
-      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_,
-      fontFamily, fontDescription);
+  new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
+      this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
+      this.fakeGetTime_, fontFamily, fontDescription);
 
   assertFalse(this.asyncCalled_);
 
@@ -105,9 +103,9 @@ FontWatchRunnerTest.prototype.testWatchFontWaitForLoadActive = function() {
   this.timesToCheckWidthsBeforeChange_ = 3;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
-  new webfont.FontWatchRunner(this.fakeFontWatcher_, this.fakeDomHelper_,
-      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_,
-      fontFamily, fontDescription);
+  new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
+      this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
+      this.fakeGetTime_, fontFamily, fontDescription);
 
   assertTrue(this.asyncCalled_);
 
@@ -122,9 +120,9 @@ FontWatchRunnerTest.prototype.testWatchFontWaitForLoadInactive = function() {
   this.timesToCheckWidthsBeforeChange_ = 10;
   this.timesToGetTimeBeforeTimeout_ = 3;
 
-  new webfont.FontWatchRunner(this.fakeFontWatcher_, this.fakeDomHelper_,
-      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_,
-      fontFamily, fontDescription);
+  new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
+      this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
+      this.fakeGetTime_, fontFamily, fontDescription);
 
   assertTrue(this.asyncCalled_);
 
@@ -139,9 +137,9 @@ FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
   this.timesToCheckWidthsBeforeChange_ = 3;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
-  new webfont.FontWatchRunner(this.fakeFontWatcher_, this.fakeDomHelper_,
-      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_,
-      fontFamily, fontDescription);
+  new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
+      this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
+      this.fakeGetTime_, fontFamily, fontDescription);
 
   assertEquals(4, this.createElementCalled_);
   assertEquals('span', this.createdElements_[0]['name']);
@@ -171,9 +169,9 @@ FontWatchRunnerTest.prototype.testDomWithNotDefaultTestString = function() {
   this.timesToCheckWidthsBeforeChange_ = 3;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
-  new webfont.FontWatchRunner(this.fakeFontWatcher_, this.fakeDomHelper_,
-      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_,
-      fontFamily, fontDescription, 'testString');
+  new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
+      this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
+      this.fakeGetTime_, fontFamily, fontDescription, 'testString');
 
   assertEquals(4, this.createElementCalled_);
   assertEquals('span', this.createdElements_[0]['name']);
