@@ -2,7 +2,7 @@ var webfont = {};
 
 /**
  * @param {Object} context
- * @param {function(...[*])} func
+ * @param {function(...)} func
  * @param {...*} opt_args
  */
 webfont.bind = function(context, func, opt_args) {
