@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.0.15'
-  s.date              = '2010-10-20'
+  s.version           = '1.0.16'
+  s.date              = '2010-11-18'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -87,12 +87,14 @@ DESC
     lib/webfontloader/demo/public/event-js-loading.html
     lib/webfontloader/demo/public/events-variations.html
     lib/webfontloader/demo/public/events.html
+    lib/webfontloader/demo/public/fontwatchrunner-default-fonts.html
     lib/webfontloader/demo/public/google-css.html
     lib/webfontloader/demo/public/google.html
     lib/webfontloader/demo/public/ie-fast-js.html
     lib/webfontloader/demo/public/ie-slow-js.html
     lib/webfontloader/demo/public/ie-slow-link.html
     lib/webfontloader/demo/public/index.html
+    lib/webfontloader/demo/public/jquery.min.js
     lib/webfontloader/demo/public/typekit-variations.html
     lib/webfontloader/demo/public/typekit.html
     lib/webfontloader/demo/server.rb
@@ -106,6 +108,7 @@ DESC
     src-test/core/fonttest.js
     src-test/core/fontvariationdescriptiontest.js
     src-test/core/fontwatchertest.js
+    src-test/core/fontwatchrunnertest.js
     src-test/core/useragenttest.js
     src-test/custom/customcsstest.js
     src-test/google/fontapiparsertest.js
@@ -123,6 +126,7 @@ DESC
     src/core/fontmoduleloader.js
     src/core/fontvariationdescription.js
     src/core/fontwatcher.js
+    src/core/fontwatchrunner.js
     src/core/initialize.js
     src/core/namespace.js
     src/core/useragent.js

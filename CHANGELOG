@@ -1,3 +1,6 @@
+v1.0.16 (November 18, 2010)
+* Fix a bug where we fail to detect that fonts have loaded if they have the same width as the fallback font.
+
 v1.0.15 (October 14, 2010)
 * Fix an error parsing platform version in IE, when it has no items following the platform in the UA string.
 
