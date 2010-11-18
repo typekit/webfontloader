@@ -3,6 +3,9 @@ var FontWatchRunnerTest = TestCase('FontWatchRunnerTest');
 FontWatchRunnerTest.prototype.setUp = function() {
   var self = this;
 
+  this.fontFamily_ = 'fontFamily1';
+  this.fontDescription_ = 'n4';
+
   this.fontActiveCalled_ = 0;
   this.fontActive_ = {};
   this.fontInactiveCalled_ = 0;
@@ -48,12 +51,13 @@ FontWatchRunnerTest.prototype.setUp = function() {
   this.timesToCheckWidthsBeforeChange_ = 0;
   this.fakeFontSizer_ = {
     getWidth: function(el) {
-      if (el.style.fontFamily.indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_A) > 0) {
-        // This is the first font stack with fontFamily included
+      if (el.style.fontFamily.indexOf(self.fontFamily_) != -1) {
+        // This is a font stack with fontFamily included (not just fallbacks)
         if (self.timesToCheckWidthsBeforeChange_ <= 0) {
           return 2;
         } else {
-          self.timesToCheckWidthsBeforeChange_--;
+          // Two fallback stacks, so we check width twice each time
+          self.timesToCheckWidthsBeforeChange_ -= 0.5;
           return 1;
         }
       } else {
@@ -81,14 +85,12 @@ FontWatchRunnerTest.prototype.setUp = function() {
 };
 
 FontWatchRunnerTest.prototype.testWatchFontAlreadyLoaded = function() {
-  var fontFamily = 'fontFamily1';
-  var fontDescription = 'n4';
   this.timesToCheckWidthsBeforeChange_ = 0;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
   new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
       this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
-      this.fakeGetTime_, fontFamily, fontDescription);
+      this.fakeGetTime_, this.fontFamily_, this.fontDescription_);
 
   assertFalse(this.asyncCalled_);
 
@@ -98,14 +100,12 @@ FontWatchRunnerTest.prototype.testWatchFontAlreadyLoaded = function() {
 };
 
 FontWatchRunnerTest.prototype.testWatchFontWaitForLoadActive = function() {
-  var fontFamily = 'fontFamily1';
-  var fontDescription = 'n4';
   this.timesToCheckWidthsBeforeChange_ = 3;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
   new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
       this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
-      this.fakeGetTime_, fontFamily, fontDescription);
+      this.fakeGetTime_, this.fontFamily_, this.fontDescription_);
 
   assertTrue(this.asyncCalled_);
 
@@ -115,14 +115,12 @@ FontWatchRunnerTest.prototype.testWatchFontWaitForLoadActive = function() {
 };
 
 FontWatchRunnerTest.prototype.testWatchFontWaitForLoadInactive = function() {
-  var fontFamily = 'fontFamily1';
-  var fontDescription = 'n4';
   this.timesToCheckWidthsBeforeChange_ = 10;
   this.timesToGetTimeBeforeTimeout_ = 3;
 
   new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
       this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
-      this.fakeGetTime_, fontFamily, fontDescription);
+      this.fakeGetTime_, this.fontFamily_, this.fontDescription_);
 
   assertTrue(this.asyncCalled_);
 
@@ -132,14 +130,12 @@ FontWatchRunnerTest.prototype.testWatchFontWaitForLoadInactive = function() {
 };
 
 FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
-  var fontFamily = 'fontFamily1';
-  var fontDescription = 'n4';
   this.timesToCheckWidthsBeforeChange_ = 3;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
   new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
       this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
-      this.fakeGetTime_, fontFamily, fontDescription);
+      this.fakeGetTime_, this.fontFamily_, this.fontDescription_);
 
   assertEquals(4, this.createElementCalled_);
   assertEquals('span', this.createdElements_[0]['name']);
@@ -164,14 +160,12 @@ FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
 };
 
 FontWatchRunnerTest.prototype.testDomWithNotDefaultTestString = function() {
-  var fontFamily = 'fontFamily1';
-  var fontDescription = 'n4';
   this.timesToCheckWidthsBeforeChange_ = 3;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
   new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
       this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
-      this.fakeGetTime_, fontFamily, fontDescription, 'testString');
+      this.fakeGetTime_, this.fontFamily_, this.fontDescription_, 'testString');
 
   assertEquals(4, this.createElementCalled_);
   assertEquals('span', this.createdElements_[0]['name']);
