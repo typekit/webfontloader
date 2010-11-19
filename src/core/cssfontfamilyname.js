@@ -4,7 +4,7 @@
  */
 webfont.CssFontFamilyName = function() {
   /** @type {string} */
-  this.quote_ = '"';
+  this.quote_ = "'";
 };
 
 /**
