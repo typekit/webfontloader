@@ -126,8 +126,8 @@ webfont.FontWatchRunner.prototype.createHiddenElementWithFont_ = function(
     defaultFonts, opt_withoutFontFamily) {
   var variationCss = this.fvd_.expand(this.fontDescription_);
   var styleString = "position:absolute;top:-999px;font-size:300px;" +
-      "width:auto;height:auto;line-height:normal;margin:0;padding:0;" +
-      "font-family:" + (opt_withoutFontFamily ? "" :
+    "width:auto;height:auto;line-height:normal;margin:0;padding:0;" +
+    "font-variant:normal;font-family:" + (opt_withoutFontFamily ? "" :
         this.nameHelper_.quote(this.fontFamily_) + ",") +
       defaultFonts + ";" + variationCss;
   var span = this.domHelper_.createElement('span', { 'style': styleString },
