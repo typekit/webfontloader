@@ -148,3 +148,19 @@ webfont.DomHelper.prototype.removeClassName = function(e, name) {
   e.className = remainingClasses.join(' ').replace(/^\s+/, '')
       .replace(/\s+$/, '');
 };
+
+/**
+ * Returns true if an element has a given class name and false otherwise.
+ * @param {Element} e The element.
+ * @param {string} name The class name to check for.
+ * @return {boolean} Whether or not the element has this class name.
+ */
+webfont.DomHelper.prototype.hasClassName = function(e, name) {
+  var classes = e.className.split(/\s+/);
+  for (var i = 0, len = classes.length; i < len; i++) {
+    if (classes[i] == name) {
+      return true;
+    }
+  }
+  return false;
+};
