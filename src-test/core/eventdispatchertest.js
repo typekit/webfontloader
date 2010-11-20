@@ -141,6 +141,25 @@ EventDispatcherTest.prototype.testClassNamesOnInactiveThenActiveLoad = function(
   assertEquals('ns-myfamily-n4-inactive ns-myfamily2-n4-active ns-active', this.fakeHtmlElement_.className);
 };
 
+EventDispatcherTest.prototype.testClassNamesOnInactiveThenActiveLoadSameFont = function() {
+  this.eventDispatcher_.dispatchLoading();
+  assertEquals('ns-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontLoading('My Family', 'n4');
+  assertEquals('ns-loading ns-myfamily-n4-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontInactive('My Family', 'n4');
+  assertEquals('ns-loading ns-myfamily-n4-inactive', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchInactive();
+  assertEquals('ns-myfamily-n4-inactive ns-inactive', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchLoading();
+  assertEquals('ns-myfamily-n4-inactive ns-inactive ns-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontLoading('My Family', 'n4');
+  assertEquals('ns-myfamily-n4-inactive ns-inactive ns-loading ns-myfamily-n4-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontActive('My Family', 'n4');
+  assertEquals('ns-inactive ns-loading ns-myfamily-n4-active', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchActive();
+  assertEquals('ns-myfamily-n4-active ns-active', this.fakeHtmlElement_.className);
+};
+
 EventDispatcherTest.prototype.testClassNamesOnActiveThenInactiveLoad = function() {
   this.eventDispatcher_.dispatchLoading();
   assertEquals('ns-loading', this.fakeHtmlElement_.className);
@@ -158,6 +177,25 @@ EventDispatcherTest.prototype.testClassNamesOnActiveThenInactiveLoad = function(
   assertEquals('ns-myfamily-n4-active ns-active ns-loading ns-myfamily2-n4-inactive', this.fakeHtmlElement_.className);
   this.eventDispatcher_.dispatchInactive();
   assertEquals('ns-myfamily-n4-active ns-active ns-myfamily2-n4-inactive', this.fakeHtmlElement_.className);
+};
+
+EventDispatcherTest.prototype.testClassNamesOnActiveThenInactiveLoadSameFont = function() {
+  this.eventDispatcher_.dispatchLoading();
+  assertEquals('ns-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontLoading('My Family', 'n4');
+  assertEquals('ns-loading ns-myfamily-n4-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontActive('My Family', 'n4');
+  assertEquals('ns-loading ns-myfamily-n4-active', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchActive();
+  assertEquals('ns-myfamily-n4-active ns-active', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchLoading();
+  assertEquals('ns-myfamily-n4-active ns-active ns-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontLoading('My Family', 'n4');
+  assertEquals('ns-myfamily-n4-active ns-active ns-loading ns-myfamily-n4-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontInactive('My Family', 'n4');
+  assertEquals('ns-myfamily-n4-active ns-active ns-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchInactive();
+  assertEquals('ns-myfamily-n4-active ns-active', this.fakeHtmlElement_.className);
 };
 
 EventDispatcherTest.prototype.testClassNamesOnActiveThenActiveLoad = function() {
@@ -179,6 +217,25 @@ EventDispatcherTest.prototype.testClassNamesOnActiveThenActiveLoad = function() 
   assertEquals('ns-myfamily-n4-active ns-active ns-myfamily2-n4-active', this.fakeHtmlElement_.className);
 };
 
+EventDispatcherTest.prototype.testClassNamesOnActiveThenActiveLoadSameFont = function() {
+  this.eventDispatcher_.dispatchLoading();
+  assertEquals('ns-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontLoading('My Family', 'n4');
+  assertEquals('ns-loading ns-myfamily-n4-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontActive('My Family', 'n4');
+  assertEquals('ns-loading ns-myfamily-n4-active', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchActive();
+  assertEquals('ns-myfamily-n4-active ns-active', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchLoading();
+  assertEquals('ns-myfamily-n4-active ns-active ns-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontLoading('My Family', 'n4');
+  assertEquals('ns-myfamily-n4-active ns-active ns-loading ns-myfamily-n4-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontActive('My Family', 'n4');
+  assertEquals('ns-myfamily-n4-active ns-active ns-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchActive();
+  assertEquals('ns-myfamily-n4-active ns-active', this.fakeHtmlElement_.className);
+};
+
 EventDispatcherTest.prototype.testClassNamesOnInactiveThenInactiveLoad = function() {
   this.eventDispatcher_.dispatchLoading();
   assertEquals('ns-loading', this.fakeHtmlElement_.className);
@@ -196,4 +253,23 @@ EventDispatcherTest.prototype.testClassNamesOnInactiveThenInactiveLoad = functio
   assertEquals('ns-myfamily-n4-inactive ns-inactive ns-loading ns-myfamily2-n4-inactive', this.fakeHtmlElement_.className);
   this.eventDispatcher_.dispatchInactive();
   assertEquals('ns-myfamily-n4-inactive ns-inactive ns-myfamily2-n4-inactive', this.fakeHtmlElement_.className);
+};
+
+EventDispatcherTest.prototype.testClassNamesOnInactiveThenInactiveLoadSameFont = function() {
+  this.eventDispatcher_.dispatchLoading();
+  assertEquals('ns-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontLoading('My Family', 'n4');
+  assertEquals('ns-loading ns-myfamily-n4-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontInactive('My Family', 'n4');
+  assertEquals('ns-loading ns-myfamily-n4-inactive', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchInactive();
+  assertEquals('ns-myfamily-n4-inactive ns-inactive', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchLoading();
+  assertEquals('ns-myfamily-n4-inactive ns-inactive ns-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontLoading('My Family', 'n4');
+  assertEquals('ns-myfamily-n4-inactive ns-inactive ns-loading ns-myfamily-n4-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchFontInactive('My Family', 'n4');
+  assertEquals('ns-myfamily-n4-inactive ns-inactive ns-loading', this.fakeHtmlElement_.className);
+  this.eventDispatcher_.dispatchInactive();
+  assertEquals('ns-myfamily-n4-inactive ns-inactive', this.fakeHtmlElement_.className);
 };
