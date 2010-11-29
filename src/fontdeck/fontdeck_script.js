@@ -42,7 +42,6 @@ webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support)
   } else {
     support(true);
   }
-  
 };
 
 webfont.FontdeckScript.prototype.load = function(onReady) {

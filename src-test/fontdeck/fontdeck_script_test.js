@@ -11,16 +11,16 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
   var insert = '';
   var src = '';
   var fakeDomHelper = {
-      insertInto: function(tag, e) {
-        insert = tag;
-      },
-      createScriptSrc: function(srcLink) {
-        src = srcLink;
-      },
-      createCssLink: function(cssLink) {
-        css = cssLink;
-        return '<link href="' + css + '" type="text/css" />';
-      }
+    insertInto: function(tag, e) {
+      insert = tag;
+    },
+    createScriptSrc: function(srcLink) {
+      src = srcLink;
+    },
+    createCssLink: function(cssLink) {
+      css = cssLink;
+      return '<link href="' + css + '" type="text/css" />';
+    }
   };
   var global = {};
   var fontdeck = new webfont.FontdeckScript(global, fakeDomHelper, configuration);
