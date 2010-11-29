@@ -5,8 +5,8 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
     'id': '161'
   };
   var apiResponse = {
-    "css":"http://dev.int.fontdeck.com/s/css/uH5+KWQnibDTJRYggGJ9XZLTAgw/webfontloader/161.css",
-    "provides":["Fertigo Pro Regular", "Fertigo Pro Bold"]
+    'css':'http://dev.int.fontdeck.com/s/css/uH5+KWQnibDTJRYggGJ9XZLTAgw/webfontloader/161.css',
+    'provides':['Fertigo Pro Regular', 'Fertigo Pro Bold']
   };
   var insert = '';
   var src = '';

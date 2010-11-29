@@ -14,7 +14,7 @@ webfont.FontdeckScript.HOOK = '__webfontfontdeckmodule__';
 
 webfont.FontdeckScript.prototype.getScriptSrc = function(projectId) {
   var api = this.configuration_['api'] || 'http://dev.int.fontdeck.com/api/v1/project-info?';
-  return api + "project=" + projectId + "&domain=" + document.location.hostname + "&callback=window.__webfontfontdeckmodule__[" + projectId + "]";
+  return api + 'project=' + projectId + '&domain=' + document.location.hostname + '&callback=window.__webfontfontdeckmodule__[' + projectId + ']';
 };
 
 webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support) {
