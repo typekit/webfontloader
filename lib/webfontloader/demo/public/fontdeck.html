@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+  <link href="/basic.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/webfont.js"></script>
+  <script type="text/javascript">
+    WebFont.load({
+      fontdeck: {
+        id: '161',
+        fonts: "Fertigo Pro Regular"
+      }
+    });
+  </script>
+  <style type="text/css">
+    /* Use classes to prove that Typekit triggers the event system correctly */
+    h1 {
+        font-family: 'Fertigo Pro Regular';
+        visibility: hidden;
+    }
+    .wf-fertigoproregular-n4-active h1 {
+      visibility: visible;
+    }
+  </style>
+</head>
+<body>
+  <h1>
+    Hello World. I am Arial Black.
+  </h1>
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/typekit.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is to show how Fontdeck fonts load.
+  </p>
+</body>
+</html>

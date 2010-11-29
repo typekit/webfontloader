@@ -20,6 +20,9 @@ google:
   - google/fontapiurlbuilder.js
   - google/fontapiparser.js
   - google/googlefontapi.js
+  
+fontdeck:
+  - fontdeck/fontdeck_script.js
 
 typekit:
   - typekit/typekit_script.js

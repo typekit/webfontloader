@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
   s.version           = '1.0.16'
-  s.date              = '2010-11-18'
+  s.date              = '2010-11-29'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -111,6 +111,7 @@ DESC
     src-test/core/fontwatchrunnertest.js
     src-test/core/useragenttest.js
     src-test/custom/customcsstest.js
+    src-test/fontdeck/fontdeck_script_test.js
     src-test/google/fontapiparsertest.js
     src-test/google/fontapiurlbuildertest.js
     src-test/google/googlefontapitest.js
@@ -132,6 +133,7 @@ DESC
     src/core/useragent.js
     src/core/useragentparser.js
     src/custom/customcss.js
+    src/fontdeck/fontdeck_script.js
     src/google/fontapiparser.js
     src/google/fontapiurlbuilder.js
     src/google/googlefontapi.js
