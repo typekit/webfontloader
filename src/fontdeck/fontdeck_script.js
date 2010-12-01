@@ -33,7 +33,9 @@ webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support)
     // and a list of supported fonts.
     this.global_[webfont.FontdeckScript.HOOK][projectId] = function(data) {
       self.domHelper_.insertInto('head', self.domHelper_.createCssLink(data.css));
-      self.fontFamilies_ = data.provides;
+      for (var i = 0, j = data.provides.length; i < j; ++i) {
+        self.fontFamilies_.push(data.provides[i].name);
+      }
       support(true);
     };
    
