@@ -2,30 +2,62 @@
 <html>
 <head>
   <link href="/basic.css" rel="stylesheet" type="text/css">
-  <script type="text/javascript" src="/webfont.js"></script>
-  <script type="text/javascript">
+  <script src="/webfont.js"></script>
+  <script>
+    function progress(message) {
+      var output = document.getElementById('events');
+      if (output) {
+        var e = document.createElement('li');
+        e.innerHTML = message;
+        output.appendChild(e);
+      }
+      if (window.console && window.console.log) {
+        window.console.log(message);
+      }
+    }
     WebFont.load({
       fontdeck: {
         id: '161',
         api: 'http://dev.int.fontdeck.com/api/v1/project-info?'
+      },
+      loading: function() {
+        progress('loading');
+      },
+      active: function() {
+        progress('active');
+      },
+      inactive: function() {
+        progress('inactive');
+      },
+      fontloading: function(fontFamily, fontDescription) {
+        progress('fontloading: ' + fontFamily + ' (' + fontDescription + ')');
+      },
+      fontactive: function(fontFamily, fontDescription) {
+        progress('fontactive: ' + fontFamily + ' (' + fontDescription + ')');
+      },
+      fontinactive: function(fontFamily, fontDescription) {
+        progress('fontinactive: ' + fontFamily + ' (' + fontDescription + ')');
       }
     });
   </script>
-  <style type="text/css">
-    /* Use classes to prove that Typekit triggers the event system correctly */
+  <style>
     h1 {
-        font-family: 'Fertigo Pro Regular';
-        visibility: hidden;
+      font-family: 'Fertigo Pro Regular';
+      visibility: hidden;
     }
-    .wf-fertigoproregular-n4-active h1 {
+    h2 {
+      font-family: 'Calluna Regular';
+      visibility: hidden;
+    }
+    .wf-fertigoproregular-n4-active h1,
+    .wf-callunaregular-n4-active h2 {
       visibility: visible;
     }
   </style>
 </head>
 <body>
-  <h1>
-    Hello World. I am Arial Black.
-  </h1>
+  <h1>Hello World. I am Fertigo Pro Regular.</h1>
+  <h2>Hello World. I am Calluna Regular.</h2>
   <hr>
   <p>
     <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
@@ -34,5 +66,6 @@
   <p>
     The goal of this page is to show how Fontdeck fonts load.
   </p>
+  <ol id="events"></ol>
 </body>
 </html>
