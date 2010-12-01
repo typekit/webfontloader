@@ -11,9 +11,10 @@ webfont.FontdeckScript = function(global, domHelper, configuration) {
 
 webfont.FontdeckScript.NAME = 'fontdeck';
 webfont.FontdeckScript.HOOK = '__webfontfontdeckmodule__';
+webfont.FontdeckScript.API = 'http://fontdeck.com/api/v1/project-info?'
 
 webfont.FontdeckScript.prototype.getScriptSrc = function(projectId) {
-  var api = this.configuration_['api'] || 'http://dev.int.fontdeck.com/api/v1/project-info?';
+  var api = this.configuration_['api'] || webfont.FontdeckScript.API;
   return api + 'project=' + projectId + '&domain=' + document.location.hostname + '&callback=window.__webfontfontdeckmodule__[' + projectId + ']';
 };
 
@@ -36,9 +37,10 @@ webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support)
       support(true);
     };
    
-    // Call the fontdeck API.
+    // Call the Fontdeck API.
     var script = this.domHelper_.createScriptSrc(this.getScriptSrc(projectId));
     this.domHelper_.insertInto('head', script);
+    
   } else {
     support(true);
   }

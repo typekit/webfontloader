@@ -31,7 +31,7 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
 
   fontdeck.supportUserAgent(userAgent, function(support) { isSupport = support; });
   assertEquals('head', insert);
-  assertEquals('http://dev.int.fontdeck.com/api/v1/project-info?project=161&domain=localhost&callback=window.__webfontfontdeckmodule__[161]', src);
+  assertEquals('http://fontdeck.com/api/v1/project-info?project=161&domain=localhost&callback=window.__webfontfontdeckmodule__[161]', src);
   assertEquals(null, isSupport);
 
   assertNotNull(global.__webfontfontdeckmodule__);
