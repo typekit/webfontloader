@@ -11,9 +11,19 @@ webfont.GoogleFontApi.NAME = 'google';
 
 webfont.GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) {
   if (userAgent.getPlatform().match(/iPad|iPod|iPhone/) != null) {
-    support(false);
+    support(true);
+    return;
   }
-  return support(userAgent.isSupportingWebFont());
+  if (userAgent.getPlatform().match(/Android/) != null) {
+    if (userAgent.getVersion().indexOf('2.2') != -1) {
+      support(true);
+      return;
+    } else {
+      support(false);
+      return;
+    }
+  }
+  support(userAgent.isSupportingWebFont());
 };
 
 webfont.GoogleFontApi.prototype.load = function(onReady) {
