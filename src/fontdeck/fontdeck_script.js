@@ -20,7 +20,6 @@ webfont.FontdeckScript.prototype.getScriptSrc = function(projectId) {
 
 webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support) {
   var projectId = this.configuration_['id'];
-  var configuration = this.configuration_;
   var self = this;
   
   if (projectId) {
@@ -32,9 +31,9 @@ webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support)
     // The API will call this function with a link to the CSS
     // and a list of supported fonts.
     this.global_[webfont.FontdeckScript.HOOK][projectId] = function(data) {
-      self.domHelper_.insertInto('head', self.domHelper_.createCssLink(data.css));
-      for (var i = 0, j = data.provides.length; i < j; ++i) {
-        self.fontFamilies_.push(data.provides[i].name);
+      self.domHelper_.insertInto('head', self.domHelper_.createCssLink(data['css']));
+      for (var i = 0, j = data['provides'].length; i < j; ++i) {
+        self.fontFamilies_.push(data['provides'][i].name);
       }
       support(true);
     };
