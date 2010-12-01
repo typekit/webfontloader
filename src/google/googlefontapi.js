@@ -10,19 +10,6 @@ webfont.GoogleFontApi = function(userAgent, domHelper, configuration) {
 webfont.GoogleFontApi.NAME = 'google';
 
 webfont.GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) {
-  if (userAgent.getPlatform().match(/iPad|iPod|iPhone/) != null) {
-    support(true);
-    return;
-  }
-  if (userAgent.getPlatform().match(/Android/) != null) {
-    if (userAgent.getVersion().indexOf('2.2') != -1) {
-      support(true);
-      return;
-    } else {
-      support(false);
-      return;
-    }
-  }
   support(userAgent.isSupportingWebFont());
 };
 
