@@ -39,10 +39,10 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
 
   assertNotNull(global.__webfontfontdeckmodule__);
   assertNotNull(global.__webfontfontdeckmodule__['2282']);
-  
+
   // Call the callback function passing in dummy API response.
   global.__webfontfontdeckmodule__['2282'](apiResponse);
-  
+
   assertEquals(fontdeck.fontFamilies_, [apiResponse.provides[0].name, apiResponse.provides[1].name]);
 
 };
