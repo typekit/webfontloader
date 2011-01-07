@@ -8,7 +8,7 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
     'css':'http://fontdeck.com/s/css/uH5+KWQnibDTJRYggGJ9XZLTAgw/webfontloader/2282.css',
     'provides':[
       {'font_size_adjust':null,'weight':'normal','style':'normal','name':'Fertigo Pro Regular'},
-      {'font_size_adjust':'0.5','weight':'normal','style':'normal','name':'Calluna Regular'}
+      {'font_size_adjust':'0.5','weight':'bold','style':'italic','name':'Bodoni Display Bold Italic'}
     ]
   };
   var insert = '';
@@ -44,5 +44,6 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
   global.__webfontfontdeckmodule__['2282'](apiResponse);
 
   assertEquals(fontdeck.fontFamilies_, [apiResponse.provides[0].name, apiResponse.provides[1].name]);
-
+  assertEquals(fontdeck.fontVariations_[apiResponse.provides[0].name], ['n4']);
+  assertEquals(fontdeck.fontVariations_[apiResponse.provides[1].name], ['i7']);
 };
