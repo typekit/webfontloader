@@ -7,7 +7,7 @@ EventDispatcherTest.prototype.setUp = function() {
   this.fontLoading_ = '';
   this.fontActiveEventCalled_ = false;
   this.fontActive_ = '';
-  this.fontInactvieEventCalled_ = false;
+  this.fontInactiveEventCalled_ = false;
   this.fontInactive_ = '';
   this.activeEventCalled_ = false;
   this.inactiveEventCalled_ = false;
@@ -34,7 +34,7 @@ EventDispatcherTest.prototype.setUp = function() {
           self.fontActive_ = fontFamily + ' ' + fontDescription;
         },
         fontinactive: function(fontFamily, fontDescription) {
-          self.fontInactvieEventCalled_ = true;
+          self.fontInactiveEventCalled_ = true;
           self.fontInactive_ = fontFamily + ' ' + fontDescription;
         }
   }, namespace);
@@ -82,7 +82,7 @@ EventDispatcherTest.prototype.testEventsOnInactiveFontButActive = function() {
   assertTrue(this.fontLoadingEventCalled_);
   assertEquals('fontFamilyLoading n4', this.fontLoading_);
   this.eventDispatcher_.dispatchFontInactive('fontFamilyInactive', 'n4');
-  assertTrue(this.fontInactvieEventCalled_);
+  assertTrue(this.fontInactiveEventCalled_);
   assertEquals('fontFamilyInactive n4', this.fontInactive_);
   this.eventDispatcher_.dispatchActive();
   assertTrue(this.activeEventCalled_);
@@ -106,7 +106,7 @@ EventDispatcherTest.prototype.testEventsOnInactiveLoad = function() {
   assertTrue(this.fontLoadingEventCalled_);
   assertEquals('fontFamilyLoading n4', this.fontLoading_);
   this.eventDispatcher_.dispatchFontInactive('fontFamilyInactive', 'n4');
-  assertTrue(this.fontInactvieEventCalled_);
+  assertTrue(this.fontInactiveEventCalled_);
   assertEquals('fontFamilyInactive n4', this.fontInactive_);
   this.eventDispatcher_.dispatchInactive();
   assertTrue(this.inactiveEventCalled_);
