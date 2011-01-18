@@ -62,7 +62,7 @@ Here's an example of CSS classes over multiple loads:
     * The `html` element has `wf-active wf-droidsans-n4-active`
   * Droid Sans n7 is subsequently requested
     * The `html` element has `wf-active wf-loading wf-droidsans-n4-active
-        wf-droidsans-n7-active`
+        wf-droidsans-n7-loading`
   * Droid Sans n7 is detected as active
     * The `html` element has `wf-active wf-droidsans-n4-active
         wf-droidsans-n7-active`
