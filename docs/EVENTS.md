@@ -47,6 +47,40 @@ describing the style and weight of a particular font. Here are a few examples:
 If no style/weight is specified, the default "n4" (font-style: normal;
 font-weight: normal;) will be used.
 
+If fonts are loaded multiple times on a single page, the CSS classes continue
+to update to reflect the current state of the page. The global `wf-loading`
+class is applied whenever fonts are being requested (even if other fonts are
+already active or inactive). The `wf-inactive` class is applied only if none of
+the fonts on the page have rendered. Otherwise, the `wf-active` class is applied
+instead (even if some fonts are inactive).
+
+Here's an example of CSS classes over multiple loads:
+
+  * Droid Sans n4 is requested
+    * The `html` element has `wf-loading wf-droidsans-n4-loading`
+  * Droid Sans n4 is detected as active
+    * The `html` element has `wf-active wf-droidsans-n4-active`
+  * Droid Sans n7 is subsequently requested
+    * The `html` element has `wf-active wf-loading wf-droidsans-n4-active
+        wf-droidsans-n7-active`
+  * Droid Sans n7 is detected as active
+    * The `html` element has `wf-active wf-droidsans-n4-active
+        wf-droidsans-n7-active`
+
+Here's another example of CSS classes over multiple loads when one of the
+requested fonts is inactive:
+
+  * Droid Sans n9 is requested (which doesn't exist)
+    * The `html` element has `wf-loading wf-droidsans-n9-loading`
+  * Droid Sans n9 is detected as inactive
+    * The `html` element has `wf-inactive wf-droidsans-n9-inactive`
+  * Droid Sans n4 is subsequently requested
+    * The `html` element has `wf-inactive wf-loading wf-droidsans-n9-inactive
+        wf-droidsans-n4-loading`
+  * Droid Sans n4 is detected as active
+    * The `html` element has `wf-active wf-droidsans-n9-inactive
+        wf-droidsans-n4-active`
+
 
 ### JavaScript Flavored
 
