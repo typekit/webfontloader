@@ -1,3 +1,8 @@
+v1.0.18 (January 24, 2011)
+* Improve behavior of CSS classes over multiple loads on a single page. (Documented in docs/EVENTS.md)
+* Add support for international subsets in the Google module.
+* Add a module for Fontdeck.
+
 v1.0.17 (December 1, 2010)
 * Changed CSS style for hidden span in order to be less affected by environment
 * Removed restriction on iPhone/iPad/iPod in the google modules
