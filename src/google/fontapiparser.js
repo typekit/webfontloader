@@ -25,32 +25,47 @@ webfont.FontApiParser.VARIATIONS = {
 };
 
 webfont.FontApiParser.INT_FONTS = {
-  'Hanuman': '&#x1780;&#x1781;&#x1782;'
+  'latin': webfont.FontWatchRunner.DEFAULT_TEST_STRING,
+  'cyrillic': '&#1081;&#1103;&#1046;',
+  'greek': '&#945;&#946;&#931;',
+  'khmer': '&#x1780;&#x1781;&#x1782;',
+  'Hanuman': '&#x1780;&#x1781;&#x1782;' // For backward compatibility
 };
 
 webfont.FontApiParser.prototype.parse = function() {
   var length = this.fontFamilies_.length;
 
   for (var i = 0; i < length; i++) {
-    var pair = this.fontFamilies_[i].split(":");
-    var fontFamily = pair[0];
-    var variations = null;
+    var elements = this.fontFamilies_[i].split(":");
+    var fontFamily = elements[0];
+    var variations = ['n4'];
 
-    if (pair.length == 2) {
-      var fvds = this.parseVariations_(pair[1]);
+    if (elements.length >= 2) {
+      var fvds = this.parseVariations_(elements[1]);
 
       if (fvds.length > 0) {
         variations = fvds;
       }
-    } else {
-      variations = ['n4'];
+      if (elements.length == 3) {
+        var subsets = this.parseSubsets_(elements[2]);
+        if (subsets.length > 0) {
+          var fontTestString = webfont.FontApiParser.INT_FONTS[subsets[0]];
+
+          if (fontTestString) {
+	    this.fontTestStrings_[fontFamily] = fontTestString;
+	  }
+	}
+      }
+    }
+
+    // For backward compatibility
+    if (!this.fontTestStrings_[fontFamily]) {
+      var hanumanTestString = webfont.FontApiParser.INT_FONTS[fontFamily];
+      if (hanumanTestString) {
+        this.fontTestStrings_[fontFamily] = hanumanTestString;
+      }
     }
     this.parsedFontFamilies_.push(fontFamily);
-    var fontTestString = webfont.FontApiParser.INT_FONTS[fontFamily];
-
-    if (fontTestString) {
-      this.fontTestStrings_[fontFamily] = fontTestString;
-    }
     this.variations_[fontFamily] = variations;
   }
 };
@@ -81,6 +96,10 @@ webfont.FontApiParser.prototype.generateFontVariationDescription_ = function(var
 
 webfont.FontApiParser.prototype.parseVariations_ = function(variations) {
   var finalVariations = [];
+
+  if (!variations) {
+    return finalVariations;
+  }
   var providedVariations = variations.split(",");
   var length = providedVariations.length;
 
@@ -94,6 +113,17 @@ webfont.FontApiParser.prototype.parseVariations_ = function(variations) {
   }
   return finalVariations;
 };
+
+
+webfont.FontApiParser.prototype.parseSubsets_ = function(subsets) {
+  var finalSubsets = [];
+
+  if (!subsets) {
+    return finalSubsets;
+  }
+  return subsets.split(",");
+};
+
 
 webfont.FontApiParser.prototype.getFontFamilies = function() {
   return this.parsedFontFamilies_;
