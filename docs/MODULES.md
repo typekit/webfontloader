@@ -78,4 +78,4 @@ provides.
 [gfontapi]: https://code.google.com/apis/webfonts/docs/getting_started.html
 [tk]: http://typekit.com/
 [fd]: http://fontdeck.com/
-[mtiwfs] http://webfonts.fonts.com/
+[mtiwfs]: http://webfonts.fonts.com/
