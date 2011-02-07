@@ -1,12 +1,36 @@
-webfont.UserAgentParser = function(userAgent) {
+/**
+ * @param {string} userAgent The browser userAgent string to parse.
+ * @constructor
+ */
+webfont.UserAgentParser = function(userAgent, doc) {
   this.userAgent_ = userAgent;
+  this.doc_ = doc;
 };
 
+/**
+ * @const
+ * @type {string}
+ */
 webfont.UserAgentParser.UNKNOWN = "Unknown";
 
-webfont.UserAgentParser.UNKNOWN_USER_AGENT = new webfont.UserAgent(webfont.UserAgentParser.UNKNOWN,
-    webfont.UserAgentParser.UNKNOWN, webfont.UserAgentParser.UNKNOWN, false);
+/**
+ * @const
+ * @type {webfont.UserAgent}
+ */
+webfont.UserAgentParser.UNKNOWN_USER_AGENT = new webfont.UserAgent(
+    webfont.UserAgentParser.UNKNOWN,
+    webfont.UserAgentParser.UNKNOWN,
+    webfont.UserAgentParser.UNKNOWN,
+    webfont.UserAgentParser.UNKNOWN,
+    webfont.UserAgentParser.UNKNOWN,
+    webfont.UserAgentParser.UNKNOWN,
+    undefined,
+    false);
 
+/**
+ * Parses the user agent string and returns an object.
+ * @return {webfont.UserAgent}
+ */
 webfont.UserAgentParser.prototype.parse = function() {
   if (this.isIe_()) {
     return this.parseIeUserAgentString_();
@@ -21,15 +45,18 @@ webfont.UserAgentParser.prototype.parse = function() {
   }
 };
 
+/**
+ * @private
+ */
 webfont.UserAgentParser.prototype.getPlatform_ = function() {
-  var mobileOs = this.getFirstMatchingGroup_(this.userAgent_,
-      /(iPod|iPad|iPhone|Android)/);
+  var mobileOs = this.getMatchingGroup_(this.userAgent_,
+      /(iPod|iPad|iPhone|Android)/, 1);
 
   if (mobileOs != "") {
     return mobileOs;
   }
-  var os = this.getFirstMatchingGroup_(this.userAgent_,
-      /(Linux|Mac_PowerPC|Macintosh|Windows)/);
+  var os = this.getMatchingGroup_(this.userAgent_,
+      /(Linux|Mac_PowerPC|Macintosh|Windows)/, 1);
 
   if (os != "") {
     if (os == "Mac_PowerPC") {
@@ -40,12 +67,41 @@ webfont.UserAgentParser.prototype.getPlatform_ = function() {
   return webfont.UserAgentParser.UNKNOWN;
 };
 
+/**
+ * @private
+ */
+webfont.UserAgentParser.prototype.getPlatformVersion_ = function() {
+  var macVersion = this.getMatchingGroup_(this.userAgent_,
+      /(OS X|Windows NT|Android) ([^;)]+)/, 2);
+  if (macVersion) {
+    return macVersion;
+  }
+  var iVersion = this.getMatchingGroup_(this.userAgent_,
+      /(iPhone )?OS ([\d_]+)/, 2);
+  if (iVersion) {
+    return iVersion;
+  }
+  var linuxVersion = this.getMatchingGroup_(this.userAgent_,
+      /Linux ([i\d]+)/, 1);
+  if (linuxVersion) {
+    return linuxVersion;
+  }
+
+  return webfont.UserAgentParser.UNKNOWN;
+};
+
+/**
+ * @private
+ */
 webfont.UserAgentParser.prototype.isIe_ = function() {
   return this.userAgent_.indexOf("MSIE") != -1;
 };
 
+/**
+ * @private
+ */
 webfont.UserAgentParser.prototype.parseIeUserAgentString_ = function() {
-  var browser = this.getFirstMatchingGroup_(this.userAgent_, /(MSIE [\d\w\.]+)/);
+  var browser = this.getMatchingGroup_(this.userAgent_, /(MSIE [\d\w\.]+)/, 1);
   var engineName = webfont.UserAgentParser.UNKNOWN;
   var engineVersion = webfont.UserAgentParser.UNKNOWN;
 
@@ -57,21 +113,30 @@ webfont.UserAgentParser.prototype.parseIeUserAgentString_ = function() {
     // For IE we give MSIE as the engine name and the version of IE
     // instead of the specific Trident engine name and version
     return new webfont.UserAgent(name, version, name, version,
-        this.getPlatform_(), this.getMajorVersion_(version) >= 6);
+        this.getPlatform_(), this.getPlatformVersion_(),
+        this.getDocumentMode_(this.doc_), this.getMajorVersion_(version) >= 6);
   }
   return new webfont.UserAgent("MSIE", webfont.UserAgentParser.UNKNOWN,
-      "MSIE", webfont.UserAgentParser.UNKNOWN, this.getPlatform_(), false);
+      "MSIE", webfont.UserAgentParser.UNKNOWN,
+      this.getPlatform_(), this.getPlatformVersion_(),
+      this.getDocumentMode_(this.doc_), false);
 };
 
+/**
+ * @private
+ */
 webfont.UserAgentParser.prototype.isOpera_ = function() {
   return this.userAgent_.indexOf("Opera") != -1;
 };
 
+/**
+ * @private
+ */
 webfont.UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
   var engineName = webfont.UserAgentParser.UNKNOWN;
   var engineVersion = webfont.UserAgentParser.UNKNOWN;
-  var enginePair = this.getFirstMatchingGroup_(this.userAgent_,
-      /(Presto\/[\d\w\.]+)/);
+  var enginePair = this.getMatchingGroup_(this.userAgent_,
+      /(Presto\/[\d\w\.]+)/, 1);
 
   if (enginePair != "") {
     var splittedEnginePair = enginePair.split('/');
@@ -82,38 +147,48 @@ webfont.UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
     if (this.userAgent_.indexOf("Gecko") != -1) {
       engineName = "Gecko";
     }
-    var geckoVersion = this.getFirstMatchingGroup_(this.userAgent_, /rv:([^\)]+)/);
+    var geckoVersion = this.getMatchingGroup_(this.userAgent_, /rv:([^\)]+)/, 1);
 
     if (geckoVersion != "") {
       engineVersion = geckoVersion;
     }
   }
   if (this.userAgent_.indexOf("Version/") != -1) {
-    var version = this.getFirstMatchingGroup_(this.userAgent_, /Version\/([\d\.]+)/);
+    var version = this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.]+)/, 1);
 
     if (version != "") {
       return new webfont.UserAgent("Opera", version, engineName, engineVersion,
-          this.getPlatform_(), this.getMajorVersion_(version) >= 10);
+          this.getPlatform_(), this.getPlatformVersion_(),
+          this.getDocumentMode_(this.doc_), this.getMajorVersion_(version) >= 10);
     }
   }
-  var version = this.getFirstMatchingGroup_(this.userAgent_, /Opera[\/ ]([\d\.]+)/);
+  var version = this.getMatchingGroup_(this.userAgent_, /Opera[\/ ]([\d\.]+)/, 1);
 
   if (version != "") {
     return new webfont.UserAgent("Opera", version, engineName, engineVersion,
-        this.getPlatform_(), this.getMajorVersion_(version) >= 10);
+        this.getPlatform_(), this.getPlatformVersion_(),
+        this.getDocumentMode_(this.doc_), this.getMajorVersion_(version) >= 10);
   }
   return new webfont.UserAgent("Opera", webfont.UserAgentParser.UNKNOWN,
-      engineName, engineVersion, this.getPlatform_(), false);
+      engineName, engineVersion, this.getPlatform_(),
+      this.getPlatformVersion_(), this.getDocumentMode_(this.doc_), false);
 };
 
+/**
+ * @private
+ */
 webfont.UserAgentParser.prototype.isWebKit_ = function() {
   return this.userAgent_.indexOf("AppleWebKit") != -1;
 };
 
+/**
+ * @private
+ */
 webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
   var platform = this.getPlatform_();
-  var webKitVersion = this.getFirstMatchingGroup_(this.userAgent_,
-      /AppleWebKit\/([\d\.\+]+)/);
+  var platformVersion = this.getPlatformVersion_();
+  var webKitVersion = this.getMatchingGroup_(this.userAgent_,
+      /AppleWebKit\/([\d\.\+]+)/, 1);
 
   if (webKitVersion == "") {
     webKitVersion = webfont.UserAgentParser.UNKNOWN;
@@ -124,27 +199,46 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
     name = "Chrome";
   } else if (this.userAgent_.indexOf("Safari") != -1) {
     name = "Safari";
+  } else if (this.userAgent_.indexOf("AdobeAIR") != -1) {
+    name = "AdobeAIR";
   }
   var version = webfont.UserAgentParser.UNKNOWN;
 
   if (this.userAgent_.indexOf("Version/") != -1) {
-    version = this.getFirstMatchingGroup_(this.userAgent_,
-        /Version\/([\d\.\w]+)/);
+    version = this.getMatchingGroup_(this.userAgent_,
+        /Version\/([\d\.\w]+)/, 1);
   } else if (name == "Chrome") {
-    version = this.getFirstMatchingGroup_(this.userAgent_,
-        /Chrome\/([\d\.]+)/);
+    version = this.getMatchingGroup_(this.userAgent_,
+        /Chrome\/([\d\.]+)/, 1);
+  } else if (name == "AdobeAIR") {
+    version = this.getMatchingGroup_(this.userAgent_,
+        /AdobeAIR\/([\d\.]+)/, 1);
   }
-  var minor = this.getFirstMatchingGroup_(webKitVersion, /\d+\.(\d+)/);
+  var supportWebFont = false;
+  if (name == "AdobeAIR") {
+    var minor = this.getMatchingGroup_(version, /\d+\.(\d+)/, 1);
+    supportWebFont = this.getMajorVersion_(version) > 2 ||
+      this.getMajorVersion_(version) == 2 && parseInt(minor, 10) >= 5;
+  } else {
+    var minor = this.getMatchingGroup_(webKitVersion, /\d+\.(\d+)/, 1);
+    supportWebFont = this.getMajorVersion_(webKitVersion) >= 526 ||
+      this.getMajorVersion_(webKitVersion) >= 525 && parseInt(minor, 10) >= 13;
+  }
 
   return new webfont.UserAgent(name, version, "AppleWebKit", webKitVersion,
-      platform, this.getMajorVersion_(webKitVersion) >= 526 ||
-      this.getMajorVersion_(webKitVersion) >= 525 && parseInt(minor) >= 13);
+      platform, platformVersion, this.getDocumentMode_(this.doc_), supportWebFont);
 };
 
+/**
+ * @private
+ */
 webfont.UserAgentParser.prototype.isGecko_ = function() {
   return this.userAgent_.indexOf("Gecko") != -1;
 };
 
+/**
+ * @private
+ */
 webfont.UserAgentParser.prototype.parseGeckoUserAgentString_ = function() {
   var name = webfont.UserAgentParser.UNKNOWN;
   var version = webfont.UserAgentParser.UNKNOWN;
@@ -152,28 +246,28 @@ webfont.UserAgentParser.prototype.parseGeckoUserAgentString_ = function() {
 
   if (this.userAgent_.indexOf("Firefox") != -1) {
     name = "Firefox";
-    var versionNum = this.getFirstMatchingGroup_(this.userAgent_,
-        /Firefox\/([\d\w\.]+)/);
+    var versionNum = this.getMatchingGroup_(this.userAgent_,
+        /Firefox\/([\d\w\.]+)/, 1);
 
     if (versionNum != "") {
-      var minor = this.getFirstMatchingGroup_(versionNum, /\d+\.(\d+)/);
+      var minor = this.getMatchingGroup_(versionNum, /\d+\.(\d+)/, 1);
 
       version = versionNum;
       supportWebFont = versionNum != "" && this.getMajorVersion_(versionNum) >= 3 &&
-          parseInt(minor) >= 5;
+          parseInt(minor, 10) >= 5;
     }
   } else if (this.userAgent_.indexOf("Mozilla") != -1) {
     name = "Mozilla";
   }
-  var geckoVersion = this.getFirstMatchingGroup_(this.userAgent_, /rv:([^\)]+)/);
+  var geckoVersion = this.getMatchingGroup_(this.userAgent_, /rv:([^\)]+)/, 1);
 
   if (geckoVersion == "") {
     geckoVersion = webfont.UserAgentParser.UNKNOWN;
   } else {
     if (!supportWebFont) {
       var majorVersion = this.getMajorVersion_(geckoVersion);
-      var intMinorVersion = parseInt(this.getFirstMatchingGroup_(geckoVersion, /\d+\.(\d+)/));
-      var subVersion = parseInt(this.getFirstMatchingGroup_(geckoVersion, /\d+\.\d+\.(\d+)/));
+      var intMinorVersion = parseInt(this.getMatchingGroup_(geckoVersion, /\d+\.(\d+)/, 1), 10);
+      var subVersion = parseInt(this.getMatchingGroup_(geckoVersion, /\d+\.\d+\.(\d+)/, 1), 10);
 
       supportWebFont = majorVersion > 1 ||
           majorVersion == 1 && intMinorVersion > 9 ||
@@ -183,24 +277,39 @@ webfont.UserAgentParser.prototype.parseGeckoUserAgentString_ = function() {
     }
   }
   return new webfont.UserAgent(name, version, "Gecko", geckoVersion,
-      this.getPlatform_(), supportWebFont);
+      this.getPlatform_(), this.getPlatformVersion_(), this.getDocumentMode_(this.doc_),
+      supportWebFont);
 };
 
+/**
+ * @private
+ */
 webfont.UserAgentParser.prototype.getMajorVersion_ = function(version) {
-  var majorVersion = this.getFirstMatchingGroup_(version, /(\d+)/);
+  var majorVersion = this.getMatchingGroup_(version, /(\d+)/, 1);
 
   if (majorVersion != "") {
-    return parseInt(majorVersion);
+    return parseInt(majorVersion, 10);
   }
   return -1;
 };
 
-webfont.UserAgentParser.prototype.getFirstMatchingGroup_ = function(str,
-    regexp) {
+/**
+ * @private
+ */
+webfont.UserAgentParser.prototype.getMatchingGroup_ = function(str,
+    regexp, index) {
   var groups = str.match(regexp);
 
-  if (groups && groups[1]) {
-    return groups[1];
+  if (groups && groups[index]) {
+    return groups[index];
   }
   return "";
+};
+
+/**
+ * @private
+ */
+webfont.UserAgentParser.prototype.getDocumentMode_ = function(doc) {
+  if (doc.documentMode) return doc.documentMode;
+  return undefined;
 };

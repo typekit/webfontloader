@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/basic.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/jquery.min.js"></script>
+  <script type="text/javascript" src="/webfont-fontwatchrunner.js"></script>
+  <style type="text/css">
+    #results {
+      font-family: arial, sans-serif;
+      font-size: 16px;
+    }
+    .test-case {
+      font-size: 300px;
+    }
+  </style>
+  <script type="text/javascript">
+    var styles = '<style type="text/css">';
+    styles += '.default-fonts-a {font-family: ' + webfont.FontWatchRunner.DEFAULT_FONTS_A + ';}';
+    styles += '.default-fonts-b {font-family: ' + webfont.FontWatchRunner.DEFAULT_FONTS_B + ';}';
+    styles += '</style>';
+    document.write(styles);
+  </script>
+</head>
+<body>
+  <p id="results">Calculating...</p>
+  <p>
+    The goal of this page is to verify that the two default font stacks in
+    FontWatchRunner have different widths on a given platform when rendering the
+    default test string. The pairs of headings below should render in different
+    fonts and the results above should indicate that they all have different
+    widths.
+  </p>
+  <hr>
+  <div id="test-cases"></div>
+  <script type="text/javascript">
+    // Calculate all the different combinations of styles to test
+    var styles = {
+      'font-weight': [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000],
+      'font-style': ['normal', 'italic'],
+      'text-rendering': [null, 'optimizeLegibility']
+    };
+    function calculateStyleCombos(props, styles) {
+      if (props.length <= 0) {
+        return [{}]
+      }
+      var remainingProps = $.extend(true, [], props);
+      var prop = remainingProps.pop();
+      var remainingCombos = calculateStyleCombos(remainingProps, styles);
+      var combos = [];
+      for (var i = 0; i < remainingCombos.length; i++) {
+        for (var j = 0; j < styles[prop].length; j++) {
+          var combo = {};
+          if (styles[prop][j] !== null) {
+            combo[prop] = styles[prop][j];
+          }
+          combos.push($.extend(combo, remainingCombos[i]));
+        }
+      }
+      return combos;
+    }
+    var styleCombos = calculateStyleCombos(['font-weight', 'font-style', 'text-rendering'], styles);
+
+    // Create test cases with default test strings for each style combo
+    var testCases = $('#test-cases');
+    for (var i = 0; i < styleCombos.length; i++) {
+      var test = $('<div class="test-case"></div>').css(styleCombos[i]);
+      test.append($('<span class="default-fonts-a"></span>').text(webfont.FontWatchRunner.DEFAULT_TEST_STRING));
+      test.append($('<span class="default-fonts-b"></span>').text(webfont.FontWatchRunner.DEFAULT_TEST_STRING));
+      testCases.append(test);
+    }
+
+    // Calculate the width of the spans after timeout
+    setTimeout(function() {
+      var comparisons = $('<span></span>');
+      var allPassed = true;
+      $('.test-case').each(function() {
+        var a = $(this).find('span').first().width();
+        var b = $(this).find('span').last().width();
+        comparisons.append($('<span></span>').css('color', a != b ? 'green' : 'red').text(a - b)).append(' ');
+        allPassed = allPassed && a != b;
+      });
+      $('#results').text(allPassed ? 'SUCCESS | ' : 'FAIL | ').append(comparisons);
+    }, 500);
+  </script>
+</body>
+</html>

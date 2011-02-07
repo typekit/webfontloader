@@ -1,7 +1,17 @@
+/**
+ * Handles quoting rules for a font family name in css.
+ * @constructor
+ */
 webfont.CssFontFamilyName = function() {
-  this.quote_ = '"';
+  /** @type {string} */
+  this.quote_ = "'";
 };
 
+/**
+ * Quotes the name.
+ * @param {string} name The name to quote.
+ * @return {string} The quoted name.
+ */
 webfont.CssFontFamilyName.prototype.quote = function(name) {
   var quoted = [];
   var split = name.split(/,\s*/);

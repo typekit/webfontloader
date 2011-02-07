@@ -28,6 +28,15 @@ module WebFontLoader
         get_js_code
       end
 
+      get '/webfont-fontwatchrunner.js' do
+        headers 'Content-Type' => 'application/javascript'
+        headers 'Cache-Control' => 'max-age=300'
+        [
+          'var webfont = {};',
+          File.read(File.join(WebFontLoader::ProjectRoot, 'src/core/fontwatchrunner.js'))
+        ]
+      end
+
       get '/fonts/api' do
         url = "#{GoogleApi}?#{env['QUERY_STRING']}"
         headers 'Content-Type' => 'text/css'

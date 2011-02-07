@@ -1,3 +1,6 @@
+/**
+ * @constructor
+ */
 webfont.FontApiUrlBuilder = function(apiUrl) {
   if (apiUrl) {
     this.apiUrl_ = apiUrl;
@@ -6,23 +9,45 @@ webfont.FontApiUrlBuilder = function(apiUrl) {
 
     this.apiUrl_ = protocol + webfont.FontApiUrlBuilder.DEFAULT_API_URL;
   }  
-  this.fontFamilies_ = null;
+  this.fontFamilies_ = [];
+  this.subsets_ = [];
 };
+
 
 webfont.FontApiUrlBuilder.DEFAULT_API_URL = '//fonts.googleapis.com/css';
 
+
 webfont.FontApiUrlBuilder.prototype.setFontFamilies = function(fontFamilies) {
-  // maybe clone?
-  this.fontFamilies_ = fontFamilies;
+  this.parseFontFamilies_(fontFamilies);
 };
+
+
+webfont.FontApiUrlBuilder.prototype.parseFontFamilies_ =
+    function(fontFamilies) {
+  var length = fontFamilies.length;
+
+  for (var i = 0; i < length; i++) {
+    var elements = fontFamilies[i].split(':');
+
+    if (elements.length == 3) {
+      this.subsets_.push(elements.pop());
+    }
+    this.fontFamilies_.push(elements.join(':'));
+  }
+};
+
 
 webfont.FontApiUrlBuilder.prototype.webSafe = function(string) {
   return string.replace(/ /g, '+');
 };
 
+
 webfont.FontApiUrlBuilder.prototype.build = function() {
-  if (!this.fontFamilies_) {
+  if (this.fontFamilies_.length == 0) {
     throw new Error('No fonts to load !');
+  }
+  if (this.apiUrl_.indexOf("kit=") != -1) {
+    return this.apiUrl_;
   }
   var length = this.fontFamilies_.length;
   var sb = [];
@@ -31,6 +56,10 @@ webfont.FontApiUrlBuilder.prototype.build = function() {
     sb.push(this.webSafe(this.fontFamilies_[i]));
   }
   var url = this.apiUrl_ + '?family=' + sb.join('%7C'); // '|' escaped.
+
+  if (this.subsets_.length > 0) {
+    url += '&subset=' + this.subsets_.join(',');
+  }
 
   return url;
 };

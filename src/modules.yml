@@ -6,16 +6,23 @@ core:
   - core/eventdispatcher.js
   - core/fontmoduleloader.js
   - core/fontwatcher.js
+  - core/fontwatchrunner.js
   - core/font.js
   - core/cssclassname.js
   - core/cssfontfamilyname.js
   - core/fontvariationdescription.js
   - core/initialize.js
 
+ascender:
+  - ascender/ascender_script.js
+
 google:
   - google/fontapiurlbuilder.js
   - google/fontapiparser.js
   - google/googlefontapi.js
+
+fontdeck:
+  - fontdeck/fontdeck_script.js
 
 typekit:
   - typekit/typekit_script.js

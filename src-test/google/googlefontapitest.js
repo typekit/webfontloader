@@ -24,7 +24,7 @@ GoogleFontApiTest.prototype.testCallOnReadyWithFontFamilyLoading = function() {
   });
 
   assertEquals('head', insert);
-  assertEquals('//fonts.googleapis.com/css?family=' +
+  assertEquals('http://fonts.googleapis.com/css?family=' +
       'Font1%7CFont2', link);
 
   assertNotNull(families);
@@ -110,7 +110,7 @@ GoogleFontApiTest.prototype.testSpacesReplacedByPlus = function() {
   });
 
   assertEquals('head', insert);
-  assertEquals('//fonts.googleapis.com/css?family=Font1+WithSpace%7CFont2+WithSpaceToo', link);
+  assertEquals('http://fonts.googleapis.com/css?family=Font1+WithSpace%7CFont2+WithSpaceToo', link);
 
   assertNotNull(families);
   assertEquals(2, families.length);
@@ -152,7 +152,7 @@ GoogleFontApiTest.prototype.testLoadWithVariations = function() {
   });
 
   assertEquals('head', insert);
-  assertEquals('//fonts.googleapis.com/css?family=Font1+WithSpace:bi%7CFont2+WithSpaceToo:b,r', link);
+  assertEquals('http://fonts.googleapis.com/css?family=Font1+WithSpace:bi%7CFont2+WithSpaceToo:b,r', link);
 
   assertNotNull(families);
   assertEquals(2, families.length);

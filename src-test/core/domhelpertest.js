@@ -1,7 +1,8 @@
 var DomHelperTest = TestCase('DomHelperTest');
 
 DomHelperTest.prototype.setUp = function() {
-  this.domHelper_ = new webfont.DomHelper(document);
+  this.domHelper_ = new webfont.DomHelper(document, new webfont.UserAgent("name", "version",
+      "engine", "engineVersion", "platform", "platformVersion", true));
 };
 
 DomHelperTest.prototype.testCreateElementNoAttr = function() {
@@ -78,3 +79,15 @@ DomHelperTest.prototype.testAppendAndRemoveClassNames = function() {
   assertEquals('', div.className);
 
 };
+
+DomHelperTest.prototype.testHasClassName = function() {
+  var div = this.domHelper_.createElement('div');
+
+  this.domHelper_.appendClassName(div, 'moo');
+  this.domHelper_.appendClassName(div, 'moo-meuh');
+
+  assertTrue(this.domHelper_.hasClassName(div, 'moo'));
+  assertTrue(this.domHelper_.hasClassName(div, 'moo-meuh'));
+  assertFalse(this.domHelper_.hasClassName(div, 'meuh'));
+  assertFalse(this.domHelper_.hasClassName(div, 'missingClassName'));
+}

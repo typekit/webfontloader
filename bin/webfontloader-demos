@@ -17,7 +17,7 @@ rescue LoadError => e
   abort "Please gem install vegas"
 end
 
-Vegas::Runner.new(WebFontLoader::Demo::Server, 'font-demos') do |runner, opts, app|
+Vegas::Runner.new(WebFontLoader::Demo::Server, 'font-demos', :host => "localhost") do |runner, opts, app|
   opts.on('--compiled_js FILE', "Dynamically build the JS with the given modules") { |file|
     app.set :compiled_js, File.read(file)
   }

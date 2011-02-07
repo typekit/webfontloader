@@ -30,6 +30,18 @@ ID within Typekit's Kit Editor interface.
 
 Learn more about [Typekit][tk].
 
+## Fontdeck
+
+To use Fontdeck, specify the ID of your website. You can find this ID on the
+website page within your account settings.
+
+    WebFont.load({
+      fontdeck: {
+        id: 'xxxxx'
+      }
+    });
+
+Learn more about [Fontdeck][fd].
 
 ## Custom
 
@@ -47,3 +59,4 @@ provides.
 
 [gfontapi]: https://code.google.com/apis/webfonts/docs/getting_started.html
 [tk]: http://typekit.com/
+[fd]: http://fontdeck.com/

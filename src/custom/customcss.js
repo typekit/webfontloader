@@ -5,6 +5,8 @@
  *     families: ['Font1', 'Font2'],
  *    urls: [ 'http://moo', 'http://meuh' ] }
  * });
+ *
+ * @constructor
  */
 webfont.CustomCss = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
@@ -29,7 +31,9 @@ webfont.CustomCss.prototype.supportUserAgent = function(userAgent, support) {
   return support(userAgent.isSupportingWebFont());
 };
 
-WebFont.addModule(webfont.CustomCss.NAME, function(configuration) {
-  return new webfont.CustomCss(new webfont.DomHelper(document),
-      configuration);
+window['WebFont'].addModule(webfont.CustomCss.NAME, function(configuration) {
+  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
+  var userAgent = userAgentParser.parse();
+  var domHelper = new webfont.DomHelper(document, userAgent);
+  return new webfont.CustomCss(domHelper, configuration);
 });

@@ -1,0 +1,66 @@
+v1.0.18 (January 24, 2011)
+* Improve behavior of CSS classes over multiple loads on a single page. (Documented in docs/EVENTS.md)
+* Add support for international subsets in the Google module.
+* Add a module for Fontdeck.
+
+v1.0.17 (December 1, 2010)
+* Changed CSS style for hidden span in order to be less affected by environment
+* Removed restriction on iPhone/iPad/iPod in the google modules
+
+v1.0.16 (November 18, 2010)
+* Fix a bug where we fail to detect that fonts have loaded if they have the same width as the fallback font.
+
+v1.0.15 (October 14, 2010)
+* Fix an error parsing platform version in IE, when it has no items following the platform in the UA string.
+
+v1.0.14 (October 14, 2010)
+* Bugfix: fixed IE issue in google module.
+
+v1.0.13 (September 30, 2010)
+* Added support for detecting Adobe Air.
+
+v1.0.12 (September 30, 2010)
+* Bugfix: google module, change the url builder to handle integrations.
+
+v1.0.10 (September 24, 2010)
+* Bugfix: extra alert
+
+v1.0.10 (September 22, 2010)
+* Add support for customizable FontWatcher test string, for international
+  fonts.
+
+v1.0.9 (September 10, 2010)
+* Bugfix: of the bug fix
+
+v1.0.8 (September 10, 2010)
+* Bugfix: fix type definitions
+
+v1.0.7 (August 31, 2010)
+* Fix that wf-loading was not removed in the case of wf-inactive because of
+  a timeout.
+* Add UserAgent#getDocumentMode to aid in determining font support in IE.
+
+v1.0.6 (July 20, 2010)
+* Add JsDoc comments and type annotations for the Closure compiler. Fixes
+  several small bugs caught by the compiler in doing so.
+
+v1.0.5 (July 12, 2010)
+* webfont.UserAgent now provides getPlatformVersion. WebFont Loader is now
+  packaged as a ruby gem.
+
+v1.0.4 (June 14, 2010)
+* Add a module for Ascender's Fonts Live.
+
+v1.0.3 (June 6, 2010)
+* IE fixes.
+
+v1.0.2 (June 1, 2010)
+* Added a way of loading the WebFont Loader script asynchronously.
+
+v1.0.1 (May 20, 2010)
+* Fix namespace pollution by wrapping all of the code in a closure.
+
+v1.0.0 (May 19, 2010)
+* Initial release!
+* Modules: google, typekit, custom
+* Events: loading, active, inactive, fontloading, fontactive, fontintactive

@@ -1,13 +1,22 @@
+/**
+ * @constructor
+ */
 webfont.FontVariationDescription = function() {
   this.properties_ = webfont.FontVariationDescription.PROPERTIES;
   this.values_ = webfont.FontVariationDescription.VALUES;
 };
 
+/**
+ * @const
+ */
 webfont.FontVariationDescription.PROPERTIES = [
   'font-style',
   'font-weight'
 ];
 
+/**
+ * @const
+ */
 webfont.FontVariationDescription.VALUES = {
   'font-style': [
     ['n', 'normal'],
@@ -29,6 +38,10 @@ webfont.FontVariationDescription.VALUES = {
   ]
 };
 
+/**
+ * @private
+ * @constructor
+ */
 webfont.FontVariationDescription.Item = function(index, property, values) {
   this.index_ = index;
   this.property_ = property;
@@ -53,6 +66,12 @@ webfont.FontVariationDescription.Item.prototype.expand = function(output, value)
   }
 }
 
+/**
+ * Compacts CSS declarations into an FVD.
+ * @param {string} input A string of CSS declarations such as
+ *    'font-weight:normal;font-style:italic'.
+ * @return {string} The equivalent FVD such as 'n4'.
+ */
 webfont.FontVariationDescription.prototype.compact = function(input) {
   var result = ['n', '4'];
   var descriptors = input.split(';');
@@ -72,6 +91,12 @@ webfont.FontVariationDescription.prototype.compact = function(input) {
   return result.join('');
 };
 
+/**
+ * Expands a FVD string into equivalent CSS declarations.
+ * @param {string} fvd The FVD string, such as 'n4'.
+ * @return {?string} The equivalent CSS such as
+ *    'font-weight:normal;font-style:italic' or null if it cannot be parsed.
+ */
 webfont.FontVariationDescription.prototype.expand = function(fvd) {
   if (fvd.length != 2) {
     return null;
@@ -94,6 +119,9 @@ webfont.FontVariationDescription.prototype.expand = function(fvd) {
   }
 }
 
+/**
+ * @private
+ */
 webfont.FontVariationDescription.prototype.getItem_ = function(property) {
   for (var i = 0; i < this.properties_.length; i++) {
     if (property == this.properties_[i]) {

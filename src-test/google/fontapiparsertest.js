@@ -73,7 +73,8 @@ FontApiParserTest.prototype.testTypoBildInsteadOfBold = function() {
 
   var variations = fontApiParser.getVariations();
   var nobile = variations['Nobile'];
-  assertNull(nobile);
+  assertEquals(1, nobile.length);
+  assertEquals('n4', nobile[0]);
 };
 
 FontApiParserTest.prototype.testNonSense = function() {
@@ -88,5 +89,121 @@ FontApiParserTest.prototype.testNonSense = function() {
 
   var variations = fontApiParser.getVariations();
   var nobile = variations['Nobile'];
-  assertNull(nobile);
+  assertEquals(1, nobile.length);
+  assertEquals('n4', nobile[0]);
+};
+
+FontApiParserTest.prototype.testNoWeightOneSubsetDefined = function() {
+  var fontFamilies = [ 'Cantarell::greek' ];
+  var fontApiParser = new webfont.FontApiParser(fontFamilies);
+
+  fontApiParser.parse();
+
+  var parsedFontFamilies = fontApiParser.getFontFamilies();
+  assertEquals(1, parsedFontFamilies.length);
+  assertEquals('Cantarell', parsedFontFamilies[0]);
+
+  var variations = fontApiParser.getVariations();
+  var cantarellVariations = variations['Cantarell'];
+  assertEquals(1, cantarellVariations.length);
+  assertEquals('n4', cantarellVariations[0]);
+
+  var testStrings = fontApiParser.getFontTestStrings();
+  var cantarellTestStrings = testStrings['Cantarell'];
+  assertNotUndefined(cantarellTestStrings);
+  assertEquals(webfont.FontApiParser.INT_FONTS['greek'],
+      cantarellTestStrings);
+};
+
+
+FontApiParserTest.prototype.testNoWeightMultipleSubsetsDefined = function() {
+  var fontFamilies = [ 'Cantarell::cyrillic,greek,latin' ];
+  var fontApiParser = new webfont.FontApiParser(fontFamilies);
+
+  fontApiParser.parse();
+
+  var parsedFontFamilies = fontApiParser.getFontFamilies();
+  assertEquals(1, parsedFontFamilies.length);
+  assertEquals('Cantarell', parsedFontFamilies[0]);
+
+  var variations = fontApiParser.getVariations();
+  var cantarellVariations = variations['Cantarell'];
+  assertEquals(1, cantarellVariations.length);
+  assertEquals('n4', cantarellVariations[0]);
+
+  var testStrings = fontApiParser.getFontTestStrings();
+  var cantarellTestStrings = testStrings['Cantarell'];
+  assertNotUndefined(cantarellTestStrings);
+  assertEquals(webfont.FontApiParser.INT_FONTS['cyrillic'],
+      cantarellTestStrings);
+};
+
+
+FontApiParserTest.prototype.testWeightAndMultipleSubsetsDefined = function() {
+  var fontFamilies = [ 'Cantarell:regular,bold:cyrillic,greek,latin' ];
+  var fontApiParser = new webfont.FontApiParser(fontFamilies);
+
+  fontApiParser.parse();
+
+  var parsedFontFamilies = fontApiParser.getFontFamilies();
+  assertEquals(1, parsedFontFamilies.length);
+  assertEquals('Cantarell', parsedFontFamilies[0]);
+
+  var variations = fontApiParser.getVariations();
+  var cantarellVariations = variations['Cantarell'];
+  assertEquals(2, cantarellVariations.length);
+  assertEquals('n4', cantarellVariations[0]);
+  assertEquals('n7', cantarellVariations[1]);
+
+  var testStrings = fontApiParser.getFontTestStrings();
+  var cantarellTestStrings = testStrings['Cantarell'];
+  assertNotUndefined(cantarellTestStrings);
+  assertEquals(webfont.FontApiParser.INT_FONTS['cyrillic'],
+      cantarellTestStrings);
+};
+
+
+FontApiParserTest.prototype.testHanumanIsBackwardCompatible = function() {
+  var fontFamilies = [ 'Hanuman' ];
+  var fontApiParser = new webfont.FontApiParser(fontFamilies);
+
+  fontApiParser.parse();
+
+  var parsedFontFamilies = fontApiParser.getFontFamilies();
+  assertEquals(1, parsedFontFamilies.length);
+  assertEquals('Hanuman', parsedFontFamilies[0]);
+
+  var variations = fontApiParser.getVariations();
+  var hanumanVariations = variations['Hanuman'];
+  assertEquals(1, hanumanVariations.length);
+  assertEquals('n4', hanumanVariations[0]);
+
+  var testStrings = fontApiParser.getFontTestStrings();
+  var hanumanTestStrings = testStrings['Hanuman'];
+  assertNotUndefined(hanumanTestStrings);
+  assertEquals(webfont.FontApiParser.INT_FONTS['Hanuman'],
+      hanumanTestStrings);
+};
+
+
+FontApiParserTest.prototype.testHanumanIsForwardCompatible = function() {
+  var fontFamilies = [ 'Hanuman::khmer' ];
+  var fontApiParser = new webfont.FontApiParser(fontFamilies);
+
+  fontApiParser.parse();
+
+  var parsedFontFamilies = fontApiParser.getFontFamilies();
+  assertEquals(1, parsedFontFamilies.length);
+  assertEquals('Hanuman', parsedFontFamilies[0]);
+
+  var variations = fontApiParser.getVariations();
+  var hanumanVariations = variations['Hanuman'];
+  assertEquals(1, hanumanVariations.length);
+  assertEquals('n4', hanumanVariations[0]);
+
+  var testStrings = fontApiParser.getFontTestStrings();
+  var hanumanTestStrings = testStrings['Hanuman'];
+  assertNotUndefined(hanumanTestStrings);
+  assertEquals(webfont.FontApiParser.INT_FONTS['khmer'],
+      hanumanTestStrings);
 };

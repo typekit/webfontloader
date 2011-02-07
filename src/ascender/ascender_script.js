@@ -2,11 +2,12 @@
  *
  * WebFont.load({
  *   ascender: {
- *     cssKey:'e8e3d05f-2a8b-4835-8889-7b8bb3351c61',
- *     families:['AndyBold:bold']
+ *     key:'ec2de397-11ae-4c10-937f-bf94283a70c1',
+ *     families:['AyitaPro:regular,bold,bolditalic,italic']
  *   }
  * });
  *
+ * @constructor
  */
 webfont.AscenderScript = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
@@ -31,11 +32,11 @@ webfont.AscenderScript.prototype.supportUserAgent = function(userAgent, support)
 };
 
 webfont.AscenderScript.prototype.load = function(onReady) {
-  var cssKey = this.configuration_.cssKey;
+  var key = this.configuration_['key'];
   var protocol = (('https:' == document.location.protocol) ? 'https:' : 'http:');
-  var url = protocol + '//webfonts.fontslive.com/css/' + cssKey + '.css';
+  var url = protocol + '//webfonts.fontslive.com/css/' + key + '.css';
   this.domHelper_.insertInto('head', this.domHelper_.createCssLink(url));
-  var fv = this.parseFamiliesAndVariations(this.configuration_.families);
+  var fv = this.parseFamiliesAndVariations(this.configuration_['families']);
   onReady(fv.families, fv.variations);
 };
 
@@ -77,7 +78,9 @@ webfont.AscenderScript.prototype.parseVariations = function(source){
   return variations;
 };
 
-WebFont.addModule(webfont.AscenderScript.NAME, function(configuration) {
-  return new webfont.AscenderScript(new webfont.DomHelper(document),
-      configuration);
+window['WebFont'].addModule(webfont.AscenderScript.NAME, function(configuration) {
+  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
+  var userAgent = userAgentParser.parse();
+  var domHelper = new webfont.DomHelper(document, userAgent);
+  return new webfont.AscenderScript(domHelper, configuration);
 });
