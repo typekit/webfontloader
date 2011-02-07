@@ -43,6 +43,24 @@ website page within your account settings.
 
 Learn more about [Fontdeck][fd].
 
+## Fonts.com web fonts
+
+When using [Fonts.com web fonts][mtiwfs]
+
+(First sign up for [Fonts.com web fonts][mtiwfs]. Create a project, choose fonts to add into the created project and retrieve your Project ID. You can find this Project ID in the "Publish" tab).
+
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  WebFont.load({
+    monotype: {
+      projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+    }
+  });
+</script>
+Or as pure Fonts.com Web fonts API
+
+<script type="text/javascript" src="http://fast.fonts.com/jsapi/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.js"></script>
+
 ## Custom
 
 To load fonts from any external stylesheet, use the `custom` module. Here you'll
@@ -60,3 +78,4 @@ provides.
 [gfontapi]: https://code.google.com/apis/webfonts/docs/getting_started.html
 [tk]: http://typekit.com/
 [fd]: http://fontdeck.com/
+[mtiwfs] http://webfonts.fonts.com/

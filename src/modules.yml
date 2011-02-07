@@ -27,5 +27,8 @@ fontdeck:
 typekit:
   - typekit/typekit_script.js
 
+monotype:
+  - monotype/monotype_script.js
+
 custom:
   - custom/customcss.js
