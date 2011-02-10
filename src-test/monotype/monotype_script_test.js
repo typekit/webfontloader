@@ -3,11 +3,12 @@ var MonotypeScriptTest = TestCase('MonotypeScriptTest');
 MonotypeScriptTest.prototype.testIfProtocolMethodIsReturningProperly = function () {
   var fakeDocument = {
     location: { protocol: "https:" }
-  }
+  };
   var global = {}; // should be window in actual situation.
   var script = null;
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
   var config = { projectId: '01e2ff27-25bf-4801-a23e-73d328e6c7cc' };
+  var fakedom = [];
   var fakeDomHelper = {
     createScriptSrc: function (s) {
       script = { src: s };
@@ -17,7 +18,7 @@ MonotypeScriptTest.prototype.testIfProtocolMethodIsReturningProperly = function 
       fakedom[tag].push(elem);
       global[webfont.MonotypeScript.HOOK + config.projectId] = function () {
         return ["aachen bold", "kid print regualr"];
-      }
+      };
       if (script.onload) {
         script.onload();
       }
@@ -29,20 +30,19 @@ MonotypeScriptTest.prototype.testIfProtocolMethodIsReturningProperly = function 
 
   fakeDocument = {
     location: { protocol: "http:" }
-  }
+  };
 
-  var monotypeScript = new webfont.MonotypeScript(global, userAgent, fakeDomHelper, fakeDocument, config);
+  monotypeScript = new webfont.MonotypeScript(global, userAgent, fakeDomHelper, fakeDocument, config);
   assertEquals("http:", monotypeScript.protocol());
-}
+};
 
 MonotypeScriptTest.prototype.testIfScriptTagIsAdded = function () {
   var fakedom = { 'head': [], 'body': [] };
   var fakeDocument = {
     location: { protocol: "http:" }
-  }
+  };
   var script = null;
   var global = {}; // should be window in actual situation.
-  var script = null;
   var families = null;
   var config = { projectId: '01e2ff27-25bf-4801-a23e-73d328e6c7cc', api: "http://fast.fonts.com/jsapidev" };
 
@@ -55,7 +55,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAdded = function () {
       fakedom[tag].push(elem);
       global[webfont.MonotypeScript.HOOK + config.projectId] = function () {
         return ["aachen bold", "kid print regualr"];
-      }
+      };
       if (script.onload) {
         script.onload();
       }
@@ -63,10 +63,11 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAdded = function () {
   };
 
   function getElementById(Id) {
+    var p;
     for (p in fakedom) {
       if (fakedom[p].length > 0) {
         for (i = 0; i < fakedom[p].length; i++) {
-          if (fakedom[p][i].id == Id) {
+          if (fakedom[p][i].id === Id) {
             return fakedom[p][i];
           }
         }
@@ -94,13 +95,12 @@ MonotypeScriptTest.prototype.testIfScriptTagHasCorrectSSL = function () {
   var fakedom = { 'head': [], 'body': [] };
   var fakeDocument1 = {
     location: { protocol: "https:" }
-  }
+  };
   var fakeDocument2 = {
     location: { protocol: "http:" }
-  }
+  };
   var script = null;
   var global = {}; // should be window in actual situation.
-  var script = null;
   var families = null;
   var config = { projectId: '01e2ff27-25bf-4801-a23e-73d328e6c7cc', api: "http://fast.fonts.com/jsapidev" };
 
@@ -113,7 +113,7 @@ MonotypeScriptTest.prototype.testIfScriptTagHasCorrectSSL = function () {
       fakedom[tag].push(elem);
       global[webfont.MonotypeScript.HOOK + config.projectId] = function () {
         return ["aachen bold", "kid print regualr"];
-      }
+      };
       if (script.onload) {
         script.onload();
       }
@@ -122,10 +122,11 @@ MonotypeScriptTest.prototype.testIfScriptTagHasCorrectSSL = function () {
 
   //trys to simulates exactly the getElementById behaviour, by returning the first found element.
   function getElementById(Id) {
+    var p;
     for (p in fakedom) {
       if (fakedom[p].length > 0) {
         for (i = 0; i < fakedom[p].length; i++) {
-          if (fakedom[p][i].id == Id) {
+          if (fakedom[p][i].id === Id) {
             return fakedom[p][i];
           }
         }
@@ -177,7 +178,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurl = function () {
       fakedom[tag].push(elem);
       global[webfont.MonotypeScript.HOOK + config.projectId] = function () {
         return ["aachen bold", "kid print regualr"];
-      }
+      };
       if (script.onload) {
         script.onload();
       }
@@ -188,13 +189,14 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurl = function () {
     protocol: function () {
       return "http:";
     }
-  }
+  };
 
   function getElementById(Id) {
+    var p;
     for (p in fakedom) {
       if (fakedom[p].length > 0) {
         for (i = 0; i < fakedom[p].length; i++) {
-          if (fakedom[p][i].id == Id) {
+          if (fakedom[p][i].id === Id) {
             return fakedom[p][i];
           }
         }
@@ -203,10 +205,10 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurl = function () {
     return null;
   }
 
+  var isSupport = null;
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
   var monotypeScript = new webfont.MonotypeScript(global, userAgent, fakeDomHelper, fakeDocHelper, config);
   monotypeScript.supportUserAgent(userAgent, function (support) { isSupport = support; });
-  var families = null;
 
   monotypeScript.load(function (fontFamilies) {
     families = fontFamilies;
@@ -237,7 +239,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurlAndTheScriptUrlH
       fakedom[tag].push(elem);
       global[webfont.MonotypeScript.HOOK + config.projectId] = function () {
         return ["aachen bold", "kid print regualr"];
-      }
+      };
       if (script.onload) {
         script.onload();
       }
@@ -245,10 +247,11 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurlAndTheScriptUrlH
   };
 
   function getElementById(Id) {
+    var p;
     for (p in fakedom) {
       if (fakedom[p].length > 0) {
         for (i = 0; i < fakedom[p].length; i++) {
-          if (fakedom[p][i].id == Id) {
+          if (fakedom[p][i].id === Id) {
             return fakedom[p][i];
           }
         }
@@ -257,10 +260,10 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurlAndTheScriptUrlH
     return null;
   }
 
+  var isSupport = null;
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
   var monotypeScript = new webfont.MonotypeScript(global, userAgent, fakeDomHelper, fakeDocument, config);
   monotypeScript.supportUserAgent(userAgent, function (support) { isSupport = support; });
-  var families = null;
 
   monotypeScript.load(function (fontFamilies) {
     families = fontFamilies;
@@ -290,7 +293,7 @@ MonotypeScriptTest.prototype.testWithoutProjectId = function () {
       fakedom[tag].push(elem);
       global[webfont.MonotypeScript.HOOK + config.projectId] = function () {
         return ["aachen bold", "kid print regualr"];
-      }
+      };
       if (script.onload) {
         script.onload();
       }
@@ -301,12 +304,12 @@ MonotypeScriptTest.prototype.testWithoutProjectId = function () {
     protocol: function () {
       return "http:";
     }
-  }
+  };
 
+  var isSupport = null;
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
   var monotypeScript = new webfont.MonotypeScript(global, userAgent, fakeDomHelper, fakeDocHelper, config);
   monotypeScript.supportUserAgent(userAgent, function (support) { isSupport = support; });
-  var families = null;
 
   monotypeScript.load(function (fontFamilies) {
     families = fontFamilies;

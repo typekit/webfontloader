@@ -56,7 +56,8 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
       if (self.global_[webfont.MonotypeScript.HOOK + projectId]) {
         var mti_fnts = self.global_[webfont.MonotypeScript.HOOK + projectId]();
         if (mti_fnts && mti_fnts.length) {
-          for (var i = 0; i < mti_fnts.length; i++) {
+          var i;
+          for (i = 0; i < mti_fnts.length; i++) {
             self.fontFamilies_.push(mti_fnts[i]["fontfamily"]);
           }
         }
@@ -87,17 +88,17 @@ webfont.MonotypeScript.prototype.protocol = function () {
   if (this.doc_ && this.doc_.location && this.doc_.location.protocol) {
     var i = 0;
     for (i = 0; i < supportedProtocols.length; i++) {
-      if (this.doc_.location.protocol == supportedProtocols[i]) {
+      if (this.doc_.location.protocol === supportedProtocols[i]) {
         return this.doc_.location.protocol;
       }
     }
   }
 
   return defaultProtocol;
-}
+};
 
-WebFont.addModule(webfont.MonotypeScript.NAME, function (configuration) {
-  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent);
+window['WebFont'].addModule(webfont.MonotypeScript.NAME, function (configuration) {
+  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
   var domHelper = new webfont.DomHelper(document, userAgent);
   return new webfont.MonotypeScript(window, userAgent, domHelper, document, configuration);
