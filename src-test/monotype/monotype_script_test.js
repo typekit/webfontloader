@@ -316,4 +316,5 @@ MonotypeScriptTest.prototype.testWithoutProjectId = function () {
   });
   assertNull(script);
   assertEquals(0, families.length);
+
 };
