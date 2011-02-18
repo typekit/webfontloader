@@ -7,8 +7,8 @@ projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'//this is your Fonts.com Web fo
 */
 
 /**
-* @constructor
-*/
+ * @constructor
+ */
 webfont.MonotypeScript = function (global, userAgent, domHelper, doc, configuration) {
   this.global_ = global;
   this.userAgent_ = userAgent;
@@ -20,22 +20,22 @@ webfont.MonotypeScript = function (global, userAgent, domHelper, doc, configurat
 };
 
 /**
-* name of the module through which external API is supposed to call the MonotypeFontAPI.
-* @const
-*/
+ * name of the module through which external API is supposed to call the MonotypeFontAPI.
+ * @const
+ */
 webfont.MonotypeScript.NAME = 'monotype';
 
 /**
-* __mti_fntLst is the name of function that exposes Monotype's font list.
-* @const
-*/
+ * __mti_fntLst is the name of function that exposes Monotype's font list.
+ * @const
+ */
 webfont.MonotypeScript.HOOK = '__mti_fntLst';
 
 /**
-* __MonotypeAPIScript__ is the id of script added by google API. Currently 'webfonts.fonts.com' supports only one script in a page. 
-* This may require change in future if 'webfonts.fonts.com' begins supporting multiple scripts per page.
-* @const
-*/
+ * __MonotypeAPIScript__ is the id of script added by google API. Currently 'webfonts.fonts.com' supports only one script in a page. 
+ * This may require change in future if 'webfonts.fonts.com' begins supporting multiple scripts per page.
+ * @const
+ */
 webfont.MonotypeScript.SCRIPTID = '__MonotypeAPIScript__';
 
 webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support) {
