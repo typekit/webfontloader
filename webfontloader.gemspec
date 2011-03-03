@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.0.18'
-  s.date              = '2011-01-24'
+  s.version           = '1.0.19'
+  s.date              = '2011-03-03'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -96,6 +96,7 @@ DESC
     lib/webfontloader/demo/public/ie-slow-link.html
     lib/webfontloader/demo/public/index.html
     lib/webfontloader/demo/public/jquery.min.js
+    lib/webfontloader/demo/public/monotype.html
     lib/webfontloader/demo/public/typekit-variations.html
     lib/webfontloader/demo/public/typekit.html
     lib/webfontloader/demo/server.rb
@@ -116,6 +117,7 @@ DESC
     src-test/google/fontapiparsertest.js
     src-test/google/fontapiurlbuildertest.js
     src-test/google/googlefontapitest.js
+    src-test/monotype/monotype_script_test.js
     src-test/typekit/typekit_script_test.js
     src/ascender/ascender_script.js
     src/async_load.js
@@ -139,6 +141,7 @@ DESC
     src/google/fontapiurlbuilder.js
     src/google/googlefontapi.js
     src/modules.yml
+    src/monotype/monotype_script.js
     src/typekit/typekit_script.js
     tools/compiler/compiler.jar
     tools/jstestdriver/JsTestDriver-1.2.1.jar
