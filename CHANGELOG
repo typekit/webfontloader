@@ -1,3 +1,6 @@
+v1.0.20 (March 30, 2011)
+* Changed CSS style for hidden span so it's not affected by inline or floated elements at the end of the body
+
 v1.0.19 (March 3, 2011)
 * Add a module for Monotype.
 
