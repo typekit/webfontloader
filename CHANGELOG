@@ -1,3 +1,7 @@
+v1.0.21 (June 17, 2011)
+* Added a protocol detect for the Typekit module so JS is loaded securely on
+secure pages. Thanks to bee525 for the pull request.
+
 v1.0.20 (March 30, 2011)
 * Changed CSS style for hidden span so it's not affected by inline or floated elements at the end of the body
 
