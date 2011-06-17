@@ -13,7 +13,8 @@ webfont.TypekitScript.NAME = 'typekit';
 webfont.TypekitScript.HOOK = '__webfonttypekitmodule__';
 
 webfont.TypekitScript.prototype.getScriptSrc = function(kitId) {
-  var api = this.configuration_['api'] || 'http://use.typekit.com';
+  var protocol = 'https:' == window.location.protocol ? 'https:' : 'http:';
+  var api = this.configuration_['api'] || protocol + '//use.typekit.com';
   return api + '/' + kitId + '.js';
 };
 
