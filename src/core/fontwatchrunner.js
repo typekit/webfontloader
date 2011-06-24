@@ -109,7 +109,7 @@ webfont.FontWatchRunner.prototype.asyncCheck_ = function() {
     return function() {
       func.call(context);
     }
-  }(this, this.check_), 50);
+  }(this, this.check_), 25);
 };
 
 /**
