@@ -55,10 +55,11 @@ FontWatchRunnerTest.prototype.setUp = function() {
       if (el.style.fontFamily.indexOf(self.fontFamily_) != -1) {
         // This is a font stack with fontFamily included (not just fallbacks)
         if (self.timesToCheckWidthsBeforeChange_ <= 0 && self.timesToReportChangedWidth_ > 0) {
+          // Decrement by 0.5 because we're checking two separate font stacks each iteration
           self.timesToReportChangedWidth_ -= 0.5;
           return 2;
         } else {
-          // Two fallback stacks, so we check width twice each time
+          // Decrement by 0.5 because we're checking two separate font stacks each iteration
           self.timesToCheckWidthsBeforeChange_ -= 0.5;
           return 1;
         }
@@ -135,14 +136,15 @@ FontWatchRunnerTest.prototype.testWatchFontWaitForLoadInactive = function() {
 };
 
 /**
- * This test ensures that even if the fonts change width for once cycle and
- * then change back, active won't be fired. This can handle in Webkit browsers,
- * where an inactive webfont will briefly change widths for one check and then
- * change back to fallback widths on the next check. This is apparently due to
- * some quirk in the way that web fonts are rendered.
+ * This test ensures that even if the fonts change width for one cycle and
+ * then change back, active won't be fired. This works around an issue in Webkit
+ * browsers, where an inactive webfont will briefly change widths for one cycle
+ * and then change back to fallback widths on the next cycle. This is apparently
+ * due to some quirk in the way that web fonts are rendered.
  */
 FontWatchRunnerTest.prototype.testWatchFontWithInconsistentWidthIsStillInactive = function() {
   this.timesToCheckWidthsBeforeChange_ = 3;
+  // Only report a new width for one cycle, then switch back to original fallback width
   this.timesToReportChangedWidth_ = 1;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
