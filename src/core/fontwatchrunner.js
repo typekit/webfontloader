@@ -91,7 +91,7 @@ webfont.FontWatchRunner.prototype.check_ = function() {
 
   if ((this.originalSizeA_ != sizeA || this.originalSizeB_ != sizeB) &&
       this.lastObservedSizeA_ == sizeA && this.lastObservedSizeB_ == sizeB) {
-      this.finish_(this.activeCallback_);
+    this.finish_(this.activeCallback_);
   } else if (this.getTime_() - this.started_ >= 5000) {
     this.finish_(this.inactiveCallback_);
   } else {
