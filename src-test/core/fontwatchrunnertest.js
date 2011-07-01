@@ -49,14 +49,17 @@ FontWatchRunnerTest.prototype.setUp = function() {
   };
 
   this.timesToCheckWidthsBeforeChange_ = 0;
+  this.timesToReportChangedWidth_ = 2;
   this.fakeFontSizer_ = {
     getWidth: function(el) {
       if (el.style.fontFamily.indexOf(self.fontFamily_) != -1) {
         // This is a font stack with fontFamily included (not just fallbacks)
-        if (self.timesToCheckWidthsBeforeChange_ <= 0) {
+        if (self.timesToCheckWidthsBeforeChange_ <= 0 && self.timesToReportChangedWidth_ > 0) {
+          // Decrement by 0.5 because we're checking two separate font stacks each iteration
+          self.timesToReportChangedWidth_ -= 0.5;
           return 2;
         } else {
-          // Two fallback stacks, so we check width twice each time
+          // Decrement by 0.5 because we're checking two separate font stacks each iteration
           self.timesToCheckWidthsBeforeChange_ -= 0.5;
           return 1;
         }
@@ -76,9 +79,9 @@ FontWatchRunnerTest.prototype.setUp = function() {
     }
   };
 
-  this.asyncCalled_ = false;
+  this.asyncCount_ = 0;
   this.fakeAsyncCall_ = function(func, timeout) {
-    self.asyncCalled_ = true;
+    self.asyncCount_++;
     func();
   };
 
@@ -86,13 +89,14 @@ FontWatchRunnerTest.prototype.setUp = function() {
 
 FontWatchRunnerTest.prototype.testWatchFontAlreadyLoaded = function() {
   this.timesToCheckWidthsBeforeChange_ = 0;
+  this.timesToReportChangedWidth_ = 2;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
   new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
       this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
       this.fakeGetTime_, this.fontFamily_, this.fontDescription_);
 
-  assertFalse(this.asyncCalled_);
+  assertEquals(1, this.asyncCount_);
 
   assertEquals(1, this.fontActiveCalled_);
   assertEquals(true, this.fontActive_['fontFamily1 n4']);
@@ -101,13 +105,14 @@ FontWatchRunnerTest.prototype.testWatchFontAlreadyLoaded = function() {
 
 FontWatchRunnerTest.prototype.testWatchFontWaitForLoadActive = function() {
   this.timesToCheckWidthsBeforeChange_ = 3;
+  this.timesToReportChangedWidth_ = 2;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
   new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
       this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
       this.fakeGetTime_, this.fontFamily_, this.fontDescription_);
 
-  assertTrue(this.asyncCalled_);
+  assertEquals(4, this.asyncCount_);
 
   assertEquals(1, this.fontActiveCalled_);
   assertEquals(true, this.fontActive_['fontFamily1 n4']);
@@ -116,13 +121,38 @@ FontWatchRunnerTest.prototype.testWatchFontWaitForLoadActive = function() {
 
 FontWatchRunnerTest.prototype.testWatchFontWaitForLoadInactive = function() {
   this.timesToCheckWidthsBeforeChange_ = 10;
-  this.timesToGetTimeBeforeTimeout_ = 3;
+  this.timesToReportChangedWidth_ = 2;
+  this.timesToGetTimeBeforeTimeout_ = 5;
 
   new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
       this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
       this.fakeGetTime_, this.fontFamily_, this.fontDescription_);
 
-  assertTrue(this.asyncCalled_);
+  assertEquals(4, this.asyncCount_);
+
+  assertEquals(0, this.fontActiveCalled_);
+  assertEquals(1, this.fontInactiveCalled_);
+  assertEquals(true, this.fontInactive_['fontFamily1 n4']);
+};
+
+/**
+ * This test ensures that even if the fonts change width for one cycle and
+ * then change back, active won't be fired. This works around an issue in Webkit
+ * browsers, where an inactive webfont will briefly change widths for one cycle
+ * and then change back to fallback widths on the next cycle. This is apparently
+ * due to some quirk in the way that web fonts are rendered.
+ */
+FontWatchRunnerTest.prototype.testWatchFontWithInconsistentWidthIsStillInactive = function() {
+  this.timesToCheckWidthsBeforeChange_ = 3;
+  // Only report a new width for one cycle, then switch back to original fallback width
+  this.timesToReportChangedWidth_ = 1;
+  this.timesToGetTimeBeforeTimeout_ = 10;
+
+  new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
+      this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
+      this.fakeGetTime_, this.fontFamily_, this.fontDescription_);
+
+  assertEquals(9, this.asyncCount_);
 
   assertEquals(0, this.fontActiveCalled_);
   assertEquals(1, this.fontInactiveCalled_);
@@ -131,6 +161,7 @@ FontWatchRunnerTest.prototype.testWatchFontWaitForLoadInactive = function() {
 
 FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
   this.timesToCheckWidthsBeforeChange_ = 3;
+  this.timesToReportChangedWidth_ = 2;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
   new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,
@@ -161,6 +192,7 @@ FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
 
 FontWatchRunnerTest.prototype.testDomWithNotDefaultTestString = function() {
   this.timesToCheckWidthsBeforeChange_ = 3;
+  this.timesToReportChangedWidth_ = 2;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
   new webfont.FontWatchRunner(this.activeCallback_, this.inactiveCallback_,

@@ -27,6 +27,8 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
       webfont.FontWatchRunner.DEFAULT_FONTS_A);
   this.originalSizeB_ = this.getDefaultFontSize_(
       webfont.FontWatchRunner.DEFAULT_FONTS_B);
+  this.lastObservedSizeA_ = this.originalSizeA_;
+  this.lastObservedSizeB_ = this.originalSizeB_;
   this.requestedFontA_ = this.createHiddenElementWithFont_(
       webfont.FontWatchRunner.DEFAULT_FONTS_A);
   this.requestedFontB_ = this.createHiddenElementWithFont_(
@@ -69,18 +71,33 @@ webfont.FontWatchRunner.DEFAULT_FONTS_B = "Georgia,'Century Schoolbook L',serif"
 webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESs';
 
 /**
+ * Checks the size of the two spans against their original sizes during each
+ * async loop. If the size of one of the spans is different than the original
+ * size, then we know that the font is rendering and finish with the active
+ * callback. If we wait more than 5 seconds and nothing has changed, we finish
+ * with the inactive callback.
+ *
+ * Because of an odd Webkit quirk, we wait to observe the new width twice
+ * in a row before finishing with the active callback. Sometimes, Webkit will
+ * render the spans with a changed width for one iteration even though the font
+ * is broken. This only happens for one async loop, so waiting for 2 consistent
+ * measurements allows us to work around the quirk.
+ *
  * @private
  */
 webfont.FontWatchRunner.prototype.check_ = function() {
   var sizeA = this.fontSizer_.getWidth(this.requestedFontA_);
   var sizeB = this.fontSizer_.getWidth(this.requestedFontB_);
 
-  if (this.originalSizeA_ != sizeA || this.originalSizeB_ != sizeB) {
+  if ((this.originalSizeA_ != sizeA || this.originalSizeB_ != sizeB) &&
+      this.lastObservedSizeA_ == sizeA && this.lastObservedSizeB_ == sizeB) {
     this.finish_(this.activeCallback_);
-  } else if (this.getTime_() - this.started_ < 5000) {
-    this.asyncCheck_();
-  } else {
+  } else if (this.getTime_() - this.started_ >= 5000) {
     this.finish_(this.inactiveCallback_);
+  } else {
+    this.lastObservedSizeA_ = sizeA;
+    this.lastObservedSizeB_ = sizeB;
+    this.asyncCheck_();
   }
 };
 
@@ -92,7 +109,7 @@ webfont.FontWatchRunner.prototype.asyncCheck_ = function() {
     return function() {
       func.call(context);
     }
-  }(this, this.check_), 50);
+  }(this, this.check_), 25);
 };
 
 /**
