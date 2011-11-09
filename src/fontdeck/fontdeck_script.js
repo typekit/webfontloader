@@ -12,11 +12,12 @@ webfont.FontdeckScript = function(global, domHelper, configuration) {
 
 webfont.FontdeckScript.NAME = 'fontdeck';
 webfont.FontdeckScript.HOOK = '__webfontfontdeckmodule__';
-webfont.FontdeckScript.API = 'http://f.fontdeck.com/s/css/js/';
+webfont.FontdeckScript.API = '//f.fontdeck.com/s/css/js/';
 
 webfont.FontdeckScript.prototype.getScriptSrc = function(projectId) {
+  var protocol = 'https:' == window.location.protocol ? 'https:' : 'http:';
   var api = this.configuration_['api'] || webfont.FontdeckScript.API;
-  return api + document.location.hostname + '/' + projectId + '.js';
+  return protocol + api + document.location.hostname + '/' + projectId + '.js';
 };
 
 webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support) {
