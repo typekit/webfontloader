@@ -33,7 +33,6 @@ webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support)
     // Fontdeck will call this function to indicate support status
     // and what fonts are provided.
     this.global_[webfont.FontdeckScript.HOOK][projectId] = function(fontdeckSupports, data) {
-      var rules = '';
       for (var i = 0, j = data['fonts'].length; i<j; ++i) {
         var font = data['fonts'][i];
         // Add the FVDs
