@@ -21,7 +21,6 @@ webfont.FontdeckScript.prototype.getScriptSrc = function(projectId) {
 
 webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support) {
   var projectId = this.configuration_['id'];
-  var families = this.configuration_['families'] || null;
   var self = this;
 
   if (projectId) {
