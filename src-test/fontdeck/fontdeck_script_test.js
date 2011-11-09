@@ -5,10 +5,39 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
     'id': '2282'
   };
   var apiResponse = {
-    'css':'http://fontdeck.com/s/css/uH5+KWQnibDTJRYggGJ9XZLTAgw/webfontloader/2282.css',
-    'provides':[
-      {'font_size_adjust':null,'weight':'normal','style':'normal','name':'Fertigo Pro Regular'},
-      {'font_size_adjust':'0.5','weight':'bold','style':'italic','name':'Bodoni Display Bold Italic'}
+    "domain" : "localhost",
+    "cssurl" : "http://f.fontdeck.com/s/css/03BmCXiV2AHwX/Rp+OBFTfD2oFs/localhost/2282.css",
+    "project" : 2282,
+    "cssbase" : "http://f.fontdeck.com/s/css/03BmCXiV2AHwX/Rp+OBFTfD2oFs",
+    "fonts" : [
+      {
+        "font_family" : "'Fertigo Pro Regular', Fertigo, Constantia, Palatino, serif",
+        "font_size_adjust" : 0.508,
+        "name" : "Fertigo Pro Regular",
+        "style" : "normal",
+        "weight" : "normal",
+        "font_urls" : {
+          "eot" : "http://f.fontdeck.com/f/1/SUlFR0tid0kAA2vb11Ly/IGWDK+wV8TMAfV0J1Ej1J1GFRT1bssqrn6a.eot",
+          "ttf" : "http://f.fontdeck.com/f/1/SUlFR0tid0kAA2vb11Ly/IGWDK+wV8TMAfV0J1Ej1J1GFRT1bssqrn6a.ttf",
+          "woff" : "http://f.fontdeck.com/f/1/SUlFR0tid0kAA2vb11Ly/IGWDK+wV8TMAfV0J1Ej1J1GFRT1bssqrn6a.woff",
+          "svg" : "http://f.fontdeck.com/f/1/SUlFR0tid0kAA2vb11Ly/IGWDK+wV8TMAfV0J1Ej1J1GFRT1bssqrn6a.svg#104"
+        },
+        "id" : 104
+      },
+      {
+        "font_family" : "'Bodoni Display Bold Italic', Georgia, 'Times New Roman', Times, serif",
+        "font_size_adjust" : 0.45,
+        "name" : "Bodoni Display Bold Italic",
+        "style" : "italic",
+        "weight" : "bold",
+        "font_urls" : {
+          "eot" : "http://f.fontdeck.com/f/1/azJEbTVyc1QAA11+CAE5C93+l/bAQx1ipRo6Maba19w3Yy5ng+qVWlfj.eot",
+          "ttf" : "http://f.fontdeck.com/f/1/azJEbTVyc1QAA11+CAE5C93+l/bAQx1ipRo6Maba19w3Yy5ng+qVWlfj.ttf",
+          "woff" : "http://f.fontdeck.com/f/1/azJEbTVyc1QAA11+CAE5C93+l/bAQx1ipRo6Maba19w3Yy5ng+qVWlfj.woff",
+          "svg" : "http://f.fontdeck.com/f/1/azJEbTVyc1QAA11+CAE5C93+l/bAQx1ipRo6Maba19w3Yy5ng+qVWlfj.svg#2256"
+        },
+        "id" : 2256
+      }
     ]
   };
   var insert = '';
@@ -19,10 +48,6 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
     },
     createScriptSrc: function(srcLink) {
       src = srcLink;
-    },
-    createCssLink: function(cssLink) {
-      css = cssLink;
-      return '<link href="' + css + '" type="text/css" />';
     }
   };
   var global = {};
@@ -34,16 +59,39 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
 
   fontdeck.supportUserAgent(userAgent, function(support) { isSupport = support; });
   assertEquals('head', insert);
-  assertEquals('http://fontdeck.com/api/v1/project-info?project=2282&domain=localhost&callback=window.__webfontfontdeckmodule__[2282]', src);
+  //assertEquals('http://f.fontdeck.com/s/css/json/localhost/2282.json', src);
   assertEquals(null, isSupport);
 
   assertNotNull(global.__webfontfontdeckmodule__);
   assertNotNull(global.__webfontfontdeckmodule__['2282']);
 
   // Call the callback function passing in dummy API response.
-  global.__webfontfontdeckmodule__['2282'](apiResponse);
+  global.__webfontfontdeckmodule__['2282'](true, apiResponse);
 
-  assertEquals(fontdeck.fontFamilies_, [apiResponse.provides[0].name, apiResponse.provides[1].name]);
-  assertEquals(fontdeck.fontVariations_[apiResponse.provides[0].name], ['n4']);
-  assertEquals(fontdeck.fontVariations_[apiResponse.provides[1].name], ['i7']);
+  assertEquals(fontdeck.fontFamilies_, [apiResponse.fonts[0].name, apiResponse.fonts[1].name]);
+  assertEquals(fontdeck.fontVariations_[apiResponse.fonts[0].name], ['n4']);
+  assertEquals(fontdeck.fontVariations_[apiResponse.fonts[1].name], ['i7']);
+  
+  assertEquals(true, isSupport);
 };
+
+FontdeckScriptTest.prototype.testNoProjectId = function() {
+  var configuration = {
+    'id': null
+  };
+  var insert = '';
+  var src = '';
+  var fakeDomHelper = {};
+  var global = {};
+  var fontdeck = new webfont.FontdeckScript(global, fakeDomHelper, configuration);
+
+  // supportUserAgent
+  var userAgent = 'user agent';
+  var isSupport = null;
+
+  fontdeck.supportUserAgent(userAgent, function(support) { isSupport = support; });
+  
+  assertEquals(fontdeck.fontFamilies_, []);
+  assertEquals(fontdeck.fontVariations_, []);
+  assertEquals(true, isSupport);
+}

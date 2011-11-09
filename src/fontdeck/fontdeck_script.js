@@ -12,11 +12,11 @@ webfont.FontdeckScript = function(global, domHelper, configuration) {
 
 webfont.FontdeckScript.NAME = 'fontdeck';
 webfont.FontdeckScript.HOOK = '__webfontfontdeckmodule__';
-webfont.FontdeckScript.API = 'http://fontdeck.com/api/v1/project-info?'
+webfont.FontdeckScript.API = 'http://f.fontdeck.com/s/css/js/';
 
 webfont.FontdeckScript.prototype.getScriptSrc = function(projectId) {
   var api = this.configuration_['api'] || webfont.FontdeckScript.API;
-  return api + 'project=' + projectId + '&domain=' + document.location.hostname + '&callback=window.__webfontfontdeckmodule__[' + projectId + ']';
+  return api + document.location.hostname + '/' + projectId + '.js';
 };
 
 webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support) {
@@ -30,20 +30,17 @@ webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support)
       this.global_[webfont.FontdeckScript.HOOK] = {};
     }
 
-    // The API will call this function with a link to the CSS
-    // and a list of supported fonts.
-    this.global_[webfont.FontdeckScript.HOOK][projectId] = function(data) {
-      self.domHelper_.insertInto('head', self.domHelper_.createCssLink(data['css']));
-        for (var i = 0, j = data['provides'].length; i < j; ++i) {
-          var font = data['provides'][i];
-          self.fontFamilies_.push(font['name']);
-          self.fontVariations_[font['name']] = [self.fvd_.compact("font-weight:" + font['weight'] + ";font-style:" +  font['style'])];
-        }
-        // If families were passed into load, then use them instead.
-        if (families !== null) {
-          self.fontFamilies_ = families;
-        }
-      support(true);
+    // Fontdeck will call this function to indicate support status
+    // and what fonts are provided.
+    this.global_[webfont.FontdeckScript.HOOK][projectId] = function(fontdeckSupports, data) {
+      var rules = '';
+      for (var i = 0, j = data['fonts'].length; i<j; ++i) {
+        var font = data['fonts'][i];
+        // Add the FVDs
+        self.fontFamilies_.push(font['name']);
+        self.fontVariations_[font['name']] = [self.fvd_.compact("font-weight:" + font['weight'] + ";font-style:" + font['style'])];
+      }
+      support(fontdeckSupports);
     };
 
     // Call the Fontdeck API.
