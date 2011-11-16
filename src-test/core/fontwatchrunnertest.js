@@ -56,11 +56,11 @@ FontWatchRunnerTest.prototype.setUp = function() {
         // This is a font stack with fontFamily included (not just fallbacks)
         if (self.timesToCheckWidthsBeforeChange_ <= 0 && self.timesToReportChangedWidth_ > 0) {
           // Decrement by 0.5 because we're checking two separate font stacks each iteration
-          self.timesToReportChangedWidth_ -= 0.5;
+          self.timesToReportChangedWidth_ -= 1;
           return 2;
         } else {
           // Decrement by 0.5 because we're checking two separate font stacks each iteration
-          self.timesToCheckWidthsBeforeChange_ -= 0.5;
+          self.timesToCheckWidthsBeforeChange_ -= 1;
           return 1;
         }
       } else {
@@ -104,7 +104,7 @@ FontWatchRunnerTest.prototype.testWatchFontAlreadyLoaded = function() {
 };
 
 FontWatchRunnerTest.prototype.testWatchFontWaitForLoadActive = function() {
-  this.timesToCheckWidthsBeforeChange_ = 3;
+  this.timesToCheckWidthsBeforeChange_ = 2;
   this.timesToReportChangedWidth_ = 2;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
@@ -112,7 +112,7 @@ FontWatchRunnerTest.prototype.testWatchFontWaitForLoadActive = function() {
       this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
       this.fakeGetTime_, this.fontFamily_, this.fontDescription_);
 
-  assertEquals(4, this.asyncCount_);
+  assertEquals(3, this.asyncCount_);
 
   assertEquals(1, this.fontActiveCalled_);
   assertEquals(true, this.fontActive_['fontFamily1 n4']);
@@ -160,7 +160,7 @@ FontWatchRunnerTest.prototype.testWatchFontWithInconsistentWidthIsStillInactive 
 };
 
 FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
-  this.timesToCheckWidthsBeforeChange_ = 3;
+  this.timesToCheckWidthsBeforeChange_ = 2;
   this.timesToReportChangedWidth_ = 2;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
@@ -168,30 +168,25 @@ FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
       this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
       this.fakeGetTime_, this.fontFamily_, this.fontDescription_);
 
-  assertEquals(4, this.createElementCalled_);
+  assertEquals(2, this.createElementCalled_);
+
   assertEquals('span', this.createdElements_[0]['name']);
   assertEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_A));
+  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS));
   assertEquals('BESs', this.createdElements_[0]['innerHtml']);
+
   assertEquals('span', this.createdElements_[1]['name']);
-  assertEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_B));
+  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
+  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS));
   assertEquals('BESs', this.createdElements_[1]['innerHtml']);
-  assertEquals('span', this.createdElements_[2]['name']);
-  assertNotEquals(-1, this.createdElements_[2]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[2]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_A));
-  assertEquals('BESs', this.createdElements_[2]['innerHtml']);
-  assertEquals('span', this.createdElements_[3]['name']);
-  assertNotEquals(-1, this.createdElements_[3]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[3]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_B));
-  assertEquals('BESs', this.createdElements_[3]['innerHtml']);
-  assertEquals(4, this.insertIntoCalled_);
-  assertEquals(4, this.removeElementCalled_);
+
+  assertEquals(2, this.insertIntoCalled_);
+  assertEquals(2, this.removeElementCalled_);
 
 };
 
 FontWatchRunnerTest.prototype.testDomWithNotDefaultTestString = function() {
-  this.timesToCheckWidthsBeforeChange_ = 3;
+  this.timesToCheckWidthsBeforeChange_ = 2;
   this.timesToReportChangedWidth_ = 2;
   this.timesToGetTimeBeforeTimeout_ = 10;
 
@@ -199,24 +194,18 @@ FontWatchRunnerTest.prototype.testDomWithNotDefaultTestString = function() {
       this.fakeDomHelper_, this.fakeFontSizer_, this.fakeAsyncCall_,
       this.fakeGetTime_, this.fontFamily_, this.fontDescription_, 'testString');
 
-  assertEquals(4, this.createElementCalled_);
+  assertEquals(2, this.createElementCalled_);
   assertEquals('span', this.createdElements_[0]['name']);
   assertEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_A));
+  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS));
   assertEquals('testString', this.createdElements_[0]['innerHtml']);
+
   assertEquals('span', this.createdElements_[1]['name']);
-  assertEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_B));
+  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
+  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS));
   assertEquals('testString', this.createdElements_[1]['innerHtml']);
-  assertEquals('span', this.createdElements_[2]['name']);
-  assertNotEquals(-1, this.createdElements_[2]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[2]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_A));
-  assertEquals('testString', this.createdElements_[2]['innerHtml']);
-  assertEquals('span', this.createdElements_[3]['name']);
-  assertNotEquals(-1, this.createdElements_[3]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[3]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_B));
-  assertEquals('testString', this.createdElements_[3]['innerHtml']);
-  assertEquals(4, this.insertIntoCalled_);
-  assertEquals(4, this.removeElementCalled_);
+
+  assertEquals(2, this.insertIntoCalled_);
+  assertEquals(2, this.removeElementCalled_);
 
 };

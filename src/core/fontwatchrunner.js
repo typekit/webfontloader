@@ -23,43 +23,24 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontFamily_ = fontFamily;
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
-  this.originalSizeA_ = this.getDefaultFontSize_(
-      webfont.FontWatchRunner.DEFAULT_FONTS_A);
-  this.originalSizeB_ = this.getDefaultFontSize_(
-      webfont.FontWatchRunner.DEFAULT_FONTS_B);
-  this.lastObservedSizeA_ = this.originalSizeA_;
-  this.lastObservedSizeB_ = this.originalSizeB_;
-  this.requestedFontA_ = this.createHiddenElementWithFont_(
-      webfont.FontWatchRunner.DEFAULT_FONTS_A);
-  this.requestedFontB_ = this.createHiddenElementWithFont_(
-      webfont.FontWatchRunner.DEFAULT_FONTS_B);
+  this.originalSize_ = this.getDefaultFontSize_(
+      webfont.FontWatchRunner.DEFAULT_FONTS);
+  this.lastObservedSize_ = this.originalSize_;
+  this.requestedFont_ = this.createHiddenElementWithFont_(
+      webfont.FontWatchRunner.DEFAULT_FONTS);
   this.started_ = getTime();
   this.check_();
 };
 
 /**
- * A set of sans-serif fonts and a generic family that cover most platforms:
- * Windows - arial - 99.71%
- * Mac - arial - 97.67%
- * Linux - 97.67%
- * (Based on http://www.codestyle.org/css/font-family/sampler-CombinedResults.shtml)
+ * Because of the quotes on most platform this font will get the default
+ * browser font. The text could have been anything. We have found however
+ * that on Chrome linux, this will also help in getting the proper default
+ * browser font.
  * @type {string}
  * @const
  */
-webfont.FontWatchRunner.DEFAULT_FONTS_A = "arial,'URW Gothic L',sans-serif";
-
-/**
- * A set of serif fonts and a generic family that cover most platforms. We
- * want each of these fonts to have a different width when rendering the test
- * string than each of the fonts in DEFAULT_FONTS_A:
- * Windows - Georgia - 98.98%
- * Mac - Georgia - 95.60%
- * Linux - Century Schoolbook L - 97.97%
- * (Based on http://www.codestyle.org/css/font-family/sampler-CombinedResults.shtml)
- * @type {string}
- * @const
- */
-webfont.FontWatchRunner.DEFAULT_FONTS_B = "Georgia,'Century Schoolbook L',serif";
+webfont.FontWatchRunner.DEFAULT_FONTS = "'sans-serif'";
 
 /**
  * Default test string. Characters are chosen so that their widths vary a lot
@@ -86,17 +67,14 @@ webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESs';
  * @private
  */
 webfont.FontWatchRunner.prototype.check_ = function() {
-  var sizeA = this.fontSizer_.getWidth(this.requestedFontA_);
-  var sizeB = this.fontSizer_.getWidth(this.requestedFontB_);
+  var size = this.fontSizer_.getWidth(this.requestedFont_);
 
-  if ((this.originalSizeA_ != sizeA || this.originalSizeB_ != sizeB) &&
-      this.lastObservedSizeA_ == sizeA && this.lastObservedSizeB_ == sizeB) {
+  if (this.originalSize_ != size && this.lastObservedSize_ == size) {
     this.finish_(this.activeCallback_);
   } else if (this.getTime_() - this.started_ >= 5000) {
     this.finish_(this.inactiveCallback_);
   } else {
-    this.lastObservedSizeA_ = sizeA;
-    this.lastObservedSizeB_ = sizeB;
+    this.lastObservedSize_ = size;
     this.asyncCheck_();
   }
 };
@@ -117,8 +95,7 @@ webfont.FontWatchRunner.prototype.asyncCheck_ = function() {
  * @param {function(string, string)} callback
  */
 webfont.FontWatchRunner.prototype.finish_ = function(callback) {
-  this.domHelper_.removeElement(this.requestedFontA_);
-  this.domHelper_.removeElement(this.requestedFontB_);
+  this.domHelper_.removeElement(this.requestedFont_);
   callback(this.fontFamily_, this.fontDescription_);
 };
 
