@@ -10,10 +10,12 @@
  * @param {string} fontDescription
  * @param {string=} opt_fontTestString
  */
-webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    fontSizer, asyncCall, getTime, fontFamily, fontDescription, opt_fontTestString) {
+webfont.FontWatchRunner = function(activeCallback, inactiveCallback, userAgent,
+    domHelper, fontSizer, asyncCall, getTime, fontFamily, fontDescription,
+    opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
+  this.userAgent_ = userAgent;
   this.domHelper_ = domHelper;
   this.fontSizer_ = fontSizer;
   this.asyncCall_ = asyncCall;
@@ -23,6 +25,9 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontFamily_ = fontFamily;
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
+  if (this.userAgent_.getEngine() == "AppleWebKit") {
+    this.webKitFallbackFontSize_ = this.getDefaultFontSize_("'sans-serif'");
+  }
   this.originalSizeA_ = this.getDefaultFontSize_(
       webfont.FontWatchRunner.DEFAULT_FONTS_A);
   this.originalSizeB_ = this.getDefaultFontSize_(
@@ -95,8 +100,17 @@ webfont.FontWatchRunner.prototype.check_ = function() {
   } else if (this.getTime_() - this.started_ >= 5000) {
     this.finish_(this.inactiveCallback_);
   } else {
-    this.lastObservedSizeA_ = sizeA;
-    this.lastObservedSizeB_ = sizeB;
+    if (this.webKitFallbackFontSize_) {
+      if (this.webKitFallbackFontSize_ != sizeA) {
+        this.lastObservedSizeA_ = sizeA;
+      }
+      if (this.webKitFallbackFontSize_ != sizeB) {
+        this.lastObservedSizeB_ = sizeB;
+      }
+    } else {
+      this.lastObservedSizeA_ = sizeA;
+      this.lastObservedSizeB_ = sizeB;
+    }
     this.asyncCheck_();
   }
 };

@@ -1,13 +1,15 @@
 /**
  * @constructor
+ * @param {webfont.UserAgent} userAgent
  * @param {webfont.DomHelper} domHelper
  * @param {webfont.EventDispatcher} eventDispatcher
  * @param {Object.<string, function(Object): number>} fontSizer
  * @param {function(function(), number=)} asyncCall
  * @param {function(): number} getTime
  */
-webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
+webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer,
     asyncCall, getTime) {
+  this.userAgent_ = userAgent;
   this.domHelper_ = domHelper;
   this.eventDispatcher_ = eventDispatcher;
   this.fontSizer_ = fontSizer;
@@ -62,8 +64,8 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
       var activeCallback = webfont.bind(this, this.fontActive_);
       var inactiveCallback = webfont.bind(this, this.fontInactive_)
       new webfont.FontWatchRunner(activeCallback, inactiveCallback,
-          this.domHelper_, this.fontSizer_, this.asyncCall_, this.getTime_,
-          fontFamily, fontDescription, fontTestString);
+          this.userAgent_, this.domHelper_, this.fontSizer_, this.asyncCall_,
+          this.getTime_, fontFamily, fontDescription, fontTestString);
     }
   }
 };
