@@ -25,15 +25,45 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, userAgent,
   this.fontFamily_ = fontFamily;
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
+
+  // While loading a web font webkit applies a last resort fallback font to the
+  // element on which the web font is applied.
+  // See file: WebKit/Source/WebCore/css/CSSFontFaceSource.cpp.
+  // Looking at the different implementation for the different platforms,
+  // the last resort fallback font is different. This code uses the default
+  // OS/browsers values.
   if (this.userAgent_.getEngine() == "AppleWebKit") {
-    this.webKitFallbackFontSize_ = this.getDefaultFontSize_("'sans-serif'");
+    if (this.userAgent_.getPlatform() == "Macintosh") {
+
+      // See file: Source/WebCore/platform/graphics/mac/FontCacheMac.mm
+      this.webKitFallbackFontSize_ = this.getDefaultFontSize_("Times");
+    } else if (this.userAgent_.getName() == "Chrome") {
+      if (this.userAgent_.getPlatform() == "Linux") {
+
+        // On linux this is harder, it depends on the generic type of the
+	// FontDescription, on my machine it looks like it is Sans by default.
+        // See file: Source/WebCore/platform/graphics/chromium/
+	//           FontCacheLinux.cpp
+        this.webKitFallbackFontSize_ = this.getDefaultFontSize_("Sans");
+      }
+      if (this.userAgent_.getPlatform() == "Windows") {
+
+	// See file: Source/WebCore/platform/graphics/chromium/
+	//           FontCacheChromiumWin.cpp
+	this.webKitFallbackFontSize_ = this.getDefaultFontSize_(
+            "Arial");
+      }
+    } else {
+
+      // Last resort try to give a name of a font that is unlikely to match any
+      // font.
+      this.webKitFallbackFontSize_ = this.getDefaultFontSize_("__not_a_font__");
+    }
   }
   this.originalSizeA_ = this.getDefaultFontSize_(
       webfont.FontWatchRunner.DEFAULT_FONTS_A);
   this.originalSizeB_ = this.getDefaultFontSize_(
       webfont.FontWatchRunner.DEFAULT_FONTS_B);
-  this.lastObservedSizeA_ = this.originalSizeA_;
-  this.lastObservedSizeB_ = this.originalSizeB_;
   this.requestedFontA_ = this.createHiddenElementWithFont_(
       webfont.FontWatchRunner.DEFAULT_FONTS_A);
   this.requestedFontB_ = this.createHiddenElementWithFont_(
@@ -95,22 +125,18 @@ webfont.FontWatchRunner.prototype.check_ = function() {
   var sizeB = this.fontSizer_.getWidth(this.requestedFontB_);
 
   if ((this.originalSizeA_ != sizeA || this.originalSizeB_ != sizeB) &&
-      this.lastObservedSizeA_ == sizeA && this.lastObservedSizeB_ == sizeB) {
+      !this.webKitFallbackFontSize_ ||
+      (this.webKitFallbackFontSize_ != sizeA &&
+       this.webKitFallbackFontSize_ != sizeB)) {
     this.finish_(this.activeCallback_);
   } else if (this.getTime_() - this.started_ >= 5000) {
-    this.finish_(this.inactiveCallback_);
+
+    // In order to handle the fact that a font could be the same size as the
+    // default browser font on a webkit browser, mark the font as active
+    // after 5 seconds.
+    this.finish_(this.webKitFallbackFontSize_ ?
+        this.activeCallback_ : this.inactiveCallback_);
   } else {
-    if (this.webKitFallbackFontSize_) {
-      if (this.webKitFallbackFontSize_ != sizeA) {
-        this.lastObservedSizeA_ = sizeA;
-      }
-      if (this.webKitFallbackFontSize_ != sizeB) {
-        this.lastObservedSizeB_ = sizeB;
-      }
-    } else {
-      this.lastObservedSizeA_ = sizeA;
-      this.lastObservedSizeB_ = sizeB;
-    }
     this.asyncCheck_();
   }
 };
