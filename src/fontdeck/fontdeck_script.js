@@ -15,9 +15,9 @@ webfont.FontdeckScript.HOOK = '__webfontfontdeckmodule__';
 webfont.FontdeckScript.API = '//f.fontdeck.com/s/css/js/';
 
 webfont.FontdeckScript.prototype.getScriptSrc = function(projectId) {
-  var protocol = 'https:' == window.location.protocol ? 'https:' : 'http:';
+  var protocol = 'https:' == this.global_.location.protocol ? 'https:' : 'http:';
   var api = this.configuration_['api'] || webfont.FontdeckScript.API;
-  return protocol + api + document.location.hostname + '/' + projectId + '.js';
+  return protocol + api + this.global_.document.location.hostname + '/' + projectId + '.js';
 };
 
 webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support) {

@@ -50,7 +50,16 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
       src = srcLink;
     }
   };
-  var global = {};
+  var global = {
+    location: {
+      protocol: 'https:'
+    },
+    document: {
+      location: {
+        hostname: 'test-host-name'
+      }
+    }
+  };
   var fontdeck = new webfont.FontdeckScript(global, fakeDomHelper, configuration);
 
   // supportUserAgent
@@ -59,7 +68,7 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
 
   fontdeck.supportUserAgent(userAgent, function(support) { isSupport = support; });
   assertEquals('head', insert);
-  //assertEquals('http://f.fontdeck.com/s/css/json/localhost/2282.json', src);
+  assertEquals('https://f.fontdeck.com/s/css/js/test-host-name/2282.js', src);
   assertEquals(null, isSupport);
 
   assertNotNull(global.__webfontfontdeckmodule__);
