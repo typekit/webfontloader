@@ -91,3 +91,13 @@ DomHelperTest.prototype.testHasClassName = function() {
   assertFalse(this.domHelper_.hasClassName(div, 'meuh'));
   assertFalse(this.domHelper_.hasClassName(div, 'missingClassName'));
 }
+
+DomHelperTest.prototype.testSetStyleString = function() {
+  var div = this.domHelper_.createElement('div');
+
+  this.domHelper_.setStyle(div, 'font-family: Arial');
+  assertTrue(div.style.cssText.indexOf('Arial') != -1);
+  this.domHelper_.setStyle(div, "font-family: 'Times New Roman'");
+  assertTrue(div.style.cssText.indexOf('Arial') == -1);
+  assertTrue(div.style.cssText.indexOf("Times New Roman") != -1);
+};

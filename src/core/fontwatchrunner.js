@@ -25,41 +25,8 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, userAgent,
   this.fontFamily_ = fontFamily;
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
-
-  // While loading a web font webkit applies a last resort fallback font to the
-  // element on which the web font is applied.
-  // See file: WebKit/Source/WebCore/css/CSSFontFaceSource.cpp.
-  // Looking at the different implementation for the different platforms,
-  // the last resort fallback font is different. This code uses the default
-  // OS/browsers values.
-  if (this.userAgent_.getEngine() == "AppleWebKit") {
-    if (this.userAgent_.getPlatform() == "Macintosh") {
-
-      // See file: Source/WebCore/platform/graphics/mac/FontCacheMac.mm
-      this.webKitFallbackFontSize_ = this.getDefaultFontSize_("Times");
-    } else if (this.userAgent_.getName() == "Chrome") {
-      if (this.userAgent_.getPlatform() == "Linux") {
-
-        // On linux this is harder, it depends on the generic type of the
-	// FontDescription, on my machine it looks like it is Sans by default.
-        // See file: Source/WebCore/platform/graphics/chromium/
-	//           FontCacheLinux.cpp
-        this.webKitFallbackFontSize_ = this.getDefaultFontSize_("Sans");
-      }
-      if (this.userAgent_.getPlatform() == "Windows") {
-
-	// See file: Source/WebCore/platform/graphics/chromium/
-	//           FontCacheChromiumWin.cpp
-	this.webKitFallbackFontSize_ = this.getDefaultFontSize_(
-            "Arial");
-      }
-    } else {
-
-      // Last resort try to give a name of a font that is unlikely to match any
-      // font.
-      this.webKitFallbackFontSize_ = this.getDefaultFontSize_("__not_a_font__");
-    }
-  }
+  this.webKitLastResortFontSizes_ = (this.userAgent_.getEngine() == "AppleWebKit") ?
+      this.setUpWebKitLastResortFontSizes_() : null;
   this.originalSizeA_ = this.getDefaultFontSize_(
       webfont.FontWatchRunner.DEFAULT_FONTS_A);
   this.originalSizeB_ = this.getDefaultFontSize_(
@@ -106,6 +73,33 @@ webfont.FontWatchRunner.DEFAULT_FONTS_B = "Georgia,'Century Schoolbook L',serif"
 webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESs';
 
 /**
+ * While loading a web font webkit applies a last resort fallback font to the
+ * element on which the web font is applied.
+ * See file: WebKit/Source/WebCore/css/CSSFontFaceSource.cpp.
+ * Looking at the different implementation for the different platforms,
+ * the last resort fallback font is different. This code uses the default
+ * OS/browsers values.
+ */
+webfont.FontWatchRunner.prototype.setUpWebKitLastResortFontSizes_ = function() {
+  var lastResortFonts = ["__not_a_font__", "'Times New Roman'",
+      "'Lucida Sans Unicode'", "'Courier New'", "Tahoma", "Arial",
+      "'Microsoft Sans Serif'", "Times", "'Lucida Console'", "Sans", "Serif",
+      "Monospace"];
+  var lastResortFontSizes = lastResortFonts.length;
+  var webKitLastResortFontSizes = {};
+  var element = this.createHiddenElementWithFont_(lastResortFonts[0], true);
+
+  webKitLastResortFontSizes[this.fontSizer_.getWidth(element)] = true;
+  for (var i = 1; i < lastResortFontSizes; i++) {
+    var font = lastResortFonts[i];
+    this.domHelper_.setStyle(element, this.computeStyleString_(font, true));
+    webKitLastResortFontSizes[this.fontSizer_.getWidth(element)] = true;
+  }
+  this.domHelper_.removeElement(element);
+  return webKitLastResortFontSizes;
+};
+
+/**
  * Checks the size of the two spans against their original sizes during each
  * async loop. If the size of one of the spans is different than the original
  * size, then we know that the font is rendering and finish with the active
@@ -125,16 +119,16 @@ webfont.FontWatchRunner.prototype.check_ = function() {
   var sizeB = this.fontSizer_.getWidth(this.requestedFontB_);
 
   if ((this.originalSizeA_ != sizeA || this.originalSizeB_ != sizeB) &&
-      !this.webKitFallbackFontSize_ ||
-      (this.webKitFallbackFontSize_ != sizeA &&
-       this.webKitFallbackFontSize_ != sizeB)) {
+      (this.webKitLastResortFontSizes_ == null ||
+      (!this.webKitLastResortFontSizes_[sizeA] &&
+       !this.webKitLastResortFontSizes_[sizeB]))) {
     this.finish_(this.activeCallback_);
   } else if (this.getTime_() - this.started_ >= 5000) {
 
     // In order to handle the fact that a font could be the same size as the
     // default browser font on a webkit browser, mark the font as active
     // after 5 seconds.
-    this.finish_(this.webKitFallbackFontSize_ ?
+    this.finish_(this.webKitLastResortFontSizes_ ?
         this.activeCallback_ : this.inactiveCallback_);
   } else {
     this.asyncCheck_();
@@ -181,15 +175,23 @@ webfont.FontWatchRunner.prototype.getDefaultFontSize_ = function(defaultFonts) {
  */
 webfont.FontWatchRunner.prototype.createHiddenElementWithFont_ = function(
     defaultFonts, opt_withoutFontFamily) {
-  var variationCss = this.fvd_.expand(this.fontDescription_);
-  var styleString = "position:absolute;top:-999px;left:-999px;" +
-    "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
-    "padding:0;font-variant:normal;font-family:" + (opt_withoutFontFamily ? "" :
-        this.nameHelper_.quote(this.fontFamily_) + ",") +
-      defaultFonts + ";" + variationCss;
+  var styleString = this.computeStyleString_(defaultFonts,
+      opt_withoutFontFamily);
   var span = this.domHelper_.createElement('span', { 'style': styleString },
       this.fontTestString_);
 
   this.domHelper_.insertInto('body', span);
   return span;
+};
+
+webfont.FontWatchRunner.prototype.computeStyleString_ = function(defaultFonts,
+    opt_withoutFontFamily) {
+  var variationCss = this.fvd_.expand(this.fontDescription_);
+  var styleString = "position:absolute;top:-999px;left:-999px;" +
+      "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
+      "padding:0;font-variant:normal;font-family:"
+      + (opt_withoutFontFamily ? "" :
+        this.nameHelper_.quote(this.fontFamily_) + ",")
+      + defaultFonts + ";" + variationCss;
+  return styleString;
 };
