@@ -175,5 +175,5 @@ webfont.DomHelper.prototype.setStyle = function(e, styleString) {
     e.style.cssText = styleString;
   } else {
     e.setAttribute("style", styleString);
-  }  
+  }
 };
