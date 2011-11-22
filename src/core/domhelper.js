@@ -26,10 +26,10 @@ webfont.DomHelper.prototype.createElement = function(elem, opt_attr,
       // protect against native prototype augmentations
       if (opt_attr.hasOwnProperty(attr)) {
         if (attr == "style") {
-	  this.setStyle(domElement, opt_attr[attr]);
+          this.setStyle(domElement, opt_attr[attr]);
 	} else {
-	  domElement.setAttribute(attr, opt_attr[attr]);
-	}
+          domElement.setAttribute(attr, opt_attr[attr]);
+        }
       }
     }
   }
