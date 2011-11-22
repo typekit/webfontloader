@@ -208,7 +208,7 @@ FontWatchRunnerTest.prototype.testDomWithNotDefaultTestString = function() {
 FontWatchRunnerTest.prototype.testLastResortFontIgnored = function() {
   var userAgent = new webfont.UserAgent('Chrome', '16.0.912.36', 'AppleWebKit',
       '531.9', 'Macintosh', '10.6', undefined, true);
-  var lastResortFontsCount = 12;
+  var lastResortFontsCount = 11;
   var originalSizeCount = 2;
   var firstSize = 2;
   var secondSize = 2;
@@ -252,7 +252,7 @@ FontWatchRunnerTest.prototype.testLastResortFontActiveWhenSizeMatch
   this.timesToGetTimeBeforeTimeout_ = 3;
   var userAgent = new webfont.UserAgent('Chrome', '16.0.912.36', 'AppleWebKit',
       '531.9', 'Macintosh', '10.6', undefined, true);
-  var lastResortFontsCount = 12;
+  var lastResortFontsCount = 11;
   var originalSizeCount = 2;
   var firstSize = 2;
 
@@ -286,7 +286,7 @@ FontWatchRunnerTest.prototype.testLastResortFontInactiveWhenSizeNoMatch
   this.timesToGetTimeBeforeTimeout_ = 3;
   var userAgent = new webfont.UserAgent('Chrome', '16.0.912.36', 'AppleWebKit',
       '531.9', 'Macintosh', '10.6', undefined, true);
-  var lastResortFontsCount = 12;
+  var lastResortFontsCount = 11;
   var originalSizeCount = 2;
   var firstSize = 2;
   var secondSize = 2;

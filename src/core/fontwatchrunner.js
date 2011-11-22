@@ -81,7 +81,7 @@ webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESs';
  * OS/browsers values.
  */
 webfont.FontWatchRunner.prototype.setUpWebKitLastResortFontSizes_ = function() {
-  var lastResortFonts = ["__not_a_font__", "'Times New Roman'",
+  var lastResortFonts = ["'Times New Roman'",
       "'Lucida Sans Unicode'", "'Courier New'", "Tahoma", "Arial",
       "'Microsoft Sans Serif'", "Times", "'Lucida Console'", "Sans", "Serif",
       "Monospace"];
