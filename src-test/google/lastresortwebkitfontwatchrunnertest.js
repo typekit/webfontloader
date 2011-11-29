@@ -122,6 +122,8 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontActiveWhenSizeMa
   var originalSizeCount = 2;
   var firstSize = 2;
 
+  this.fontFamily_ = "Arimo";
+
   var fontWatchRunner = new webfont.LastResortWebKitFontWatchRunner(
       this.activeCallback_,
       this.inactiveCallback_,
@@ -148,7 +150,7 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontActiveWhenSizeMa
 
   assertEquals(1, this.fontActiveCalled_);
   assertEquals(0, this.fontInactiveCalled_);
-  assertEquals(true, this.fontActive_['fontFamily1 n4']);
+  assertEquals(true, this.fontActive_['Arimo n4']);
 };
 
 LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontInactiveWhenSizeNoMatch

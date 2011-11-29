@@ -7,7 +7,6 @@ core:
   - core/fontmoduleloader.js
   - core/fontwatcher.js
   - core/fontwatchrunner.js
-  - core/lastresortwebkitfontwatchrunner.js
   - core/font.js
   - core/cssclassname.js
   - core/cssfontfamilyname.js
@@ -18,6 +17,7 @@ ascender:
   - ascender/ascender_script.js
 
 google:
+  - google/lastresortwebkitfontwatchrunner.js
   - google/fontapiurlbuilder.js
   - google/fontapiparser.js
   - google/googlefontapi.js
