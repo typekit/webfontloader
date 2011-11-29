@@ -6,6 +6,7 @@ core:
   - core/eventdispatcher.js
   - core/fontmoduleloader.js
   - core/sizingelementcreator.js
+  - core/basecheckstrategy.js
   - core/defaultcheckstrategy.js
   - core/lastresortwebkitcheckstrategy.js
   - core/fontwatcher.js
