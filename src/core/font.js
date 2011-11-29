@@ -29,6 +29,8 @@ webfont.WebFont.prototype.load = function(configuration) {
 
 webfont.WebFont.prototype.isModuleSupportingUserAgent_ = function(module, eventDispatcher,
     fontWatcher, support) {
+  var checkStrategyCtor = module.getCheckStrategyCtor ?
+      module.getCheckStrategyCtor() : webfont.DefaultCheckStrategy;
   if (!support) {
     var allModulesLoaded = --this.moduleLoading_ == 0;
 
@@ -40,26 +42,28 @@ webfont.WebFont.prototype.isModuleSupportingUserAgent_ = function(module, eventD
         eventDispatcher.dispatchLoading();
       }
     }
-    fontWatcher.watch([], {}, {}, allModulesLoaded);
+    fontWatcher.watch([], {}, {}, checkStrategyCtor, allModulesLoaded);
     return;
   }
   module.load(webfont.bind(this, this.onModuleReady_, eventDispatcher,
-      fontWatcher));
+      fontWatcher, checkStrategyCtor));
 };
 
 webfont.WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher,
-    fontFamilies, opt_fontDescriptions, opt_fontTestStrings) {
+    checkStrategyCtor, fontFamilies, opt_fontDescriptions,
+    opt_fontTestStrings) {
   var allModulesLoaded = --this.moduleLoading_ == 0;
 
   if (allModulesLoaded) {
     eventDispatcher.dispatchLoading();
   }
   this.asyncCall_(webfont.bind(this, function(_fontWatcher, _fontFamilies,
-    _fontDescriptions, _fontTestStrings, _allModulesLoaded) {
+      _fontDescriptions, _fontTestStrings, _checkStrategyCtor,
+      _allModulesLoaded) {
     _fontWatcher.watch(_fontFamilies, _fontDescriptions || {},
-    _fontTestStrings || {}, _allModulesLoaded);
+    _fontTestStrings || {}, _checkStrategyCtor, _allModulesLoaded);
   }, fontWatcher, fontFamilies, opt_fontDescriptions, opt_fontTestStrings,
-      allModulesLoaded));
+      checkStrategyCtor, allModulesLoaded));
 };
 
 webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {

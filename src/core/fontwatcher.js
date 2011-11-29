@@ -34,7 +34,7 @@ webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
  * @param {boolean} last True if this is the last set of families to watch.
  */
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
-    fontTestStrings, last) {
+    fontTestStrings, checkStrategyCtor, last) {
   var length = fontFamilies.length;
 
   for (var i = 0; i < length; i++) {
@@ -49,6 +49,8 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
     this.last_ = last;
   }
 
+  var sizingElementCreator = new webfont.SizingElementCreator(this.domHelper_);
+
   for (var i = 0; i < length; i++) {
     var fontFamily = fontFamilies[i];
     var descriptions = fontDescriptions[fontFamily];
@@ -61,9 +63,10 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
 
       var activeCallback = webfont.bind(this, this.fontActive_);
       var inactiveCallback = webfont.bind(this, this.fontInactive_)
-      new webfont.FontWatchRunner(activeCallback, inactiveCallback,
-          this.domHelper_, this.fontSizer_, this.asyncCall_, this.getTime_,
-          fontFamily, fontDescription, fontTestString);
+      new webfont.FontWatchRunner(this.asyncCall_, this.getTime_,
+          new checkStrategyCtor(sizingElementCreator, activeCallback,
+            inactiveCallback, this.fontSizer_, fontFamily, fontDescription,
+            fontTestString));
     }
   }
 };
