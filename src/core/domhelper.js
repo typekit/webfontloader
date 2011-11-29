@@ -25,9 +25,9 @@ webfont.DomHelper.prototype.createElement = function(elem, opt_attr,
     for (var attr in opt_attr) {
       // protect against native prototype augmentations
       if (opt_attr.hasOwnProperty(attr)) {
-        if (attr == "style" && this.userAgent_.getName() == "MSIE") {
-          domElement.style.cssText = opt_attr[attr];
-        } else {
+        if (attr == "style") {
+          this.setStyle(domElement, opt_attr[attr]);
+	} else {
           domElement.setAttribute(attr, opt_attr[attr]);
         }
       }
@@ -163,4 +163,17 @@ webfont.DomHelper.prototype.hasClassName = function(e, name) {
     }
   }
   return false;
+};
+
+/**
+ * Sets the style attribute on an element.
+ * @param {Element} e The element.
+ * @param {string} styleString The style string.
+ */
+webfont.DomHelper.prototype.setStyle = function(e, styleString) {
+  if (this.userAgent_.getName() == "MSIE") {
+    e.style.cssText = styleString;
+  } else {
+    e.setAttribute("style", styleString);
+  }
 };

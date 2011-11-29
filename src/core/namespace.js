@@ -14,3 +14,17 @@ webfont.bind = function(context, func, opt_args) {
     return func.apply(context, args);
   };
 };
+
+webfont.extendsClass = function(baseClass, subClass) {
+
+  // Avoid polluting the baseClass prototype object with methods from the
+  // subClass
+  /** @constructor */
+  function baseExtendClass() {};
+  baseExtendClass.prototype = baseClass.prototype;
+  subClass.prototype = new baseExtendClass();
+
+  subClass.prototype.constructor = subClass;
+  subClass.superCtor_ = baseClass;
+  subClass.super_ = baseClass.prototype;
+};
