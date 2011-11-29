@@ -33,8 +33,6 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
       webfont.FontWatchRunner.DEFAULT_FONTS_A);
   this.requestedFontB_ = this.createHiddenElementWithFont_(
       webfont.FontWatchRunner.DEFAULT_FONTS_B);
-  this.started_ = getTime();
-  this.check_();
 };
 
 /**
@@ -69,6 +67,11 @@ webfont.FontWatchRunner.DEFAULT_FONTS_B = "Georgia,'Century Schoolbook L',serif"
  * @const
  */
 webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESs';
+
+webfont.FontWatchRunner.prototype.start = function() {
+  this.started_ = this.getTime_();
+  this.check_();
+};
 
 /**
  * Checks the size of the two spans against their original sizes during each
@@ -141,15 +144,23 @@ webfont.FontWatchRunner.prototype.getDefaultFontSize_ = function(defaultFonts) {
  */
 webfont.FontWatchRunner.prototype.createHiddenElementWithFont_ = function(
     defaultFonts, opt_withoutFontFamily) {
-  var variationCss = this.fvd_.expand(this.fontDescription_);
-  var styleString = "position:absolute;top:-999px;left:-999px;" +
-    "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
-    "padding:0;font-variant:normal;font-family:" + (opt_withoutFontFamily ? "" :
-        this.nameHelper_.quote(this.fontFamily_) + ",") +
-      defaultFonts + ";" + variationCss;
+  var styleString = this.computeStyleString_(defaultFonts,
+      opt_withoutFontFamily);
   var span = this.domHelper_.createElement('span', { 'style': styleString },
       this.fontTestString_);
 
   this.domHelper_.insertInto('body', span);
   return span;
+};
+
+webfont.FontWatchRunner.prototype.computeStyleString_ = function(defaultFonts,
+    opt_withoutFontFamily) {
+  var variationCss = this.fvd_.expand(this.fontDescription_);
+  var styleString = "position:absolute;top:-999px;left:-999px;" +
+      "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
+      "padding:0;font-variant:normal;font-family:"
+      + (opt_withoutFontFamily ? "" :
+        this.nameHelper_.quote(this.fontFamily_) + ",")
+      + defaultFonts + ";" + variationCss;
+  return styleString;
 };
