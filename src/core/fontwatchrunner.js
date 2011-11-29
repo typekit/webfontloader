@@ -1,40 +1,14 @@
 /**
  * @constructor
- * @param {function(string, string)} activeCallback
- * @param {function(string, string)} inactiveCallback
- * @param {webfont.DomHelper} domHelper
- * @param {Object.<string, function(Object): number>} fontSizer
  * @param {function(function(), number=)} asyncCall
  * @param {function(): number} getTime
- * @param {string} fontFamily
- * @param {string} fontDescription
- * @param {string=} opt_fontTestString
+ * @param {Object} strategy
  */
-webfont.FontWatchRunner = function(activeCallback, inactiveCallback, userAgent,
-    domHelper, fontSizer, asyncCall, getTime, fontFamily, fontDescription,
-    opt_fontTestString) {
-  this.activeCallback_ = activeCallback;
-  this.inactiveCallback_ = inactiveCallback;
-  this.userAgent_ = userAgent;
-  this.domHelper_ = domHelper;
-  this.fontSizer_ = fontSizer;
+webfont.FontWatchRunner = function(asyncCall, getTime, strategy) {
   this.asyncCall_ = asyncCall;
   this.getTime_ = getTime;
-  this.nameHelper_ = new webfont.CssFontFamilyName();
-  this.fvd_ = new webfont.FontVariationDescription();
-  this.fontFamily_ = fontFamily;
-  this.fontDescription_ = fontDescription;
-  this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
-  this.webKitLastResortFontSizes_ = (this.userAgent_.getEngine() == "AppleWebKit") ?
-      this.setUpWebKitLastResortFontSizes_() : null;
-  this.originalSizeA_ = this.getDefaultFontSize_(
-      webfont.FontWatchRunner.DEFAULT_FONTS_A);
-  this.originalSizeB_ = this.getDefaultFontSize_(
-      webfont.FontWatchRunner.DEFAULT_FONTS_B);
-  this.requestedFontA_ = this.createHiddenElementWithFont_(
-      webfont.FontWatchRunner.DEFAULT_FONTS_A);
-  this.requestedFontB_ = this.createHiddenElementWithFont_(
-      webfont.FontWatchRunner.DEFAULT_FONTS_B);
+  this.strategy_ = strategy;
+  this.strategy_.setUp();
   this.started_ = getTime();
   this.check_();
 };
@@ -48,7 +22,7 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, userAgent,
  * @type {string}
  * @const
  */
-webfont.FontWatchRunner.DEFAULT_FONTS_A = "arial,'URW Gothic L',sans-serif";
+webfont.FontWatchRunner.SANS_STACK = "arial,'URW Gothic L',sans-serif";
 
 /**
  * A set of serif fonts and a generic family that cover most platforms. We
@@ -61,7 +35,7 @@ webfont.FontWatchRunner.DEFAULT_FONTS_A = "arial,'URW Gothic L',sans-serif";
  * @type {string}
  * @const
  */
-webfont.FontWatchRunner.DEFAULT_FONTS_B = "Georgia,'Century Schoolbook L',serif";
+webfont.FontWatchRunner.SERIF_STACK = "Georgia,'Century Schoolbook L',serif";
 
 /**
  * Default test string. Characters are chosen so that their widths vary a lot
@@ -73,68 +47,13 @@ webfont.FontWatchRunner.DEFAULT_FONTS_B = "Georgia,'Century Schoolbook L',serif"
 webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESs';
 
 /**
- * While loading a web font webkit applies a last resort fallback font to the
- * element on which the web font is applied.
- * See file: WebKit/Source/WebCore/css/CSSFontFaceSource.cpp.
- * Looking at the different implementation for the different platforms,
- * the last resort fallback font is different. This code uses the default
- * OS/browsers values.
- */
-webfont.FontWatchRunner.prototype.setUpWebKitLastResortFontSizes_ = function() {
-  var lastResortFonts = ["'Times New Roman'",
-      "'Lucida Sans Unicode'", "'Courier New'", "Tahoma", "Arial",
-      "'Microsoft Sans Serif'", "Times", "'Lucida Console'", "Sans", "Serif",
-      "Monospace"];
-  var lastResortFontSizes = lastResortFonts.length;
-  var webKitLastResortFontSizes = {};
-  var element = this.createHiddenElementWithFont_(lastResortFonts[0], true);
-
-  webKitLastResortFontSizes[this.fontSizer_.getWidth(element)] = true;
-  for (var i = 1; i < lastResortFontSizes; i++) {
-    var font = lastResortFonts[i];
-    this.domHelper_.setStyle(element, this.computeStyleString_(font, true));
-    webKitLastResortFontSizes[this.fontSizer_.getWidth(element)] = true;
-  }
-  this.domHelper_.removeElement(element);
-  return webKitLastResortFontSizes;
-};
-
-/**
- * Checks the size of the two spans against their original sizes during each
- * async loop. If the size of one of the spans is different than the original
- * size, then we know that the font is rendering and finish with the active
- * callback. If we wait more than 5 seconds and nothing has changed, we finish
- * with the inactive callback.
- *
- * Because of an odd Webkit quirk, we wait to observe the new width twice
- * in a row before finishing with the active callback. Sometimes, Webkit will
- * render the spans with a changed width for one iteration even though the font
- * is broken. This only happens for one async loop, so waiting for 2 consistent
- * measurements allows us to work around the quirk.
- *
  * @private
  */
 webfont.FontWatchRunner.prototype.check_ = function() {
-  var sizeA = this.fontSizer_.getWidth(this.requestedFontA_);
-  var sizeB = this.fontSizer_.getWidth(this.requestedFontB_);
-
-  if ((this.originalSizeA_ != sizeA || this.originalSizeB_ != sizeB) &&
-      (this.webKitLastResortFontSizes_ == null ||
-      (!this.webKitLastResortFontSizes_[sizeA] &&
-       !this.webKitLastResortFontSizes_[sizeB]))) {
-    this.finish_(this.activeCallback_);
+  if (this.strategy_.isLoaded()) {
+    this.finish_(this.strategy_.getActiveCallback());
   } else if (this.getTime_() - this.started_ >= 5000) {
-
-    // In order to handle the fact that a font could be the same size as the
-    // default browser font on a webkit browser, mark the font as active
-    // after 5 seconds if the latest 2 sizes are in webKitLastResortFontSizes_.
-    if (this.webKitLastResortFontSizes_
-        && this.webKitLastResortFontSizes_[sizeA]
-        && this.webKitLastResortFontSizes_[sizeB]) {
-      this.finish_(this.activeCallback_);
-    } else {
-      this.finish_(this.inactiveCallback_);
-    }
+    this.finish_(this.strategy_.getTimeoutCallback());
   } else {
     this.asyncCheck_();
   }
@@ -153,50 +72,9 @@ webfont.FontWatchRunner.prototype.asyncCheck_ = function() {
 
 /**
  * @private
- * @param {function(string, string)} callback
+ * @param {function()} callback
  */
 webfont.FontWatchRunner.prototype.finish_ = function(callback) {
-  this.domHelper_.removeElement(this.requestedFontA_);
-  this.domHelper_.removeElement(this.requestedFontB_);
-  callback(this.fontFamily_, this.fontDescription_);
-};
-
-/**
- * @private
- * @param {string} defaultFonts
- */
-webfont.FontWatchRunner.prototype.getDefaultFontSize_ = function(defaultFonts) {
-  var defaultFont = this.createHiddenElementWithFont_(defaultFonts, true);
-  var size = this.fontSizer_.getWidth(defaultFont);
-
-  this.domHelper_.removeElement(defaultFont);
-  return size;
-};
-
-/**
- * @private
- * @param {string} defaultFonts
- * @param {boolean=} opt_withoutFontFamily
- */
-webfont.FontWatchRunner.prototype.createHiddenElementWithFont_ = function(
-    defaultFonts, opt_withoutFontFamily) {
-  var styleString = this.computeStyleString_(defaultFonts,
-      opt_withoutFontFamily);
-  var span = this.domHelper_.createElement('span', { 'style': styleString },
-      this.fontTestString_);
-
-  this.domHelper_.insertInto('body', span);
-  return span;
-};
-
-webfont.FontWatchRunner.prototype.computeStyleString_ = function(defaultFonts,
-    opt_withoutFontFamily) {
-  var variationCss = this.fvd_.expand(this.fontDescription_);
-  var styleString = "position:absolute;top:-999px;left:-999px;" +
-      "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
-      "padding:0;font-variant:normal;font-family:"
-      + (opt_withoutFontFamily ? "" :
-        this.nameHelper_.quote(this.fontFamily_) + ",")
-      + defaultFonts + ";" + variationCss;
-  return styleString;
+  this.strategy_.tearDown();
+  callback();
 };

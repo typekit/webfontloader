@@ -41,6 +41,13 @@ webfont.GoogleFontApi.prototype.insertLink_ = function(onReady) {
       fontApiParser.getFontTestStrings());
 };
 
+webfont.GoogleFontApi.prototype.getCheckStrategyCtor = function() {
+  if (this.userAgent_.getEngine() == "AppleWebKit") {
+    return webfont.LastResortWebKitCheckStrategy;
+  }
+  return webfont.DefaultCheckStrategy;
+};
+
 window['WebFont'].addModule(webfont.GoogleFontApi.NAME, function(configuration) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();

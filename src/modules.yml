@@ -5,6 +5,10 @@ core:
   - core/useragentparser.js
   - core/eventdispatcher.js
   - core/fontmoduleloader.js
+  - core/sizingelementcreator.js
+  - core/defaultcheckstrategy.js
+  - core/lastresortwebkitcheckstrategy.js
+  - core/checkstrategyfactory.js
   - core/fontwatcher.js
   - core/fontwatchrunner.js
   - core/font.js
