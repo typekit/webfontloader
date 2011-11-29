@@ -23,12 +23,6 @@ webfont.LastResortWebKitCheckStrategy.prototype.isLoaded = function() {
           && !this.webKitLastResortFontSizes_[sizeB]));
 };
 
-webfont.LastResortWebKitCheckStrategy.prototype.getActiveCallback = function() {
-  return webfont.bind(this, function() {
-      this.activeCallback_(this.fontFamily_, this.fontDescription_);
-  });
-};
-
 webfont.LastResortWebKitCheckStrategy.prototype.getTimeoutCallback = function() {
   return this.getActiveCallback();
 };

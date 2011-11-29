@@ -29,6 +29,18 @@ webfont.BaseCheckStrategy.prototype.tearDown = function() {
   this.sizingElementCreator_.deleteSizingElement(this.requestedFontB_);
 };
 
+webfont.BaseCheckStrategy.prototype.getActiveCallback = function() {
+  return webfont.bind(this, function() {
+      this.activeCallback_(this.fontFamily_, this.fontDescription_);
+  });
+};
+
+webfont.BaseCheckStrategy.prototype.getTimeoutCallback = function() {
+  return webfont.bind(this, function() {
+      this.inactiveCallback_(this.fontFamily_, this.fontDescription_);
+  });
+};
+
 webfont.BaseCheckStrategy.prototype.getStackSize_ = function(stack) {
   var stackElement = this.sizingElementCreator_.createSizingElement('',
       stack, this.fontDescription_, this.fontTestString_);

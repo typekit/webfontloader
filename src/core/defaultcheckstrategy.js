@@ -27,15 +27,3 @@ webfont.DefaultCheckStrategy.prototype.isLoaded = function() {
   this.lastObservedSizeB_ = sizeB;
   return false;
 };
-
-webfont.DefaultCheckStrategy.prototype.getActiveCallback = function() {
-  return webfont.bind(this, function() {
-      this.activeCallback_(this.fontFamily_, this.fontDescription_);
-  });
-};
-
-webfont.DefaultCheckStrategy.prototype.getTimeoutCallback = function() {
-  return webfont.bind(this, function() {
-      this.inactiveCallback_(this.fontFamily_, this.fontDescription_);
-  });
-};
