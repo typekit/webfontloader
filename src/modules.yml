@@ -17,6 +17,7 @@ ascender:
   - ascender/ascender_script.js
 
 google:
+  - google/lastresortwebkitfontwatchrunner.js
   - google/fontapiurlbuilder.js
   - google/fontapiparser.js
   - google/googlefontapi.js
