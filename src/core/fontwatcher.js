@@ -34,7 +34,7 @@ webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
  * @param {boolean} last True if this is the last set of families to watch.
  */
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
-    fontTestStrings, checkStrategyFactory, last) {
+    fontTestStrings, checkStrategyCtor, last) {
   var length = fontFamilies.length;
 
   for (var i = 0; i < length; i++) {
@@ -64,7 +64,7 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
       var activeCallback = webfont.bind(this, this.fontActive_);
       var inactiveCallback = webfont.bind(this, this.fontInactive_)
       new webfont.FontWatchRunner(this.asyncCall_, this.getTime_,
-          checkStrategyFactory.get(sizingElementCreator, activeCallback,
+          new checkStrategyCtor(sizingElementCreator, activeCallback,
             inactiveCallback, this.fontSizer_, fontFamily, fontDescription,
             fontTestString));
     }

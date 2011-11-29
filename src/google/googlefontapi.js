@@ -13,6 +13,13 @@ webfont.GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) 
   support(userAgent.isSupportingWebFont());
 };
 
+webfont.GoogleFontApi.prototype.getCheckStrategyCtor = function() {
+  if (this.userAgent_.getEngine() == "AppleWebKit") {
+    return webfont.LastResortWebKitCheckStrategy;
+  }
+  return webfont.DefaultCheckStrategy;
+};
+
 webfont.GoogleFontApi.prototype.load = function(onReady) {
   var domHelper = this.domHelper_;
   var nonBlockingIe = this.userAgent_.getName() == 'MSIE' &&
@@ -39,13 +46,6 @@ webfont.GoogleFontApi.prototype.insertLink_ = function(onReady) {
       fontApiUrlBuilder.build()));
   onReady(fontApiParser.getFontFamilies(), fontApiParser.getVariations(),
       fontApiParser.getFontTestStrings());
-};
-
-webfont.GoogleFontApi.prototype.getCheckStrategyCtor = function() {
-  if (this.userAgent_.getEngine() == "AppleWebKit") {
-    return webfont.LastResortWebKitCheckStrategy;
-  }
-  return webfont.DefaultCheckStrategy;
 };
 
 window['WebFont'].addModule(webfont.GoogleFontApi.NAME, function(configuration) {

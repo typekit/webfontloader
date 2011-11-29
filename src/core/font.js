@@ -29,8 +29,8 @@ webfont.WebFont.prototype.load = function(configuration) {
 
 webfont.WebFont.prototype.isModuleSupportingUserAgent_ = function(module, eventDispatcher,
     fontWatcher, support) {
-  var checkStrategyFactory = new webfont.CheckStrategyFactory(
-      module.getCheckStrategyCtor ? module.getCheckStrategyCtor() : null);
+  var checkStrategyCtor = module.getCheckStrategyCtor ?
+      module.getCheckStrategyCtor() : webfont.DefaultCheckStrategy;
   if (!support) {
     var allModulesLoaded = --this.moduleLoading_ == 0;
 
@@ -42,15 +42,15 @@ webfont.WebFont.prototype.isModuleSupportingUserAgent_ = function(module, eventD
         eventDispatcher.dispatchLoading();
       }
     }
-    fontWatcher.watch([], {}, {}, checkStrategyFactory, allModulesLoaded);
+    fontWatcher.watch([], {}, {}, checkStrategyCtor, allModulesLoaded);
     return;
   }
   module.load(webfont.bind(this, this.onModuleReady_, eventDispatcher,
-      fontWatcher, checkStrategyFactory));
+      fontWatcher, checkStrategyCtor));
 };
 
 webfont.WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher,
-    checkStrategyFactory, fontFamilies, opt_fontDescriptions,
+    checkStrategyCtor, fontFamilies, opt_fontDescriptions,
     opt_fontTestStrings) {
   var allModulesLoaded = --this.moduleLoading_ == 0;
 
@@ -58,12 +58,12 @@ webfont.WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher
     eventDispatcher.dispatchLoading();
   }
   this.asyncCall_(webfont.bind(this, function(_fontWatcher, _fontFamilies,
-      _fontDescriptions, _fontTestStrings, _checkStrategyFactory,
+      _fontDescriptions, _fontTestStrings, _checkStrategyCtor,
       _allModulesLoaded) {
     _fontWatcher.watch(_fontFamilies, _fontDescriptions || {},
-    _fontTestStrings || {}, _checkStrategyFactory, _allModulesLoaded);
+    _fontTestStrings || {}, _checkStrategyCtor, _allModulesLoaded);
   }, fontWatcher, fontFamilies, opt_fontDescriptions, opt_fontTestStrings,
-      checkStrategyFactory, allModulesLoaded));
+      checkStrategyCtor, allModulesLoaded));
 };
 
 webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {

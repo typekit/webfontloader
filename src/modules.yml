@@ -8,7 +8,6 @@ core:
   - core/sizingelementcreator.js
   - core/defaultcheckstrategy.js
   - core/lastresortwebkitcheckstrategy.js
-  - core/checkstrategyfactory.js
   - core/fontwatcher.js
   - core/fontwatchrunner.js
   - core/font.js
