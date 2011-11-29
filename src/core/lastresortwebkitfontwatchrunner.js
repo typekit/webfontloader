@@ -4,9 +4,9 @@
 webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
     inactiveCallback, domHelper, fontSizer, asyncCall, getTime, fontFamily,
     fontDescription, opt_fontTestString) {
-  webfont.FontWatchRunner.call(this, activeCallback, inactiveCallback,
-      domHelper, fontSizer, asyncCall, getTime, fontFamily, fontDescription,
-      opt_fontTestString);
+  webfont.LastResortWebKitFontWatchRunner.superCtor_.call(this,
+      activeCallback, inactiveCallback, domHelper, fontSizer, asyncCall,
+      getTime, fontFamily, fontDescription, opt_fontTestString);
   this.webKitLastResortFontSizes_ = this.setUpWebKitLastResortFontSizes_();
 };
 webfont.extendsClass(webfont.FontWatchRunner, webfont.LastResortWebKitFontWatchRunner);

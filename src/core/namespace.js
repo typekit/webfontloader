@@ -25,5 +25,6 @@ webfont.extendsClass = function(baseClass, subClass) {
   subClass.prototype = new baseExtendClass();
 
   subClass.prototype.constructor = subClass;
+  subClass.superCtor_ = baseClass;
   subClass.super_ = baseClass.prototype;
 };
