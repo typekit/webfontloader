@@ -1,3 +1,9 @@
+v1.0.23 (November 29, 2011)
+* Made the FontWatchRunner implementation configurable on a module-by-module basis.
+* Added a new .start() method to FontWatchRunner to actually kick off font loading detection.
+* Added a different FontWatchRunner implementation that Google's module uses to work around a Webkit browser bug. This implementation won't trigger active early, but may trigger active much later, so it's not the default for all modules.
+* Updated the implementation of Fontdeck's module to defer loading responsibility to their JS.
+
 v1.0.22 (July 1, 2011)
 * Fixed a bug in Webkit-based browsers with font detection where active would trigger without the font actually being active yet.
 * Increased the frequency of checking the widths of the font watcher spans.

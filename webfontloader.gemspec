@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.0.22'
-  s.date              = '2011-07-01'
+  s.version           = '1.0.23'
+  s.date              = '2011-11-29'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -117,6 +117,7 @@ DESC
     src-test/google/fontapiparsertest.js
     src-test/google/fontapiurlbuildertest.js
     src-test/google/googlefontapitest.js
+    src-test/google/lastresortwebkitfontwatchrunnertest.js
     src-test/monotype/monotype_script_test.js
     src-test/typekit/typekit_script_test.js
     src/ascender/ascender_script.js
@@ -140,6 +141,7 @@ DESC
     src/google/fontapiparser.js
     src/google/fontapiurlbuilder.js
     src/google/googlefontapi.js
+    src/google/lastresortwebkitfontwatchrunner.js
     src/modules.yml
     src/monotype/monotype_script.js
     src/typekit/typekit_script.js
