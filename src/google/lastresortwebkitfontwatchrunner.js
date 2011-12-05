@@ -8,6 +8,7 @@ webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
       activeCallback, inactiveCallback, domHelper, fontSizer, asyncCall,
       getTime, fontFamily, fontDescription, opt_fontTestString);
   this.webKitLastResortFontSizes_ = this.setUpWebKitLastResortFontSizes_();
+  this.webKitLastResortSizeChange_ = false;
 };
 webfont.extendsClass(webfont.FontWatchRunner, webfont.LastResortWebKitFontWatchRunner);
 
@@ -38,8 +39,15 @@ webfont.LastResortWebKitFontWatchRunner.prototype
   webKitLastResortFontSizes[this.fontSizer_.getWidth(element)] = true;
   for (var i = 1; i < lastResortFontSizes; i++) {
     var font = lastResortFonts[i];
-    this.domHelper_.setStyle(element, this.computeStyleString_(font, true));
+    this.domHelper_.setStyle(element, this.computeStyleString_(font,
+        this.fontDescription_, true));
     webKitLastResortFontSizes[this.fontSizer_.getWidth(element)] = true;
+
+    if (this.fontDescription_[1] != '4') {
+      this.domHelper_.setStyle(element, this.computeStyleString_(font,
+        this.fontDescription_[0] + '4', true));
+      webKitLastResortFontSizes[this.fontSizer_.getWidth(element)] = true;
+    }
   }
   this.domHelper_.removeElement(element);
   return webKitLastResortFontSizes;
@@ -49,6 +57,12 @@ webfont.LastResortWebKitFontWatchRunner.prototype.check_ = function() {
   var sizeA = this.fontSizer_.getWidth(this.requestedFontA_);
   var sizeB = this.fontSizer_.getWidth(this.requestedFontB_);
 
+  if (!this.webKitLastResortSizeChange_ && sizeA == sizeB &&
+      this.webKitLastResortFontSizes_[sizeA]) {
+    this.webKitLastResortFontSizes_ = {};
+    this.webKitLastResortFontSizes_[sizeA] = true;
+    this.webKitLastResortSizeChange_ = true;
+  }
   if ((this.originalSizeA_ != sizeA || this.originalSizeB_ != sizeB) &&
       (!this.webKitLastResortFontSizes_[sizeA] &&
        !this.webKitLastResortFontSizes_[sizeB])) {
