@@ -72,8 +72,8 @@ LastResortWebKitFontWatchRunnerTest.prototype.setUp = function() {
 
 LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontIgnored =
     function() {
-  var lastResortFontsCount = 11;
   var originalSizeCount = 2;
+  var lastResortFontsCount = 11;
   var firstSize = 2;
   var secondSize = 2;
   var thirdSize = 2;
@@ -82,13 +82,13 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontIgnored =
       this.activeCallback_,
       this.inactiveCallback_,
       this.fakeDomHelper_, {getWidth: function() {
-        if (lastResortFontsCount > 0) {
-	  lastResortFontsCount--;
-	  return 2;
-	}
 	if (originalSizeCount > 0) {
 	  originalSizeCount--;
 	  return 1;
+	}
+        if (lastResortFontsCount > 0) {
+	  lastResortFontsCount--;
+	  return 2;
 	}
         if (firstSize > 0) {
 	  firstSize--;
@@ -118,8 +118,8 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontIgnored =
 LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontActiveWhenSizeMatch
     = function() {
   this.timesToGetTimeBeforeTimeout_ = 3;
-  var lastResortFontsCount = 11;
   var originalSizeCount = 2;
+  var lastResortFontsCount = 11;
   var firstSize = 2;
 
   this.fontFamily_ = "Arimo";
@@ -128,13 +128,13 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontActiveWhenSizeMa
       this.activeCallback_,
       this.inactiveCallback_,
       this.fakeDomHelper_, {getWidth: function() {
-        if (lastResortFontsCount > 0) {
-          lastResortFontsCount--;
-          return 2;
-        }
         if (originalSizeCount > 0) {
           originalSizeCount--;
           return 1;
+        }
+        if (lastResortFontsCount > 0) {
+          lastResortFontsCount--;
+          return 2;
         }
         if (firstSize > 0) {
           firstSize--;
@@ -156,8 +156,8 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontActiveWhenSizeMa
 LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontInactiveWhenSizeNoMatch
     = function() {
   this.timesToGetTimeBeforeTimeout_ = 3;
-  var lastResortFontsCount = 11;
   var originalSizeCount = 2;
+  var lastResortFontsCount = 11;
   var firstSize = 2;
   var secondSize = 2;
   var thirdSize = 2;
@@ -166,13 +166,13 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontInactiveWhenSize
       this.activeCallback_,
       this.inactiveCallback_,
       this.fakeDomHelper_, {getWidth: function(elem) {
-        if (lastResortFontsCount > 0) {
-          lastResortFontsCount--;
-          return 2;
-        }
         if (originalSizeCount > 0) {
           originalSizeCount--;
           return 1;
+        }
+        if (lastResortFontsCount > 0) {
+          lastResortFontsCount--;
+          return 2;
         }
         if (firstSize > 0) {
           firstSize--;
