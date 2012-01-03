@@ -44,7 +44,7 @@ webfont.LastResortWebKitFontWatchRunner.prototype
     webKitLastResortFontSizes[this.fontSizer_.getWidth(element)] = true;
 
     // Another WebKit quirk if the normal weight/style is loaded first,
-    // the size of the normal weight is returned.
+    // the size of the normal weight is returned when loading another weight.
     if (this.fontDescription_[1] != '4') {
       this.domHelper_.setStyle(element, this.computeStyleString_(font,
         this.fontDescription_[0] + '4', true));
