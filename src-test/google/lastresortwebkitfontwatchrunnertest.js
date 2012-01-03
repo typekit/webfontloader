@@ -72,7 +72,6 @@ LastResortWebKitFontWatchRunnerTest.prototype.setUp = function() {
 
 LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontIgnored =
     function() {
-  var setupCount = 2;
   var lastResortFontsCount = 11;
   var originalSizeCount = 2;
   var firstSize = 2;
@@ -83,10 +82,6 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontIgnored =
       this.activeCallback_,
       this.inactiveCallback_,
       this.fakeDomHelper_, {getWidth: function() {
-        if (setupCount > 0) {
-          setupCount--;
-	  return 1;
-        }
         if (lastResortFontsCount > 0) {
 	  lastResortFontsCount--;
 	  return 2;
@@ -112,7 +107,7 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontIgnored =
 
   fontWatchRunner.start();
 
-  assertEquals(3, this.asyncCount_);
+  assertEquals(2, this.asyncCount_);
 
   // When on webkit time out ends up activating the font.
   assertEquals(1, this.fontActiveCalled_);
@@ -123,7 +118,6 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontIgnored =
 LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontActiveWhenSizeMatch
     = function() {
   this.timesToGetTimeBeforeTimeout_ = 3;
-  var setupCount = 2;
   var lastResortFontsCount = 11;
   var originalSizeCount = 2;
   var firstSize = 2;
@@ -134,10 +128,6 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontActiveWhenSizeMa
       this.activeCallback_,
       this.inactiveCallback_,
       this.fakeDomHelper_, {getWidth: function() {
-        if (setupCount > 0) {
-          setupCount--;
-	  return 1;
-        }
         if (lastResortFontsCount > 0) {
           lastResortFontsCount--;
           return 2;
@@ -166,7 +156,6 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontActiveWhenSizeMa
 LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontInactiveWhenSizeNoMatch
     = function() {
   this.timesToGetTimeBeforeTimeout_ = 3;
-  var setupCount = 2;
   var lastResortFontsCount = 11;
   var originalSizeCount = 2;
   var firstSize = 2;
@@ -177,10 +166,6 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontInactiveWhenSize
       this.activeCallback_,
       this.inactiveCallback_,
       this.fakeDomHelper_, {getWidth: function(elem) {
-        if (setupCount > 0) {
-          setupCount--;
-	  return 1;
-        }
         if (lastResortFontsCount > 0) {
           lastResortFontsCount--;
           return 2;
