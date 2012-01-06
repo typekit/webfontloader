@@ -66,7 +66,7 @@ webfont.FontWatchRunner.DEFAULT_FONTS_B = "Georgia,'Century Schoolbook L',serif"
  * @type {string}
  * @const
  */
-webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESs';
+webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESbswy';
 
 webfont.FontWatchRunner.prototype.start = function() {
   this.started_ = this.getTime_();
@@ -145,7 +145,7 @@ webfont.FontWatchRunner.prototype.getDefaultFontSize_ = function(defaultFonts) {
 webfont.FontWatchRunner.prototype.createHiddenElementWithFont_ = function(
     defaultFonts, opt_withoutFontFamily) {
   var styleString = this.computeStyleString_(defaultFonts,
-      opt_withoutFontFamily);
+      this.fontDescription_, opt_withoutFontFamily);
   var span = this.domHelper_.createElement('span', { 'style': styleString },
       this.fontTestString_);
 
@@ -154,8 +154,8 @@ webfont.FontWatchRunner.prototype.createHiddenElementWithFont_ = function(
 };
 
 webfont.FontWatchRunner.prototype.computeStyleString_ = function(defaultFonts,
-    opt_withoutFontFamily) {
-  var variationCss = this.fvd_.expand(this.fontDescription_);
+    fontDescription, opt_withoutFontFamily) {
+  var variationCss = this.fvd_.expand(fontDescription);
   var styleString = "position:absolute;top:-999px;left:-999px;" +
       "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
       "padding:0;font-variant:normal;font-family:"
