@@ -66,7 +66,7 @@ webfont.FontWatchRunner.DEFAULT_FONTS_B = "Georgia,'Century Schoolbook L',serif"
  * @type {string}
  * @const
  */
-webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESs';
+webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESbswy';
 
 webfont.FontWatchRunner.prototype.start = function() {
   this.started_ = this.getTime_();

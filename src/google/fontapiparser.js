@@ -24,10 +24,8 @@ webfont.FontApiParser.VARIATIONS = {
   'bi': 'i7'
 };
 
-webfont.FontApiParser.TEST_STRING = 'BESbswy';
-
 webfont.FontApiParser.INT_FONTS = {
-  'latin': webfont.FontApiParser.TEST_STRING,
+  'latin': webfont.FontWatchRunner.DEFAULT_TEST_STRING,
   'cyrillic': '&#1081;&#1103;&#1046;',
   'greek': '&#945;&#946;&#931;',
   'khmer': '&#x1780;&#x1781;&#x1782;',
@@ -43,7 +41,6 @@ webfont.FontApiParser.prototype.parse = function() {
     var variations = ['n4'];
 
     if (elements.length >= 2) {
-      this.fontTestStrings_[fontFamily] = webfont.FontApiParser.TEST_STRING;
       var fvds = this.parseVariations_(elements[1]);
 
       if (fvds.length > 0) {
