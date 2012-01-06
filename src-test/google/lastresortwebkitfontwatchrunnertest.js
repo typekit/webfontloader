@@ -82,26 +82,26 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontIgnored =
       this.activeCallback_,
       this.inactiveCallback_,
       this.fakeDomHelper_, {getWidth: function() {
-	if (originalSizeCount > 0) {
-	  originalSizeCount--;
-	  return 1;
-	}
+        if (originalSizeCount > 0) {
+          originalSizeCount--;
+          return 1;
+        }
         if (lastResortFontsCount > 0) {
-	  lastResortFontsCount--;
-	  return 2;
-	}
+          lastResortFontsCount--;
+          return 2;
+        }
         if (firstSize > 0) {
-	  firstSize--;
-	  return 1;
-	}
+          firstSize--;
+          return 1;
+        }
         if (secondSize > 0) {
-	  secondSize--;
-	  return 2;
-	}
+          secondSize--;
+          return 2;
+        }
         if (thirdSize > 0) {
-	  thirdSize--;
-	  return 3;
-	}
+          thirdSize--;
+          return 3;
+        }
       }}, this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
       this.fontDescription_);
 
