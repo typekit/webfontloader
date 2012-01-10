@@ -1,3 +1,7 @@
+v1.0.24 (January 9, 2012)
+* Updated the standard test string from "BESs" to "BESbswy" for more width variability.
+* Improved Google's custom FontWatchRunner implementation for Webkit to work around an issue where the browser reports the 400 weight's width when it is already loaded.
+
 v1.0.23 (November 29, 2011)
 * Made the FontWatchRunner implementation configurable on a module-by-module basis.
 * Added a new .start() method to FontWatchRunner to actually kick off font loading detection.
