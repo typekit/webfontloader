@@ -165,6 +165,22 @@ UserAgentTest.prototype.testBrowserIsAndroid = function() {
   assertTrue(userAgent.isSupportingWebFont());
 };
 
+UserAgentTest.prototype.testBrowserIsAndroidChromeMobile = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+    "Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; Nexus S Build/IML74K) AppleWebKit/535.7 (KHTML, like Gecko) CrMo/16.0.912.75 Mobile Safari/535.7",
+    this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Chrome", userAgent.getName());
+  assertEquals("16.0.912.75", userAgent.getVersion());
+  assertEquals("Android", userAgent.getPlatform());
+  assertEquals("4.0.3", userAgent.getPlatformVersion());
+  assertEquals("AppleWebKit", userAgent.getEngine());
+  assertEquals("535.7", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertTrue(userAgent.isSupportingWebFont());
+};
+
 UserAgentTest.prototype.testBrowserIsFirefoxLettersVersion = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/5.0 (X11; U; Linux i686; ru-RU; rv:1.9.2a1pre) Gecko/20090405 Ubuntu/9.04 (jaunty) Firefox/3.6a1pre",
