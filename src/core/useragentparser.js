@@ -195,7 +195,7 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
   }
   var name = webfont.UserAgentParser.UNKNOWN;
 
-  if (this.userAgent_.indexOf("Chrome") != -1) {
+  if (this.userAgent_.indexOf("Chrome") != -1 || this.userAgent_.indexOf("CrMo") != -1) {
     name = "Chrome";
   } else if (this.userAgent_.indexOf("Safari") != -1) {
     name = "Safari";
@@ -209,7 +209,7 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
         /Version\/([\d\.\w]+)/, 1);
   } else if (name == "Chrome") {
     version = this.getMatchingGroup_(this.userAgent_,
-        /Chrome\/([\d\.]+)/, 1);
+        /(Chrome|CrMo)\/([\d\.]+)/, 2);
   } else if (name == "AdobeAIR") {
     version = this.getMatchingGroup_(this.userAgent_,
         /AdobeAIR\/([\d\.]+)/, 1);
