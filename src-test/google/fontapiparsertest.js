@@ -207,3 +207,34 @@ FontApiParserTest.prototype.testHanumanIsForwardCompatible = function() {
   assertEquals(webfont.FontApiParser.INT_FONTS['khmer'],
       hanumanTestStrings);
 };
+
+FontApiParserTest.prototype.testPlusReplacedWithSpace = function() {
+  var fontFamilies = [ 'Erica+One', 'Droid+Serif::latin',
+      'Yanone+Kaffeesatz:400,700:latin'];
+  var fontApiParser = new webfont.FontApiParser(fontFamilies);
+
+  fontApiParser.parse();
+  var parsedFontFamilies = fontApiParser.getFontFamilies();
+
+  assertEquals(3, parsedFontFamilies.length);
+  assertEquals('Erica One', parsedFontFamilies[0]);
+  assertEquals('Droid Serif', parsedFontFamilies[1]);
+  assertEquals('Yanone Kaffeesatz', parsedFontFamilies[2]);
+  var variations = fontApiParser.getVariations();
+
+  var ericaOne = variations['Erica One'];
+  assertNotNull(ericaOne);
+  assertEquals(1, ericaOne.length);
+  assertEquals('n4', ericaOne[0]);
+
+  var droidSerif = variations['Droid Serif'];
+  assertNotNull(droidSerif);
+  assertEquals(1, droidSerif.length);
+  assertEquals('n4', droidSerif[0]);
+
+  var yanoneKaffeesatz = variations['Yanone Kaffeesatz'];
+  assertNotNull(yanoneKaffeesatz);
+  assertEquals(2, yanoneKaffeesatz.length);
+  assertEquals('n4', yanoneKaffeesatz[0]);
+  assertEquals('n7', yanoneKaffeesatz[1]);
+};
