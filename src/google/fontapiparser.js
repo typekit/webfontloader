@@ -37,7 +37,7 @@ webfont.FontApiParser.prototype.parse = function() {
 
   for (var i = 0; i < length; i++) {
     var elements = this.fontFamilies_[i].split(":");
-    var fontFamily = elements[0];
+    var fontFamily = elements[0].replace(/\+/g, " ");
     var variations = ['n4'];
 
     if (elements.length >= 2) {
