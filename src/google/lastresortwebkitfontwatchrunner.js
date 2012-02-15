@@ -1,5 +1,15 @@
 /**
  * @constructor
+ * @param {function(string, string)} activeCallback
+ * @param {function(string, string)} inactiveCallback
+ * @param {webfont.DomHelper} domHelper
+ * @param {Object.<string, function(Object): number>} fontSizer
+ * @param {function(function(), number=)} asyncCall
+ * @param {function(): number} getTime
+ * @param {string} fontFamily
+ * @param {string} fontDescription
+ * @param {string=} opt_fontTestString
+ * @extends webfont.FontWatchRunner
  */
 webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
     inactiveCallback, domHelper, fontSizer, asyncCall, getTime, fontFamily,
