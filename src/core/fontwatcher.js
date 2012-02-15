@@ -31,6 +31,11 @@ webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
  *     of each family to watch. Described with FVD.
  * @param {Object.<string, string>} fontTestStrings The font test strings for
  *     each family.
+ * @param {function(new:webfont.FontWatchRunner, function(string, string),
+ *     function(string, string), webfont.DomHelper,
+ *     Object.<string, function(Object): number>,
+ *     function(function(), number=), function(): number, string, string,
+ *     string=)} fontWatchRunnerCtor The font watch runner constructor.
  * @param {boolean} last True if this is the last set of families to watch.
  */
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
