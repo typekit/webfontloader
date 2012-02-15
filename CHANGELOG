@@ -1,3 +1,9 @@
+v1.0.26 (February 8, 2012)
+* Updated the included version of the Closure JS compiler jar to 1741, to handle newer annotation styles.
+* Added a missing param annotation for the new FontWatcher.watch argument.
+* Added param annotations for Google's custom FontWatchRunner implementation.
+* Updated the Google Web Fonts API parser to accept family names with a plus sign.
+
 v1.0.25 (February 7, 2012)
 * Updated the user agent parser to recognize Chrome for Android properly as a Chrome browser.
 
