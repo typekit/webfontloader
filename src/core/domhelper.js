@@ -2,12 +2,13 @@
  * Handles common DOM manipulation tasks. The aim of this library is to cover
  * the needs of typical font loading. Not more, not less.
  * @param {HTMLDocument} doc The HTML document we'll manipulate.
- * @param {webfont.UserAgent} userAgent The current user agent.
  * @constructor
  */
-webfont.DomHelper = function(doc, userAgent) {
+webfont.DomHelper = function(doc) {
   this.document_ = doc;
-  this.userAgent_ = userAgent;
+  /** @type boolean */
+  this.supportStyle_ = true;
+  this.detectSupport_();
 };
 
 /**
@@ -171,9 +172,21 @@ webfont.DomHelper.prototype.hasClassName = function(e, name) {
  * @param {string} styleString The style string.
  */
 webfont.DomHelper.prototype.setStyle = function(e, styleString) {
-  if (this.userAgent_.getName() == "MSIE") {
-    e.style.cssText = styleString;
-  } else {
+  if (this.supportStyle_) {
     e.setAttribute("style", styleString);
+  } else {
+    e.style.cssText = styleString;
   }
+};
+
+/**
+ * Do one-time detection for feature support in this browser.
+ * @private
+ */
+webfont.DomHelper.prototype.detectSupport_ = function() {
+  var e = this.document_.createElement('p');
+  e.innerHTML = '<a style="top:1px;">w</a>';
+
+  // Test for support of getting/setting style attr (IE uses cssText instead)
+  this.supportStyle_ = /top/.test(e.getElementsByTagName('a')[0].getAttribute('style'));
 };
