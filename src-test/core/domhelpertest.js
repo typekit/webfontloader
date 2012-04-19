@@ -1,8 +1,7 @@
 var DomHelperTest = TestCase('DomHelperTest');
 
 DomHelperTest.prototype.setUp = function() {
-  this.domHelper_ = new webfont.DomHelper(document, new webfont.UserAgent("name", "version",
-      "engine", "engineVersion", "platform", "platformVersion", true));
+  this.domHelper_ = new webfont.DomHelper(document);
 };
 
 DomHelperTest.prototype.testCreateElementNoAttr = function() {
@@ -90,4 +89,20 @@ DomHelperTest.prototype.testHasClassName = function() {
   assertTrue(this.domHelper_.hasClassName(div, 'moo-meuh'));
   assertFalse(this.domHelper_.hasClassName(div, 'meuh'));
   assertFalse(this.domHelper_.hasClassName(div, 'missingClassName'));
-}
+};
+
+DomHelperTest.prototype.testSetStyle = function() {
+  var e = this.domHelper_.createElement('span')
+  this.domHelper_.setStyle(e, 'left:3px;top:1px;');
+  assertEquals('3px', e.style.left)
+  assertEquals('1px', e.style.top);
+};
+
+DomHelperTest.prototype.testHasSupportForStyle = function() {
+  assertUndefined(this.domHelper_.supportForStyle_);
+  assertBoolean(this.domHelper_.hasSupportForStyle_());
+  this.domHelper_.supportForStyle_ = false;
+  assertFalse(this.domHelper_.hasSupportForStyle_());
+  this.domHelper_.supportForStyle_ = true;
+  assertTrue(this.domHelper_.hasSupportForStyle_());
+};

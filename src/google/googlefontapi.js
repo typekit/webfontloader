@@ -51,6 +51,6 @@ webfont.GoogleFontApi.prototype.insertLink_ = function(onReady) {
 window['WebFont'].addModule(webfont.GoogleFontApi.NAME, function(configuration) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
-  return new webfont.GoogleFontApi(userAgent,
-      new webfont.DomHelper(document, userAgent), configuration);
+  return new webfont.GoogleFontApi(userAgent, new webfont.DomHelper(document),
+      configuration);
 });

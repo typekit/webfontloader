@@ -2,12 +2,13 @@
  * Handles common DOM manipulation tasks. The aim of this library is to cover
  * the needs of typical font loading. Not more, not less.
  * @param {HTMLDocument} doc The HTML document we'll manipulate.
- * @param {webfont.UserAgent} userAgent The current user agent.
  * @constructor
  */
-webfont.DomHelper = function(doc, userAgent) {
+webfont.DomHelper = function(doc) {
   this.document_ = doc;
-  this.userAgent_ = userAgent;
+
+  /** @type {boolean|undefined} */
+  this.supportForStyle_ = undefined;
 };
 
 /**
@@ -171,9 +172,25 @@ webfont.DomHelper.prototype.hasClassName = function(e, name) {
  * @param {string} styleString The style string.
  */
 webfont.DomHelper.prototype.setStyle = function(e, styleString) {
-  if (this.userAgent_.getName() == "MSIE") {
-    e.style.cssText = styleString;
-  } else {
+  if (this.hasSupportForStyle_()) {
     e.setAttribute("style", styleString);
+  } else {
+    e.style.cssText = styleString;
   }
+};
+
+/**
+ * Check if getting and setting the style attribute on an element with
+ * getAttribute/setAttribute is supported. In old IE, you must use style.cssText
+ * instead. Feature detection is only done the first time this is called.
+ * @private
+ * @return {boolean} Whether or not the feature is supported.
+ */
+webfont.DomHelper.prototype.hasSupportForStyle_ = function() {
+  if (this.supportForStyle_ === undefined) {
+    var e = this.document_.createElement('p');
+    e.innerHTML = '<a style="top:1px;">w</a>';
+    this.supportForStyle_ = /top/.test(e.getElementsByTagName('a')[0].getAttribute('style'));
+  }
+  return this.supportForStyle_
 };
