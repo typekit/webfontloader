@@ -7,7 +7,7 @@
 webfont.DomHelper = function(doc) {
   this.document_ = doc;
 
-  /** @type boolean|undefined */
+  /** @type {boolean|undefined} */
   this.supportForStyle_ = undefined;
 };
 
