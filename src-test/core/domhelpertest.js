@@ -97,3 +97,12 @@ DomHelperTest.prototype.testSetStyle = function() {
   assertEquals('3px', e.style.left)
   assertEquals('1px', e.style.top);
 };
+
+DomHelperTest.prototype.testHasSupportForStyle = function() {
+  assertUndefined(this.domHelper_.supportForStyle_);
+  assertBoolean(this.domHelper_.hasSupportForStyle_());
+  this.domHelper_.supportForStyle_ = false;
+  assertFalse(this.domHelper_.hasSupportForStyle_());
+  this.domHelper_.supportForStyle_ = true;
+  assertTrue(this.domHelper_.hasSupportForStyle_());
+};
