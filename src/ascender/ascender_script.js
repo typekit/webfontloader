@@ -80,5 +80,6 @@ webfont.AscenderScript.prototype.parseVariations = function(source){
 
 window['WebFont'].addModule(webfont.AscenderScript.NAME, function(configuration) {
   var domHelper = new webfont.DomHelper(document);
+  domHelper.detectFeatureSupport();
   return new webfont.AscenderScript(domHelper, configuration);
 });

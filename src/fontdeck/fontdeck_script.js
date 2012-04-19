@@ -57,5 +57,6 @@ webfont.FontdeckScript.prototype.load = function(onReady) {
 
 window['WebFont'].addModule(webfont.FontdeckScript.NAME, function(configuration) {
   var domHelper = new webfont.DomHelper(document);
+  domHelper.detectFeatureSupport();
   return new webfont.FontdeckScript(window, domHelper, configuration);
 });
