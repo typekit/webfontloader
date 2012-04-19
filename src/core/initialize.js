@@ -6,7 +6,6 @@ window[globalName] = (function() {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
   var domHelper = new webfont.DomHelper(document);
-  domHelper.detectFeatureSupport();
   var asyncCall = function(func, timeout) { setTimeout(func, timeout); };
 
   return new webfont.WebFont(domHelper, new webfont.FontModuleLoader(),

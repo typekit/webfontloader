@@ -2,7 +2,6 @@ var DomHelperTest = TestCase('DomHelperTest');
 
 DomHelperTest.prototype.setUp = function() {
   this.domHelper_ = new webfont.DomHelper(document);
-  this.domHelper_.detectFeatureSupport();
 };
 
 DomHelperTest.prototype.testCreateElementNoAttr = function() {

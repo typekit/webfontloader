@@ -7,23 +7,8 @@
 webfont.DomHelper = function(doc) {
   this.document_ = doc;
 
-  // Set up default feature support before the actual values are detected.
-  /** @type boolean */
-  this.supportStyle_ = true;
-};
-
-/**
- * Do feature detection for the support of different features in the current
- * browser. This is left out of the constructor so that the JS can initialize in
- * environments without a DOM implementation, but should always be called
- * immediately after the constructor in normal use.
- */
-webfont.DomHelper.prototype.detectFeatureSupport = function() {
-  var e = this.document_.createElement('p');
-  e.innerHTML = '<a style="top:1px;">w</a>';
-
-  // Test for support of getting/setting style attr (IE uses cssText instead)
-  this.supportStyle_ = /top/.test(e.getElementsByTagName('a')[0].getAttribute('style'));
+  /** @type boolean|undefined */
+  this.supportForStyle_ = undefined;
 };
 
 /**
@@ -187,9 +172,25 @@ webfont.DomHelper.prototype.hasClassName = function(e, name) {
  * @param {string} styleString The style string.
  */
 webfont.DomHelper.prototype.setStyle = function(e, styleString) {
-  if (this.supportStyle_) {
+  if (this.hasSupportForStyle_()) {
     e.setAttribute("style", styleString);
   } else {
     e.style.cssText = styleString;
   }
+};
+
+/**
+ * Check if getting and setting the style attribute on an element with
+ * getAttribute/setAttribute is supported. In old IE, you must use style.cssText
+ * instead. Feature detection is only done the first time this is called.
+ * @private
+ * @return {boolean} Whether or not the feature is supported.
+ */
+webfont.DomHelper.prototype.hasSupportForStyle_ = function() {
+  if (this.supportForStyle_ === undefined) {
+    var e = this.document_.createElement('p');
+    e.innerHTML = '<a style="top:1px;">w</a>';
+    this.supportForStyle_ = /top/.test(e.getElementsByTagName('a')[0].getAttribute('style'));
+  }
+  return this.supportForStyle_
 };

@@ -55,7 +55,6 @@ webfont.TypekitScript.prototype.load = function(onReady) {
 
 window['WebFont'].addModule(webfont.TypekitScript.NAME, function(configuration) {
   var domHelper = new webfont.DomHelper(document);
-  domHelper.detectFeatureSupport();
   return new webfont.TypekitScript(window, domHelper, configuration);
 });
 
