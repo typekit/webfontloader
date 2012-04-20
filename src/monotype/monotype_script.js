@@ -100,6 +100,6 @@ webfont.MonotypeScript.prototype.protocol = function () {
 window['WebFont'].addModule(webfont.MonotypeScript.NAME, function (configuration) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
-  var domHelper = new webfont.DomHelper(document, userAgent);
+  var domHelper = new webfont.DomHelper(document);
   return new webfont.MonotypeScript(window, userAgent, domHelper, document, configuration);
 });

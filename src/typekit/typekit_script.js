@@ -54,9 +54,7 @@ webfont.TypekitScript.prototype.load = function(onReady) {
 };
 
 window['WebFont'].addModule(webfont.TypekitScript.NAME, function(configuration) {
-  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
-  var userAgent = userAgentParser.parse();
-  var domHelper = new webfont.DomHelper(document, userAgent);
+  var domHelper = new webfont.DomHelper(document);
   return new webfont.TypekitScript(window, domHelper, configuration);
 });
 
