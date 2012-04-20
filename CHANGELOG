@@ -1,3 +1,6 @@
+v1.0.27 (April 20, 2012)
+* Updated DomHelper to not require a UserAgent instance. Feature-detection is not used instead of UA detection for switching DOM methods.
+
 v1.0.26 (February 8, 2012)
 * Updated the included version of the Closure JS compiler jar to 1741, to handle newer annotation styles.
 * Added a missing param annotation for the new FontWatcher.watch argument.
