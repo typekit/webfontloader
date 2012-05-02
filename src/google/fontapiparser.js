@@ -16,12 +16,16 @@ webfont.FontApiParser.VARIATIONS = {
   'bold': 'n7',
   'italic': 'i4',
   'bolditalic': 'i7',
+  'oblique': 'o4',
+  'boldoblique': 'o7',
   'ul': 'n2',
   'l': 'n3',
   'r': 'n4',
   'b': 'n7',
   'i': 'i4',
-  'bi': 'i7'
+  'bi': 'i7',
+  'o': 'o4',
+  'bo': 'o7'
 };
 
 webfont.FontApiParser.INT_FONTS = {
