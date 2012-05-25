@@ -84,6 +84,22 @@ UserAgentTest.prototype.testBrowserIsChrome = function() {
   assertTrue(userAgent.isSupportingWebFont());
 };
 
+UserAgentTest.prototype.testBrowserIsChromeOS = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (X11; CrOS i686 1660.57.0) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.46 Safari/535.19",
+      this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Chrome", userAgent.getName());
+  assertEquals("18.0.1025.46", userAgent.getVersion());
+  assertEquals("CrOS", userAgent.getPlatform());
+  assertEquals("i686 1660.57.0", userAgent.getPlatformVersion());
+  assertEquals("AppleWebKit", userAgent.getEngine());
+  assertEquals("535.19", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertTrue(userAgent.isSupportingWebFont());
+};
+
 UserAgentTest.prototype.testBrowserIsSafari = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-us) AppleWebKit/531.21.8 (KHTML, like Gecko) Version/4.0.4 Safari/531.21.10",
