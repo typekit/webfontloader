@@ -1,3 +1,6 @@
+v1.0.28 (June 4, 2012)
+* Added support for detecting the Chrome OS platform ("CrOS") in the UserAgentParser.
+
 v1.0.27 (April 20, 2012)
 * Updated DomHelper to not require a UserAgent instance. Feature-detection is not used instead of UA detection for switching DOM methods.
 
