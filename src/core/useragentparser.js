@@ -56,7 +56,7 @@ webfont.UserAgentParser.prototype.getPlatform_ = function() {
     return mobileOs;
   }
   var os = this.getMatchingGroup_(this.userAgent_,
-      /(Linux|Mac_PowerPC|Macintosh|Windows)/, 1);
+      /(Linux|Mac_PowerPC|Macintosh|Windows|CrOS)/, 1);
 
   if (os != "") {
     if (os == "Mac_PowerPC") {
@@ -71,10 +71,10 @@ webfont.UserAgentParser.prototype.getPlatform_ = function() {
  * @private
  */
 webfont.UserAgentParser.prototype.getPlatformVersion_ = function() {
-  var macVersion = this.getMatchingGroup_(this.userAgent_,
-      /(OS X|Windows NT|Android) ([^;)]+)/, 2);
-  if (macVersion) {
-    return macVersion;
+  var genericVersion = this.getMatchingGroup_(this.userAgent_,
+      /(OS X|Windows NT|Android|CrOS) ([^;)]+)/, 2);
+  if (genericVersion) {
+    return genericVersion;
   }
   var iVersion = this.getMatchingGroup_(this.userAgent_,
       /(iPhone )?OS ([\d_]+)/, 2);
