@@ -357,6 +357,22 @@ UserAgentTest.prototype.testBrowserIsIPadWithoutIPhone = function() {
   assertTrue(userAgent.isSupportingWebFont());
 };
 
+UserAgentTest.prototype.testBrowserIsIPadChrome = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (iPad; U; CPU OS 5_1_1 like Mac OS X; en-us) AppleWebKit/534.46.0 (KHTML, like Gecko) CriOS/19.0.1084.60 Mobile/9B206 Safari/7534.48.3",
+      this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Chrome", userAgent.getName());
+  assertEquals("19.0.1084.60", userAgent.getVersion());
+  assertEquals("iPad", userAgent.getPlatform());
+  assertEquals("5_1_1", userAgent.getPlatformVersion());
+  assertEquals("AppleWebKit", userAgent.getEngine());
+  assertEquals("534.46.0", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertTrue(userAgent.isSupportingWebFont());
+}
+
 UserAgentTest.prototype.testBrowserIsIPod = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/5.0 (iPod; U; CPU iPhone OS 2_2_1 like Mac OS X; en-us) AppleWebKit/525.18.1 (KHTML, like Gecko) Mobile/5H11a",
@@ -388,6 +404,22 @@ UserAgentTest.prototype.testBrowserIsIPodSafari = function() {
   assertEquals(undefined, userAgent.getDocumentMode());
   assertTrue(userAgent.isSupportingWebFont());
 };
+
+UserAgentTest.prototype.testBrowserIsIPodChrome = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (iPod; U; CPU iPhone OS 5_1_1 like Mac OS X; en-us) AppleWebKit/534.46.0 (KHTML, like Gecko) CriOS/19.0.1084.60 Mobile/9B206 Safari/7534.48.3",
+      this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Chrome", userAgent.getName());
+  assertEquals("19.0.1084.60", userAgent.getVersion());
+  assertEquals("iPod", userAgent.getPlatform());
+  assertEquals("5_1_1", userAgent.getPlatformVersion());
+  assertEquals("AppleWebKit", userAgent.getEngine());
+  assertEquals("534.46.0", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertTrue(userAgent.isSupportingWebFont());
+}
 
 UserAgentTest.prototype.testBrowserIsSafariWithPlusVersion = function() {
   var userAgentParser = new webfont.UserAgentParser(
