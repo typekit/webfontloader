@@ -8,7 +8,7 @@ webfont.FontApiUrlBuilder = function(apiUrl) {
     var protocol = 'https:' == window.location.protocol ? 'https:' : 'http:';
 
     this.apiUrl_ = protocol + webfont.FontApiUrlBuilder.DEFAULT_API_URL;
-  }  
+  }
   this.fontFamilies_ = [];
   this.subsets_ = [];
 };
@@ -32,7 +32,11 @@ webfont.FontApiUrlBuilder.prototype.parseFontFamilies_ =
     if (elements.length == 3) {
       this.subsets_.push(elements.pop());
     }
-    this.fontFamilies_.push(elements.join(':'));
+    var joinCharacter = '';
+    if (elements.length == 2 && elements[1] != ''){
+      joinCharacter = ':';
+    }
+    this.fontFamilies_.push(elements.join(joinCharacter));
   }
 };
 
