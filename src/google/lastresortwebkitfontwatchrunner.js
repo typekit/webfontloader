@@ -38,10 +38,7 @@ webfont.LastResortWebKitFontWatchRunner.METRICS_COMPATIBLE_FONTS = {
  */
 webfont.LastResortWebKitFontWatchRunner.prototype
     .setUpWebKitLastResortFontSizes_ = function() {
-  var lastResortFonts = ["Times New Roman",
-      "Lucida Sans Unicode", "Courier New", "Tahoma", "Arial",
-      "Microsoft Sans Serif", "Times", "Lucida Console", "Sans", "Serif",
-      "Monospace"];
+  var lastResortFonts = ['Times New Roman', 'Arial', 'Times', 'Sans', 'Serif'];
   var lastResortFontSizes = lastResortFonts.length;
   var webKitLastResortFontSizes = {};
   var element = this.createHiddenElementWithFont_(lastResortFonts[0], true);
