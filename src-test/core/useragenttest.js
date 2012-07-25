@@ -311,6 +311,22 @@ UserAgentTest.prototype.testBrowserIsOperaBeforeVersion10 = function() {
   assertFalse(userAgent.isSupportingWebFont());
 };
 
+UserAgentTest.prototype.testBrowserIsOperaMobileAndroid = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+    "Opera/9.80 (Android 4.1.1; Linux; Opera Mobi/ADR-1207201819; U; en) Presto/2.10.254 Version/12.00",
+    this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Opera", userAgent.getName());
+  assertEquals("12.00", userAgent.getVersion());
+  assertEquals("Android", userAgent.getPlatform());
+  assertEquals("4.1.1", userAgent.getPlatformVersion());
+  assertEquals("Presto", userAgent.getEngine());
+  assertEquals("2.10.254", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertTrue(userAgent.isSupportingWebFont());
+};
+
 UserAgentTest.prototype.testBrowserIsIEOnMac = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/4.0 (compatible; MSIE 5.23; Mac_PowerPC)",
