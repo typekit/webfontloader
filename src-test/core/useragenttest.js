@@ -312,6 +312,9 @@ UserAgentTest.prototype.testBrowserIsOperaBeforeVersion10 = function() {
 };
 
 UserAgentTest.prototype.testBrowserIsOperaMobileAndroid = function() {
+  // For the purposes of web font support, we consider Opera Mobile to be a
+  // version of full Opera on mobile devices, since the support for web fonts
+  // follows the same version numbers as the desktop versions.
   var userAgentParser = new webfont.UserAgentParser(
     "Opera/9.80 (Android 4.1.1; Linux; Opera Mobi/ADR-1207201819; U; en) Presto/2.10.254 Version/12.00",
     this.defaultDocument_);
@@ -326,6 +329,26 @@ UserAgentTest.prototype.testBrowserIsOperaMobileAndroid = function() {
   assertEquals(undefined, userAgent.getDocumentMode());
   assertTrue(userAgent.isSupportingWebFont());
 };
+
+UserAgentTest.prototype.testBrowserIsOperaMiniAndroid = function() {
+  // For the purposes of web font support, we consider Opera Mini to be a
+  // different browser from the full Opera, since it doesn't support web fonts
+  // and follows two separate versioning systems. We use the Opera Mini version
+  // instead of the more generic Opera version.
+  var userAgentParser = new webfont.UserAgentParser(
+    "Opera/9.80 (Android; Opera Mini/7.0.29952/28.2144; U; en) Presto/2.8.119 Version/11.10",
+    this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("OperaMini", userAgent.getName());
+  assertEquals("7.0.29952", userAgent.getVersion());
+  assertEquals("Android", userAgent.getPlatform());
+  assertEquals("Unknown", userAgent.getPlatformVersion());
+  assertEquals("Presto", userAgent.getEngine());
+  assertEquals("2.8.119", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertFalse(userAgent.isSupportingWebFont());
+}
 
 UserAgentTest.prototype.testBrowserIsIEOnMac = function() {
   var userAgentParser = new webfont.UserAgentParser(

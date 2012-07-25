@@ -153,6 +153,21 @@ webfont.UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
       engineVersion = geckoVersion;
     }
   }
+
+  // Check for Opera Mini first, since it looks like normal Opera
+  if (this.userAgent_.indexOf("Opera Mini/") != -1) {
+    var version = this.getMatchingGroup_(this.userAgent_, /Opera Mini\/([\d\.]+)/, 1);
+
+    if (version == "") {
+      version = webfont.UserAgentParser.UNKNOWN;
+    }
+
+    return new webfont.UserAgent("OperaMini", version, engineName,
+        engineVersion, this.getPlatform_(), this.getPlatformVersion_(),
+        this.getDocumentMode_(this.doc_), false);
+  }
+
+  // Otherwise, find version information for normal Opera or Opera Mobile
   if (this.userAgent_.indexOf("Version/") != -1) {
     var version = this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.]+)/, 1);
 
