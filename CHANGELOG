@@ -1,3 +1,11 @@
+v1.0.29 (July 26, 2012)
+* Added test to ensure Firefox for Android is properly detected as "Firefox" by UserAgentParser.
+* Added test to ensure Opera Mobile for Android is properly detected as "Opera" by UserAgentParser.
+* Changed detection so that Chrome for iOS is detected as "Chrome" instead of "Safari".
+* Changed detection so that Opera Mini is correctly detected as "OperaMini" (without font support) instead of "Opera" (with font support).
+* Fixed a bug in Google Web Fonts module when requesting a font family with character sets and no variations.
+* Scaled back the number of fall back fonts used in the Google Web Fonts font watching code.
+
 v1.0.28 (June 4, 2012)
 * Added support for detecting the Chrome OS platform ("CrOS") in the UserAgentParser.
 
