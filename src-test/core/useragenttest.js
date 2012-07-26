@@ -197,6 +197,24 @@ UserAgentTest.prototype.testBrowserIsAndroidChromeMobile = function() {
   assertTrue(userAgent.isSupportingWebFont());
 };
 
+UserAgentTest.prototype.testBrowserIsAndroidFirefox = function() {
+  // This useragent has been slightly doctored with versions to ensure the right
+  // info is coming from the right places.
+  var userAgentParser = new webfont.UserAgentParser(
+    "Mozilla/5.0 (Android; Mobile; rv:13.0) Gecko/15.0 Firefox/14.0",
+    this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Firefox", userAgent.getName());
+  assertEquals("14.0", userAgent.getVersion());
+  assertEquals("Android", userAgent.getPlatform());
+  assertEquals("Unknown", userAgent.getPlatformVersion());
+  assertEquals("Gecko", userAgent.getEngine());
+  assertEquals("13.0", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertTrue(userAgent.isSupportingWebFont());
+}
+
 UserAgentTest.prototype.testBrowserIsFirefoxLettersVersion = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/5.0 (X11; U; Linux i686; ru-RU; rv:1.9.2a1pre) Gecko/20090405 Ubuntu/9.04 (jaunty) Firefox/3.6a1pre",
@@ -293,6 +311,45 @@ UserAgentTest.prototype.testBrowserIsOperaBeforeVersion10 = function() {
   assertFalse(userAgent.isSupportingWebFont());
 };
 
+UserAgentTest.prototype.testBrowserIsOperaMobileAndroid = function() {
+  // For the purposes of web font support, we consider Opera Mobile to be a
+  // version of full Opera on mobile devices, since the support for web fonts
+  // follows the same version numbers as the desktop versions.
+  var userAgentParser = new webfont.UserAgentParser(
+    "Opera/9.80 (Android 4.1.1; Linux; Opera Mobi/ADR-1207201819; U; en) Presto/2.10.254 Version/12.00",
+    this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Opera", userAgent.getName());
+  assertEquals("12.00", userAgent.getVersion());
+  assertEquals("Android", userAgent.getPlatform());
+  assertEquals("4.1.1", userAgent.getPlatformVersion());
+  assertEquals("Presto", userAgent.getEngine());
+  assertEquals("2.10.254", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertTrue(userAgent.isSupportingWebFont());
+};
+
+UserAgentTest.prototype.testBrowserIsOperaMiniAndroid = function() {
+  // For the purposes of web font support, we consider Opera Mini to be a
+  // different browser from the full Opera, since it doesn't support web fonts
+  // and follows two separate versioning systems. We use the Opera Mini version
+  // instead of the more generic Opera version.
+  var userAgentParser = new webfont.UserAgentParser(
+    "Opera/9.80 (Android; Opera Mini/7.0.29952/28.2144; U; en) Presto/2.8.119 Version/11.10",
+    this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("OperaMini", userAgent.getName());
+  assertEquals("7.0.29952", userAgent.getVersion());
+  assertEquals("Android", userAgent.getPlatform());
+  assertEquals("Unknown", userAgent.getPlatformVersion());
+  assertEquals("Presto", userAgent.getEngine());
+  assertEquals("2.8.119", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertFalse(userAgent.isSupportingWebFont());
+}
+
 UserAgentTest.prototype.testBrowserIsIEOnMac = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/4.0 (compatible; MSIE 5.23; Mac_PowerPC)",
@@ -357,6 +414,22 @@ UserAgentTest.prototype.testBrowserIsIPadWithoutIPhone = function() {
   assertTrue(userAgent.isSupportingWebFont());
 };
 
+UserAgentTest.prototype.testBrowserIsIPadChrome = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (iPad; U; CPU OS 5_1_1 like Mac OS X; en-us) AppleWebKit/534.46.0 (KHTML, like Gecko) CriOS/19.0.1084.60 Mobile/9B206 Safari/7534.48.3",
+      this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Chrome", userAgent.getName());
+  assertEquals("19.0.1084.60", userAgent.getVersion());
+  assertEquals("iPad", userAgent.getPlatform());
+  assertEquals("5_1_1", userAgent.getPlatformVersion());
+  assertEquals("AppleWebKit", userAgent.getEngine());
+  assertEquals("534.46.0", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertTrue(userAgent.isSupportingWebFont());
+}
+
 UserAgentTest.prototype.testBrowserIsIPod = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/5.0 (iPod; U; CPU iPhone OS 2_2_1 like Mac OS X; en-us) AppleWebKit/525.18.1 (KHTML, like Gecko) Mobile/5H11a",
@@ -388,6 +461,22 @@ UserAgentTest.prototype.testBrowserIsIPodSafari = function() {
   assertEquals(undefined, userAgent.getDocumentMode());
   assertTrue(userAgent.isSupportingWebFont());
 };
+
+UserAgentTest.prototype.testBrowserIsIPodChrome = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (iPod; U; CPU iPhone OS 5_1_1 like Mac OS X; en-us) AppleWebKit/534.46.0 (KHTML, like Gecko) CriOS/19.0.1084.60 Mobile/9B206 Safari/7534.48.3",
+      this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("Chrome", userAgent.getName());
+  assertEquals("19.0.1084.60", userAgent.getVersion());
+  assertEquals("iPod", userAgent.getPlatform());
+  assertEquals("5_1_1", userAgent.getPlatformVersion());
+  assertEquals("AppleWebKit", userAgent.getEngine());
+  assertEquals("534.46.0", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertTrue(userAgent.isSupportingWebFont());
+}
 
 UserAgentTest.prototype.testBrowserIsSafariWithPlusVersion = function() {
   var userAgentParser = new webfont.UserAgentParser(

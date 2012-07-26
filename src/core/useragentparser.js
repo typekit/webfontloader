@@ -153,6 +153,21 @@ webfont.UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
       engineVersion = geckoVersion;
     }
   }
+
+  // Check for Opera Mini first, since it looks like normal Opera
+  if (this.userAgent_.indexOf("Opera Mini/") != -1) {
+    var version = this.getMatchingGroup_(this.userAgent_, /Opera Mini\/([\d\.]+)/, 1);
+
+    if (version == "") {
+      version = webfont.UserAgentParser.UNKNOWN;
+    }
+
+    return new webfont.UserAgent("OperaMini", version, engineName,
+        engineVersion, this.getPlatform_(), this.getPlatformVersion_(),
+        this.getDocumentMode_(this.doc_), false);
+  }
+
+  // Otherwise, find version information for normal Opera or Opera Mobile
   if (this.userAgent_.indexOf("Version/") != -1) {
     var version = this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.]+)/, 1);
 
@@ -195,7 +210,7 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
   }
   var name = webfont.UserAgentParser.UNKNOWN;
 
-  if (this.userAgent_.indexOf("Chrome") != -1 || this.userAgent_.indexOf("CrMo") != -1) {
+  if (this.userAgent_.indexOf("Chrome") != -1 || this.userAgent_.indexOf("CrMo") != -1 || this.userAgent_.indexOf("CriOS") != -1) {
     name = "Chrome";
   } else if (this.userAgent_.indexOf("Safari") != -1) {
     name = "Safari";
@@ -209,7 +224,7 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
         /Version\/([\d\.\w]+)/, 1);
   } else if (name == "Chrome") {
     version = this.getMatchingGroup_(this.userAgent_,
-        /(Chrome|CrMo)\/([\d\.]+)/, 2);
+        /(Chrome|CrMo|CriOS)\/([\d\.]+)/, 2);
   } else if (name == "AdobeAIR") {
     version = this.getMatchingGroup_(this.userAgent_,
         /AdobeAIR\/([\d\.]+)/, 1);
