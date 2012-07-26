@@ -37,3 +37,14 @@ FontApiUrlBuilderTest.prototype.testBuildProperUrlWithSubsets = function() {
 	       '?family=Font1:bold%7CFont2:italic%7CFont3' +
       '&subset=greek,cyrillic', fontApiUrlBuilder.build());
 };
+
+FontApiUrlBuilderTest.prototype.testBuildProperUrlWithSubsetsNoVariations =
+    function() {
+  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder();
+
+  fontApiUrlBuilder.setFontFamilies([ 'Font1:bold,italic:greek,cyrillic',
+      'Font2:italic', 'Font3::latin' ]);
+  assertEquals("http:" + webfont.FontApiUrlBuilder.DEFAULT_API_URL +
+	       '?family=Font1:bold,italic%7CFont2:italic%7CFont3' +
+      '&subset=greek,cyrillic,latin', fontApiUrlBuilder.build());
+};
