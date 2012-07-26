@@ -73,7 +73,7 @@ LastResortWebKitFontWatchRunnerTest.prototype.setUp = function() {
 LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontIgnored =
     function() {
   var originalSizeCount = 2;
-  var lastResortFontsCount = 11;
+  var lastResortFontsCount = 5;
   var firstSize = 2;
   var secondSize = 2;
   var thirdSize = 2;
@@ -119,7 +119,7 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontActiveWhenSizeMa
     = function() {
   this.timesToGetTimeBeforeTimeout_ = 3;
   var originalSizeCount = 2;
-  var lastResortFontsCount = 11;
+  var lastResortFontsCount = 5;
   var firstSize = 2;
 
   this.fontFamily_ = "Arimo";
@@ -157,7 +157,7 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontInactiveWhenSize
     = function() {
   this.timesToGetTimeBeforeTimeout_ = 3;
   var originalSizeCount = 2;
-  var lastResortFontsCount = 11;
+  var lastResortFontsCount = 5;
   var firstSize = 2;
   var secondSize = 2;
   var thirdSize = 2;
