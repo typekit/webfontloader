@@ -1,3 +1,3 @@
 if (window['WebFontConfig']) {
-  window[globalName]['load'](window['WebFontConfig']);
+  globalNamespaceObject['load'](window['WebFontConfig']);
 }
