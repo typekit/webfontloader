@@ -97,7 +97,7 @@ webfont.MonotypeScript.prototype.protocol = function () {
   return defaultProtocol;
 };
 
-window['WebFont'].addModule(webfont.MonotypeScript.NAME, function (configuration) {
+window[globalName].addModule(webfont.MonotypeScript.NAME, function (configuration) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
   var domHelper = new webfont.DomHelper(document);
