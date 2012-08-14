@@ -50,7 +50,7 @@ webfont.UserAgentParser.prototype.parse = function() {
  */
 webfont.UserAgentParser.prototype.getPlatform_ = function() {
   var mobileOs = this.getMatchingGroup_(this.userAgent_,
-      /(iPod|iPad|iPhone|Android)/, 1);
+      /(iPod|iPad|iPhone|Android|Windows Phone)/, 1);
 
   if (mobileOs != "") {
     return mobileOs;
@@ -72,7 +72,7 @@ webfont.UserAgentParser.prototype.getPlatform_ = function() {
  */
 webfont.UserAgentParser.prototype.getPlatformVersion_ = function() {
   var genericVersion = this.getMatchingGroup_(this.userAgent_,
-      /(OS X|Windows NT|Android|CrOS) ([^;)]+)/, 2);
+      /(OS X|Windows NT|Windows Phone|Android|CrOS) ([^;)]+)/, 2);
   if (genericVersion) {
     return genericVersion;
   }
