@@ -164,6 +164,22 @@ UserAgentTest.prototype.testBrowserIsIEOnWindowsPhone = function() {
   assertTrue(userAgent.isSupportingWebFont());
 };
 
+UserAgentTest.prototype.testBrowserIsIEOnOldWindowsPhone = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; SAMSUNG; SGH-i917)",
+      this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("MSIE", userAgent.getName());
+  assertEquals("9.0", userAgent.getVersion());
+  assertEquals("Windows Phone", userAgent.getPlatform());
+  assertEquals("7.5", userAgent.getPlatformVersion());
+  assertEquals("MSIE", userAgent.getEngine());
+  assertEquals("9.0", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertFalse(userAgent.isSupportingWebFont());
+};
+
 UserAgentTest.prototype.testBrowserIsIPhone = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_1_2 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7D11 Safari/528.16",
