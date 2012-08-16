@@ -50,7 +50,7 @@ webfont.UserAgentParser.prototype.parse = function() {
  */
 webfont.UserAgentParser.prototype.getPlatform_ = function() {
   var mobileOs = this.getMatchingGroup_(this.userAgent_,
-      /(iPod|iPad|iPhone|Android)/, 1);
+      /(iPod|iPad|iPhone|Android|Windows Phone)/, 1);
 
   if (mobileOs != "") {
     return mobileOs;
@@ -75,6 +75,11 @@ webfont.UserAgentParser.prototype.getPlatformVersion_ = function() {
       /(OS X|Windows NT|Android|CrOS) ([^;)]+)/, 2);
   if (genericVersion) {
     return genericVersion;
+  }
+  var winPhoneVersion = this.getMatchingGroup_(this.userAgent_,
+      /Windows Phone( OS)? ([^;)]+)/, 2);
+  if (winPhoneVersion) {
+    return winPhoneVersion;
   }
   var iVersion = this.getMatchingGroup_(this.userAgent_,
       /(iPhone )?OS ([\d_]+)/, 2);
@@ -101,25 +106,32 @@ webfont.UserAgentParser.prototype.isIe_ = function() {
  * @private
  */
 webfont.UserAgentParser.prototype.parseIeUserAgentString_ = function() {
+  // For IE we give MSIE as the engine name and the version of IE
+  // instead of the specific Trident engine name and version
+
+  var platform = this.getPlatform_();
+  var platformVersion = this.getPlatformVersion_();
+
   var browser = this.getMatchingGroup_(this.userAgent_, /(MSIE [\d\w\.]+)/, 1);
-  var engineName = webfont.UserAgentParser.UNKNOWN;
-  var engineVersion = webfont.UserAgentParser.UNKNOWN;
 
   if (browser != "") {
     var pair = browser.split(' ');
     var name = pair[0];
     var version = pair[1];
+    var majorVersion = this.getMajorVersion_(version);
+    var majorPlatformVersion = this.getMajorVersion_(platformVersion);
 
-    // For IE we give MSIE as the engine name and the version of IE
-    // instead of the specific Trident engine name and version
+    var supportWebFont = (platform == "Windows" && majorVersion >= 6) ||
+        (platform == "Windows Phone" && majorPlatformVersion >= 8);
+
     return new webfont.UserAgent(name, version, name, version,
-        this.getPlatform_(), this.getPlatformVersion_(),
-        this.getDocumentMode_(this.doc_), this.getMajorVersion_(version) >= 6);
+        platform, platformVersion, this.getDocumentMode_(this.doc_),
+        supportWebFont);
   }
+
   return new webfont.UserAgent("MSIE", webfont.UserAgentParser.UNKNOWN,
       "MSIE", webfont.UserAgentParser.UNKNOWN,
-      this.getPlatform_(), this.getPlatformVersion_(),
-      this.getDocumentMode_(this.doc_), false);
+      platform, platformVersion, this.getDocumentMode_(this.doc_), false);
 };
 
 /**
