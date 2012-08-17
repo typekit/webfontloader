@@ -1,3 +1,7 @@
+v1.0.30 (August 17, 2012)
+* Added support for detecting the Windows Phone platform in UserAgentParser, which supports web fonts at version 8 and above.
+* Changes to make the global namespace of the library easier to configure when used in 3rd-party projects. (Thanks cbosco!)
+
 v1.0.29 (July 26, 2012)
 * Added test to ensure Firefox for Android is properly detected as "Firefox" by UserAgentParser.
 * Added test to ensure Opera Mobile for Android is properly detected as "Opera" by UserAgentParser.
