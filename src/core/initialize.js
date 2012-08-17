@@ -2,7 +2,7 @@
 var globalName = 'WebFont';
 
 // Provide an instance of WebFont in the global namespace.
-window[globalName] = (function() {
+var globalNamespaceObject = window[globalName] = (function() {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
   var domHelper = new webfont.DomHelper(document);
@@ -13,8 +13,8 @@ window[globalName] = (function() {
 })();
 
 // Export the public API.
-window[globalName]['load'] = window[globalName].load;
-window[globalName]['addModule'] = window[globalName].addModule;
+globalNamespaceObject['load'] = globalNamespaceObject.load;
+globalNamespaceObject['addModule'] = globalNamespaceObject.addModule;
 
 // Export the UserAgent API because we pass this object to external modules.
 webfont.UserAgent.prototype['getName'] = webfont.UserAgent.prototype.getName;
