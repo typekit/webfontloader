@@ -3,17 +3,19 @@ var FontApiParserTest = TestCase('FontApiParserTest');
 FontApiParserTest.prototype.testParsedValuesAreCoherent = function() {
   var fontFamilies = [ 'Tangerine', 'Droid Serif:bi',
       'Yanone Kaffeesatz:200,300,400,700',
-      'Cantarell:italic,b' ];
+      'Cantarell:italic,b', 'Exo:100italic', 'Lobster:200n'];
   var fontApiParser = new webfont.FontApiParser(fontFamilies);
 
   fontApiParser.parse();
   var parsedFontFamilies = fontApiParser.getFontFamilies();
 
-  assertEquals(4, parsedFontFamilies.length);
+  assertEquals(6, parsedFontFamilies.length);
   assertEquals('Tangerine', parsedFontFamilies[0]);
   assertEquals('Droid Serif', parsedFontFamilies[1]);
   assertEquals('Yanone Kaffeesatz', parsedFontFamilies[2]);
   assertEquals('Cantarell', parsedFontFamilies[3]);
+  assertEquals('Exo', parsedFontFamilies[4]);
+  assertEquals('Lobster', parsedFontFamilies[5]);
   var variations = fontApiParser.getVariations();
 
   var tangerine = variations['Tangerine'];
@@ -39,6 +41,16 @@ FontApiParserTest.prototype.testParsedValuesAreCoherent = function() {
   assertEquals(2, cantarell.length);
   assertEquals('i4', cantarell[0]);
   assertEquals('n7', cantarell[1]);
+
+  var exo = variations['Exo'];
+  assertNotNull(exo);
+  assertEquals(1, exo.length);
+  assertEquals('i1', exo[0]);
+
+  var lobster = variations['Lobster'];
+  assertNotNull(lobster);
+  assertEquals(1, lobster.length);
+  assertEquals('n2', lobster[0]);
 };
 
 FontApiParserTest.prototype.testMixOfNumericWeightAndStyle = function() {
