@@ -9,20 +9,6 @@ webfont.FontApiParser = function(fontFamilies) {
   this.fvd_ = new webfont.FontVariationDescription();
 };
 
-webfont.FontApiParser.VARIATIONS = {
-  'ultralight': 'n2',
-  'light': 'n3',
-  'regular': 'n4',
-  'bold': 'n7',
-  'italic': 'i4',
-  'bolditalic': 'i7',
-  'ul': 'n2',
-  'l': 'n3',
-  'r': 'n4',
-  'b': 'n7',
-  'i': 'i4',
-  'bi': 'i7'
-};
 
 webfont.FontApiParser.INT_FONTS = {
   'latin': webfont.FontWatchRunner.DEFAULT_TEST_STRING,
@@ -31,6 +17,44 @@ webfont.FontApiParser.INT_FONTS = {
   'khmer': '&#x1780;&#x1781;&#x1782;',
   'Hanuman': '&#x1780;&#x1781;&#x1782;' // For backward compatibility
 };
+
+webfont.FontApiParser.WEIGHTS = {
+  'thin': '1',
+  'extralight': '2',
+  'extra-light': '2',
+  'ultralight': '2',
+  'ultra-light': '2',
+  'light': '3',
+  'regular': '4',
+  'book': '4',
+  'medium': '5',
+  'semi-bold': '6',
+  'semibold': '6',
+  'demi-bold': '6',
+  'demibold': '6',
+  'bold': '7',
+  'extra-bold': '8',
+  'extrabold': '8',
+  'ultra-bold': '8',
+  'ultrabold': '8',
+  'black': '9',
+  'heavy': '9',
+  'l': '3',
+  'r': '4',
+  'b': '7'
+};
+
+webfont.FontApiParser.STYLES = {
+  'i': 'i',
+  'italic': 'i',
+  'n': 'n',
+  'normal': 'n'
+};
+
+webfont.FontApiParser.VARIATION_MATCH =
+    new RegExp("^(thin|(?:(?:extra|ultra)-?)?light|regular|book|medium|" +
+        "(?:(?:semi|demi|extra|ultra)-?)?bold|black|heavy|l|r|b|[1-9]00)?(n|i" +
+        "|normal|italic)?$");
 
 webfont.FontApiParser.prototype.parse = function() {
   var length = this.fontFamilies_.length;
@@ -71,28 +95,43 @@ webfont.FontApiParser.prototype.parse = function() {
 };
 
 webfont.FontApiParser.prototype.generateFontVariationDescription_ = function(variation) {
-  if (!variation.match(/^[\w ]+$/)) {
+  if (!variation.match(/^[\w]+$/)) {
     return '';
   }
-
-  var fvd = webfont.FontApiParser.VARIATIONS[variation];
-
-  if (fvd) {
-    return fvd;
-  } else {
-    var groups = variation.match(/^(\d*)(\w*)$/);
-    var numericMatch = groups[1];
-    var styleMatch = groups[2];
-    var s = styleMatch ? styleMatch : 'n';
-    var w = numericMatch ? numericMatch.substr(0, 1) : '4';
-    var css = this.fvd_.expand([s, w].join(''));
-    if (css) {
-      return this.fvd_.compact(css);
-    } else {
-      return null;
-    }
+  var normalizedVariation = variation.toLowerCase();
+  var groups = webfont.FontApiParser.VARIATION_MATCH.exec(normalizedVariation);
+  if (groups == null) {
+    return '';
   }
+  var styleMatch = this.normalizeStyle_(groups[2]);
+  var weightMatch = this.normalizeWeight_(groups[1]);
+  var css = this.fvd_.expand([styleMatch, weightMatch].join(''));
+  return css ? this.fvd_.compact(css) : null;
 };
+
+
+webfont.FontApiParser.prototype.normalizeStyle_ = function(parsedStyle) {
+  if (parsedStyle == null) {
+    return 'n';
+  }
+  return webfont.FontApiParser.STYLES[parsedStyle];
+};
+
+
+webfont.FontApiParser.prototype.normalizeWeight_ = function(parsedWeight) {
+  if (parsedWeight == null) {
+    return '4';
+  }
+  var weight = webfont.FontApiParser.WEIGHTS[parsedWeight];
+  if (weight) {
+    return weight;
+  }
+  if (isNaN(parsedWeight)) {
+    return '4';
+  }
+  return parsedWeight.substr(0, 1);
+};
+
 
 webfont.FontApiParser.prototype.parseVariations_ = function(variations) {
   var finalVariations = [];
