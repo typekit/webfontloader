@@ -1,3 +1,6 @@
+v1.0.31 (September 11, 2012)
+* Improvements to Google's module to recognize more variation descriptor formats (such as 100italic and 200n).
+
 v1.0.30 (August 17, 2012)
 * Added support for detecting the Windows Phone platform in UserAgentParser, which supports web fonts at version 8 and above.
 * Changes to make the global namespace of the library easier to configure when used in 3rd-party projects. (Thanks cbosco!)
