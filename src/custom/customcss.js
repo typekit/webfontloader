@@ -22,7 +22,7 @@ webfont.CustomCss.prototype.load = function(onReady) {
   for (var i = 0, len = urls.length; i < len; i++) {
     var url = urls[i];
 
-    this.domHelper_.insertInto('head', this.domHelper_.createCssLink(url));
+    this.domHelper_.insertInto('head', this.domHelper_.createCssLink(url, this.configuration_['media']));
   }
   onReady(families);
 };
