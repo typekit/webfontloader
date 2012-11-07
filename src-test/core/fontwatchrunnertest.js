@@ -81,14 +81,14 @@ FontWatchRunnerTest.prototype.setUp = function() {
     getWidth: function(el) {
       if (el.style.fontFamily.indexOf(self.fontFamily_) !== -1) {
         if (self.timesToDelayChangedWidthWebkit_ > 0) {
-            self.timesToDelayChangedWidthWebkit_ -= 0.5;
-            // Return the incorrect width for a certain number of cycles.
-            // The actual number depends on how fast or how slow the font
-            // is parsed and applied.
-            return 2;
+          self.timesToDelayChangedWidthWebkit_ -= 0.5;
+          // Return the incorrect width for a certain number of cycles.
+          // The actual number depends on how fast or how slow the font
+          // is parsed and applied.
+          return 2;
         } else {
-            // Return the correct width
-            return 1;
+          // Return the correct width
+          return 1;
         }
       } else {
         // Return the default width
