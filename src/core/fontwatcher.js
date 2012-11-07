@@ -68,7 +68,7 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
       var inactiveCallback = webfont.bind(this, this.fontInactive_)
       var fontWatchRunner = new fontWatchRunnerCtor(activeCallback,
           inactiveCallback, this.domHelper_, this.fontSizer_, this.asyncCall_,
-          this.getTime_, fontFamily, fontDescription, fontTestString);
+          this.getTime_, fontFamily, fontDescription, false, fontTestString);
 
       fontWatchRunner.start();
     }

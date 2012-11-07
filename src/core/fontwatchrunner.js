@@ -8,10 +8,11 @@
  * @param {function(): number} getTime
  * @param {string} fontFamily
  * @param {string} fontDescription
+ * @param {boolean} hasWebkitFallbackBug
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    fontSizer, asyncCall, getTime, fontFamily, fontDescription, opt_fontTestString) {
+    fontSizer, asyncCall, getTime, fontFamily, fontDescription, hasWebkitFallbackBug, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
@@ -23,12 +24,12 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontFamily_ = fontFamily;
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
-  this.originalSizeA_ = this.getDefaultFontSize_(
+  this.hasWebkitFallbackBug_ = hasWebkitFallbackBug;
+  this.lastObservedSizeA_ = this.getDefaultFontSize_(
       webfont.FontWatchRunner.DEFAULT_FONTS_A);
-  this.originalSizeB_ = this.getDefaultFontSize_(
+  this.lastObservedSizeB_ = this.getDefaultFontSize_(
       webfont.FontWatchRunner.DEFAULT_FONTS_B);
-  this.lastObservedSizeA_ = this.originalSizeA_;
-  this.lastObservedSizeB_ = this.originalSizeB_;
+  this.widthChangeCount_ = 0;
   this.requestedFontA_ = this.createHiddenElementWithFont_(
       webfont.FontWatchRunner.DEFAULT_FONTS_A);
   this.requestedFontB_ = this.createHiddenElementWithFont_(
@@ -80,26 +81,25 @@ webfont.FontWatchRunner.prototype.start = function() {
  * callback. If we wait more than 5 seconds and nothing has changed, we finish
  * with the inactive callback.
  *
- * Because of an odd Webkit quirk, we wait to observe the new width twice
- * in a row before finishing with the active callback. Sometimes, Webkit will
- * render the spans with a changed width for one iteration even though the font
- * is broken. This only happens for one async loop, so waiting for 2 consistent
- * measurements allows us to work around the quirk.
- *
  * @private
  */
 webfont.FontWatchRunner.prototype.check_ = function() {
   var sizeA = this.fontSizer_.getWidth(this.requestedFontA_);
   var sizeB = this.fontSizer_.getWidth(this.requestedFontB_);
 
-  if ((this.originalSizeA_ != sizeA || this.originalSizeB_ != sizeB) &&
-      this.lastObservedSizeA_ == sizeA && this.lastObservedSizeB_ == sizeB) {
-    this.finish_(this.activeCallback_);
+  if (this.lastObservedSizeA_ != sizeA || this.lastObservedSizeB_ != sizeB) {
+    if ((this.hasWebkitFallbackBug_ && this.widthChangeCount_ === 1) ||
+        (!this.hasWebkitFallbackBug_ && this.widthChangeCount_ === 0)) {
+      this.finish_(this.activeCallback_);
+    } else {
+      this.lastObservedSizeA_ = sizeA;
+      this.lastObservedSizeB_ = sizeB;
+      this.widthChangeCount_ += 1;
+      this.asyncCheck_();
+    }
   } else if (this.getTime_() - this.started_ >= 5000) {
     this.finish_(this.inactiveCallback_);
   } else {
-    this.lastObservedSizeA_ = sizeA;
-    this.lastObservedSizeB_ = sizeB;
     this.asyncCheck_();
   }
 };
