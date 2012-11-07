@@ -68,6 +68,35 @@ FontWatchRunnerTest.prototype.setUp = function() {
     }
   };
 
+  /**
+   * This accurately models the way webkit used to handle
+   * fallback fonts while loading web fonts. Even though
+   * this Webkit bug is now patched, we still have a large
+   * portion of our users using old webkit builds.
+   *
+   * See: https://bugs.webkit.org/show_bug.cgi?id=76684
+   */
+  this.timesToDelayChangedWidthWebkit_ = 1;
+  this.fakeWebkitFontSizer_ = {
+    getWidth: function(el) {
+      if (el.style.fontFamily.indexOf(self.fontFamily_) !== -1) {
+        if (self.timesToDelayChangedWidthWebkit_ > 0) {
+            self.timesToDelayChangedWidthWebkit_ -= 0.5;
+            // Return the incorrect width for a certain number of cycles.
+            // The actual number depends on how fast or how slow the font
+            // is parsed and applied.
+            return 2;
+        } else {
+            // Return the correct width
+            return 1;
+        }
+      } else {
+        // Return the default width
+        return 1;
+      }
+    }
+  };
+
   this.timesToGetTimeBeforeTimeout_ = 10;
   this.fakeGetTime_ = function() {
     if (self.timesToGetTimeBeforeTimeout_ <= 0) {
@@ -136,6 +165,38 @@ FontWatchRunnerTest.prototype.testWatchFontWaitForLoadInactive = function() {
   assertEquals(4, this.asyncCount_);
 
   assertEquals(0, this.fontActiveCalled_);
+  assertEquals(1, this.fontInactiveCalled_);
+  assertEquals(true, this.fontInactive_['fontFamily1 n4']);
+};
+
+FontWatchRunnerTest.prototype.testWatchFontWebkitWithFastFont = function() {
+    this.timesToGetTimeBeforeTimeout_ = 10;
+    this.timesToDelayChangedWidthWebkit_ = 1;
+
+    var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
+        this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizer_,
+        this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
+        this.fontDescription_);
+
+    fontWatchRunner.start();
+
+    assertEquals(9, this.asyncCount_);
+    assertEquals(1, this.fontInactiveCalled_);
+    assertEquals(true, this.fontInactive_['fontFamily1 n4']);
+};
+
+FontWatchRunnerTest.prototype.testWatchFontWebkitWithSlowFont = function() {
+  this.timesToGetTimeBeforeTimeout_ = 10;
+  this.timesToDelayChangedWidthWebkit_ = 2;
+
+  var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
+      this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizer_,
+      this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
+      this.fontDescription_);
+
+  fontWatchRunner.start();
+
+  assertEquals(9, this.asyncCount_);
   assertEquals(1, this.fontInactiveCalled_);
   assertEquals(true, this.fontInactive_['fontFamily1 n4']);
 };
