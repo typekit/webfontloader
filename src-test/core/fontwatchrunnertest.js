@@ -97,6 +97,24 @@ FontWatchRunnerTest.prototype.setUp = function() {
     }
   };
 
+  this.fakeWebkitFontSizerWithEqualMetrics_ = {
+    getWidth: function(el) {
+      if (el.style.fontFamily.indexOf(self.fontFamily_) !== -1) {
+        if (self.timesToDelayChangedWidthWebkit_ > 0) {
+          return 2;
+        } else {
+          // This time the fallback font picked by Webkit has the
+          // same metrics as the font being loaded. This is a rare
+          // case but we should be able to handle it.
+          return 2;
+        }
+      } else {
+        // Return the default width
+        return 1;
+      }
+    }
+  };
+
   this.timesToGetTimeBeforeTimeout_ = 10;
   this.fakeGetTime_ = function() {
     if (self.timesToGetTimeBeforeTimeout_ <= 0) {
@@ -196,6 +214,21 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitWithSlowFont = function() {
 
   fontWatchRunner.start();
 
+  assertEquals(2, this.asyncCount_);
+  assertEquals(1, this.fontActiveCalled_);
+  assertEquals(true, this.fontActive_['fontFamily1 n4']);
+};
+
+FontWatchRunnerTest.prototype.testWatchFontWebkitWithEqualMetrics = function() {
+  this.timesToGetTimeBeforeTimeout_ = 10;
+  this.timesToDelayChangedWidthWebkit_ = 2;
+
+  var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
+      this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizerWithEqualMetrics_,
+      this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
+      this.fontDescription_, true);
+
+  fontWatchRunner.start();
   assertEquals(2, this.asyncCount_);
   assertEquals(1, this.fontActiveCalled_);
   assertEquals(true, this.fontActive_['fontFamily1 n4']);
