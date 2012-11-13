@@ -47,7 +47,7 @@ webfont.FontWatcher.prototype.createTestStyle_ = function(fontFamily) {
 webfont.FontWatcher.prototype.hasFallbackBug_ = function() {
   var font = this.domHelper_.createElement('style', null,
         "@font-face{" +
-          "font-family:'__test__';" +
+          "font-family:'__webfontloader_test__';" +
           "src:url(data:application/x-font-woff;base64,) format('woff')," +
           "url(data:font/truetype;base64,) format('truetype');" +
         "}"),
@@ -58,7 +58,7 @@ webfont.FontWatcher.prototype.hasFallbackBug_ = function() {
    this.domHelper_.insertInto('body', el);
    this.domHelper_.insertInto('head', font);
    var beforeWidth = el.offsetWidth;
-   this.domHelper_.setStyle(el, this.createTestStyle_("'__test__', monospace, sans-serif"));
+   this.domHelper_.setStyle(el, this.createTestStyle_("'__webfontloader_test__', monospace, sans-serif"));
    var hasBug = beforeWidth !== el.offsetWidth;
    this.domHelper_.removeElement(el);
    this.domHelper_.removeElement(font);
