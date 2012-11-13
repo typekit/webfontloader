@@ -35,7 +35,7 @@ webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
  *     function(string, string), webfont.DomHelper,
  *     Object.<string, function(Object): number>,
  *     function(function(), number=), function(): number, string, string,
- *     string=)} fontWatchRunnerCtor The font watch runner constructor.
+ *     boolean, string=)} fontWatchRunnerCtor The font watch runner constructor.
  * @param {boolean} last True if this is the last set of families to watch.
  */
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
