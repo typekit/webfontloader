@@ -71,7 +71,7 @@ webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {
 
   this.moduleFailedLoading_ = this.moduleLoading_ = modules.length;
 
-  var fontWatcher = new webfont.FontWatcher(this.domHelper_,
+  var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.domHelper_,
       eventDispatcher, {
         getSize: function(elem) {
           return {

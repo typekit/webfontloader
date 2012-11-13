@@ -1,12 +1,13 @@
 /**
  * @constructor
+ * @param {webfont.UserAgent} userAgent
  * @param {webfont.DomHelper} domHelper
  * @param {webfont.EventDispatcher} eventDispatcher
  * @param {Object.<string, function(Object): number>} fontSizer
  * @param {function(function(), number=)} asyncCall
  * @param {function(): number} getTime
  */
-webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
+webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer,
     asyncCall, getTime) {
   this.domHelper_ = domHelper;
   this.eventDispatcher_ = eventDispatcher;
@@ -14,7 +15,7 @@ webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
   this.asyncCall_ = asyncCall;
   this.getTime_ = getTime;
   this.currentlyWatched_ = 0;
-  this.hasBug_ = this.hasFallbackBug_();
+  this.hasBug_ = userAgent.getEngine() === 'AppleWebKit' ? this.hasFallbackBug_() : false;
   this.last_ = false;
   this.success_ = false;
 };
