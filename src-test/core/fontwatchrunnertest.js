@@ -77,6 +77,31 @@ FontWatchRunnerTest.prototype.setUp = function() {
     }
   };
 
+  this.fakeFontSizerWithDifferentHeight_ = {
+    getSize: function(el) {
+      if (el.style.fontFamily.indexOf(self.fontFamily_) != -1) {
+        if (self.timesToCheckSizesBeforeChange_ <= 0) {
+          self.timesToCheckSizesBeforeChange_ -= 0.5;
+          return {
+            width: 1,
+            height: 2
+          };
+        } else {
+          self.timesToCheckSizesBeforeChange_ -= 0.5;
+          return {
+            width: 1,
+            height: 1
+          };
+        }
+      } else {
+        return {
+          width: 1,
+          height: 1
+        };
+      }
+    }
+  };
+
   /**
    * This accurately models the way webkit used to handle
    * fallback fonts while loading web fonts. Even though
@@ -119,6 +144,7 @@ FontWatchRunnerTest.prototype.setUp = function() {
     getSize: function(el) {
       if (el.style.fontFamily.indexOf(self.fontFamily_) !== -1) {
         if (self.timesToDelayChangedSizeWebkit_ > 0) {
+          self.timesToDelayChangedSizeWebkit_ -= 0.5;
           return {
             width: 2,
             height: 2
@@ -134,6 +160,32 @@ FontWatchRunnerTest.prototype.setUp = function() {
         }
       } else {
         // Return the default width
+        return {
+          width: 1,
+          height: 1
+        };
+      }
+    }
+  };
+
+  this.fakeWebkitFontSizeWithDifferentMetrics_ = {
+    getSize: function(el) {
+      if (el.style.fontFamily.indexOf(self.fontFamily_) !== -1) {
+        if (self.timesToDelayChangedSizeWebkit_ > 0) {
+          self.timesToDelayChangedSizeWebkit_ -= 0.5;
+          return {
+            width: 2,
+            height: 2
+          };
+        } else {
+          // Even though the width is the same, the height
+          // is different, so this should trigger the active event.
+          return {
+            width: 2,
+            height: 3
+          };
+        }
+      } else {
         return {
           width: 1,
           height: 1
@@ -184,6 +236,24 @@ FontWatchRunnerTest.prototype.testWatchFontWaitForLoadActive = function() {
 
   var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
       this.inactiveCallback_, this.fakeDomHelper_, this.fakeFontSizer_,
+      this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
+      this.fontDescription_, false);
+
+  fontWatchRunner.start();
+
+  assertEquals(3, this.asyncCount_);
+
+  assertEquals(1, this.fontActiveCalled_);
+  assertEquals(true, this.fontActive_['fontFamily1 n4']);
+  assertEquals(0, this.fontInactiveCalled_);
+};
+
+FontWatchRunnerTest.prototype.testWatchFontWaitForLoadActiveWithDifferentHeight = function() {
+  this.timesToCheckSizesBeforeChange_ = 3;
+  this.timesToGetTimeBeforeTimeout_ = 10;
+
+  var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
+      this.inactiveCallback_, this.fakeDomHelper_, this.fakeFontSizerWithDifferentHeight_,
       this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
       this.fontDescription_, false);
 
@@ -256,6 +326,22 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitWithEqualMetrics = function() {
       this.fontDescription_, true);
 
   fontWatchRunner.start();
+  assertEquals(2, this.asyncCount_);
+  assertEquals(1, this.fontActiveCalled_);
+  assertEquals(true, this.fontActive_['fontFamily1 n4']);
+};
+
+FontWatchRunnerTest.prototype.testWatchFontWebkitWithDifferentMetrics = function() {
+  this.timesToGetTimeBeforeTimeout_ = 10;
+  this.timesToDelayChangedSizeWebkit_ = 2;
+
+  var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
+      this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizeWithDifferentMetrics_,
+      this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
+      this.fontDescription_, true);
+
+  fontWatchRunner.start();
+
   assertEquals(2, this.asyncCount_);
   assertEquals(1, this.fontActiveCalled_);
   assertEquals(true, this.fontActive_['fontFamily1 n4']);
