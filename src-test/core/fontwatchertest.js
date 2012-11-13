@@ -35,6 +35,16 @@ FontWatcherTest.prototype.setUp = function() {
     }
   };
 
+  this.fakeDomHelper_ = {
+    createElement: function(name, attrs, innerHtml) {
+      var element = document.createElement(name);
+      return element;
+    },
+    insertInto: function() {},
+    removeElement: function() {},
+    setStyle: function() {}
+  };
+
   this.fakeFontSizer_ = {
     getSize: function() {
       fail('Fake getSize should not be called.');

@@ -14,6 +14,7 @@ webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
   this.asyncCall_ = asyncCall;
   this.getTime_ = getTime;
   this.currentlyWatched_ = 0;
+  this.hasBug_ = this.hasFallbackBug_();
   this.last_ = false;
   this.success_ = false;
 };
@@ -23,6 +24,47 @@ webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
  * @const
  */
 webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
+
+/**
+ * @param {string} fontFamily
+ * @return {string}
+ * @private
+ */
+webfont.FontWatcher.prototype.createTestStyle_ = function(fontFamily) {
+    return "position:absolute;top:-999px;left:-999px;" +
+           "font-size:300px;width:auto;height:auto;" +
+           "line-height:normal;margin:0;padding:0;" +
+           "font-variant:normal;font-family:" + fontFamily + ";";
+};
+
+/**
+ * Returns true if this browser has a bug that causes the font stack
+ * to not be respected while loading webfonts.
+ *
+ * @return {boolean}
+ * @private
+ */
+webfont.FontWatcher.prototype.hasFallbackBug_ = function() {
+  var font = this.domHelper_.createElement('style', null,
+        "@font-face{" +
+          "font-family:'__test__';" +
+          "src:url(data:application/x-font-woff;base64,) format('woff')," +
+          "url(data:font/truetype;base64,) format('truetype');" +
+        "}"),
+      el = this.domHelper_.createElement('div', {
+        style: this.createTestStyle_('monospace')
+      }, 'iii');
+
+   this.domHelper_.insertInto('body', el);
+   this.domHelper_.insertInto('head', font);
+   var beforeWidth = el.offsetWidth;
+   this.domHelper_.setStyle(el, this.createTestStyle_("'__test__', monospace, sans-serif"));
+   var hasBug = beforeWidth !== el.offsetWidth;
+   this.domHelper_.removeElement(el);
+   this.domHelper_.removeElement(font);
+
+   return hasBug;
+};
 
 /**
  * Watches a set of font families.
@@ -68,7 +110,7 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
       var inactiveCallback = webfont.bind(this, this.fontInactive_)
       var fontWatchRunner = new fontWatchRunnerCtor(activeCallback,
           inactiveCallback, this.domHelper_, this.fontSizer_, this.asyncCall_,
-          this.getTime_, fontFamily, fontDescription, false, fontTestString);
+          this.getTime_, fontFamily, fontDescription, this.hasBug_, fontTestString);
 
       fontWatchRunner.start();
     }

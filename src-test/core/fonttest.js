@@ -10,7 +10,8 @@ FontTest.prototype.setUp = function() {
       return document.createElement(name);
     },
     insertInto: function() {},
-    removeElement: function() {}
+    removeElement: function() {},
+    setStyle: function() {}
   };
   this.fontModuleLoader_ = new webfont.FontModuleLoader();
 };
