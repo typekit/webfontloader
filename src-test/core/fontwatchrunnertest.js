@@ -326,7 +326,7 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitWithEqualMetrics = function() {
       this.fontDescription_, true);
 
   fontWatchRunner.start();
-  assertEquals(2, this.asyncCount_);
+  assertEquals(10, this.asyncCount_);
   assertEquals(1, this.fontActiveCalled_);
   assertEquals(true, this.fontActive_['fontFamily1 n4']);
 };

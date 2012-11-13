@@ -99,7 +99,15 @@ webfont.FontWatchRunner.prototype.check_ = function() {
       this.asyncCheck_();
     }
   } else if (this.getTime_() - this.started_ >= 5000) {
-    this.finish_(this.inactiveCallback_);
+    if (this.hasWebkitFallbackBug_ && this.sizeChangeCount_ === 1) {
+      // If we reach the timeout and we are in a Webkit browser with the
+      // fallback and we observed at least one size change, hope for the
+      // best and assume that the font has loaded and has identical font
+      // metrics compared to the browser's last resort font.
+      this.finish_(this.activeCallback_);
+    } else {
+      this.finish_(this.inactiveCallback_);
+    }
   } else {
     this.asyncCheck_();
   }
