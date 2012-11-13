@@ -36,8 +36,8 @@ FontWatcherTest.prototype.setUp = function() {
   };
 
   this.fakeFontSizer_ = {
-    getWidth: function() {
-      fail('Fake getWidth should not be called.');
+    getSize: function() {
+      fail('Fake getSize should not be called.');
     }
   };
 
@@ -55,7 +55,7 @@ FontWatcherTest.prototype.setUp = function() {
   this.testStringCount_ = 0;
   this.testStrings_ = {};
   webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-      fontSizer, asyncCall, getTime, fontFamily, fontDescription, opt_fontTestString) {
+      fontSizer, asyncCall, getTime, fontFamily, fontDescription, hasWebkitFallbackBug, opt_fontTestString) {
     if (opt_fontTestString) {
       self.testStringCount_++;
       self.testStrings_[fontFamily] = opt_fontTestString;

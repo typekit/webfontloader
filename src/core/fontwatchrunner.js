@@ -3,7 +3,7 @@
  * @param {function(string, string)} activeCallback
  * @param {function(string, string)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
- * @param {Object.<string, function(Object): number>} fontSizer
+ * @param {Object.<string, function(Object): {width: number, height: number}>} fontSizer
  * @param {function(function(), number=)} asyncCall
  * @param {function(): number} getTime
  * @param {string} fontFamily
@@ -29,7 +29,7 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
       webfont.FontWatchRunner.DEFAULT_FONTS_A);
   this.lastObservedSizeB_ = this.getDefaultFontSize_(
       webfont.FontWatchRunner.DEFAULT_FONTS_B);
-  this.widthChangeCount_ = 0;
+  this.sizeChangeCount_ = 0;
   this.requestedFontA_ = this.createHiddenElementWithFont_(
       webfont.FontWatchRunner.DEFAULT_FONTS_A);
   this.requestedFontB_ = this.createHiddenElementWithFont_(
@@ -84,17 +84,18 @@ webfont.FontWatchRunner.prototype.start = function() {
  * @private
  */
 webfont.FontWatchRunner.prototype.check_ = function() {
-  var sizeA = this.fontSizer_.getWidth(this.requestedFontA_);
-  var sizeB = this.fontSizer_.getWidth(this.requestedFontB_);
+  var sizeA = this.fontSizer_.getSize(this.requestedFontA_);
+  var sizeB = this.fontSizer_.getSize(this.requestedFontB_);
 
-  if (this.lastObservedSizeA_ != sizeA || this.lastObservedSizeB_ != sizeB) {
-    if ((this.hasWebkitFallbackBug_ && this.widthChangeCount_ === 1) ||
-        (!this.hasWebkitFallbackBug_ && this.widthChangeCount_ === 0)) {
+  if (this.lastObservedSizeA_.width != sizeA.width || this.lastObservedSizeB_.width != sizeB.width ||
+      this.lastObservedSizeA_.height != sizeB.height || this.lastObservedSizeB_.height != sizeB.height) {
+    if ((this.hasWebkitFallbackBug_ && this.sizeChangeCount_ === 1) ||
+        (!this.hasWebkitFallbackBug_ && this.sizeChangeCount_ === 0)) {
       this.finish_(this.activeCallback_);
     } else {
       this.lastObservedSizeA_ = sizeA;
       this.lastObservedSizeB_ = sizeB;
-      this.widthChangeCount_ += 1;
+      this.sizeChangeCount_ += 1;
       this.asyncCheck_();
     }
   } else if (this.getTime_() - this.started_ >= 5000) {
@@ -128,10 +129,11 @@ webfont.FontWatchRunner.prototype.finish_ = function(callback) {
 /**
  * @private
  * @param {string} defaultFonts
+ * @return {{width: number, height: number}}
  */
 webfont.FontWatchRunner.prototype.getDefaultFontSize_ = function(defaultFonts) {
   var defaultFont = this.createHiddenElementWithFont_(defaultFonts, true);
-  var size = this.fontSizer_.getWidth(defaultFont);
+  var size = this.fontSizer_.getSize(defaultFont);
 
   this.domHelper_.removeElement(defaultFont);
   return size;

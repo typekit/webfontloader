@@ -73,8 +73,11 @@ webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {
 
   var fontWatcher = new webfont.FontWatcher(this.domHelper_,
       eventDispatcher, {
-        getWidth: function(elem) {
-          return elem.offsetWidth;
+        getSize: function(elem) {
+          return {
+            width: elem.offsetWidth,
+            height: elem.offsetHeight
+          };
         }}, self.asyncCall_, function() {
           return new Date().getTime();
         });
