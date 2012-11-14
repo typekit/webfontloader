@@ -23,11 +23,12 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
   this.hasWebkitFallbackBug_ = hasWebkitFallbackBug;
-  this.lastObservedSizeA_ = this.getDefaultFontSize_(
+  this.originalSizeA_ = this.getDefaultFontSize_(
       webfont.FontWatchRunner.DEFAULT_FONTS_A);
-  this.lastObservedSizeB_ = this.getDefaultFontSize_(
+  this.originalSizeB_ = this.getDefaultFontSize_(
       webfont.FontWatchRunner.DEFAULT_FONTS_B);
-  this.sizeChangeCount_ = 0;
+  this.lastObservedSizeA_ = null;
+  this.lastObservedSizeB_ = null;
   this.requestedFontA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_,
       this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_A,
       this.fontDescription_, this.fontTestString_);
@@ -75,13 +76,23 @@ webfont.FontWatchRunner.prototype.start = function() {
 };
 
 /**
+ * @private
  * Returns true if two metrics are the same.
- * @param {{width: number, height: number}} a
- * @param {{width: number, height: number}} b
+ * @param {?{width: number, height: number}} a
+ * @param {?{width: number, height: number}} b
  * @return {boolean}
  */
-webfont.FontWatchRunner.prototype.sizeEquals = function(a, b) {
-  return a.width === b.width && a.height === b.height;
+webfont.FontWatchRunner.prototype.sizeEquals_ = function(a, b) {
+  return !!a && !!b && a.width === b.width && a.height === b.height;
+};
+
+/**
+ * @private
+ * Returns true if the loading has timed out.
+ * @return {boolean}
+ */
+webfont.FontWatchRunner.prototype.hasTimedOut_ = function() {
+  return this.getTime_() - this.started_ >= 5000;
 };
 
 /**
@@ -97,28 +108,45 @@ webfont.FontWatchRunner.prototype.check_ = function() {
   var sizeA = this.requestedFontA_.getSize();
   var sizeB = this.requestedFontB_.getSize();
 
-  if (!this.sizeEquals(this.lastObservedSizeA_, sizeA) || !this.sizeEquals(this.lastObservedSizeB_, sizeB)) {
-    if ((this.hasWebkitFallbackBug_ && this.sizeChangeCount_ === 1) ||
-        (!this.hasWebkitFallbackBug_ && this.sizeChangeCount_ === 0)) {
-      this.finish_(this.activeCallback_);
+  if (this.hasWebkitFallbackBug_) {
+    // Check if we have seen the first change in size
+    if (!this.lastObservedSizeA_ && !this.lastObservedSizeB_) {
+      if (this.hasTimedOut_()) {
+        // We didn't observe any size changes and the timeout occurred, so fire `inactive`
+        this.finish_(this.inactiveCallback_);
+      } else if (this.sizeEquals_(sizeA, this.originalSizeA_) && this.sizeEquals_(sizeB, this.originalSizeB_)) {
+        this.asyncCheck_(); // Nothing, so let's wait.
+      } else {
+        // First size change. Record the size and wait for the next one.
+        this.lastObservedSizeA_ = sizeA;
+        this.lastObservedSizeB_ = sizeB;
+        this.asyncCheck_();
+      }
     } else {
-      this.lastObservedSizeA_ = sizeA;
-      this.lastObservedSizeB_ = sizeB;
-      this.sizeChangeCount_ += 1;
-      this.asyncCheck_();
-    }
-  } else if (this.getTime_() - this.started_ >= 5000) {
-    if (this.hasWebkitFallbackBug_ && this.sizeChangeCount_ === 1) {
-      // If we reach the timeout and we are in a Webkit browser with the
-      // fallback and we observed at least one size change, hope for the
-      // best and assume that the font has loaded and has identical font
-      // metrics compared to the browser's last resort font.
-      this.finish_(this.activeCallback_);
-    } else {
-      this.finish_(this.inactiveCallback_);
+      if (this.hasTimedOut_()) {
+        if (this.sizeEquals_(sizeA, this.lastObservedSizeA_) && this.sizeEquals_(sizeB, this.lastObservedSizeB_)) {
+          this.finish_(this.activeCallback_);
+        } else {
+          this.finish_(this.inactiveCallback_);
+        }
+      } else if (this.sizeEquals_(sizeA, this.lastObservedSizeA_) && this.sizeEquals_(sizeB, this.lastObservedSizeB_)) {
+        this.asyncCheck_();
+      } else {
+        if (this.sizeEquals_(sizeA, this.originalSizeA_) && this.sizeEquals_(sizeB, this.originalSizeB_)) {
+          this.finish_(this.inactiveCallback_);
+        } else {
+          this.finish_(this.activeCallback_);
+        }
+      }
     }
   } else {
-    this.asyncCheck_();
+    if (this.hasTimedOut_()) {
+      this.finish_(this.inactiveCallback_);
+    } else if (this.sizeEquals_(sizeA, this.originalSizeA_) && this.sizeEquals_(sizeB, this.originalSizeB_)) {
+      this.asyncCheck_();
+    } else {
+      this.finish_(this.activeCallback_);
+    }
   }
 };
 
