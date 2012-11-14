@@ -138,12 +138,38 @@ FontWatchRunnerTest.prototype.setUp = function() {
         } else {
           // Return the correct width
           return {
+            width: 3,
+            height: 3
+          };
+        }
+      } else {
+        // Return the default width
+        return {
+          width: 1,
+          height: 1
+        };
+      }
+    }
+  };
+
+  this.fakeWebkitFontSizerFailedLoad_ = {
+    getSize: function(el) {
+      if (el.style.fontFamily.indexOf(self.fontFamily_) !== -1) {
+        if (self.timesToDelayChangedSizeWebkit_ > 0) {
+          self.timesToDelayChangedSizeWebkit_ -= 0.5;
+          return {
+            width: 2,
+            height: 2
+          };
+        } else {
+          // Return the original width, indicating the font
+          // failed to load. This should trigger `inactive`.
+          return {
             width: 1,
             height: 1
           };
         }
       } else {
-        // Return the default width
         return {
           width: 1,
           height: 1
@@ -357,6 +383,22 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitWithDifferentMetrics = function
   assertEquals(2, this.asyncCount_);
   assertEquals(1, this.fontActiveCalled_);
   assertEquals(true, this.fontActive_['fontFamily1 n4']);
+};
+
+FontWatchRunnerTest.prototype.testWatchFontWebkitFailedLoad = function() {
+  this.timesToGetTimeBeforeTimeout_ = 10;
+  this.timesToDelayChangedSizeWebkit_ = 2;
+
+  var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
+      this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizerFailedLoad_,
+      this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
+      this.fontDescription_, true);
+
+  fontWatchRunner.start();
+
+  assertEquals(2, this.asyncCount_);
+  assertEquals(1, this.fontInactiveCalled_);
+  assertEquals(true, this.fontInactive_['fontFamily1 n4']);
 };
 
 FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
