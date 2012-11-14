@@ -19,8 +19,6 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontSizer_ = fontSizer;
   this.asyncCall_ = asyncCall;
   this.getTime_ = getTime;
-  this.nameHelper_ = new webfont.CssFontFamilyName();
-  this.fvd_ = new webfont.FontVariationDescription();
   this.fontFamily_ = fontFamily;
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
@@ -30,10 +28,12 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.lastObservedSizeB_ = this.getDefaultFontSize_(
       webfont.FontWatchRunner.DEFAULT_FONTS_B);
   this.sizeChangeCount_ = 0;
-  this.requestedFontA_ = this.createHiddenElementWithFont_(
-      webfont.FontWatchRunner.DEFAULT_FONTS_A);
-  this.requestedFontB_ = this.createHiddenElementWithFont_(
-      webfont.FontWatchRunner.DEFAULT_FONTS_B);
+  this.requestedFontA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_,
+      this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_A,
+      this.fontDescription_, this.fontTestString_);
+  this.requestedFontB_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_,
+      this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_B,
+      this.fontDescription_, this.fontTestString_);
 };
 
 /**
@@ -84,8 +84,8 @@ webfont.FontWatchRunner.prototype.start = function() {
  * @private
  */
 webfont.FontWatchRunner.prototype.check_ = function() {
-  var sizeA = this.fontSizer_.getSize(this.requestedFontA_);
-  var sizeB = this.fontSizer_.getSize(this.requestedFontB_);
+  var sizeA = this.requestedFontA_.getSize();
+  var sizeB = this.requestedFontB_.getSize();
 
   if (this.lastObservedSizeA_.width != sizeA.width || this.lastObservedSizeB_.width != sizeB.width ||
       this.lastObservedSizeA_.height != sizeB.height || this.lastObservedSizeB_.height != sizeB.height) {
@@ -129,8 +129,8 @@ webfont.FontWatchRunner.prototype.asyncCheck_ = function() {
  * @param {function(string, string)} callback
  */
 webfont.FontWatchRunner.prototype.finish_ = function(callback) {
-  this.domHelper_.removeElement(this.requestedFontA_);
-  this.domHelper_.removeElement(this.requestedFontB_);
+  this.requestedFontA_.remove();
+  this.requestedFontB_.remove();
   callback(this.fontFamily_, this.fontDescription_);
 };
 
@@ -140,37 +140,8 @@ webfont.FontWatchRunner.prototype.finish_ = function(callback) {
  * @return {{width: number, height: number}}
  */
 webfont.FontWatchRunner.prototype.getDefaultFontSize_ = function(defaultFonts) {
-  var defaultFont = this.createHiddenElementWithFont_(defaultFonts, true);
-  var size = this.fontSizer_.getSize(defaultFont);
-
-  this.domHelper_.removeElement(defaultFont);
+  var defaultFont = new webfont.FontRuler(this.domHelper_, this.fontSizer_, defaultFonts, this.fontDescription_, this.fontTestString_);
+  var size = defaultFont.getSize();
+  defaultFont.remove();
   return size;
-};
-
-/**
- * @private
- * @param {string} defaultFonts
- * @param {boolean=} opt_withoutFontFamily
- */
-webfont.FontWatchRunner.prototype.createHiddenElementWithFont_ = function(
-    defaultFonts, opt_withoutFontFamily) {
-  var styleString = this.computeStyleString_(defaultFonts,
-      this.fontDescription_, opt_withoutFontFamily);
-  var span = this.domHelper_.createElement('span', { 'style': styleString },
-      this.fontTestString_);
-
-  this.domHelper_.insertInto('body', span);
-  return span;
-};
-
-webfont.FontWatchRunner.prototype.computeStyleString_ = function(defaultFonts,
-    fontDescription, opt_withoutFontFamily) {
-  var variationCss = this.fvd_.expand(fontDescription);
-  var styleString = "position:absolute;top:-999px;left:-999px;" +
-      "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
-      "padding:0;font-variant:normal;font-family:"
-      + (opt_withoutFontFamily ? "" :
-        this.nameHelper_.quote(this.fontFamily_) + ",")
-      + defaultFonts + ";" + variationCss;
-  return styleString;
 };

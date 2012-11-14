@@ -27,18 +27,6 @@ webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer,
 webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
 
 /**
- * @param {string} fontFamily
- * @return {string}
- * @private
- */
-webfont.FontWatcher.prototype.createTestStyle_ = function(fontFamily) {
-    return "position:absolute;top:-999px;left:-999px;" +
-           "font-size:300px;width:auto;height:auto;" +
-           "line-height:normal;margin:0;padding:0;" +
-           "font-variant:normal;font-family:" + fontFamily + ";";
-};
-
-/**
  * Returns true if this browser has a bug that causes the font stack
  * to not be respected while loading webfonts.
  *
@@ -52,19 +40,16 @@ webfont.FontWatcher.prototype.hasFallbackBug_ = function() {
           "src:url(data:application/x-font-woff;base64,) format('woff')," +
           "url(data:font/truetype;base64,) format('truetype');" +
         "}"),
-      el = this.domHelper_.createElement('div', {
-        style: this.createTestStyle_('monospace')
-      }, 'iii');
+      ruler = new webfont.FontRuler(this.domHelper_, this.fontSizer_, 'monospace', '', 'iii');
 
-   this.domHelper_.insertInto('body', el);
-   this.domHelper_.insertInto('head', font);
-   var beforeWidth = el.offsetWidth;
-   this.domHelper_.setStyle(el, this.createTestStyle_("'__webfontloader_test__', monospace, sans-serif"));
-   var hasBug = beforeWidth !== el.offsetWidth;
-   this.domHelper_.removeElement(el);
-   this.domHelper_.removeElement(font);
+  this.domHelper_.insertInto('head', font);
+  var beforeWidth = ruler.getSize().width;
+  ruler.setFont("'__webfontloader_test__', monospace, sans-serif", '');
+  var hasBug = beforeWidth !== ruler.getSize().width;
+  this.domHelper_.removeElement(font);
+  ruler.remove();
 
-   return hasBug;
+  return hasBug;
 };
 
 /**

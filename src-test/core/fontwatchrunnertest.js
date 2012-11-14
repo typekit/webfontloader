@@ -26,13 +26,13 @@ FontWatchRunnerTest.prototype.setUp = function() {
   this.fakeDomHelper_ = {
     createElement: function(name, attrs, innerHtml) {
       self.createElementCalled_++;
+      var element = document.createElement(name);
       self.createdElements_.push({
         'name': name,
         'attrs': attrs,
-        'innerHtml': innerHtml
+        'innerHtml': innerHtml,
+        'element': element
       });
-
-      var element = document.createElement(name);
 
       for (var attr in attrs) {
         element.setAttribute(attr, attrs[attr]);
@@ -45,6 +45,18 @@ FontWatchRunnerTest.prototype.setUp = function() {
     },
     removeElement: function(el) {
       self.removeElementCalled_++;
+    },
+    setStyle: function(el, style) {
+      el.setAttribute('style', style);
+      for (var i = 0; i < self.createdElements_.length; i += 1) {
+        if (self.createdElements_[i].element === el) {
+          if (!self.createdElements_[i].attrs) {
+            self.createdElements_[i].attrs = {};
+          }
+          self.createdElements_[i].attrs.style = style;
+          break;
+        }
+      }
     }
   };
 

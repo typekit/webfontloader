@@ -42,30 +42,27 @@ webfont.LastResortWebKitFontWatchRunner.prototype
   var lastResortFonts = ['Times New Roman', 'Arial', 'Times', 'Sans', 'Serif'];
   var lastResortFontSizes = lastResortFonts.length;
   var webKitLastResortFontSizes = {};
-  var element = this.createHiddenElementWithFont_(lastResortFonts[0], true);
-
-  webKitLastResortFontSizes[this.fontSizer_.getSize(element).width] = true;
+  var fontRuler = new webfont.FontRuler(this.domHelper_, this.fontSizer_, lastResortFonts[0], this.fontDescription_, this.fontTestString_);
+  webKitLastResortFontSizes[fontRuler.getSize().width] = true;
   for (var i = 1; i < lastResortFontSizes; i++) {
     var font = lastResortFonts[i];
-    this.domHelper_.setStyle(element, this.computeStyleString_(font,
-        this.fontDescription_, true));
-    webKitLastResortFontSizes[this.fontSizer_.getSize(element).width] = true;
+    fontRuler.setFont(font, this.fontDescription_);
+    webKitLastResortFontSizes[fontRuler.getSize().width] = true;
 
     // Another WebKit quirk if the normal weight/style is loaded first,
     // the size of the normal weight is returned when loading another weight.
     if (this.fontDescription_[1] != '4') {
-      this.domHelper_.setStyle(element, this.computeStyleString_(font,
-        this.fontDescription_[0] + '4', true));
-      webKitLastResortFontSizes[this.fontSizer_.getSize(element).width] = true;
+      fontRuler.setFont(font, this.fontDescription_[0] + '4');
+      webKitLastResortFontSizes[fontRuler.getSize().width] = true;
     }
   }
-  this.domHelper_.removeElement(element);
+  fontRuler.remove();
   return webKitLastResortFontSizes;
 };
 
 webfont.LastResortWebKitFontWatchRunner.prototype.check_ = function() {
-  var sizeA = this.fontSizer_.getSize(this.requestedFontA_);
-  var sizeB = this.fontSizer_.getSize(this.requestedFontB_);
+  var sizeA = this.requestedFontA_.getSize();
+  var sizeB = this.requestedFontB_.getSize();
 
   if (!this.webKitLastResortSizeChange_ && sizeA.width == sizeB.width &&
       this.webKitLastResortFontSizes_[sizeA.width]) {
