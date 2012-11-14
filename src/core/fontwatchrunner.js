@@ -75,6 +75,16 @@ webfont.FontWatchRunner.prototype.start = function() {
 };
 
 /**
+ * Returns true if two metrics are the same.
+ * @param {{width: number, height: number}} a
+ * @param {{width: number, height: number}} b
+ * @return {boolean}
+ */
+webfont.FontWatchRunner.prototype.sizeEquals = function(a, b) {
+  return a.width === b.width && a.height === b.height;
+};
+
+/**
  * Checks the size of the two spans against their original sizes during each
  * async loop. If the size of one of the spans is different than the original
  * size, then we know that the font is rendering and finish with the active
@@ -87,8 +97,7 @@ webfont.FontWatchRunner.prototype.check_ = function() {
   var sizeA = this.requestedFontA_.getSize();
   var sizeB = this.requestedFontB_.getSize();
 
-  if (this.lastObservedSizeA_.width != sizeA.width || this.lastObservedSizeB_.width != sizeB.width ||
-      this.lastObservedSizeA_.height != sizeB.height || this.lastObservedSizeB_.height != sizeB.height) {
+  if (!this.sizeEquals(this.lastObservedSizeA_, sizeA) || !this.sizeEquals(this.lastObservedSizeB_, sizeB)) {
     if ((this.hasWebkitFallbackBug_ && this.sizeChangeCount_ === 1) ||
         (!this.hasWebkitFallbackBug_ && this.sizeChangeCount_ === 0)) {
       this.finish_(this.activeCallback_);
