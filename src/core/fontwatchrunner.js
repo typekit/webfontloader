@@ -23,26 +23,21 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
   this.hasWebkitFallbackBug_ = hasWebkitFallbackBug;
-  this.originalSizeA_ = this.getDefaultFontSize_(
-      webfont.FontWatchRunner.DEFAULT_FONTS_A);
-  this.originalSizeB_ = this.getDefaultFontSize_(
-      webfont.FontWatchRunner.DEFAULT_FONTS_B);
+
   this.lastObservedSizeA_ = null;
   this.lastObservedSizeB_ = null;
 
   this.fontRulerA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
   this.fontRulerA_.insert();
-  this.fontRulerA_.setFont(
-    this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_A,
-    this.fontDescription_
-  );
+  this.fontRulerA_.setFont(webfont.FontWatchRunner.DEFAULT_FONTS_A, this.fontDescription_);
+  this.originalSizeA_ = this.fontRulerA_.getSize();
+  this.fontRulerA_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_A, this.fontDescription_);
 
   this.fontRulerB_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
   this.fontRulerB_.insert();
-  this.fontRulerB_.setFont(
-    this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_B,
-    this.fontDescription_
-  )
+  this.fontRulerB_.setFont(webfont.FontWatchRunner.DEFAULT_FONTS_B, this.fontDescription_);
+  this.originalSizeB_ = this.fontRulerB_.getSize();
+  this.fontRulerB_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_B, this.fontDescription_);
 };
 
 /**
@@ -177,18 +172,4 @@ webfont.FontWatchRunner.prototype.finish_ = function(callback) {
   this.fontRulerA_.remove();
   this.fontRulerB_.remove();
   callback(this.fontFamily_, this.fontDescription_);
-};
-
-/**
- * @private
- * @param {string} defaultFonts
- * @return {{width: number, height: number}}
- */
-webfont.FontWatchRunner.prototype.getDefaultFontSize_ = function(defaultFonts) {
-  var defaultFont = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
-  defaultFont.insert();
-  defaultFont.setFont(defaultFonts, this.fontDescription_);
-  var size = defaultFont.getSize();
-  defaultFont.remove();
-  return size;
 };

@@ -412,25 +412,19 @@ FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
 
   fontWatchRunner.start();
 
-  assertEquals(4, this.createElementCalled_);
+  assertEquals(2, this.createElementCalled_);
   assertEquals('span', this.createdElements_[0]['name']);
-  assertEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf('fontFamily1'));
+  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf('fontFamily1'));
   assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_A));
   assertEquals('BESbswy', this.createdElements_[0]['innerHtml']);
+
   assertEquals('span', this.createdElements_[1]['name']);
-  assertEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
+  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
   assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_B));
   assertEquals('BESbswy', this.createdElements_[1]['innerHtml']);
-  assertEquals('span', this.createdElements_[2]['name']);
-  assertNotEquals(-1, this.createdElements_[2]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[2]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_A));
-  assertEquals('BESbswy', this.createdElements_[2]['innerHtml']);
-  assertEquals('span', this.createdElements_[3]['name']);
-  assertNotEquals(-1, this.createdElements_[3]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[3]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_B));
-  assertEquals('BESbswy', this.createdElements_[3]['innerHtml']);
-  assertEquals(4, this.insertIntoCalled_);
-  assertEquals(4, this.removeElementCalled_);
+
+  assertEquals(2, this.insertIntoCalled_);
+  assertEquals(2, this.removeElementCalled_);
 };
 
 FontWatchRunnerTest.prototype.testDomWithNotDefaultTestString = function() {
@@ -444,24 +438,18 @@ FontWatchRunnerTest.prototype.testDomWithNotDefaultTestString = function() {
 
   fontWatchRunner.start();
 
-  assertEquals(4, this.createElementCalled_);
+  assertEquals(2, this.createElementCalled_);
   assertEquals('span', this.createdElements_[0]['name']);
-  assertEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf('fontFamily1'));
+  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf('fontFamily1'));
   assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_A));
   assertEquals('testString', this.createdElements_[0]['innerHtml']);
+
   assertEquals('span', this.createdElements_[1]['name']);
-  assertEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
+  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
   assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_B));
   assertEquals('testString', this.createdElements_[1]['innerHtml']);
-  assertEquals('span', this.createdElements_[2]['name']);
-  assertNotEquals(-1, this.createdElements_[2]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[2]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_A));
-  assertEquals('testString', this.createdElements_[2]['innerHtml']);
-  assertEquals('span', this.createdElements_[3]['name']);
-  assertNotEquals(-1, this.createdElements_[3]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[3]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_B));
-  assertEquals('testString', this.createdElements_[3]['innerHtml']);
-  assertEquals(4, this.insertIntoCalled_);
-  assertEquals(4, this.removeElementCalled_);
+
+  assertEquals(2, this.insertIntoCalled_);
+  assertEquals(2, this.removeElementCalled_);
 
 };
