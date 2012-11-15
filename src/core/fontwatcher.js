@@ -30,10 +30,15 @@ webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
  * Returns true if this browser has a bug that causes the font stack
  * to not be respected while loading webfonts.
  *
+ * @see https://bugs.webkit.org/show_bug.cgi?id=76684
+ *
  * @return {boolean}
  * @private
  */
 webfont.FontWatcher.prototype.checkWebkitFallbackBug_ = function() {
+  // We build an empty webfont and try to set it as the font for our
+  // ruler. Even though this will fail (since our webfont is invalid)
+  // it will actually trigger the Webkit fallback bug.
   var font = this.domHelper_.createElement('style', null,
         "@font-face{" +
           "font-family:'__webfontloader_test__';" +
@@ -43,10 +48,34 @@ webfont.FontWatcher.prototype.checkWebkitFallbackBug_ = function() {
       ruler = new webfont.FontRuler(this.domHelper_, this.fontSizer_, 'iii');
 
   ruler.insert();
+
+  // First we set the font to monospace and the test string to `iii`. Based
+  // on our research, all platforms have at least a monospace, sans-serif,
+  // and serif font installed. By using a test string that has a very
+  // narrow width in non-monospace fonts it becomes easy to detect changes
+  // in width.
   ruler.setFont('monospace');
   this.domHelper_.insertInto('head', font);
+
+  // Measure the original size (of our monospace font)
   var beforeWidth = ruler.getSize().width;
+
+  // Set the font to include our fake webfont, and then fallback to
+  // `monospace` and `sans-serif`. Browsers without the bug will fall
+  // back on the `monospace` font while loading the webfont, while
+  // Webkit with the bug will fall back to its last resort font (which
+  // according to our data is never `monospace`.) The `sans-serif` is
+  // included here to deal with another bug in Chrome Android where
+  // instead of using the last resort font it picks the last font in
+  // the stack.
+  //
+  // See http://code.google.com/p/chromium/issues/detail?id=138257
+  // for more information on the Chrome Android bug.
   ruler.setFont("'__webfontloader_test__', monospace, sans-serif");
+
+  // Finally we compare the initial width and the current width. If
+  // they do not match (i.e. it is either the sans-serif font, or
+  // the last resort font) we assume the bug is present.
   var hasBug = beforeWidth !== ruler.getSize().width;
   this.domHelper_.removeElement(font);
   ruler.remove();
