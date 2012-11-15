@@ -20,6 +20,8 @@ webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
       getTime, fontFamily, fontDescription, hasWebkitFallbackBug, opt_fontTestString);
   this.webKitLastResortFontSizes_ = this.setUpWebKitLastResortFontSizes_();
   this.webKitLastResortSizeChange_ = false;
+  this.lastObservedSizeA_ = this.originalSizeA_;
+  this.lastObservedSizeB_ = this.originalSizeB_;
 };
 webfont.extendsClass(webfont.FontWatchRunner, webfont.LastResortWebKitFontWatchRunner);
 
@@ -65,8 +67,8 @@ webfont.LastResortWebKitFontWatchRunner.prototype
 };
 
 webfont.LastResortWebKitFontWatchRunner.prototype.check_ = function() {
-  var sizeA = this.requestedFontA_.getSize();
-  var sizeB = this.requestedFontB_.getSize();
+  var sizeA = this.fontRulerA_.getSize();
+  var sizeB = this.fontRulerB_.getSize();
 
   if (!this.webKitLastResortSizeChange_ && sizeA.width == sizeB.width &&
       this.webKitLastResortFontSizes_[sizeA.width]) {
