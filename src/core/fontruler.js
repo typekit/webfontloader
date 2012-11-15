@@ -17,15 +17,15 @@ webfont.FontRuler = function(domHelper, fontSizer, fontTestString) {
 
 /**
  * @param {string} fontFamily
- * @param {string} fontDescription
+ * @param {string=} opt_fontDescription
  */
-webfont.FontRuler.prototype.setFont = function(fontFamily, fontDescription) {
-  var styleString = this.computeStyleString_(fontFamily, fontDescription);
+webfont.FontRuler.prototype.setFont = function(fontFamily, opt_fontDescription) {
+  var styleString = this.computeStyleString_(fontFamily, opt_fontDescription);
   this.domHelper_.setStyle(this.el_, styleString);
 };
 
 /**
- * @return {Element}
+ * Inserts the ruler into the DOM.
  */
 webfont.FontRuler.prototype.insert = function() {
   this.el_ = this.domHelper_.createElement('span', {}, this.fontTestString_);
@@ -35,11 +35,11 @@ webfont.FontRuler.prototype.insert = function() {
 /**
  * @private
  * @param {string} fontFamily
- * @param {string} fontDescription
+ * @param {string=} opt_fontDescription
  * @return {string}
  */
-webfont.FontRuler.prototype.computeStyleString_ = function(fontFamily, fontDescription) {
-  var variationCss = this.fvd_.expand(fontDescription || '');
+webfont.FontRuler.prototype.computeStyleString_ = function(fontFamily, opt_fontDescription) {
+  var variationCss = this.fvd_.expand(opt_fontDescription || '');
   var styleString = "position:absolute;top:-999px;left:-999px;" +
       "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
       "padding:0;font-variant:normal;font-family:" +
