@@ -24,8 +24,8 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
   this.hasWebkitFallbackBug_ = hasWebkitFallbackBug;
 
-  this.lastObservedSizeA_ = null;
-  this.lastObservedSizeB_ = null;
+  this.webkitFallbackSizeA_ = null;
+  this.webkitFallbackSizeB_ = null;
 
   this.fontRulerA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
   this.fontRulerA_.insert();
@@ -113,7 +113,7 @@ webfont.FontWatchRunner.prototype.check_ = function() {
 
   if (this.hasWebkitFallbackBug_) {
     // Check if we have seen the first change in size
-    if (!this.lastObservedSizeA_ && !this.lastObservedSizeB_) {
+    if (!this.webkitFallbackSizeA_ && !this.webkitFallbackSizeB_) {
       if (this.hasTimedOut_()) {
         // We didn't observe any size changes and the timeout occurred, so fire `inactive`
         this.finish_(this.inactiveCallback_);
@@ -121,18 +121,18 @@ webfont.FontWatchRunner.prototype.check_ = function() {
         this.asyncCheck_(); // Nothing, so let's wait.
       } else {
         // First size change. Record the size and wait for the next one.
-        this.lastObservedSizeA_ = sizeA;
-        this.lastObservedSizeB_ = sizeB;
+        this.webkitFallbackSizeA_ = sizeA;
+        this.webkitFallbackSizeB_ = sizeB;
         this.asyncCheck_();
       }
     } else {
       if (this.hasTimedOut_()) {
-        if (this.sizeEquals_(sizeA, this.lastObservedSizeA_) && this.sizeEquals_(sizeB, this.lastObservedSizeB_)) {
+        if (this.sizeEquals_(sizeA, this.webkitFallbackSizeA_) && this.sizeEquals_(sizeB, this.webkitFallbackSizeB_)) {
           this.finish_(this.activeCallback_);
         } else {
           this.finish_(this.inactiveCallback_);
         }
-      } else if (this.sizeEquals_(sizeA, this.lastObservedSizeA_) && this.sizeEquals_(sizeB, this.lastObservedSizeB_)) {
+      } else if (this.sizeEquals_(sizeA, this.webkitFallbackSizeA_) && this.sizeEquals_(sizeB, this.webkitFallbackSizeB_)) {
         this.asyncCheck_();
       } else {
         if (this.sizeEquals_(sizeA, this.originalSizeA_) && this.sizeEquals_(sizeB, this.originalSizeB_)) {
