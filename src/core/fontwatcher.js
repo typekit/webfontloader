@@ -40,11 +40,13 @@ webfont.FontWatcher.prototype.hasFallbackBug_ = function() {
           "src:url(data:application/x-font-woff;base64,) format('woff')," +
           "url(data:font/truetype;base64,) format('truetype');" +
         "}"),
-      ruler = new webfont.FontRuler(this.domHelper_, this.fontSizer_, 'monospace', '', 'iii');
+      ruler = new webfont.FontRuler(this.domHelper_, this.fontSizer_, 'iii');
 
+  ruler.insert();
+  ruler.setFont('monospace');
   this.domHelper_.insertInto('head', font);
   var beforeWidth = ruler.getSize().width;
-  ruler.setFont("'__webfontloader_test__', monospace, sans-serif", '');
+  ruler.setFont("'__webfontloader_test__', monospace, sans-serif");
   var hasBug = beforeWidth !== ruler.getSize().width;
   this.domHelper_.removeElement(font);
   ruler.remove();

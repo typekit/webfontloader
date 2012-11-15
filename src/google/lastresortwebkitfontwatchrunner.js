@@ -42,7 +42,11 @@ webfont.LastResortWebKitFontWatchRunner.prototype
   var lastResortFonts = ['Times New Roman', 'Arial', 'Times', 'Sans', 'Serif'];
   var lastResortFontSizes = lastResortFonts.length;
   var webKitLastResortFontSizes = {};
-  var fontRuler = new webfont.FontRuler(this.domHelper_, this.fontSizer_, lastResortFonts[0], this.fontDescription_, this.fontTestString_);
+  var fontRuler = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
+
+  fontRuler.insert();
+  fontRuler.setFont(lastResortFonts[0], this.fontDescription_);
+
   webKitLastResortFontSizes[fontRuler.getSize().width] = true;
   for (var i = 1; i < lastResortFontSizes; i++) {
     var font = lastResortFonts[i];

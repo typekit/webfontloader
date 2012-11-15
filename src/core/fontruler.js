@@ -4,20 +4,15 @@
  * @constructor
  * @param {webfont.DomHelper} domHelper
  * @param {Object.<string, function(Object): {width: number, height: number}>} fontSizer
- * @param {string} fontFamily
- * @param {string} fontDescription
  * @param {string} fontTestString
  */
-webfont.FontRuler = function(domHelper, fontSizer, fontFamily, fontDescription, fontTestString) {
+webfont.FontRuler = function(domHelper, fontSizer, fontTestString) {
   this.domHelper_ = domHelper;
   this.fontSizer_ = fontSizer;
-  this.fontFamily_ = fontFamily;
-  this.fontDescription_ = fontDescription;
   this.fontTestString_ = fontTestString;
   this.nameHelper_ = new webfont.CssFontFamilyName();
   this.fvd_ = new webfont.FontVariationDescription();
-  this.el_ = this.create_();
-  this.setFont(fontFamily, fontDescription);
+  this.el_ = null;
 };
 
 /**
@@ -30,13 +25,11 @@ webfont.FontRuler.prototype.setFont = function(fontFamily, fontDescription) {
 };
 
 /**
- * @private
  * @return {Element}
  */
-webfont.FontRuler.prototype.create_ = function() {
-  var span = this.domHelper_.createElement('span', {}, this.fontTestString_);
-  this.domHelper_.insertInto('body', span);
-  return span;
+webfont.FontRuler.prototype.insert = function() {
+  this.el_ = this.domHelper_.createElement('span', {}, this.fontTestString_);
+  this.domHelper_.insertInto('body', this.el_);
 };
 
 /**
@@ -46,7 +39,7 @@ webfont.FontRuler.prototype.create_ = function() {
  * @return {string}
  */
 webfont.FontRuler.prototype.computeStyleString_ = function(fontFamily, fontDescription) {
-  var variationCss = this.fvd_.expand(fontDescription);
+  var variationCss = this.fvd_.expand(fontDescription || '');
   var styleString = "position:absolute;top:-999px;left:-999px;" +
       "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
       "padding:0;font-variant:normal;font-family:" +

@@ -29,12 +29,20 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
       webfont.FontWatchRunner.DEFAULT_FONTS_B);
   this.lastObservedSizeA_ = null;
   this.lastObservedSizeB_ = null;
-  this.requestedFontA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_,
-      this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_A,
-      this.fontDescription_, this.fontTestString_);
-  this.requestedFontB_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_,
-      this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_B,
-      this.fontDescription_, this.fontTestString_);
+
+  this.requestedFontA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
+  this.requestedFontA_.insert();
+  this.requestedFontA_.setFont(
+    this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_A,
+    this.fontDescription_
+  );
+
+  this.requestedFontB_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
+  this.requestedFontB_.insert();
+  this.requestedFontB_.setFont(
+    this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_B,
+    this.fontDescription_
+  )
 };
 
 /**
@@ -177,7 +185,9 @@ webfont.FontWatchRunner.prototype.finish_ = function(callback) {
  * @return {{width: number, height: number}}
  */
 webfont.FontWatchRunner.prototype.getDefaultFontSize_ = function(defaultFonts) {
-  var defaultFont = new webfont.FontRuler(this.domHelper_, this.fontSizer_, defaultFonts, this.fontDescription_, this.fontTestString_);
+  var defaultFont = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
+  defaultFont.insert();
+  defaultFont.setFont(defaultFonts, this.fontDescription_);
   var size = defaultFont.getSize();
   defaultFont.remove();
   return size;
