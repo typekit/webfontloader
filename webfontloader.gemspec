@@ -129,6 +129,7 @@ DESC
     src/core/eventdispatcher.js
     src/core/font.js
     src/core/fontmoduleloader.js
+    src/core/fontruler.js
     src/core/fontvariationdescription.js
     src/core/fontwatcher.js
     src/core/fontwatchrunner.js
