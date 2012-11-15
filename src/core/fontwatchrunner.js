@@ -30,16 +30,16 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.lastObservedSizeA_ = null;
   this.lastObservedSizeB_ = null;
 
-  this.requestedFontA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
-  this.requestedFontA_.insert();
-  this.requestedFontA_.setFont(
+  this.fontRulerA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
+  this.fontRulerA_.insert();
+  this.fontRulerA_.setFont(
     this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_A,
     this.fontDescription_
   );
 
-  this.requestedFontB_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
-  this.requestedFontB_.insert();
-  this.requestedFontB_.setFont(
+  this.fontRulerB_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
+  this.fontRulerB_.insert();
+  this.fontRulerB_.setFont(
     this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_B,
     this.fontDescription_
   )
@@ -113,8 +113,8 @@ webfont.FontWatchRunner.prototype.hasTimedOut_ = function() {
  * @private
  */
 webfont.FontWatchRunner.prototype.check_ = function() {
-  var sizeA = this.requestedFontA_.getSize();
-  var sizeB = this.requestedFontB_.getSize();
+  var sizeA = this.fontRulerA_.getSize();
+  var sizeB = this.fontRulerB_.getSize();
 
   if (this.hasWebkitFallbackBug_) {
     // Check if we have seen the first change in size
@@ -174,8 +174,8 @@ webfont.FontWatchRunner.prototype.asyncCheck_ = function() {
  * @param {function(string, string)} callback
  */
 webfont.FontWatchRunner.prototype.finish_ = function(callback) {
-  this.requestedFontA_.remove();
-  this.requestedFontB_.remove();
+  this.fontRulerA_.remove();
+  this.fontRulerB_.remove();
   callback(this.fontFamily_, this.fontDescription_);
 };
 
