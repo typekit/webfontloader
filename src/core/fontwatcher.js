@@ -15,7 +15,7 @@ webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer,
   this.asyncCall_ = asyncCall;
   this.getTime_ = getTime;
   this.currentlyWatched_ = 0;
-  this.hasBug_ = userAgent.getEngine() === 'AppleWebKit' ? this.hasFallbackBug_() : false;
+  this.hasWebkitFallbackBug_ = userAgent.getEngine() === 'AppleWebKit' ? this.checkWebkitFallbackBug_() : false;
   this.last_ = false;
   this.success_ = false;
 };
@@ -33,7 +33,7 @@ webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
  * @return {boolean}
  * @private
  */
-webfont.FontWatcher.prototype.hasFallbackBug_ = function() {
+webfont.FontWatcher.prototype.checkWebkitFallbackBug_ = function() {
   var font = this.domHelper_.createElement('style', null,
         "@font-face{" +
           "font-family:'__webfontloader_test__';" +
@@ -98,7 +98,7 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
       var inactiveCallback = webfont.bind(this, this.fontInactive_)
       var fontWatchRunner = new fontWatchRunnerCtor(activeCallback,
           inactiveCallback, this.domHelper_, this.fontSizer_, this.asyncCall_,
-          this.getTime_, fontFamily, fontDescription, this.hasBug_, fontTestString);
+          this.getTime_, fontFamily, fontDescription, this.hasWebkitFallbackBug_, fontTestString);
 
       fontWatchRunner.start();
     }
