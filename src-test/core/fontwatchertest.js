@@ -45,7 +45,7 @@ FontWatcherTest.prototype.setUp = function() {
     setStyle: function() {}
   };
 
-  this.fakeUserAgent_ = new webfont.UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, true);
+  this.userAgent_ = new webfont.UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, true);
 
   this.fakeFontSizer_ = {
     getSize: function() {
@@ -96,7 +96,7 @@ FontWatcherTest.prototype.testWatchOneFontNotLast = function() {
   var fontFamilies = [ 'fontFamily1' ];
   this.fontWatchRunnerActiveFamilies_ = [ 'fontFamily1' ];
 
-  var fontWatcher = new webfont.FontWatcher(this.fakeUserAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
+  var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
       this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
   fontWatcher.watch(fontFamilies, {}, {}, webfont.FontWatchRunner, false);
@@ -110,7 +110,7 @@ FontWatcherTest.prototype.testWatchOneFontActive = function() {
   var fontFamilies = [ 'fontFamily1' ];
   this.fontWatchRunnerActiveFamilies_ = [ 'fontFamily1' ];
 
-  var fontWatcher = new webfont.FontWatcher(this.fakeUserAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
+  var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
       this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
   fontWatcher.watch(fontFamilies, {}, {}, webfont.FontWatchRunner, true);
@@ -128,7 +128,7 @@ FontWatcherTest.prototype.testWatchOneFontInactive = function() {
   var fontFamilies = [ 'fontFamily1' ];
   this.fontWatchRunnerActiveFamilies_ = [];
 
-  var fontWatcher = new webfont.FontWatcher(this.fakeUserAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
+  var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
       this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
   fontWatcher.watch(fontFamilies, {}, {}, webfont.FontWatchRunner, true);
@@ -146,7 +146,7 @@ FontWatcherTest.prototype.testWatchMultipleFontsActive = function() {
   var fontFamilies = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
   this.fontWatchRunnerActiveFamilies_ = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
 
-  var fontWatcher = new webfont.FontWatcher(this.fakeUserAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
+  var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
       this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
   fontWatcher.watch(fontFamilies, {}, {}, webfont.FontWatchRunner, true);
@@ -168,7 +168,7 @@ FontWatcherTest.prototype.testWatchMultipleFontsInactive = function() {
   var fontFamilies = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
   this.fontWatchRunnerActiveFamilies_ = [];
 
-  var fontWatcher = new webfont.FontWatcher(this.fakeUserAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
+  var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
       this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
   fontWatcher.watch(fontFamilies, {}, {}, webfont.FontWatchRunner, true);
@@ -190,7 +190,7 @@ FontWatcherTest.prototype.testWatchMultipleFontsMixed = function() {
   var fontFamilies = [ 'fontFamily1', 'fontFamily2', 'fontFamily3' ];
   this.fontWatchRunnerActiveFamilies_ = [ 'fontFamily1', 'fontFamily3' ];
 
-  var fontWatcher = new webfont.FontWatcher(this.fakeUserAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
+  var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
       this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
   fontWatcher.watch(fontFamilies, {}, {}, webfont.FontWatchRunner, true);
@@ -218,7 +218,7 @@ FontWatcherTest.prototype.testWatchMultipleFontsWithDescriptions = function() {
     'fontFamily3': ['n4', 'i4', 'n7']
   };
 
-  var fontWatcher = new webfont.FontWatcher(this.fakeUserAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
+  var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
       this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
   fontWatcher.watch(fontFamilies, fontDescriptions, {}, webfont.FontWatchRunner, true);
@@ -251,7 +251,7 @@ FontWatcherTest.prototype.testWatchMultipleFontsWithTestStrings = function() {
     'fontFamily4': null
   };
 
-  var fontWatcher = new webfont.FontWatcher(this.fakeUserAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
+  var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.fakeDomHelper_, this.fakeEventDispatcher_,
       this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
   fontWatcher.watch(fontFamilies, {}, fontTestStrings, webfont.FontWatchRunner,
