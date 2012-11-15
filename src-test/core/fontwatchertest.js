@@ -261,3 +261,64 @@ FontWatcherTest.prototype.testWatchMultipleFontsWithTestStrings = function() {
   assertEquals('testString1', this.testStrings_['fontFamily1']);
   assertEquals('testString3', this.testStrings_['fontFamily3']);
 };
+
+FontWatcherTest.prototype.testWebkitBugDetectionOnlyOnWebkit = function() {
+  var createElementCalled = false;
+  var fakeDomHelper = {
+        createElement: function() {
+          createElementCalled = true;
+        }
+      };
+  var fontWatcher = new webfont.FontWatcher(this.userAgent_, fakeDomHelper, this.fakeEventDispatcher_,
+      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
+
+  assertEquals(false, fontWatcher.hasWebkitFallbackBug_);
+  assertEquals(false, createElementCalled);
+};
+
+FontWatcherTest.prototype.testWebkitFallbackBugDetectionWithBug = function() {
+  var userAgent = new webfont.UserAgent('Chrome', '18.0.1271.64', 'AppleWebKit', '537.11', 'Macintosh', '10.6', undefined, true);
+  var isInitial = true;
+  var fakeFontSizer = {
+        getSize: function(el) {
+          if (isInitial) {
+            isInitial = false;
+            // Monospace
+            return {
+              width: 1,
+              height: 1
+            };
+          } else {
+            // Something not monospace
+            return {
+              width: 2,
+              height: 2
+            };
+          }
+        }
+      };
+
+  var fontWatcher = new webfont.FontWatcher(userAgent, this.fakeDomHelper_, this.fakeEventDispatcher_,
+      fakeFontSizer, this.fakeAsyncCall_, this.fakeGetTime_);
+
+  assertEquals(true, fontWatcher.hasWebkitFallbackBug_);
+};
+
+FontWatcherTest.prototype.testWebkitFallbackBugDetectionWithoutBug = function() {
+  var userAgent = new webfont.UserAgent('Chrome', '23.0.1271.64', 'AppleWebKit', '537.11', 'Macintosh', '10.6', undefined, true);
+  var isInitial = true;
+  var fakeFontSizer = {
+        getSize: function(el) {
+          // Monospace
+          return {
+            width: 1,
+            height: 1
+          };
+        }
+      };
+
+  var fontWatcher = new webfont.FontWatcher(userAgent, this.fakeDomHelper_, this.fakeEventDispatcher_,
+      fakeFontSizer, this.fakeAsyncCall_, this.fakeGetTime_);
+
+  assertEquals(false, fontWatcher.hasWebkitFallbackBug_);
+};
