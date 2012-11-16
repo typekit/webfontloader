@@ -47,8 +47,6 @@ webfont.FontWatcher.prototype.checkWebkitFallbackBug_ = function() {
         "}"),
       ruler = new webfont.FontRuler(this.domHelper_, this.fontSizer_, 'iii');
 
-  ruler.insert();
-
   // First we set the font to monospace and the test string to `iii`. Based
   // on our research, all platforms have at least a monospace, sans-serif,
   // and serif font installed. By using a test string that has a very
@@ -56,6 +54,8 @@ webfont.FontWatcher.prototype.checkWebkitFallbackBug_ = function() {
   // in width.
   ruler.setFont('monospace');
   this.domHelper_.insertInto('head', font);
+
+  ruler.insert();
 
   // Measure the original size (of our monospace font)
   var beforeWidth = ruler.getSize().width;
