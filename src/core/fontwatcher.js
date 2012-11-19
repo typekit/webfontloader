@@ -47,13 +47,14 @@ webfont.FontWatcher.prototype.checkWebkitFallbackBug_ = function() {
         "}"),
       ruler = new webfont.FontRuler(this.domHelper_, this.fontSizer_, 'iii');
 
+  this.domHelper_.insertInto('head', font);
+
   // First we set the font to monospace and the test string to `iii`. Based
   // on our research, all platforms have at least a monospace, sans-serif,
   // and serif font installed. By using a test string that has a very
   // narrow width in non-monospace fonts it becomes easy to detect changes
   // in width.
   ruler.setFont('monospace');
-  this.domHelper_.insertInto('head', font);
 
   ruler.insert();
 

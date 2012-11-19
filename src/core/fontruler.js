@@ -12,7 +12,7 @@ webfont.FontRuler = function(domHelper, fontSizer, fontTestString) {
   this.fontTestString_ = fontTestString;
   this.nameHelper_ = new webfont.CssFontFamilyName();
   this.fvd_ = new webfont.FontVariationDescription();
-  this.el_ = null;
+  this.el_ = this.domHelper_.createElement('span', {}, this.fontTestString_);
 };
 
 /**
@@ -28,7 +28,6 @@ webfont.FontRuler.prototype.setFont = function(fontFamily, opt_fontDescription) 
  * Inserts the ruler into the DOM.
  */
 webfont.FontRuler.prototype.insert = function() {
-  this.el_ = this.domHelper_.createElement('span', {}, this.fontTestString_);
   this.domHelper_.insertInto('body', this.el_);
 };
 
