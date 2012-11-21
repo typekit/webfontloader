@@ -38,7 +38,7 @@ webfont.FontRuler.prototype.insert = function() {
  * @return {string}
  */
 webfont.FontRuler.prototype.computeStyleString_ = function(fontFamily, opt_fontDescription) {
-  var variationCss = this.fvd_.expand(opt_fontDescription || '');
+  var variationCss = opt_fontDescription ? this.fvd_.expand(opt_fontDescription) : '';
   var styleString = "position:absolute;top:-999px;left:-999px;" +
       "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
       "padding:0;font-variant:normal;font-family:" +
