@@ -323,19 +323,18 @@ FontWatchRunnerTest.prototype.testWatchFontWaitForLoadInactive = function() {
 };
 
 FontWatchRunnerTest.prototype.testWatchFontWebkitWithFastFont = function() {
-    this.timesToGetTimeBeforeTimeout_ = 10;
-    this.timesToDelayChangedSizeWebkit_ = 1;
+  this.timesToGetTimeBeforeTimeout_ = 10;
+  this.timesToDelayChangedSizeWebkit_ = 1;
 
-    var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
-        this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizer_,
-        this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
-        this.fontDescription_, true);
+  var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
+      this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizer_,
+      this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
+      this.fontDescription_, true);
 
-    fontWatchRunner.start();
-
-    assertEquals(1, this.asyncCount_);
-    assertEquals(1, this.fontActiveCalled_);
-    assertEquals(true, this.fontActive_['fontFamily1 n4']);
+  fontWatchRunner.start();
+  assertEquals(0, this.asyncCount_);
+  assertEquals(1, this.fontActiveCalled_);
+  assertEquals(true, this.fontActive_['fontFamily1 n4']);
 };
 
 FontWatchRunnerTest.prototype.testWatchFontWebkitWithSlowFont = function() {
@@ -349,7 +348,7 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitWithSlowFont = function() {
 
   fontWatchRunner.start();
 
-  assertEquals(2, this.asyncCount_);
+  assertEquals(1, this.asyncCount_);
   assertEquals(1, this.fontActiveCalled_);
   assertEquals(true, this.fontActive_['fontFamily1 n4']);
 };
@@ -380,7 +379,7 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitWithDifferentMetrics = function
 
   fontWatchRunner.start();
 
-  assertEquals(2, this.asyncCount_);
+  assertEquals(1, this.asyncCount_);
   assertEquals(1, this.fontActiveCalled_);
   assertEquals(true, this.fontActive_['fontFamily1 n4']);
 };
@@ -396,7 +395,7 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitFailedLoad = function() {
 
   fontWatchRunner.start();
 
-  assertEquals(2, this.asyncCount_);
+  assertEquals(1, this.asyncCount_);
   assertEquals(1, this.fontInactiveCalled_);
   assertEquals(true, this.fontInactive_['fontFamily1 n4']);
 };

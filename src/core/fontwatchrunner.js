@@ -31,13 +31,11 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontRulerA_.insert();
   this.fontRulerA_.setFont(webfont.FontWatchRunner.DEFAULT_FONTS_A, this.fontDescription_);
   this.originalSizeA_ = this.fontRulerA_.getSize();
-  this.fontRulerA_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_A, this.fontDescription_);
 
   this.fontRulerB_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
   this.fontRulerB_.insert();
   this.fontRulerB_.setFont(webfont.FontWatchRunner.DEFAULT_FONTS_B, this.fontDescription_);
   this.originalSizeB_ = this.fontRulerB_.getSize();
-  this.fontRulerB_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_B, this.fontDescription_);
 };
 
 /**
@@ -75,6 +73,22 @@ webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESbswy';
 
 webfont.FontWatchRunner.prototype.start = function() {
   this.started_ = this.getTime_();
+
+  // Right after trigger the font we measure the fallback size
+  // if the webkit fallback bug is present. This is safe because
+  // we rely on the same trick to detect the bug in the first
+  // place. This also prevents a cached font completing its
+  // size cycle before we start checking.
+  this.fontRulerA_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_A, this.fontDescription_);
+  if (this.hasWebkitFallbackBug_) {
+    this.webkitFallbackSizeA_ = this.fontRulerA_.getSize();
+  }
+
+  this.fontRulerB_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_B, this.fontDescription_);
+  if (this.hasWebkitFallbackBug_) {
+    this.webkitFallbackSizeB_ = this.fontRulerB_.getSize();
+  }
+
   this.check_();
 };
 
@@ -112,35 +126,30 @@ webfont.FontWatchRunner.prototype.check_ = function() {
   var sizeB = this.fontRulerB_.getSize();
 
   if (this.hasWebkitFallbackBug_) {
-    // Check if we have seen the first change in size
-    if (!this.webkitFallbackSizeA_ && !this.webkitFallbackSizeB_) {
+    if (this.webkitFallbackSizeA_ && this.webkitFallbackSizeB_) {
       if (this.hasTimedOut_()) {
-        // We didn't observe any size changes and the timeout occurred, so fire `inactive`
-        this.finish_(this.inactiveCallback_);
-      } else if (this.sizeEquals_(sizeA, this.originalSizeA_) && this.sizeEquals_(sizeB, this.originalSizeB_)) {
-        this.asyncCheck_(); // Nothing, so let's wait.
-      } else {
-        // First size change. Record the size and wait for the next one.
-        this.webkitFallbackSizeA_ = sizeA;
-        this.webkitFallbackSizeB_ = sizeB;
-        this.asyncCheck_();
-      }
-    } else {
-      if (this.hasTimedOut_()) {
+        // A timeout has occured. If the size is the same as the fallback size we assume we have
+        // a font metrics compatible font and fire the `active` event. Otherwise fire `inactive`.
         if (this.sizeEquals_(sizeA, this.webkitFallbackSizeA_) && this.sizeEquals_(sizeB, this.webkitFallbackSizeB_)) {
           this.finish_(this.activeCallback_);
         } else {
           this.finish_(this.inactiveCallback_);
         }
       } else if (this.sizeEquals_(sizeA, this.webkitFallbackSizeA_) && this.sizeEquals_(sizeB, this.webkitFallbackSizeB_)) {
+        // Nothing has changed, so let's wait.
         this.asyncCheck_();
       } else {
+        // The size has changed. If the size is the same as the original size we assume the font
+        // failed to load and we fire `inactive`. Otherwise we fire `active`.
         if (this.sizeEquals_(sizeA, this.originalSizeA_) && this.sizeEquals_(sizeB, this.originalSizeB_)) {
           this.finish_(this.inactiveCallback_);
         } else {
           this.finish_(this.activeCallback_);
         }
       }
+    } else {
+      // The check_ method is called before the fallback sizes are known. Wait.
+      this.asyncCheck_();
     }
   } else {
     if (this.hasTimedOut_()) {
