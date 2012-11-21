@@ -42,7 +42,7 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
   var self = this;
   var projectId = self.configuration_['projectId'];
   if (projectId) {
-    var sc = self.domHelper_.createScriptSrc(self.getScriptSrc(projectId));
+    var sc = self.domHelper_.createElement("script");
     sc["id"] = webfont.MonotypeScript.SCRIPTID + projectId;
 
     function onload(e) {
@@ -68,6 +68,7 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
       };
     }
 
+    sc["src"] = self.getScriptSrc(projectId);
     this.domHelper_.insertInto('head', sc);
   }
   else {
