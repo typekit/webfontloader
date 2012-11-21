@@ -11,7 +11,7 @@ MonotypeScriptTest.prototype.testIfProtocolMethodIsReturningProperly = function 
   var fakedom = [];
   var fakeDomHelper = {
     createScriptSrc: function (s) {
-      script = { src: s };
+      script = { src: s, addEventListener: function () {} };
       return script;
     },
     insertInto: function (tag, elem) {
@@ -48,7 +48,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAdded = function () {
 
   var fakeDomHelper = {
     createScriptSrc: function (s) {
-      script = { src: s };
+      script = { src: s, addEventListener: function () {} };
       return script;
     },
     insertInto: function (tag, elem) {
@@ -106,7 +106,7 @@ MonotypeScriptTest.prototype.testIfScriptTagHasCorrectSSL = function () {
 
   var fakeDomHelper = {
     createScriptSrc: function (s) {
-      script = { src: s };
+      script = { src: s, addEventListener: function () {} };
       return script;
     },
     insertInto: function (tag, elem) {
@@ -171,7 +171,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurl = function () {
 
   var fakeDomHelper = {
     createScriptSrc: function (s) {
-      script = { src: s };
+      script = { src: s, addEventListener: function () {} };
       return script;
     },
     insertInto: function (tag, elem) {
@@ -232,7 +232,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurlAndTheScriptUrlH
 
   var fakeDomHelper = {
     createScriptSrc: function (s) {
-      script = { src: s };
+      script = { src: s, addEventListener: function () {} };
       return script;
     },
     insertInto: function (tag, elem) {
@@ -286,7 +286,7 @@ MonotypeScriptTest.prototype.testWithoutProjectId = function () {
 
   var fakeDomHelper = {
     createScriptSrc: function (s) {
-      script = { src: s };
+      script = { src: s, addEventListener: function () {} };
       return script;
     },
     insertInto: function (tag, elem) {

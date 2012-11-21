@@ -45,14 +45,7 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
     var sc = self.domHelper_.createScriptSrc(self.getScriptSrc(projectId));
     sc["id"] = webfont.MonotypeScript.SCRIPTID + projectId;
 
-    sc["onreadystatechange"] = function (e) {
-      if (sc["readyState"] === "loaded" || sc["readyState"] === "complete") {
-        sc["onreadystatechange"] = null;
-        sc["onload"](e);
-      }
-    };
-
-    sc["onload"] = function (e) {
+    function onload(e) {
       if (self.global_[webfont.MonotypeScript.HOOK + projectId]) {
         var mti_fnts = self.global_[webfont.MonotypeScript.HOOK + projectId]();
         if (mti_fnts && mti_fnts.length) {
@@ -63,7 +56,17 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
         }
       }
       support(userAgent.isSupportingWebFont());
-    };
+    }
+
+    if (sc["addEventListener"]) {
+      sc["onload"] = onload;
+    } else if (sc["onreadystatechange"]) {
+      sc["onreadystatechange"] = function(e) {
+        if (sc["readyState"] === "loaded" || sc["readyState"] === "complete") {
+          onload(e);
+        }
+      };
+    }
 
     this.domHelper_.insertInto('head', sc);
   }
