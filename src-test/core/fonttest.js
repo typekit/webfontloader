@@ -1,25 +1,14 @@
 var FontTest = TestCase('FontTest');
 
 FontTest.prototype.setUp = function() {
-  this.fakeHtmlElement_ = { className: '' };
-  this.fakeDomHelper_ = {
-    appendClassName: function() {},
-    removeClassName: function() {},
-    hasClassName: function() {},
-    createElement: function(name) {
-      return document.createElement(name);
-    },
-    insertInto: function() {},
-    removeElement: function() {}
-  };
   this.fontModuleLoader_ = new webfont.FontModuleLoader();
 };
 
 FontTest.prototype.testFontLoad = function() {
   var userAgent = new webfont.UserAgent('Firefox', '3.6', 'Gecko', '1.9.2',
       'Macintosh', '10.6', undefined, true);
-  var font = new webfont.WebFont(this.fakeDomHelper_, this.fontModuleLoader_,
-      this.fakeHtmlElement_, function(func, timeout) { func(); }, userAgent);
+  var font = new webfont.WebFont(this.fontModuleLoader_,
+      function(func, timeout) { func(); }, userAgent);
   var self = this;
   var testModule = null;
 
@@ -66,8 +55,8 @@ FontTest.prototype.testFontLoad = function() {
 
 FontTest.prototype.testFontInactive = function() {
   var userAgent = new webfont.UserAgent('Firefox', '3.0', false);
-  var font = new webfont.WebFont(this.fakeDomHelper_, this.fontModuleLoader_,
-      this.fakeHtmlElement_, function(func, timeout) { func(); }, userAgent);
+  var font = new webfont.WebFont(this.fontModuleLoader_,
+      function(func, timeout) { func(); }, userAgent);
   var self = this;
   var testModule;
 

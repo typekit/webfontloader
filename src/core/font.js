@@ -1,11 +1,8 @@
 /**
  * @constructor
  */
-webfont.WebFont = function(domHelper, fontModuleLoader, htmlElement, asyncCall,
-    userAgent) {
-  this.domHelper_ = domHelper;
+webfont.WebFont = function(fontModuleLoader, asyncCall, userAgent) {
   this.fontModuleLoader_ = fontModuleLoader;
-  this.htmlElement_ = htmlElement;
   this.asyncCall_ = asyncCall;
   this.userAgent_ = userAgent;
   this.moduleLoading_ = 0;
@@ -16,7 +13,11 @@ webfont.WebFont.prototype.addModule = function(name, factory) {
   this.fontModuleLoader_.addModuleFactory(name, factory);
 };
 
-webfont.WebFont.prototype.load = function(configuration) {
+webfont.WebFont.prototype.load = function(configuration, opt_context) {
+  var context = opt_context || window;
+  this.domHelper_ = new webfont.DomHelper(context.document);
+  this.htmlElement_ = context.document.documentElement;
+
   var eventDispatcher = new webfont.EventDispatcher(
       this.domHelper_, this.htmlElement_, configuration);
 
@@ -66,7 +67,7 @@ webfont.WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher
 };
 
 webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {
-  var modules = this.fontModuleLoader_.getModules(configuration),
+  var modules = this.fontModuleLoader_.getModules(configuration, this.domHelper_),
       self = this;
 
   this.moduleFailedLoading_ = this.moduleLoading_ = modules.length;

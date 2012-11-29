@@ -9,8 +9,8 @@ projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'//this is your Fonts.com Web fo
 /**
  * @constructor
  */
-webfont.MonotypeScript = function (global, userAgent, domHelper, doc, configuration) {
-  this.global_ = global;
+webfont.MonotypeScript = function (userAgent, domHelper, doc, configuration) {
+  this.global_ = domHelper.getWindow();
   this.userAgent_ = userAgent;
   this.domHelper_ = domHelper;
   this.doc_ = doc;
@@ -97,9 +97,8 @@ webfont.MonotypeScript.prototype.protocol = function () {
   return defaultProtocol;
 };
 
-globalNamespaceObject.addModule(webfont.MonotypeScript.NAME, function (configuration) {
+globalNamespaceObject.addModule(webfont.MonotypeScript.NAME, function (configuration, domHelper) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
-  var domHelper = new webfont.DomHelper(document);
-  return new webfont.MonotypeScript(window, userAgent, domHelper, document, configuration);
+  return new webfont.MonotypeScript(userAgent, domHelper, document, configuration);
 });

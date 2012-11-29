@@ -6,16 +6,19 @@ TypekitScriptTest.prototype.testSupportAndLoadLifecycle = function() {
   };
   var insert = '';
   var src = '';
+  var global = {};
   var fakeDomHelper = {
       insertInto: function(tag, e) {
         insert = tag;
       },
       createScriptSrc: function(srcLink) {
         src = srcLink;
+      },
+      getWindow: function() {
+        return global;
       }
   };
-  var global = {};
-  var typeKit = new webfont.TypekitScript(global, fakeDomHelper, configuration);
+  var typeKit = new webfont.TypekitScript(fakeDomHelper, configuration);
 
   // supportUserAgent
   var userAgent = 'user agent';
@@ -65,16 +68,19 @@ TypekitScriptTest.prototype.testLoadWithVariations = function() {
   };
   var insert = '';
   var src = '';
+  var global = {};
   var fakeDomHelper = {
       insertInto: function(tag, e) {
         insert = tag;
       },
       createScriptSrc: function(srcLink) {
         src = srcLink;
+      },
+      getWindow: function() {
+        return global;
       }
   };
-  var global = {};
-  var typeKit = new webfont.TypekitScript(global, fakeDomHelper, configuration);
+  var typeKit = new webfont.TypekitScript(fakeDomHelper, configuration);
 
   // supportUserAgent
   var userAgent = 'user agent';
@@ -129,9 +135,12 @@ TypekitScriptTest.prototype.testAlternateApi = function() {
       },
       createScriptSrc: function(srcLink) {
         src = srcLink;
+      },
+      getWindow: function() {
+        return {};
       }
   };
-  var typeKit = new webfont.TypekitScript({}, fakeDomHelper, configuration);
+  var typeKit = new webfont.TypekitScript(fakeDomHelper, configuration);
   var userAgent = 'user agent';
   var isSupport = null;
 
@@ -152,9 +161,12 @@ TypekitScriptTest.prototype.testNoKitId = function() {
       },
       createScriptSrc: function(srcLink) {
         src = srcLink;
+      },
+      getWindow: function() {
+        return {};
       }
   };
-  var typeKit = new webfont.TypekitScript({}, fakeDomHelper, configuration);
+  var typeKit = new webfont.TypekitScript(fakeDomHelper, configuration);
   var userAgent = 'user agent';
   var isSupport = null;
 

@@ -1,8 +1,8 @@
 /**
  * @constructor
  */
-webfont.TypekitScript = function(global, domHelper, configuration) {
-  this.global_ = global;
+webfont.TypekitScript = function(domHelper, configuration) {
+  this.global_ = domHelper.getWindow();
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
   this.fontFamilies_ = [];
@@ -53,8 +53,7 @@ webfont.TypekitScript.prototype.load = function(onReady) {
   onReady(this.fontFamilies_, this.fontVariations_);
 };
 
-globalNamespaceObject.addModule(webfont.TypekitScript.NAME, function(configuration) {
-  var domHelper = new webfont.DomHelper(document);
-  return new webfont.TypekitScript(window, domHelper, configuration);
+globalNamespaceObject.addModule(webfont.TypekitScript.NAME, function(configuration, domHelper) {
+  return new webfont.TypekitScript(domHelper, configuration);
 });
 

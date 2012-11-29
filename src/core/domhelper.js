@@ -194,3 +194,10 @@ webfont.DomHelper.prototype.hasSupportForStyle_ = function() {
   }
   return this.supportForStyle_
 };
+
+/**
+ * @return {Window} The window for the helper's document.
+ */
+webfont.DomHelper.prototype.getWindow = function() {
+  return this.document_.defaultView || this.document_.parentWindow;
+};

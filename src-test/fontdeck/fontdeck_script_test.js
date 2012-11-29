@@ -42,14 +42,6 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
   };
   var insert = '';
   var src = '';
-  var fakeDomHelper = {
-    insertInto: function(tag, e) {
-      insert = tag;
-    },
-    createScriptSrc: function(srcLink) {
-      src = srcLink;
-    }
-  };
   var global = {
     location: {
       protocol: 'https:'
@@ -60,7 +52,18 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
       }
     }
   };
-  var fontdeck = new webfont.FontdeckScript(global, fakeDomHelper, configuration);
+  var fakeDomHelper = {
+    insertInto: function(tag, e) {
+      insert = tag;
+    },
+    createScriptSrc: function(srcLink) {
+      src = srcLink;
+    },
+    getWindow: function() {
+      return global;
+    }
+  };
+  var fontdeck = new webfont.FontdeckScript(fakeDomHelper, configuration);
 
   // supportUserAgent
   var userAgent = 'user agent';
@@ -90,9 +93,12 @@ FontdeckScriptTest.prototype.testNoProjectId = function() {
   };
   var insert = '';
   var src = '';
-  var fakeDomHelper = {};
-  var global = {};
-  var fontdeck = new webfont.FontdeckScript(global, fakeDomHelper, configuration);
+  var fakeDomHelper = {
+    getWindow: function() {
+      return {};
+    }
+  };
+  var fontdeck = new webfont.FontdeckScript(fakeDomHelper, configuration);
 
   // supportUserAgent
   var userAgent = 'user agent';

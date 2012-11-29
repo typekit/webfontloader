@@ -31,7 +31,6 @@ webfont.CustomCss.prototype.supportUserAgent = function(userAgent, support) {
   return support(userAgent.isSupportingWebFont());
 };
 
-globalNamespaceObject.addModule(webfont.CustomCss.NAME, function(configuration) {
-  var domHelper = new webfont.DomHelper(document);
+globalNamespaceObject.addModule(webfont.CustomCss.NAME, function(configuration, domHelper) {
   return new webfont.CustomCss(domHelper, configuration);
 });

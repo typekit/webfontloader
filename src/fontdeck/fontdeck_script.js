@@ -1,8 +1,8 @@
 /**
  * @constructor
  */
-webfont.FontdeckScript = function(global, domHelper, configuration) {
-  this.global_ = global;
+webfont.FontdeckScript = function(domHelper, configuration) {
+  this.global_ = domHelper.getWindow();
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
   this.fontFamilies_ = [];
@@ -55,7 +55,6 @@ webfont.FontdeckScript.prototype.load = function(onReady) {
   onReady(this.fontFamilies_, this.fontVariations_);
 };
 
-globalNamespaceObject.addModule(webfont.FontdeckScript.NAME, function(configuration) {
-  var domHelper = new webfont.DomHelper(document);
-  return new webfont.FontdeckScript(window, domHelper, configuration);
+globalNamespaceObject.addModule(webfont.FontdeckScript.NAME, function(configuration, domHelper) {
+  return new webfont.FontdeckScript(domHelper, configuration);
 });
