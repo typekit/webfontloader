@@ -24,43 +24,38 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
   this.hasWebkitFallbackBug_ = hasWebkitFallbackBug;
 
-  this.webkitFallbackSizeA_ = null;
-  this.webkitFallbackSizeB_ = null;
-
   this.fontRulerA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
   this.fontRulerA_.insert();
-  this.fontRulerA_.setFont(webfont.FontWatchRunner.DEFAULT_FONTS_A, this.fontDescription_);
-  this.originalSizeA_ = this.fontRulerA_.getSize();
+  this.fontRulerA_.setFont(webfont.FontWatchRunner.LAST_RESORT_FONT, this.fontDescription_);
+  this.lastResortSizeA_ = this.fontRulerA_.getSize();
+  this.fontRulerA_.setFont(webfont.FontWatchRunner.FALLBACK_FONTS_A, this.fontDescription_);
+  this.fallbackSizeA_ = this.fontRulerA_.getSize();
 
   this.fontRulerB_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
   this.fontRulerB_.insert();
-  this.fontRulerB_.setFont(webfont.FontWatchRunner.DEFAULT_FONTS_B, this.fontDescription_);
-  this.originalSizeB_ = this.fontRulerB_.getSize();
+  this.fontRulerB_.setFont(webfont.FontWatchRunner.LAST_RESORT_FONT, this.fontDescription_);
+  this.lastResortSizeB_ = this.fontRulerB_.getSize();
+  this.fontRulerB_.setFont(webfont.FontWatchRunner.FALLBACK_FONTS_B, this.fontDescription_);
+  this.fallbackSizeB_ = this.fontRulerB_.getSize();
 };
 
 /**
- * A set of sans-serif fonts and a generic family that cover most platforms:
- * Windows - arial - 99.71%
- * Mac - arial - 97.67%
- * Linux - 97.67%
- * (Based on http://www.codestyle.org/css/font-family/sampler-CombinedResults.shtml)
  * @type {string}
  * @const
  */
-webfont.FontWatchRunner.DEFAULT_FONTS_A = "arial,'URW Gothic L',sans-serif";
+webfont.FontWatchRunner.FALLBACK_FONTS_A = "serif,sans-serif";
 
 /**
- * A set of serif fonts and a generic family that cover most platforms. We
- * want each of these fonts to have a different width when rendering the test
- * string than each of the fonts in DEFAULT_FONTS_A:
- * Windows - Georgia - 98.98%
- * Mac - Georgia - 95.60%
- * Linux - Century Schoolbook L - 97.97%
- * (Based on http://www.codestyle.org/css/font-family/sampler-CombinedResults.shtml)
  * @type {string}
  * @const
  */
-webfont.FontWatchRunner.DEFAULT_FONTS_B = "Georgia,'Century Schoolbook L',serif";
+webfont.FontWatchRunner.FALLBACK_FONTS_B = "sans-serif,serif";
+
+/**
+ * @type {string}
+ * @const
+ */
+webfont.FontWatchRunner.LAST_RESORT_FONT = "''";
 
 /**
  * Default test string. Characters are chosen so that their widths vary a lot
@@ -74,20 +69,8 @@ webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESbswy';
 webfont.FontWatchRunner.prototype.start = function() {
   this.started_ = this.getTime_();
 
-  // Right after trigger the font we measure the fallback size
-  // if the webkit fallback bug is present. This is safe because
-  // we rely on the same trick to detect the bug in the first
-  // place. This also prevents a cached font completing its
-  // size cycle before we start checking.
-  this.fontRulerA_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_A, this.fontDescription_);
-  if (this.hasWebkitFallbackBug_) {
-    this.webkitFallbackSizeA_ = this.fontRulerA_.getSize();
-  }
-
-  this.fontRulerB_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.DEFAULT_FONTS_B, this.fontDescription_);
-  if (this.hasWebkitFallbackBug_) {
-    this.webkitFallbackSizeB_ = this.fontRulerB_.getSize();
-  }
+  this.fontRulerA_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.FALLBACK_FONTS_A, this.fontDescription_);
+  this.fontRulerB_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.FALLBACK_FONTS_B, this.fontDescription_);
 
   this.check_();
 };
@@ -125,40 +108,21 @@ webfont.FontWatchRunner.prototype.check_ = function() {
   var sizeA = this.fontRulerA_.getSize();
   var sizeB = this.fontRulerB_.getSize();
 
-  if (this.hasWebkitFallbackBug_) {
-    if (this.webkitFallbackSizeA_ && this.webkitFallbackSizeB_) {
-      if (this.hasTimedOut_()) {
-        // A timeout has occured. If the size is the same as the fallback size we assume we have
-        // a font metrics compatible font and fire the `active` event. Otherwise fire `inactive`.
-        if (this.sizeEquals_(sizeA, this.webkitFallbackSizeA_) && this.sizeEquals_(sizeB, this.webkitFallbackSizeB_)) {
-          this.finish_(this.activeCallback_);
-        } else {
-          this.finish_(this.inactiveCallback_);
-        }
-      } else if (this.sizeEquals_(sizeA, this.webkitFallbackSizeA_) && this.sizeEquals_(sizeB, this.webkitFallbackSizeB_)) {
-        // Nothing has changed, so let's wait.
-        this.asyncCheck_();
+  if ((this.sizeEquals_(sizeA, this.fallbackSizeA_) && this.sizeEquals_(sizeB, this.fallbackSizeB_)) ||
+      (this.sizeEquals_(sizeA, this.lastResortSizeA_) && this.sizeEquals_(sizeB, this.lastResortSizeB_))) {
+    if (this.hasTimedOut_()) {
+      if (this.hasWebkitFallbackBug_ &&
+          this.sizeEquals_(sizeA, this.lastResortSizeA_) &&
+          this.sizeEquals_(sizeB, this.lastResortSizeB_)) {
+        this.finish_(this.activeCallback_);
       } else {
-        // The size has changed. If the size is the same as the original size we assume the font
-        // failed to load and we fire `inactive`. Otherwise we fire `active`.
-        if (this.sizeEquals_(sizeA, this.originalSizeA_) && this.sizeEquals_(sizeB, this.originalSizeB_)) {
-          this.finish_(this.inactiveCallback_);
-        } else {
-          this.finish_(this.activeCallback_);
-        }
+        this.finish_(this.inactiveCallback_);
       }
     } else {
-      // The check_ method is called before the fallback sizes are known. Wait.
       this.asyncCheck_();
     }
   } else {
-    if (this.hasTimedOut_()) {
-      this.finish_(this.inactiveCallback_);
-    } else if (this.sizeEquals_(sizeA, this.originalSizeA_) && this.sizeEquals_(sizeB, this.originalSizeB_)) {
-      this.asyncCheck_();
-    } else {
-      this.finish_(this.activeCallback_);
-    }
+    this.finish_(this.activeCallback_);
   }
 };
 

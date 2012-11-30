@@ -20,8 +20,8 @@ webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
       getTime, fontFamily, fontDescription, hasWebkitFallbackBug, opt_fontTestString);
   this.webKitLastResortFontSizes_ = this.setUpWebKitLastResortFontSizes_();
   this.webKitLastResortSizeChange_ = false;
-  this.lastObservedSizeA_ = this.originalSizeA_;
-  this.lastObservedSizeB_ = this.originalSizeB_;
+  this.lastObservedSizeA_ = this.fallbackSizeA_;
+  this.lastObservedSizeB_ = this.fallbackSizeB_;
 };
 webfont.extendsClass(webfont.FontWatchRunner, webfont.LastResortWebKitFontWatchRunner);
 

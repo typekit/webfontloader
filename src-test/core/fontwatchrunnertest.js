@@ -142,11 +142,16 @@ FontWatchRunnerTest.prototype.setUp = function() {
             height: 3
           };
         }
-      } else {
+      } else if (el.style.fontFamily.indexOf('sans-serif') !== -1) {
         // Return the default width
         return {
           width: 1,
           height: 1
+        };
+      } else {
+        return {
+          width: 2,
+          height: 2
         };
       }
     }
@@ -169,10 +174,15 @@ FontWatchRunnerTest.prototype.setUp = function() {
             height: 1
           };
         }
-      } else {
+      } else if (el.style.fontFamily.indexOf('sans-serif') !== -1) {
         return {
           width: 1,
           height: 1
+        };
+      } else {
+        return {
+          width: 2,
+          height: 2
         };
       }
     }
@@ -196,11 +206,16 @@ FontWatchRunnerTest.prototype.setUp = function() {
             height: 2
           };
         }
-      } else {
+      } else if (el.style.fontFamily.indexOf('sans-serif') !== -1) {
         // Return the default width
         return {
           width: 1,
           height: 1
+        };
+      } else {
+        return {
+          width: 2,
+          height: 2
         };
       }
     }
@@ -223,10 +238,15 @@ FontWatchRunnerTest.prototype.setUp = function() {
             height: 3
           };
         }
-      } else {
+      } else if (el.style.fontFamily.indexOf('sans-serif') !== -1) {
         return {
           width: 1,
           height: 1
+        };
+      } else {
+        return {
+          width: 2,
+          height: 2
         };
       }
     }
@@ -332,7 +352,7 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitWithFastFont = function() {
       this.fontDescription_, true);
 
   fontWatchRunner.start();
-  assertEquals(0, this.asyncCount_);
+  assertEquals(1, this.asyncCount_);
   assertEquals(1, this.fontActiveCalled_);
   assertEquals(true, this.fontActive_['fontFamily1 n4']);
 };
@@ -347,8 +367,7 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitWithSlowFont = function() {
       this.fontDescription_, true);
 
   fontWatchRunner.start();
-
-  assertEquals(1, this.asyncCount_);
+  assertEquals(2, this.asyncCount_);
   assertEquals(1, this.fontActiveCalled_);
   assertEquals(true, this.fontActive_['fontFamily1 n4']);
 };
@@ -378,15 +397,14 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitWithDifferentMetrics = function
       this.fontDescription_, true);
 
   fontWatchRunner.start();
-
-  assertEquals(1, this.asyncCount_);
+  assertEquals(2, this.asyncCount_);
   assertEquals(1, this.fontActiveCalled_);
   assertEquals(true, this.fontActive_['fontFamily1 n4']);
 };
 
 FontWatchRunnerTest.prototype.testWatchFontWebkitFailedLoad = function() {
   this.timesToGetTimeBeforeTimeout_ = 10;
-  this.timesToDelayChangedSizeWebkit_ = 2;
+  this.timesToDelayChangedSizeWebkit_ = 5;
 
   var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
       this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizerFailedLoad_,
@@ -394,8 +412,7 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitFailedLoad = function() {
       this.fontDescription_, true);
 
   fontWatchRunner.start();
-
-  assertEquals(1, this.asyncCount_);
+  assertEquals(9, this.asyncCount_);
   assertEquals(1, this.fontInactiveCalled_);
   assertEquals(true, this.fontInactive_['fontFamily1 n4']);
 };
@@ -410,16 +427,15 @@ FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
       this.fontDescription_, false);
 
   fontWatchRunner.start();
-
   assertEquals(2, this.createElementCalled_);
   assertEquals('span', this.createdElements_[0]['name']);
   assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_A));
+  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.FALLBACK_FONTS_A));
   assertEquals('BESbswy', this.createdElements_[0]['innerHtml']);
 
   assertEquals('span', this.createdElements_[1]['name']);
   assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_B));
+  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.FALLBACK_FONTS_B));
   assertEquals('BESbswy', this.createdElements_[1]['innerHtml']);
 
   assertEquals(2, this.insertIntoCalled_);
@@ -440,12 +456,12 @@ FontWatchRunnerTest.prototype.testDomWithNotDefaultTestString = function() {
   assertEquals(2, this.createElementCalled_);
   assertEquals('span', this.createdElements_[0]['name']);
   assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_A));
+  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.FALLBACK_FONTS_A));
   assertEquals('testString', this.createdElements_[0]['innerHtml']);
 
   assertEquals('span', this.createdElements_[1]['name']);
   assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.DEFAULT_FONTS_B));
+  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.FALLBACK_FONTS_B));
   assertEquals('testString', this.createdElements_[1]['innerHtml']);
 
   assertEquals(2, this.insertIntoCalled_);
