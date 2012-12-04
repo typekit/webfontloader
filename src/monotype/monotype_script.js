@@ -9,11 +9,9 @@ projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'//this is your Fonts.com Web fo
 /**
  * @constructor
  */
-webfont.MonotypeScript = function (userAgent, domHelper, doc, configuration) {
-  this.global_ = domHelper.getWindow();
+webfont.MonotypeScript = function (userAgent, domHelper, configuration) {
   this.userAgent_ = userAgent;
   this.domHelper_ = domHelper;
-  this.doc_ = doc;
   this.configuration_ = configuration;
   this.fontFamilies_ = [];
   this.fontVariations_ = {};
@@ -52,9 +50,10 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
       }
     };
 
+    var window = this.domHelper_.getWindow();
     sc["onload"] = function (e) {
-      if (self.global_[webfont.MonotypeScript.HOOK + projectId]) {
-        var mti_fnts = self.global_[webfont.MonotypeScript.HOOK + projectId]();
+      if (window[webfont.MonotypeScript.HOOK + projectId]) {
+        var mti_fnts = window[webfont.MonotypeScript.HOOK + projectId]();
         if (mti_fnts && mti_fnts.length) {
           var i;
           for (i = 0; i < mti_fnts.length; i++) {
@@ -73,7 +72,7 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
 };
 
 webfont.MonotypeScript.prototype.getScriptSrc = function (projectId) {
-  var p = this.protocol();
+  var p = this.domHelper_.getProtocol();
   var api = (this.configuration_['api'] || 'fast.fonts.com/jsapi').replace(/^.*http(s?):(\/\/)?/, "");
   return p + "//" + api + '/' + projectId + '.js';
 };
@@ -82,23 +81,8 @@ webfont.MonotypeScript.prototype.load = function (onReady) {
   onReady(this.fontFamilies_, this.fontVariations_);
 };
 
-webfont.MonotypeScript.prototype.protocol = function () {
-  var supportedProtocols = ["http:", "https:"];
-  var defaultProtocol = supportedProtocols[0];
-  if (this.doc_ && this.doc_.location && this.doc_.location.protocol) {
-    var i = 0;
-    for (i = 0; i < supportedProtocols.length; i++) {
-      if (this.doc_.location.protocol === supportedProtocols[i]) {
-        return this.doc_.location.protocol;
-      }
-    }
-  }
-
-  return defaultProtocol;
-};
-
 globalNamespaceObject.addModule(webfont.MonotypeScript.NAME, function (configuration, domHelper) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
-  return new webfont.MonotypeScript(userAgent, domHelper, document, configuration);
+  return new webfont.MonotypeScript(userAgent, domHelper, configuration);
 });

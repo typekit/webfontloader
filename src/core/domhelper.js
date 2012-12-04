@@ -1,11 +1,16 @@
 /**
  * Handles common DOM manipulation tasks. The aim of this library is to cover
  * the needs of typical font loading. Not more, not less.
- * @param {HTMLDocument} doc The HTML document we'll manipulate.
+ * @param {Window} window The window we'll load the font in.
+ * @param {Window} configWindow The window webfontloader loaded in.
  * @constructor
  */
-webfont.DomHelper = function(doc) {
-  this.document_ = doc;
+webfont.DomHelper = function(window, configWindow) {
+  this.window_ = window;
+  this.configWindow_ = configWindow;
+
+  /** @type {HTMLDocument} */
+  this.document_ = this.window_.document;
 
   /** @type {boolean|undefined} */
   this.supportForStyle_ = undefined;
@@ -196,8 +201,27 @@ webfont.DomHelper.prototype.hasSupportForStyle_ = function() {
 };
 
 /**
- * @return {Window} The window for the helper's document.
+ * @return {Window} The window we'll load the font in.
  */
 webfont.DomHelper.prototype.getWindow = function() {
-  return this.document_.defaultView || this.document_.parentWindow;
+  return this.window_;
+};
+
+/**
+ * @return {Window} The window webfontloader loaded in.
+ */
+webfont.DomHelper.prototype.getConfigWindow = function() {
+  return this.configWindow_;
+};
+
+/**
+ * @return {string} The protocol (http: or https:) to request resources in.
+ */
+webfont.DomHelper.prototype.getProtocol = function() {
+  var protocol = this.window_.location.protocol;
+  // For empty iframes, fallback to config window's protocol.
+  if (protocol == 'about:') {
+    protocol = this.configWindow_.location.protocol;
+  }
+  return protocol == 'https:' ? 'https:' : 'http:';
 };

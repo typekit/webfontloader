@@ -2,7 +2,6 @@
  * @constructor
  */
 webfont.TypekitScript = function(domHelper, configuration) {
-  this.global_ = domHelper.getWindow();
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
   this.fontFamilies_ = [];
@@ -13,7 +12,7 @@ webfont.TypekitScript.NAME = 'typekit';
 webfont.TypekitScript.HOOK = '__webfonttypekitmodule__';
 
 webfont.TypekitScript.prototype.getScriptSrc = function(kitId) {
-  var protocol = 'https:' == window.location.protocol ? 'https:' : 'http:';
+  var protocol = this.domHelper_.getProtocol();
   var api = this.configuration_['api'] || protocol + '//use.typekit.com';
   return api + '/' + kitId + '.js';
 };
@@ -21,17 +20,18 @@ webfont.TypekitScript.prototype.getScriptSrc = function(kitId) {
 webfont.TypekitScript.prototype.supportUserAgent = function(userAgent, support) {
   var kitId = this.configuration_['id'];
   var configuration = this.configuration_;
+  var window = this.domHelper_.getWindow();
   var self = this;
 
   if (kitId) {
     // Provide data to Typekit for processing.
-    if (!this.global_[webfont.TypekitScript.HOOK]) {
-      this.global_[webfont.TypekitScript.HOOK] = {};
+    if (!window[webfont.TypekitScript.HOOK]) {
+      window[webfont.TypekitScript.HOOK] = {};
     }
 
     // Typekit will call 'init' to indicate whether it supports fonts
     // and what fonts will be provided.
-    this.global_[webfont.TypekitScript.HOOK][kitId] = function(callback) {
+    window[webfont.TypekitScript.HOOK][kitId] = function(callback) {
       var init = function(typekitSupports, fontFamilies, fontVariations) {
         self.fontFamilies_ = fontFamilies;
         self.fontVariations_ = fontVariations;

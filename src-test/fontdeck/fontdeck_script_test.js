@@ -41,17 +41,11 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
     ]
   };
   var insert = '';
-  var src = '';
+  // No hostname to verify fallback behavior for empty iframe.
   var global = {
-    location: {
-      protocol: 'https:'
-    },
-    document: {
-      location: {
-        hostname: 'test-host-name'
-      }
-    }
+    location: {}
   };
+  var src = '';
   var fakeDomHelper = {
     insertInto: function(tag, e) {
       insert = tag;
@@ -61,6 +55,16 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
     },
     getWindow: function() {
       return global;
+    },
+    getConfigWindow: function() {
+      return {
+        location: {
+          hostname: 'test-host-name'
+        }
+      };
+    },
+    getProtocol: function() {
+      return 'https:';
     }
   };
   var fontdeck = new webfont.FontdeckScript(fakeDomHelper, configuration);

@@ -16,6 +16,9 @@ TypekitScriptTest.prototype.testSupportAndLoadLifecycle = function() {
       },
       getWindow: function() {
         return global;
+      },
+      getProtocol: function() {
+        return 'http:';
       }
   };
   var typeKit = new webfont.TypekitScript(fakeDomHelper, configuration);
@@ -78,6 +81,9 @@ TypekitScriptTest.prototype.testLoadWithVariations = function() {
       },
       getWindow: function() {
         return global;
+      },
+      getProtocol: function() {
+        return 'http:';
       }
   };
   var typeKit = new webfont.TypekitScript(fakeDomHelper, configuration);
@@ -138,6 +144,9 @@ TypekitScriptTest.prototype.testAlternateApi = function() {
       },
       getWindow: function() {
         return {};
+      },
+      getProtocol: function() {
+        return 'http:';
       }
   };
   var typeKit = new webfont.TypekitScript(fakeDomHelper, configuration);
@@ -164,6 +173,9 @@ TypekitScriptTest.prototype.testNoKitId = function() {
       },
       getWindow: function() {
         return {};
+      },
+      getProtocol: function() {
+        return 'http:';
       }
   };
   var typeKit = new webfont.TypekitScript(fakeDomHelper, configuration);

@@ -35,7 +35,7 @@ webfont.GoogleFontApi.prototype.load = function(onReady) {
 webfont.GoogleFontApi.prototype.insertLink_ = function(onReady) {
   var domHelper = this.domHelper_;
   var fontApiUrlBuilder = new webfont.FontApiUrlBuilder(
-      this.configuration_['api']);
+      this.configuration_['api'], domHelper.getProtocol());
   var fontFamilies = this.configuration_['families'];
   fontApiUrlBuilder.setFontFamilies(fontFamilies);
 
