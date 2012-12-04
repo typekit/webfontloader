@@ -121,8 +121,7 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontIgnored =
       this.fontDescription_, false);
 
   fontWatchRunner.start();
-
-  assertEquals(2, this.asyncCount_);
+  assertEquals(1, this.asyncCount_);
 
   // When on webkit time out ends up activating the font.
   assertEquals(1, this.fontActiveCalled_);
@@ -235,6 +234,10 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontInactiveWhenSize
             height: 4
           };
         }
+        return {
+          width: 2,
+          height: 2
+        };
       }}, this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
       this.fontDescription_, false);
 
