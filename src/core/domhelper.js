@@ -228,7 +228,7 @@ webfont.DomHelper.prototype.insertNullFontStyle = function(fontDescription) {
       "@font-face{" +
         "font-family:'" + fontFamily + "';" +
         "src:url(data:application/x-font-woff;base64,) format('woff')," +
-        "url(data:font/truetype;base64,) format('truetype');" +
+        "url(data:font/opentype;base64,) format('truetype');" +
         weightAndStyle +
       "}");
 
