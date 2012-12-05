@@ -26,15 +26,20 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
 
   this.fontRulerA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
   this.fontRulerA_.insert();
-  this.fontRulerA_.setFont(webfont.FontWatchRunner.LAST_RESORT_FONT, this.fontDescription_);
-  this.lastResortSizeA_ = this.fontRulerA_.getSize();
-  this.fontRulerA_.setFont(webfont.FontWatchRunner.FALLBACK_FONTS_A, this.fontDescription_);
-  this.fallbackSizeA_ = this.fontRulerA_.getSize();
-
   this.fontRulerB_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
   this.fontRulerB_.insert();
-  this.fontRulerB_.setFont(webfont.FontWatchRunner.LAST_RESORT_FONT, this.fontDescription_);
-  this.lastResortSizeB_ = this.fontRulerB_.getSize();
+
+  // If the webkit bug is present, get the last resort sizes that we need to
+  // ignore as well.
+  if (this.hasWebkitFallbackBug_) {
+    this.fontRulerA_.setFont(webfont.FontWatchRunner.LAST_RESORT_FONT, this.fontDescription_);
+    this.lastResortSizeA_ = this.fontRulerA_.getSize();
+    this.fontRulerB_.setFont(webfont.FontWatchRunner.LAST_RESORT_FONT, this.fontDescription_);
+    this.lastResortSizeB_ = this.fontRulerB_.getSize();
+  }
+
+  this.fontRulerA_.setFont(webfont.FontWatchRunner.FALLBACK_FONTS_A, this.fontDescription_);
+  this.fallbackSizeA_ = this.fontRulerA_.getSize();
   this.fontRulerB_.setFont(webfont.FontWatchRunner.FALLBACK_FONTS_B, this.fontDescription_);
   this.fallbackSizeB_ = this.fontRulerB_.getSize();
 };
@@ -109,7 +114,7 @@ webfont.FontWatchRunner.prototype.check_ = function() {
   var sizeB = this.fontRulerB_.getSize();
 
   if ((this.sizeEquals_(sizeA, this.fallbackSizeA_) && this.sizeEquals_(sizeB, this.fallbackSizeB_)) ||
-      (this.sizeEquals_(sizeA, this.lastResortSizeA_) && this.sizeEquals_(sizeB, this.lastResortSizeB_))) {
+      (this.hasWebkitFallbackBug_ && this.sizeEquals_(sizeA, this.lastResortSizeA_) && this.sizeEquals_(sizeB, this.lastResortSizeB_))) {
     if (this.hasTimedOut_()) {
       if (this.hasWebkitFallbackBug_ &&
           this.sizeEquals_(sizeA, this.lastResortSizeA_) &&

@@ -121,7 +121,7 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontIgnored =
       this.fontDescription_, false);
 
   fontWatchRunner.start();
-  assertEquals(1, this.asyncCount_);
+  assertEquals(2, this.asyncCount_);
 
   // When on webkit time out ends up activating the font.
   assertEquals(1, this.fontActiveCalled_);
