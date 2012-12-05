@@ -14,7 +14,7 @@ TypekitScriptTest.prototype.testSupportAndLoadLifecycle = function() {
       createScriptSrc: function(srcLink) {
         src = srcLink;
       },
-      getWindow: function() {
+      getMainWindow: function() {
         return global;
       },
       getProtocol: function() {
@@ -79,7 +79,7 @@ TypekitScriptTest.prototype.testLoadWithVariations = function() {
       createScriptSrc: function(srcLink) {
         src = srcLink;
       },
-      getWindow: function() {
+      getMainWindow: function() {
         return global;
       },
       getProtocol: function() {
@@ -142,7 +142,7 @@ TypekitScriptTest.prototype.testAlternateApi = function() {
       createScriptSrc: function(srcLink) {
         src = srcLink;
       },
-      getWindow: function() {
+      getMainWindow: function() {
         return {};
       },
       getProtocol: function() {
@@ -171,7 +171,7 @@ TypekitScriptTest.prototype.testNoKitId = function() {
       createScriptSrc: function(srcLink) {
         src = srcLink;
       },
-      getWindow: function() {
+      getMainWindow: function() {
         return {};
       },
       getProtocol: function() {

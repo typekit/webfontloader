@@ -41,9 +41,10 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
     ]
   };
   var insert = '';
-  // No hostname to verify fallback behavior for empty iframe.
   var global = {
-    location: {}
+    location: {
+      hostname: 'test-host-name'
+    }
   };
   var src = '';
   var fakeDomHelper = {
@@ -53,15 +54,14 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
     createScriptSrc: function(srcLink) {
       src = srcLink;
     },
-    getWindow: function() {
-      return global;
-    },
-    getConfigWindow: function() {
+    getLoadWindow: function() {
+      // No hostname to verify fallback behavior for empty iframe
       return {
-        location: {
-          hostname: 'test-host-name'
-        }
+        location: {}
       };
+    },
+    getMainWindow: function() {
+      return global;
     },
     getProtocol: function() {
       return 'https:';
@@ -87,7 +87,7 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
   assertEquals(fontdeck.fontFamilies_, [apiResponse.fonts[0].name, apiResponse.fonts[1].name]);
   assertEquals(fontdeck.fontVariations_[apiResponse.fonts[0].name], ['n4']);
   assertEquals(fontdeck.fontVariations_[apiResponse.fonts[1].name], ['i7']);
-  
+
   assertEquals(true, isSupport);
 };
 
@@ -98,7 +98,7 @@ FontdeckScriptTest.prototype.testNoProjectId = function() {
   var insert = '';
   var src = '';
   var fakeDomHelper = {
-    getWindow: function() {
+    getMainWindow: function() {
       return {};
     }
   };
@@ -109,7 +109,7 @@ FontdeckScriptTest.prototype.testNoProjectId = function() {
   var isSupport = null;
 
   fontdeck.supportUserAgent(userAgent, function(support) { isSupport = support; });
-  
+
   assertEquals(fontdeck.fontFamilies_, []);
   assertEquals(fontdeck.fontVariations_, []);
   assertEquals(true, isSupport);

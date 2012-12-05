@@ -1,16 +1,17 @@
 /**
  * Handles common DOM manipulation tasks. The aim of this library is to cover
  * the needs of typical font loading. Not more, not less.
- * @param {Window} window The window we'll load the font in.
- * @param {Window} configWindow The window webfontloader loaded in.
+ * @param {Window} mainWindow The main window webfontloader.js is loaded in.
+ * @param {Window=} opt_loadWindow The window we'll load the font into. By
+ *   default, the main window is used.
  * @constructor
  */
-webfont.DomHelper = function(window, configWindow) {
-  this.window_ = window;
-  this.configWindow_ = configWindow;
+webfont.DomHelper = function(mainWindow, opt_loadWindow) {
+  this.mainWindow_ = mainWindow;
+  this.loadWindow_ = opt_loadWindow || mainWindow;
 
   /** @type {Document} */
-  this.document_ = this.window_.document;
+  this.document_ = this.loadWindow_.document;
 
   /** @type {boolean|undefined} */
   this.supportForStyle_ = undefined;
@@ -33,7 +34,7 @@ webfont.DomHelper.prototype.createElement = function(elem, opt_attr,
       if (opt_attr.hasOwnProperty(attr)) {
         if (attr == "style") {
           this.setStyle(domElement, opt_attr[attr]);
-	} else {
+        } else {
           domElement.setAttribute(attr, opt_attr[attr]);
         }
       }
@@ -201,27 +202,27 @@ webfont.DomHelper.prototype.hasSupportForStyle_ = function() {
 };
 
 /**
- * @return {Window} The window we'll load the font in.
+ * @return {Window} The main window webfontloader.js is loaded in (for config).
  */
-webfont.DomHelper.prototype.getWindow = function() {
-  return this.window_;
+webfont.DomHelper.prototype.getMainWindow = function() {
+  return this.mainWindow_;
 };
 
 /**
- * @return {Window} The window webfontloader loaded in.
+ * @return {Window} The window that we're loading the font(s) into.
  */
-webfont.DomHelper.prototype.getConfigWindow = function() {
-  return this.configWindow_;
+webfont.DomHelper.prototype.getLoadWindow = function() {
+  return this.loadWindow_;
 };
 
 /**
  * @return {string} The protocol (http: or https:) to request resources in.
  */
 webfont.DomHelper.prototype.getProtocol = function() {
-  var protocol = this.window_.location.protocol;
-  // For empty iframes, fallback to config window's protocol.
+  var protocol = this.loadWindow_.location.protocol;
+  // For empty iframes, fallback to main window's protocol.
   if (protocol == 'about:') {
-    protocol = this.configWindow_.location.protocol;
+    protocol = this.mainWindow_.location.protocol;
   }
   return protocol == 'https:' ? 'https:' : 'http:';
 };

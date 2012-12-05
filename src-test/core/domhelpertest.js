@@ -1,7 +1,7 @@
 var DomHelperTest = TestCase('DomHelperTest');
 
 DomHelperTest.prototype.setUp = function() {
-  this.domHelper_ = new webfont.DomHelper(window, window);
+  this.domHelper_ = new webfont.DomHelper(window);
 };
 
 DomHelperTest.prototype.testCreateElementNoAttr = function() {
@@ -107,13 +107,21 @@ DomHelperTest.prototype.testHasSupportForStyle = function() {
   assertTrue(this.domHelper_.hasSupportForStyle_());
 };
 
+DomHelperTest.prototype.testGetWindows = function() {
+  var fakeMainWindow = 'main window';
+  var fakeLoadWindow = 'load window';
+  var domHelper = new webfont.DomHelper(fakeMainWindow, fakeLoadWindow);
+  assertEquals('main window', domHelper.getMainWindow());
+  assertEquals('load window', domHelper.getLoadWindow());
+};
+
 DomHelperTest.prototype.testGetProtocol = function() {
   var fakeWindow = {
     location: {
       protocol: 'https:'
     }
   };
-  var domHelper = new webfont.DomHelper(fakeWindow, fakeWindow);
+  var domHelper = new webfont.DomHelper(fakeWindow);
   assertEquals('https:', domHelper.getProtocol());
 };
 
@@ -123,21 +131,21 @@ DomHelperTest.prototype.testGetProtocolHttpDefault = function() {
       protocol: 'file:'
     }
   };
-  var domHelper = new webfont.DomHelper(fakeWindow, fakeWindow);
+  var domHelper = new webfont.DomHelper(fakeWindow);
   assertEquals('http:', domHelper.getProtocol());
 };
 
 DomHelperTest.prototype.testGetProtocolIframeFallback = function() {
-  var fakeWindow = {
-    location: {
-      protocol: 'about:'
-    }
-  };
-  var fakeConfigWindow = {
+  var fakeMainWindow = {
     location: {
       protocol: 'https:'
     }
   };
-  var domHelper = new webfont.DomHelper(fakeWindow, fakeConfigWindow);
+  var fakeLoadWindow = {
+    location: {
+      protocol: 'about:'
+    }
+  };
+  var domHelper = new webfont.DomHelper(fakeMainWindow, fakeLoadWindow);
   assertEquals('https:', domHelper.getProtocol());
 };

@@ -21,7 +21,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAdded = function () {
         script.onload();
       }
     },
-    getWindow: function () {
+    getMainWindow: function () {
       return global;
     },
     getProtocol: function () {
@@ -80,7 +80,7 @@ MonotypeScriptTest.prototype.testIfScriptTagHasCorrectSSL = function () {
         script.onload();
       }
     },
-    getWindow: function () {
+    getMainWindow: function () {
       return global;
     },
     getProtocol: function () {
@@ -152,7 +152,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurl = function () {
         script.onload();
       }
     },
-    getWindow: function () {
+    getMainWindow: function () {
       return global;
     },
     getProtocol: function () {
@@ -212,7 +212,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurlAndTheScriptUrlH
         script.onload();
       }
     },
-    getWindow: function () {
+    getMainWindow: function () {
       return global;
     },
     getProtocol: function () {
@@ -272,7 +272,7 @@ MonotypeScriptTest.prototype.testWithoutProjectId = function () {
         script.onload();
       }
     },
-    getWindow: function () {
+    getMainWindow: function () {
       return global;
     },
     getProtocol: function () {

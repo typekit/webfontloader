@@ -15,27 +15,27 @@ webfont.FontdeckScript.API = '//f.fontdeck.com/s/css/js/';
 
 webfont.FontdeckScript.prototype.getScriptSrc = function(projectId) {
   var protocol = this.domHelper_.getProtocol();
-  // For empty iframes, fall back to config window's hostname.
-  var hostname = this.domHelper_.getWindow().location.hostname ||
-      this.domHelper_.getConfigWindow().location.hostname;
+  // For empty iframes, fall back to main window's hostname.
+  var hostname = this.domHelper_.getLoadWindow().location.hostname ||
+      this.domHelper_.getMainWindow().location.hostname;
   var api = this.configuration_['api'] || webfont.FontdeckScript.API;
   return protocol + api + hostname + '/' + projectId + '.js';
 };
 
 webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support) {
   var projectId = this.configuration_['id'];
-  var window = this.domHelper_.getWindow();
+  var mainWindow = this.domHelper_.getMainWindow();
   var self = this;
 
   if (projectId) {
     // Provide data to Fontdeck for processing.
-    if (!window[webfont.FontdeckScript.HOOK]) {
-      window[webfont.FontdeckScript.HOOK] = {};
+    if (!mainWindow[webfont.FontdeckScript.HOOK]) {
+      mainWindow[webfont.FontdeckScript.HOOK] = {};
     }
 
     // Fontdeck will call this function to indicate support status
     // and what fonts are provided.
-    window[webfont.FontdeckScript.HOOK][projectId] = function(fontdeckSupports, data) {
+    mainWindow[webfont.FontdeckScript.HOOK][projectId] = function(fontdeckSupports, data) {
       for (var i = 0, j = data['fonts'].length; i<j; ++i) {
         var font = data['fonts'][i];
         // Add the FVDs

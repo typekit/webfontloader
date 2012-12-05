@@ -30,7 +30,7 @@ webfont.MonotypeScript.NAME = 'monotype';
 webfont.MonotypeScript.HOOK = '__mti_fntLst';
 
 /**
- * __MonotypeAPIScript__ is the id of script added by google API. Currently 'webfonts.fonts.com' supports only one script in a page. 
+ * __MonotypeAPIScript__ is the id of script added by google API. Currently 'webfonts.fonts.com' supports only one script in a page.
  * This may require change in future if 'webfonts.fonts.com' begins supporting multiple scripts per page.
  * @const
  */
@@ -50,10 +50,10 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
       }
     };
 
-    var window = this.domHelper_.getWindow();
+    var mainWindow = this.domHelper_.getMainWindow();
     sc["onload"] = function (e) {
-      if (window[webfont.MonotypeScript.HOOK + projectId]) {
-        var mti_fnts = window[webfont.MonotypeScript.HOOK + projectId]();
+      if (mainWindow[webfont.MonotypeScript.HOOK + projectId]) {
+        var mti_fnts = mainWindow[webfont.MonotypeScript.HOOK + projectId]();
         if (mti_fnts && mti_fnts.length) {
           var i;
           for (i = 0; i < mti_fnts.length; i++) {
