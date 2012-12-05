@@ -47,8 +47,6 @@ webfont.FontWatcher.prototype.checkWebkitFallbackBug_ = function() {
         "}"),
       ruler = new webfont.FontRuler(this.domHelper_, this.fontSizer_, 'iii');
 
-  this.domHelper_.insertInto('head', font);
-
   // First we set the font to monospace and the test string to `iii`. Based
   // on our research, all platforms have at least a monospace, sans-serif,
   // and serif font installed. By using a test string that has a very
@@ -72,6 +70,7 @@ webfont.FontWatcher.prototype.checkWebkitFallbackBug_ = function() {
   //
   // See http://code.google.com/p/chromium/issues/detail?id=138257
   // for more information on the Chrome Android bug.
+  this.domHelper_.insertInto('head', font);
   ruler.setFont("'__webfontloader_test__', monospace, sans-serif");
 
   // Finally we compare the initial width and the current width. If
