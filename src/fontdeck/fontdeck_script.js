@@ -24,18 +24,18 @@ webfont.FontdeckScript.prototype.getScriptSrc = function(projectId) {
 
 webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support) {
   var projectId = this.configuration_['id'];
-  var mainWindow = this.domHelper_.getMainWindow();
+  var loadWindow = this.domHelper_.getLoadWindow();
   var self = this;
 
   if (projectId) {
     // Provide data to Fontdeck for processing.
-    if (!mainWindow[webfont.FontdeckScript.HOOK]) {
-      mainWindow[webfont.FontdeckScript.HOOK] = {};
+    if (!loadWindow[webfont.FontdeckScript.HOOK]) {
+      loadWindow[webfont.FontdeckScript.HOOK] = {};
     }
 
     // Fontdeck will call this function to indicate support status
     // and what fonts are provided.
-    mainWindow[webfont.FontdeckScript.HOOK][projectId] = function(fontdeckSupports, data) {
+    loadWindow[webfont.FontdeckScript.HOOK][projectId] = function(fontdeckSupports, data) {
       for (var i = 0, j = data['fonts'].length; i<j; ++i) {
         var font = data['fonts'][i];
         // Add the FVDs

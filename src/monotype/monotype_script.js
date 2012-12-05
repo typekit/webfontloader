@@ -50,10 +50,10 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
       }
     };
 
-    var mainWindow = this.domHelper_.getMainWindow();
+    var loadWindow = this.domHelper_.getLoadWindow();
     sc["onload"] = function (e) {
-      if (mainWindow[webfont.MonotypeScript.HOOK + projectId]) {
-        var mti_fnts = mainWindow[webfont.MonotypeScript.HOOK + projectId]();
+      if (loadWindow[webfont.MonotypeScript.HOOK + projectId]) {
+        var mti_fnts = loadWindow[webfont.MonotypeScript.HOOK + projectId]();
         if (mti_fnts && mti_fnts.length) {
           var i;
           for (i = 0; i < mti_fnts.length; i++) {

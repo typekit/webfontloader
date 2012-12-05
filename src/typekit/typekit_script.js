@@ -20,18 +20,18 @@ webfont.TypekitScript.prototype.getScriptSrc = function(kitId) {
 webfont.TypekitScript.prototype.supportUserAgent = function(userAgent, support) {
   var kitId = this.configuration_['id'];
   var configuration = this.configuration_;
-  var mainWindow = this.domHelper_.getMainWindow();
+  var loadWindow = this.domHelper_.getLoadWindow();
   var self = this;
 
   if (kitId) {
-    // Provide data to Typekit for processing.
-    if (!mainWindow[webfont.TypekitScript.HOOK]) {
-      mainWindow[webfont.TypekitScript.HOOK] = {};
+    // Provide data to Typekit for processing.main
+    if (!loadWindow[webfont.TypekitScript.HOOK]) {
+      loadWindow[webfont.TypekitScript.HOOK] = {};
     }
 
     // Typekit will call 'init' to indicate whether it supports fonts
     // and what fonts will be provided.
-    mainWindow[webfont.TypekitScript.HOOK][kitId] = function(callback) {
+    loadWindow[webfont.TypekitScript.HOOK][kitId] = function(callback) {
       var init = function(typekitSupports, fontFamilies, fontVariations) {
         self.fontFamilies_ = fontFamilies;
         self.fontVariations_ = fontVariations;

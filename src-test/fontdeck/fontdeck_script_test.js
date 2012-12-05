@@ -42,9 +42,8 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
   };
   var insert = '';
   var global = {
-    location: {
-      hostname: 'test-host-name'
-    }
+    // No hostname to verify fallback behavior for empty iframe
+    location: {}
   };
   var src = '';
   var fakeDomHelper = {
@@ -55,13 +54,14 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
       src = srcLink;
     },
     getLoadWindow: function() {
-      // No hostname to verify fallback behavior for empty iframe
-      return {
-        location: {}
-      };
+      return global;
     },
     getMainWindow: function() {
-      return global;
+      return {
+        location: {
+          hostname: 'test-host-name'
+        }
+      };
     },
     getProtocol: function() {
       return 'https:';
@@ -98,7 +98,7 @@ FontdeckScriptTest.prototype.testNoProjectId = function() {
   var insert = '';
   var src = '';
   var fakeDomHelper = {
-    getMainWindow: function() {
+    getLoadWindow: function() {
       return {};
     }
   };
