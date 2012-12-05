@@ -9,7 +9,7 @@ webfont.DomHelper = function(window, configWindow) {
   this.window_ = window;
   this.configWindow_ = configWindow;
 
-  /** @type {HTMLDocument} */
+  /** @type {Document} */
   this.document_ = this.window_.document;
 
   /** @type {boolean|undefined} */
