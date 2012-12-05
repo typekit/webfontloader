@@ -80,8 +80,9 @@ FontTest.prototype.testFontLoadWithContext = function() {
   font.load({
     test: {
       somedata: 'in french a cow says meuh'
-    }
-  }, window);
+    },
+    context: window
+  });
 
   assertNotUndefined(testModule.domHelper);
   assertNotNull(testModule.domHelper);

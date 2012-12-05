@@ -19,8 +19,8 @@ webfont.WebFont.prototype.addModule = function(name, factory) {
   this.fontModuleLoader_.addModuleFactory(name, factory);
 };
 
-webfont.WebFont.prototype.load = function(configuration, opt_context) {
-  var context = opt_context || this.mainWindow_;
+webfont.WebFont.prototype.load = function(configuration) {
+  var context = configuration['context'] || this.mainWindow_;
   this.domHelper_ = new webfont.DomHelper(this.mainWindow_, context);
 
   var eventDispatcher = new webfont.EventDispatcher(
