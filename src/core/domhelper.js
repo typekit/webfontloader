@@ -28,7 +28,7 @@ webfont.DomHelper.prototype.createElement = function(elem, opt_attr,
       if (opt_attr.hasOwnProperty(attr)) {
         if (attr == "style") {
           this.setStyle(domElement, opt_attr[attr]);
-	} else {
+        } else {
           domElement.setAttribute(attr, opt_attr[attr]);
         }
       }
