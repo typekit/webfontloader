@@ -235,7 +235,7 @@ webfont.DomHelper.prototype.insertNullFontStyle = function(fontDescription) {
   this.insertInto('head', style);
   webfont.DomHelper.nullFontStyles_[fontFamily] = style;
 
-  return fontFamily
+  return fontFamily;
 };
 
 /**
