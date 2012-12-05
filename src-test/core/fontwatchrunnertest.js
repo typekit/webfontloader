@@ -57,7 +57,9 @@ FontWatchRunnerTest.prototype.setUp = function() {
           break;
         }
       }
-    }
+    },
+    insertNullFontStyle: function () { return '__webfontloader_test_0'; },
+    removeNullFontStyle: function () { return true; }
   };
 
   this.timesToCheckSizesBeforeChange_ = 0;
@@ -142,16 +144,17 @@ FontWatchRunnerTest.prototype.setUp = function() {
             height: 3
           };
         }
-      } else if (el.style.fontFamily.indexOf('sans-serif') !== -1) {
+      } else if (el.style.fontFamily.indexOf('__webfontloader_test_') !== -1) {
+        // Return the last resort width
+        return {
+          width: 2,
+          height: 2
+        };
+      } else {
         // Return the default width
         return {
           width: 1,
           height: 1
-        };
-      } else {
-        return {
-          width: 2,
-          height: 2
         };
       }
     }
@@ -174,15 +177,15 @@ FontWatchRunnerTest.prototype.setUp = function() {
             height: 1
           };
         }
-      } else if (el.style.fontFamily.indexOf('sans-serif') !== -1) {
-        return {
-          width: 1,
-          height: 1
-        };
-      } else {
+      } else if (el.style.fontFamily.indexOf('__webfontloader_test_') !== -1) {
         return {
           width: 2,
           height: 2
+        };
+      } else {
+        return {
+          width: 1,
+          height: 1
         };
       }
     }
@@ -206,16 +209,16 @@ FontWatchRunnerTest.prototype.setUp = function() {
             height: 2
           };
         }
-      } else if (el.style.fontFamily.indexOf('sans-serif') !== -1) {
+      } else if (el.style.fontFamily.indexOf('__webfontloader_test_') !== -1) {
         // Return the default width
-        return {
-          width: 1,
-          height: 1
-        };
-      } else {
         return {
           width: 2,
           height: 2
+        };
+      } else {
+        return {
+          width: 1,
+          height: 1
         };
       }
     }
@@ -238,15 +241,15 @@ FontWatchRunnerTest.prototype.setUp = function() {
             height: 3
           };
         }
-      } else if (el.style.fontFamily.indexOf('sans-serif') !== -1) {
-        return {
-          width: 1,
-          height: 1
-        };
-      } else {
+      } else if (el.style.fontFamily.indexOf('__webfontloader_test_') !== -1) {
         return {
           width: 2,
           height: 2
+        };
+      } else {
+        return {
+          width: 1,
+          height: 1
         };
       }
     }
