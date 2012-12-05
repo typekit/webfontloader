@@ -194,3 +194,62 @@ webfont.DomHelper.prototype.hasSupportForStyle_ = function() {
   }
   return this.supportForStyle_
 };
+
+/**
+ * A counter to ensure that null fonts have unique family names.
+ * @private
+ * @type {number}
+ */
+webfont.DomHelper.nullFontCounter_ = 0;
+
+/**
+ * A global place to save created null font style elements until they are
+ * removed.
+ * @private
+ * @type {Object.<string, Element>}
+ */
+webfont.DomHelper.nullFontStyles_ = {};
+
+/**
+ * Creates a null font style element and inserts it into the head of the page.
+ * The element can be used to detect the WebKit last resort fallback bug for
+ * font detection.
+ * @return {string} Returns the un-quoted font-family name of the new null font
+ *   style rule just inserted into the document (e.g. __webfontloader_test_0__).
+ */
+webfont.DomHelper.prototype.insertNullFontStyle = function(fontDescription) {
+  var fontFamily = "__webfontloader_test_" + webfont.DomHelper.nullFontCounter_ + "__";
+  webfont.DomHelper.nullFontCounter_++;
+
+  var fvd = new webfont.FontVariationDescription();
+  var weightAndStyle = fvd.expand(fontDescription);
+
+  var style = this.createElement('style', null,
+      "@font-face{" +
+        "font-family:'" + fontFamily + "';" +
+        "src:url(data:application/x-font-woff;base64,) format('woff')," +
+        "url(data:font/truetype;base64,) format('truetype');" +
+        weightAndStyle +
+      "}");
+
+  this.insertInto('head', style);
+  webfont.DomHelper.nullFontStyles_[fontFamily] = style;
+
+  return fontFamily
+};
+
+/**
+ * Removes a previously created null font style from the page, using the
+ * associated font-family name to locate it.
+ * @param {string} fontFamily The name of the null font family to remove.
+ * @return {boolean} Returns true if the null font style element was found and
+ *   removed successfully, and false otherwise.
+ */
+webfont.DomHelper.prototype.removeNullFontStyle = function(fontFamily) {
+  var style = webfont.DomHelper.nullFontStyles_[fontFamily];
+  if (style) {
+    return this.removeElement(style);
+  } else {
+    return false;
+  }
+};
