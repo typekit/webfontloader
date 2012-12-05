@@ -1,7 +1,13 @@
 /**
+ * @param {Window} mainWindow The main application window containing
+ *   webfontloader.js.
+ * @param {webfont.FontModuleLoader} fontModuleLoader A loader instance to use.
+ * @param {function(function(), number=)} asyncCall An async function to use.
+ * @param {webfont.UserAgent} userAgent The detected user agent to load for.
  * @constructor
  */
-webfont.WebFont = function(fontModuleLoader, asyncCall, userAgent) {
+webfont.WebFont = function(mainWindow, fontModuleLoader, asyncCall, userAgent) {
+  this.mainWindow_ = mainWindow;
   this.fontModuleLoader_ = fontModuleLoader;
   this.asyncCall_ = asyncCall;
   this.userAgent_ = userAgent;
@@ -14,12 +20,11 @@ webfont.WebFont.prototype.addModule = function(name, factory) {
 };
 
 webfont.WebFont.prototype.load = function(configuration, opt_context) {
-  var context = opt_context || window;
-  this.domHelper_ = new webfont.DomHelper(window, context);
-  this.htmlElement_ = context.document.documentElement;
+  var context = opt_context || this.mainWindow_;
+  this.domHelper_ = new webfont.DomHelper(this.mainWindow_, context);
 
   var eventDispatcher = new webfont.EventDispatcher(
-      this.domHelper_, this.htmlElement_, configuration);
+      this.domHelper_, context.document.documentElement, configuration);
 
   if (this.userAgent_.isSupportingWebFont()) {
     this.load_(eventDispatcher, configuration);
