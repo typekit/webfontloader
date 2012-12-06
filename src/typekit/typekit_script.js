@@ -1,8 +1,7 @@
 /**
  * @constructor
  */
-webfont.TypekitScript = function(global, domHelper, configuration) {
-  this.global_ = global;
+webfont.TypekitScript = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
   this.fontFamilies_ = [];
@@ -13,7 +12,7 @@ webfont.TypekitScript.NAME = 'typekit';
 webfont.TypekitScript.HOOK = '__webfonttypekitmodule__';
 
 webfont.TypekitScript.prototype.getScriptSrc = function(kitId) {
-  var protocol = 'https:' == window.location.protocol ? 'https:' : 'http:';
+  var protocol = this.domHelper_.getProtocol();
   var api = this.configuration_['api'] || protocol + '//use.typekit.com';
   return api + '/' + kitId + '.js';
 };
@@ -21,17 +20,18 @@ webfont.TypekitScript.prototype.getScriptSrc = function(kitId) {
 webfont.TypekitScript.prototype.supportUserAgent = function(userAgent, support) {
   var kitId = this.configuration_['id'];
   var configuration = this.configuration_;
+  var loadWindow = this.domHelper_.getLoadWindow();
   var self = this;
 
   if (kitId) {
-    // Provide data to Typekit for processing.
-    if (!this.global_[webfont.TypekitScript.HOOK]) {
-      this.global_[webfont.TypekitScript.HOOK] = {};
+    // Provide data to Typekit for processing.main
+    if (!loadWindow[webfont.TypekitScript.HOOK]) {
+      loadWindow[webfont.TypekitScript.HOOK] = {};
     }
 
     // Typekit will call 'init' to indicate whether it supports fonts
     // and what fonts will be provided.
-    this.global_[webfont.TypekitScript.HOOK][kitId] = function(callback) {
+    loadWindow[webfont.TypekitScript.HOOK][kitId] = function(callback) {
       var init = function(typekitSupports, fontFamilies, fontVariations) {
         self.fontFamilies_ = fontFamilies;
         self.fontVariations_ = fontVariations;
@@ -53,8 +53,7 @@ webfont.TypekitScript.prototype.load = function(onReady) {
   onReady(this.fontFamilies_, this.fontVariations_);
 };
 
-globalNamespaceObject.addModule(webfont.TypekitScript.NAME, function(configuration) {
-  var domHelper = new webfont.DomHelper(document);
-  return new webfont.TypekitScript(window, domHelper, configuration);
+globalNamespaceObject.addModule(webfont.TypekitScript.NAME, function(configuration, domHelper) {
+  return new webfont.TypekitScript(domHelper, configuration);
 });
 

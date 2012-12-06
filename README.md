@@ -67,12 +67,29 @@ this.
 
 Learn more about [events][evt].
 
+## Manage loading everywhere
+
+Usually, it's easiest to include a copy of webfontloader in every window where
+fonts are needed, so that each window manages its own fonts. However, if you
+need to have a single window manage fonts for multiple same-origin child windows
+or iframes that are built up using JavaScript, webfontloader supports that as
+well. Just use the optional `context` configuration option and give it a
+reference to the target window for loading:
+
+    <script>
+      WebFont.load({
+        google: {
+          families: ['Droid Sans']
+        },
+        context: frames['my-child']
+      });
+    </script>
 
 ## A common ground
 
 WebFont Loader aims to provide a common interface for font loading. Today it
-works with Google, Typekit, Fonts.com Web fonts and your own CSS. Learn more in
-[transitions][trn].
+works with Google, Typekit, Ascender, Fontdeck, Fonts.com Web fonts and your own
+CSS. Learn more in [transitions][trn].
 
 
 ## More to see
@@ -125,11 +142,11 @@ Then, run the tests.
 * That's it!
 
 
-
 ## Authors
 
 * Ryan Carver / ryan@typekit.com
 * Jeremie Lenfant-engelmann /  jeremiele@google.com
+* Sean McBride / sean@typekit.com
 
 
 ## License

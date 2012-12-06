@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+  <link href="/basic.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/webfont.js"></script>
+  <style>
+    iframe {
+      height: 100px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <script type="text/javascript">
+    function loaded() {
+      frames["child"].document.body.innerHTML = "<h1>Hello World. I am DIN Next Bold.</h1>";
+      WebFont.load({
+        monotype: {
+          projectId: 'b726c28f-a28a-45be-993f-3db719bacfab'
+        },
+        context: frames["child"]
+      });
+    }
+  </script>
+
+  <iframe name="child" src="/blank.html" onload="loaded()"></iframe>
+
+  <hr>
+
+  <p>
+
+    <a href="#" onClick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+
+    <a href="/monotype.html">Reload Cached</a>
+
+  </p>
+
+  <p>
+    The goal of this page is to show how monotype fonts load in a child iframe.
+  </p>
+
+  <p>
+    You must use "localhost" when testing monotype fonts.
+  </p>
+</body>
+</html>

@@ -9,7 +9,7 @@ webfont.FontModuleLoader.prototype.addModuleFactory = function(name, factory) {
   this.modules_[name] = factory;
 };
 
-webfont.FontModuleLoader.prototype.getModules = function(configuration) {
+webfont.FontModuleLoader.prototype.getModules = function(configuration, domHelper) {
   var modules = [];
 
   for (var key in configuration) {
@@ -17,7 +17,7 @@ webfont.FontModuleLoader.prototype.getModules = function(configuration) {
       var moduleFactory = this.modules_[key];
 
       if (moduleFactory) {
-        modules.push(moduleFactory(configuration[key]));
+        modules.push(moduleFactory(configuration[key], domHelper));
       }
     }
   }

@@ -14,6 +14,9 @@ AscenderScriptTest.prototype.testLoadAndFamilyVariations = function(){
       createCssLink: function(cssLink) {
         css = cssLink;
         return '<link href="' + css + '" type="text/css" />';
+      },
+      getProtocol: function() {
+        return 'http:';
       }
   };
 
