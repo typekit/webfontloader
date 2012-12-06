@@ -155,12 +155,12 @@ webfont.FontWatchRunner.prototype.createHiddenElementWithFont_ = function(
 
 webfont.FontWatchRunner.prototype.computeStyleString_ = function(defaultFonts,
     fontDescription, opt_withoutFontFamily) {
-  var variationCss = this.fvd_.expand(fontDescription);
-  var styleString = "position:absolute;top:-999px;left:-999px;" +
-      "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
-      "padding:0;font-variant:normal;font-family:"
+  var variationCss = this.fvd_.expand(fontDescription, true);
+  var styleString = "position:absolute !important;top:-999px !important;left:-999px !important;" +
+      "font-size:300px !important;width:auto !important;height:auto !important;line-height:normal !important;margin:0 !important;" +
+      "padding:0 !important;font-variant:normal !important;font-family:"
       + (opt_withoutFontFamily ? "" :
         this.nameHelper_.quote(this.fontFamily_) + ",")
-      + defaultFonts + ";" + variationCss;
+      + defaultFonts + " !important;" + variationCss;
   return styleString;
 };

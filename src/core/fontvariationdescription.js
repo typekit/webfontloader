@@ -57,10 +57,10 @@ webfont.FontVariationDescription.Item.prototype.compact = function(output, value
   }
 }
 
-webfont.FontVariationDescription.Item.prototype.expand = function(output, value) {
+webfont.FontVariationDescription.Item.prototype.expand = function(output, value, opt_important) {
   for (var i = 0; i < this.values_.length; i++) {
     if (value == this.values_[i][0]) {
-      output[this.index_] = this.property_ + ':' + this.values_[i][1];
+      output[this.index_] = this.property_ + ':' + this.values_[i][1] + (opt_important ? ' !important' : '');
       return;
     }
   }
@@ -94,10 +94,11 @@ webfont.FontVariationDescription.prototype.compact = function(input) {
 /**
  * Expands a FVD string into equivalent CSS declarations.
  * @param {string} fvd The FVD string, such as 'n4'.
+ * @param {boolean=} opt_important Whether or not !important should be appended.
  * @return {?string} The equivalent CSS such as
  *    'font-weight:normal;font-style:italic' or null if it cannot be parsed.
  */
-webfont.FontVariationDescription.prototype.expand = function(fvd) {
+webfont.FontVariationDescription.prototype.expand = function(fvd, opt_important) {
   if (fvd.length != 2) {
     return null;
   }
@@ -109,7 +110,7 @@ webfont.FontVariationDescription.prototype.expand = function(fvd) {
     var key = fvd.substr(i, 1);
     var values = this.values_[property];
     var item = new webfont.FontVariationDescription.Item(i, property, values);
-    item.expand(result, key);
+    item.expand(result, key, opt_important);
   }
 
   if (result[0] && result[1]) {
