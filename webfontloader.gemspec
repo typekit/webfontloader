@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.0.31'
-  s.date              = '2012-09-11'
+  s.version           = '1.1.0'
+  s.date              = '2012-12-05'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -75,8 +75,11 @@ DESC
     docs/MODULES.md
     docs/TRANSITIONS.md
     lib/webfontloader.rb
+    lib/webfontloader/demo/public/ascender-iframe.html
     lib/webfontloader/demo/public/ascender.html
     lib/webfontloader/demo/public/basic.css
+    lib/webfontloader/demo/public/blank.html
+    lib/webfontloader/demo/public/custom-iframe.html
     lib/webfontloader/demo/public/custom.html
     lib/webfontloader/demo/public/event-css-active-multiple.html
     lib/webfontloader/demo/public/event-css-active.html
@@ -90,13 +93,16 @@ DESC
     lib/webfontloader/demo/public/fontdeck.html
     lib/webfontloader/demo/public/fontwatchrunner-default-fonts.html
     lib/webfontloader/demo/public/google-css.html
+    lib/webfontloader/demo/public/google-iframe.html
     lib/webfontloader/demo/public/google.html
     lib/webfontloader/demo/public/ie-fast-js.html
     lib/webfontloader/demo/public/ie-slow-js.html
     lib/webfontloader/demo/public/ie-slow-link.html
     lib/webfontloader/demo/public/index.html
     lib/webfontloader/demo/public/jquery.min.js
+    lib/webfontloader/demo/public/monotype-iframe.html
     lib/webfontloader/demo/public/monotype.html
+    lib/webfontloader/demo/public/typekit-iframe.html
     lib/webfontloader/demo/public/typekit-variations.html
     lib/webfontloader/demo/public/typekit.html
     lib/webfontloader/demo/server.rb
