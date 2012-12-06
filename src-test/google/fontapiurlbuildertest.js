@@ -2,7 +2,7 @@ var FontApiUrlBuilderTest = TestCase('FontApiUrlBuilderTest');
 
 FontApiUrlBuilderTest.prototype.testThrowsExceptionIfNoFontFamilies =
     function() {
-  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder("http://moo");
+  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder("http://moo", "http:");
 
   try {
     fontApiUrlBuilder.build();
@@ -13,14 +13,14 @@ FontApiUrlBuilderTest.prototype.testThrowsExceptionIfNoFontFamilies =
 };
 
 FontApiUrlBuilderTest.prototype.testBuildProperUrl = function() {
-  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder("http://moo");
+  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder("http://moo", "http:");
 
   fontApiUrlBuilder.setFontFamilies([ 'Font1', 'Font2' ]);
   assertEquals('http://moo?family=Font1%7CFont2', fontApiUrlBuilder.build());
 };
 
 FontApiUrlBuilderTest.prototype.testBuildProperDefaultUrl = function() {
-  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder();
+  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder(undefined, "http:");
 
   fontApiUrlBuilder.setFontFamilies([ 'Font1', 'Font2' ]);
   assertEquals("http:" + webfont.FontApiUrlBuilder.DEFAULT_API_URL +
@@ -29,7 +29,7 @@ FontApiUrlBuilderTest.prototype.testBuildProperDefaultUrl = function() {
 
 
 FontApiUrlBuilderTest.prototype.testBuildProperUrlWithSubsets = function() {
-  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder();
+  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder(undefined, "http:");
 
   fontApiUrlBuilder.setFontFamilies([ 'Font1:bold:greek,cyrillic',
       'Font2:italic', 'Font3' ]);
@@ -40,7 +40,7 @@ FontApiUrlBuilderTest.prototype.testBuildProperUrlWithSubsets = function() {
 
 FontApiUrlBuilderTest.prototype.testBuildProperUrlWithSubsetsNoVariations =
     function() {
-  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder();
+  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder(undefined, "http:");
 
   fontApiUrlBuilder.setFontFamilies([ 'Font1:bold,italic:greek,cyrillic',
       'Font2:italic', 'Font3::latin' ]);

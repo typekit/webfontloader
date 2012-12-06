@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+  <title>Custom Module</title>
+  <script type="text/javascript" src="/webfont.js"></script>
+  <style >
+    iframe {
+      height: 100px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <script type="text/javascript">
+    function loaded() {
+      var child = frames["child"];
+      child.document.body.innerHTML = "<h1 style=\"font-family: 'ChunkFiveRegular'\">Hello World. I am ChunkFive.</h1>";
+      WebFont.load({
+        custom: {
+          families: ['ChunkFiveRegular'],
+          urls : ['http://seanmcb.com/typekit/wfl/stylesheet.css']
+        },
+        context: child
+      });
+    }
+  </script>
+
+  <iframe name="child" src="/blank.html" onload="loaded()"></iframe>
+
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/custom.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is to show how fonts load from a custom module in a
+    child iframe.
+  </p>
+
+</body>
+</html>

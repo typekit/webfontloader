@@ -1,3 +1,9 @@
+v1.1.0 (December 5, 2012)
+* Adds the ability to load fonts into a same-origin child window or iframe using the new optional `context` configuration option (thanks to @ryanwolf of Google).
+* Updates the demos to fix broken stuff and demonstrate the new context option in action.
+* DomHelper interface changed to take the main window and an optional separate window for loading.
+* Methods added to retrieve both windows and get the correct protocol for assets from the location's protocol.
+
 v1.0.31 (September 11, 2012)
 * Improvements to Google's module to recognize more variation descriptor formats (such as 100italic and 200n).
 
