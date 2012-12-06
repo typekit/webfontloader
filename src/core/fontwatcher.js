@@ -15,9 +15,22 @@ webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer,
   this.asyncCall_ = asyncCall;
   this.getTime_ = getTime;
   this.currentlyWatched_ = 0;
-  this.checkWebkitFallbackBug_ = userAgent.getEngine() === 'AppleWebKit';
   this.last_ = false;
   this.success_ = false;
+
+  // There's a bug in WebKit that affects font watching in versions before
+  // 536.11. We only attempt to detect the bug in browsers that might have it,
+  // so that detection is simpler and does less work in more recent browsers.
+  // For more detail on the bug and our detection/workaround, see the code and
+  // comments in fontwatchrunner.js.
+  this.checkWebkitFallbackBug_ = false;
+  if (userAgent.getEngine() === 'AppleWebKit') {
+    var version = userAgent.getEngineVersion();
+    var parts = version.split(".");
+    var major = parseInt(parts[0], 10) || 0;
+    var minor = parseInt(parts[1], 10) || 0;
+    this.checkWebkitFallbackBug_ = major < 536 || (major == 536 && minor < 11);
+  }
 };
 
 /**

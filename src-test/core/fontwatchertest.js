@@ -67,7 +67,7 @@ FontWatcherTest.prototype.setUp = function() {
   this.testStringCount_ = 0;
   this.testStrings_ = {};
   webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-      fontSizer, asyncCall, getTime, fontFamily, fontDescription, hasWebkitFallbackBug, opt_fontTestString) {
+      fontSizer, asyncCall, getTime, fontFamily, fontDescription, checkWebkitFallbackBug, opt_fontTestString) {
     if (opt_fontTestString) {
       self.testStringCount_++;
       self.testStrings_[fontFamily] = opt_fontTestString;
@@ -262,16 +262,26 @@ FontWatcherTest.prototype.testWatchMultipleFontsWithTestStrings = function() {
   assertEquals('testString3', this.testStrings_['fontFamily3']);
 };
 
-FontWatcherTest.prototype.testWebkitBugDetectionOnlyOnWebkit = function() {
-  var createElementCalled = false;
-  var fakeDomHelper = {
-        createElement: function() {
-          createElementCalled = true;
-        }
-      };
-  var fontWatcher = new webfont.FontWatcher(this.userAgent_, fakeDomHelper, this.fakeEventDispatcher_,
+FontWatcherTest.prototype.testNoWebkitBugDetectionOnNonWebkit = function() {
+  var ua = new webfont.UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, true);
+  var fontWatcher = new webfont.FontWatcher(ua, this.fakeDomHelper_, this.fakeEventDispatcher_,
       this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
 
   assertEquals(false, fontWatcher.checkWebkitFallbackBug_);
-  assertEquals(false, createElementCalled);
+};
+
+FontWatcherTest.prototype.testNoWebkitBugDetectionOnNewWebkit = function() {
+  var ua = new webfont.UserAgent('Safari', '6.0.2', 'AppleWebKit', '537.6.17', 'Macintosh', '10_7_5', undefined, true);
+  var fontWatcher = new webfont.FontWatcher(ua, this.fakeDomHelper_, this.fakeEventDispatcher_,
+      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
+
+  assertEquals(false, fontWatcher.checkWebkitFallbackBug_);
+};
+
+FontWatcherTest.prototype.testYesWebkitBugDetectionOnOlderWebkit = function() {
+  var ua = new webfont.UserAgent('Chrome', '16.0.912.75', 'AppleWebKit', '535.7', 'Android', '4.0.3', undefined, true);
+  var fontWatcher = new webfont.FontWatcher(ua, this.fakeDomHelper_, this.fakeEventDispatcher_,
+      this.fakeFontSizer_, this.fakeAsyncCall_, this.fakeGetTime_);
+
+  assertEquals(true, fontWatcher.checkWebkitFallbackBug_);
 };
