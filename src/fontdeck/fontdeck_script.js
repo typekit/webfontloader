@@ -1,8 +1,7 @@
 /**
  * @constructor
  */
-webfont.FontdeckScript = function(global, domHelper, configuration) {
-  this.global_ = global;
+webfont.FontdeckScript = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
   this.fontFamilies_ = [];
@@ -15,24 +14,28 @@ webfont.FontdeckScript.HOOK = '__webfontfontdeckmodule__';
 webfont.FontdeckScript.API = '//f.fontdeck.com/s/css/js/';
 
 webfont.FontdeckScript.prototype.getScriptSrc = function(projectId) {
-  var protocol = 'https:' == this.global_.location.protocol ? 'https:' : 'http:';
+  var protocol = this.domHelper_.getProtocol();
+  // For empty iframes, fall back to main window's hostname.
+  var hostname = this.domHelper_.getLoadWindow().location.hostname ||
+      this.domHelper_.getMainWindow().location.hostname;
   var api = this.configuration_['api'] || webfont.FontdeckScript.API;
-  return protocol + api + this.global_.document.location.hostname + '/' + projectId + '.js';
+  return protocol + api + hostname + '/' + projectId + '.js';
 };
 
 webfont.FontdeckScript.prototype.supportUserAgent = function(userAgent, support) {
   var projectId = this.configuration_['id'];
+  var loadWindow = this.domHelper_.getLoadWindow();
   var self = this;
 
   if (projectId) {
     // Provide data to Fontdeck for processing.
-    if (!this.global_[webfont.FontdeckScript.HOOK]) {
-      this.global_[webfont.FontdeckScript.HOOK] = {};
+    if (!loadWindow[webfont.FontdeckScript.HOOK]) {
+      loadWindow[webfont.FontdeckScript.HOOK] = {};
     }
 
     // Fontdeck will call this function to indicate support status
     // and what fonts are provided.
-    this.global_[webfont.FontdeckScript.HOOK][projectId] = function(fontdeckSupports, data) {
+    loadWindow[webfont.FontdeckScript.HOOK][projectId] = function(fontdeckSupports, data) {
       for (var i = 0, j = data['fonts'].length; i<j; ++i) {
         var font = data['fonts'][i];
         // Add the FVDs
@@ -55,7 +58,6 @@ webfont.FontdeckScript.prototype.load = function(onReady) {
   onReady(this.fontFamilies_, this.fontVariations_);
 };
 
-globalNamespaceObject.addModule(webfont.FontdeckScript.NAME, function(configuration) {
-  var domHelper = new webfont.DomHelper(document);
-  return new webfont.FontdeckScript(window, domHelper, configuration);
+globalNamespaceObject.addModule(webfont.FontdeckScript.NAME, function(configuration, domHelper) {
+  return new webfont.FontdeckScript(domHelper, configuration);
 });

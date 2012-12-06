@@ -6,16 +6,22 @@ TypekitScriptTest.prototype.testSupportAndLoadLifecycle = function() {
   };
   var insert = '';
   var src = '';
+  var global = {};
   var fakeDomHelper = {
       insertInto: function(tag, e) {
         insert = tag;
       },
       createScriptSrc: function(srcLink) {
         src = srcLink;
+      },
+      getLoadWindow: function() {
+        return global;
+      },
+      getProtocol: function() {
+        return 'http:';
       }
   };
-  var global = {};
-  var typeKit = new webfont.TypekitScript(global, fakeDomHelper, configuration);
+  var typeKit = new webfont.TypekitScript(fakeDomHelper, configuration);
 
   // supportUserAgent
   var userAgent = 'user agent';
@@ -65,16 +71,22 @@ TypekitScriptTest.prototype.testLoadWithVariations = function() {
   };
   var insert = '';
   var src = '';
+  var global = {};
   var fakeDomHelper = {
       insertInto: function(tag, e) {
         insert = tag;
       },
       createScriptSrc: function(srcLink) {
         src = srcLink;
+      },
+      getLoadWindow: function() {
+        return global;
+      },
+      getProtocol: function() {
+        return 'http:';
       }
   };
-  var global = {};
-  var typeKit = new webfont.TypekitScript(global, fakeDomHelper, configuration);
+  var typeKit = new webfont.TypekitScript(fakeDomHelper, configuration);
 
   // supportUserAgent
   var userAgent = 'user agent';
@@ -129,9 +141,15 @@ TypekitScriptTest.prototype.testAlternateApi = function() {
       },
       createScriptSrc: function(srcLink) {
         src = srcLink;
+      },
+      getLoadWindow: function() {
+        return {};
+      },
+      getProtocol: function() {
+        return 'http:';
       }
   };
-  var typeKit = new webfont.TypekitScript({}, fakeDomHelper, configuration);
+  var typeKit = new webfont.TypekitScript(fakeDomHelper, configuration);
   var userAgent = 'user agent';
   var isSupport = null;
 
@@ -152,9 +170,15 @@ TypekitScriptTest.prototype.testNoKitId = function() {
       },
       createScriptSrc: function(srcLink) {
         src = srcLink;
+      },
+      getLoadWindow: function() {
+        return {};
+      },
+      getProtocol: function() {
+        return 'http:';
       }
   };
-  var typeKit = new webfont.TypekitScript({}, fakeDomHelper, configuration);
+  var typeKit = new webfont.TypekitScript(fakeDomHelper, configuration);
   var userAgent = 'user agent';
   var isSupport = null;
 

@@ -1,46 +1,7 @@
 var MonotypeScriptTest = TestCase('MonotypeScriptTest');
 
-MonotypeScriptTest.prototype.testIfProtocolMethodIsReturningProperly = function () {
-  var fakeDocument = {
-    location: { protocol: "https:" }
-  };
-  var global = {}; // should be window in actual situation.
-  var script = null;
-  var userAgent = new webfont.UserAgent("Test", "1.0", true);
-  var config = { projectId: '01e2ff27-25bf-4801-a23e-73d328e6c7cc' };
-  var fakedom = [];
-  var fakeDomHelper = {
-    createScriptSrc: function (s) {
-      script = { src: s };
-      return script;
-    },
-    insertInto: function (tag, elem) {
-      fakedom[tag].push(elem);
-      global[webfont.MonotypeScript.HOOK + config.projectId] = function () {
-        return ["aachen bold", "kid print regualr"];
-      };
-      if (script.onload) {
-        script.onload();
-      }
-    }
-  };
-
-  var monotypeScript = new webfont.MonotypeScript(global, userAgent, fakeDomHelper, fakeDocument, config);
-  assertEquals("https:", monotypeScript.protocol());
-
-  fakeDocument = {
-    location: { protocol: "http:" }
-  };
-
-  monotypeScript = new webfont.MonotypeScript(global, userAgent, fakeDomHelper, fakeDocument, config);
-  assertEquals("http:", monotypeScript.protocol());
-};
-
 MonotypeScriptTest.prototype.testIfScriptTagIsAdded = function () {
   var fakedom = { 'head': [], 'body': [] };
-  var fakeDocument = {
-    location: { protocol: "http:" }
-  };
   var script = null;
   var global = {}; // should be window in actual situation.
   var families = null;
@@ -59,6 +20,12 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAdded = function () {
       if (script.onload) {
         script.onload();
       }
+    },
+    getLoadWindow: function () {
+      return global;
+    },
+    getProtocol: function () {
+      return "http:";
     }
   };
 
@@ -77,7 +44,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAdded = function () {
   }
   var isSupport = null;
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
-  var monotypeScript = new webfont.MonotypeScript(global, userAgent, fakeDomHelper, fakeDocument, config);
+  var monotypeScript = new webfont.MonotypeScript(userAgent, fakeDomHelper, config);
   monotypeScript.supportUserAgent(userAgent, function (support) { isSupport = support; });
   monotypeScript.load(function (fontFamilies) {
     families = fontFamilies;
@@ -93,12 +60,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAdded = function () {
 //If current page is browsed using https protocol, the added script should be requested with SSL.
 MonotypeScriptTest.prototype.testIfScriptTagHasCorrectSSL = function () {
   var fakedom = { 'head': [], 'body': [] };
-  var fakeDocument1 = {
-    location: { protocol: "https:" }
-  };
-  var fakeDocument2 = {
-    location: { protocol: "http:" }
-  };
+  var fakeProtocol = "https:";
   var script = null;
   var global = {}; // should be window in actual situation.
   var families = null;
@@ -117,6 +79,12 @@ MonotypeScriptTest.prototype.testIfScriptTagHasCorrectSSL = function () {
       if (script.onload) {
         script.onload();
       }
+    },
+    getLoadWindow: function () {
+      return global;
+    },
+    getProtocol: function () {
+      return fakeProtocol;
     }
   };
 
@@ -136,7 +104,7 @@ MonotypeScriptTest.prototype.testIfScriptTagHasCorrectSSL = function () {
   }
   var isSupport = null;
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
-  var monotypeScript = new webfont.MonotypeScript(global, userAgent, fakeDomHelper, fakeDocument1, config);
+  var monotypeScript = new webfont.MonotypeScript(userAgent, fakeDomHelper, config);
   monotypeScript.supportUserAgent(userAgent, function (support) { isSupport = support; });
   monotypeScript.load(function (fontFamilies) {
     families = fontFamilies;
@@ -150,7 +118,8 @@ MonotypeScriptTest.prototype.testIfScriptTagHasCorrectSSL = function () {
 
   //one page can have multiple projects, but not 2 projects with same projectId.
   config = { projectId: '01e2ff27-25bf-4801-a23e-73d328e6c7c1', api: "http://fast.fonts.com/jsapidev" };
-  var monotypeScript2 = new webfont.MonotypeScript(global, userAgent, fakeDomHelper, fakeDocument2, config);
+  fakeProtocol = "http:";
+  var monotypeScript2 = new webfont.MonotypeScript(userAgent, fakeDomHelper, config);
   monotypeScript2.supportUserAgent(userAgent, function (support) { isSupport = support; });
   monotypeScript2.load(function (fontFamilies) {
     families = fontFamilies;
@@ -182,11 +151,11 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurl = function () {
       if (script.onload) {
         script.onload();
       }
-    }
-  };
-
-  var fakeDocHelper = {
-    protocol: function () {
+    },
+    getLoadWindow: function () {
+      return global;
+    },
+    getProtocol: function () {
       return "http:";
     }
   };
@@ -207,7 +176,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurl = function () {
 
   var isSupport = null;
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
-  var monotypeScript = new webfont.MonotypeScript(global, userAgent, fakeDomHelper, fakeDocHelper, config);
+  var monotypeScript = new webfont.MonotypeScript(userAgent, fakeDomHelper, config);
   monotypeScript.supportUserAgent(userAgent, function (support) { isSupport = support; });
 
   monotypeScript.load(function (fontFamilies) {
@@ -224,7 +193,6 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurl = function () {
 //If current page is browsed using https protocol, the added script should be requested with SSL.
 MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurlAndTheScriptUrlHasCorrectSSL = function () {
   var fakedom = { 'head': [], 'body': [] };
-  var fakeDocument = { location: { protocol: "https:"} };
   var global = {}; // should be window in actual situation.
   var script = null;
   var families = null;
@@ -243,6 +211,12 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurlAndTheScriptUrlH
       if (script.onload) {
         script.onload();
       }
+    },
+    getLoadWindow: function () {
+      return global;
+    },
+    getProtocol: function () {
+      return "https:";
     }
   };
 
@@ -262,7 +236,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurlAndTheScriptUrlH
 
   var isSupport = null;
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
-  var monotypeScript = new webfont.MonotypeScript(global, userAgent, fakeDomHelper, fakeDocument, config);
+  var monotypeScript = new webfont.MonotypeScript(userAgent, fakeDomHelper, config);
   monotypeScript.supportUserAgent(userAgent, function (support) { isSupport = support; });
 
   monotypeScript.load(function (fontFamilies) {
@@ -297,18 +271,18 @@ MonotypeScriptTest.prototype.testWithoutProjectId = function () {
       if (script.onload) {
         script.onload();
       }
-    }
-  };
-
-  var fakeDocHelper = {
-    protocol: function () {
+    },
+    getLoadWindow: function () {
+      return global;
+    },
+    getProtocol: function () {
       return "http:";
     }
   };
 
   var isSupport = null;
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
-  var monotypeScript = new webfont.MonotypeScript(global, userAgent, fakeDomHelper, fakeDocHelper, config);
+  var monotypeScript = new webfont.MonotypeScript(userAgent, fakeDomHelper, config);
   monotypeScript.supportUserAgent(userAgent, function (support) { isSupport = support; });
 
   monotypeScript.load(function (fontFamilies) {

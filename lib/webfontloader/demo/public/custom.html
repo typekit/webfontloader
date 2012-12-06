@@ -6,7 +6,7 @@
   <style type="text/css">
 
     h1 {
-      font-family: 'Tagesschrift';
+      font-family: 'ChunkFiveRegular';
     }
 
     /* All Class hooks */
@@ -14,9 +14,9 @@
     html.wf-loading #classes .Loading,
     html.wf-active #classes .Active,
     html.wf-inactive #classes .Inactive,
-    html.wf-tagesschrift-n4-loading #classes .TagesschriftLoading,
-    html.wf-tagesschrift-n4-active #classes .TagesschriftActive,
-    html.wf-tagesschrift-n4-inactive #classes .TagesschriftInactive {
+    html.wf-chunkfiveregular-n4-loading #classes .ChunkFiveLoading,
+    html.wf-chunkfiveregular-n4-active #classes .ChunkFiveActive,
+    html.wf-chunkfiveregular-n4-inactive #classes .ChunkFiveInactive {
       color: #000;
     }
 
@@ -24,7 +24,7 @@
 </head>
 <body>
   <h1 class="tagesschrift">
-    Hello World. I am Tagesschrift.
+    Hello World. I am ChunkFive.
   </h1>
   <hr>
   <p>
@@ -39,9 +39,9 @@
     <li class="Loading">Loading</li>
     <li class="Active">Active</li>
     <li class="Inactive">Inactive</li>
-    <li class="TagesschriftLoading">Tagesschrift Loading</li>
-    <li class="TagesschriftActive">Tagesschrift Active</li>
-    <li class="TagesschriftInactive">Tagesschrift Inactive</li>
+    <li class="ChunkFiveLoading">ChunkFive Loading</li>
+    <li class="ChunkFiveActive">ChunkFive Active</li>
+    <li class="ChunkFiveInactive">ChunkFive Inactive</li>
   </ul>
   <h2>JavaScript Event Progress</h2>
   <ol id="events"></ol>
@@ -61,8 +61,8 @@
     }
     WebFont.load({
       custom: {
-        families: ['Tagesschrift'],
-        urls : ['http://paulirish.com/tagesschrift.css']
+        families: ['ChunkFiveRegular'],
+        urls : ['http://seanmcb.com/typekit/wfl/stylesheet.css']
       },
       loading: function() {
         progress('loading');

@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+  <title>Ascender Module Demo</title>
+  <link href="/basic.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/webfont.js"></script>
+  <style type="text/css">
+    iframe {
+      height: 100px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <script type="text/javascript">
+    function loaded() {
+      var child = frames["child"];
+      child.document.body.innerHTML = "<h1 style=\"font-family: 'AyitaPro'\">Hello World. I am Ayita Pro.</h1>";
+      WebFont.load({
+        ascender: {
+          key:'ec2de397-11ae-4c10-937f-bf94283a70c1',
+          families:['AyitaPro:regular,bold,bolditalic,italic']
+        },
+        context: child
+      });
+    }
+  </script>
+
+  <iframe name="child" src="/blank.html" onload="loaded()"></iframe>
+
+  <hr>
+
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/ascender.html">Reload Cached</a>
+  </p>
+  <p>
+    Note: use "localhost" when testing web fonts.
+  </p>
+  <p>
+    The goal of this page is to show how fonts load from Ascender in a child
+    iframe.
+  </p>
+
+</body>
+</html>

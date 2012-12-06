@@ -15,7 +15,7 @@ EventDispatcherTest.prototype.setUp = function() {
   var self = this;
 
   this.eventDispatcher_ = new webfont.EventDispatcher(new webfont.DomHelper(
-      document), this.fakeHtmlElement_, {
+      window), this.fakeHtmlElement_, {
         loading: function() {
           self.loadingEventCalled_ = true;
         },

@@ -1,12 +1,10 @@
 /**
  * @constructor
  */
-webfont.FontApiUrlBuilder = function(apiUrl) {
+webfont.FontApiUrlBuilder = function(apiUrl, protocol) {
   if (apiUrl) {
     this.apiUrl_ = apiUrl;
   } else {
-    var protocol = 'https:' == window.location.protocol ? 'https:' : 'http:';
-
     this.apiUrl_ = protocol + webfont.FontApiUrlBuilder.DEFAULT_API_URL;
   }
   this.fontFamilies_ = [];
