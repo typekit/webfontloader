@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <link href="/basic.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/webfont.js"></script>
+  <style type="text/css">
+    iframe {
+      height: 100px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <script type="text/javascript">
+    function loaded() {
+      var child = frames["child"];
+      child.document.body.innerHTML = "<h1 style=\"font-family: 'Droid Sans'\">Hello World. I am Droid Sans.</h1>";
+      WebFont.load({
+        google: {
+          families: ['Droid Sans'],
+          api: '/fonts/api'
+        },
+        context: child
+      });
+    }
+  </script>
+
+  <iframe name="child" src="/blank.html" onload="loaded()"></iframe>
+
+  <hr>
+  <p>
+    <a href="#" onclick="document.getElementsByTagName('body')[0].style.color = '#fff';return false;">Hide Page</a> |
+    <a href="/google.html">Reload Cached</a>
+  </p>
+  <p>
+    The goal of this page is demonstrate fonts loading from Google via
+    Javascript into a child iframe.
+  </p>
+</body>
+</html>

@@ -9,6 +9,9 @@ GoogleFontApiTest.prototype.testCallOnReadyWithFontFamilyLoading = function() {
       },
       createCssLink: function(csslink) {
         link = csslink;
+      },
+      getProtocol: function() {
+        return 'http:';
       }
   };
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
@@ -53,6 +56,9 @@ GoogleFontApiTest.prototype.testCallOnReadyWithFontFamilyLoadingApiUrlChanged =
       },
       createCssLink: function(csslink) {
         link = csslink;
+      },
+      getProtocol: function() {
+        return 'http:';
       }
   };
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
@@ -95,6 +101,9 @@ GoogleFontApiTest.prototype.testSpacesReplacedByPlus = function() {
       },
       createCssLink: function(csslink) {
         link = csslink;
+      },
+      getProtocol: function() {
+        return 'http:';
       }
   };
   var userAgent = new webfont.UserAgent("Test", "1.0", true);
@@ -137,6 +146,9 @@ GoogleFontApiTest.prototype.testLoadWithVariations = function() {
       },
       createCssLink: function(csslink) {
         link = csslink;
+      },
+      getProtocol: function() {
+        return 'http:';
       }
   };
   var userAgent = new webfont.UserAgent("Test", "1.0", true);

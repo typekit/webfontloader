@@ -41,6 +41,10 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
     ]
   };
   var insert = '';
+  var global = {
+    // No hostname to verify fallback behavior for empty iframe
+    location: {}
+  };
   var src = '';
   var fakeDomHelper = {
     insertInto: function(tag, e) {
@@ -48,19 +52,22 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
     },
     createScriptSrc: function(srcLink) {
       src = srcLink;
-    }
-  };
-  var global = {
-    location: {
-      protocol: 'https:'
     },
-    document: {
-      location: {
-        hostname: 'test-host-name'
-      }
+    getLoadWindow: function() {
+      return global;
+    },
+    getMainWindow: function() {
+      return {
+        location: {
+          hostname: 'test-host-name'
+        }
+      };
+    },
+    getProtocol: function() {
+      return 'https:';
     }
   };
-  var fontdeck = new webfont.FontdeckScript(global, fakeDomHelper, configuration);
+  var fontdeck = new webfont.FontdeckScript(fakeDomHelper, configuration);
 
   // supportUserAgent
   var userAgent = 'user agent';
@@ -80,7 +87,7 @@ FontdeckScriptTest.prototype.testSupportAndLoadLifecycle = function() {
   assertEquals(fontdeck.fontFamilies_, [apiResponse.fonts[0].name, apiResponse.fonts[1].name]);
   assertEquals(fontdeck.fontVariations_[apiResponse.fonts[0].name], ['n4']);
   assertEquals(fontdeck.fontVariations_[apiResponse.fonts[1].name], ['i7']);
-  
+
   assertEquals(true, isSupport);
 };
 
@@ -90,16 +97,19 @@ FontdeckScriptTest.prototype.testNoProjectId = function() {
   };
   var insert = '';
   var src = '';
-  var fakeDomHelper = {};
-  var global = {};
-  var fontdeck = new webfont.FontdeckScript(global, fakeDomHelper, configuration);
+  var fakeDomHelper = {
+    getLoadWindow: function() {
+      return {};
+    }
+  };
+  var fontdeck = new webfont.FontdeckScript(fakeDomHelper, configuration);
 
   // supportUserAgent
   var userAgent = 'user agent';
   var isSupport = null;
 
   fontdeck.supportUserAgent(userAgent, function(support) { isSupport = support; });
-  
+
   assertEquals(fontdeck.fontFamilies_, []);
   assertEquals(fontdeck.fontVariations_, []);
   assertEquals(true, isSupport);

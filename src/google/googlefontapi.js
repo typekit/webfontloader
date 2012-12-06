@@ -35,7 +35,7 @@ webfont.GoogleFontApi.prototype.load = function(onReady) {
 webfont.GoogleFontApi.prototype.insertLink_ = function(onReady) {
   var domHelper = this.domHelper_;
   var fontApiUrlBuilder = new webfont.FontApiUrlBuilder(
-      this.configuration_['api']);
+      this.configuration_['api'], domHelper.getProtocol());
   var fontFamilies = this.configuration_['families'];
   fontApiUrlBuilder.setFontFamilies(fontFamilies);
 
@@ -48,9 +48,8 @@ webfont.GoogleFontApi.prototype.insertLink_ = function(onReady) {
       fontApiParser.getFontTestStrings());
 };
 
-globalNamespaceObject.addModule(webfont.GoogleFontApi.NAME, function(configuration) {
+globalNamespaceObject.addModule(webfont.GoogleFontApi.NAME, function(configuration, domHelper) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
-  return new webfont.GoogleFontApi(userAgent, new webfont.DomHelper(document),
-      configuration);
+  return new webfont.GoogleFontApi(userAgent, domHelper, configuration);
 });
