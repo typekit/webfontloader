@@ -270,6 +270,8 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
       this.getMajorVersion_(version) == 2 && parseInt(minor, 10) >= 5;
   } else if (platform == "BlackBerry") {
     supportWebFont = parseInt(platformVersion, 10) >= 10;
+  } else if (platform == "Android") {
+    supportWebFont = parseFloat(platformVersion) > 2.1;
   } else {
     var minor = this.getMatchingGroup_(webKitVersion, /\d+\.(\d+)/, 1);
     supportWebFont = this.getMajorVersion_(webKitVersion) >= 526 ||
