@@ -1,3 +1,9 @@
+v1.1.1 (December 12, 2012)
+* Added the ability to recognize BlackBerry devices, which have web font support (WOFF) in platform version 10+
+* Added a new browser name "BuiltinBrowser" to recognize built-in browsers on mobile platforms which we previously called "Safari" (applies to Android's "Browser" app and BlackBerry's built-in browser)
+* Fixed a bug in the Monotype module which caused a double active event in IE9 and no active event in IE8 (reported in issue #64)
+* Fixed some typos in the demo pages
+
 v1.1.0 (December 5, 2012)
 * Adds the ability to load fonts into a same-origin child window or iframe using the new optional `context` configuration option (thanks to @ryanwolf of Google).
 * Updates the demos to fix broken stuff and demonstrate the new context option in action.
