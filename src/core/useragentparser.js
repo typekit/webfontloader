@@ -25,7 +25,7 @@ webfont.UserAgentParser.UNKNOWN_USER_AGENT = new webfont.UserAgent(
     webfont.UserAgentParser.UNKNOWN,
     webfont.UserAgentParser.UNKNOWN,
     undefined,
-    false);
+    {});
 
 /**
  * Parses the user agent string and returns an object.
@@ -113,6 +113,7 @@ webfont.UserAgentParser.prototype.parseIeUserAgentString_ = function() {
   var platformVersion = this.getPlatformVersion_();
 
   var browser = this.getMatchingGroup_(this.userAgent_, /(MSIE [\d\w\.]+)/, 1);
+  var browserInfo = {};
 
   if (browser != "") {
     var pair = browser.split(' ');
@@ -121,17 +122,16 @@ webfont.UserAgentParser.prototype.parseIeUserAgentString_ = function() {
     var majorVersion = this.getMajorVersion_(version);
     var majorPlatformVersion = this.getMajorVersion_(platformVersion);
 
-    var supportWebFont = (platform == "Windows" && majorVersion >= 6) ||
+    browserInfo[webfont.UserAgent.BrowserInfo.HAS_WEBFONT_SUPPORT] = (platform == "Windows" && majorVersion >= 6) ||
         (platform == "Windows Phone" && majorPlatformVersion >= 8);
 
     return new webfont.UserAgent(name, version, name, version,
-        platform, platformVersion, this.getDocumentMode_(this.doc_),
-        supportWebFont);
+        platform, platformVersion, this.getDocumentMode_(this.doc_), browserInfo);
   }
 
   return new webfont.UserAgent("MSIE", webfont.UserAgentParser.UNKNOWN,
       "MSIE", webfont.UserAgentParser.UNKNOWN,
-      platform, platformVersion, this.getDocumentMode_(this.doc_), false);
+      platform, platformVersion, this.getDocumentMode_(this.doc_), {});
 };
 
 /**
@@ -149,6 +149,7 @@ webfont.UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
   var engineVersion = webfont.UserAgentParser.UNKNOWN;
   var enginePair = this.getMatchingGroup_(this.userAgent_,
       /(Presto\/[\d\w\.]+)/, 1);
+  var browserInfo = {};
 
   if (enginePair != "") {
     var splittedEnginePair = enginePair.split('/');
@@ -176,7 +177,7 @@ webfont.UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
 
     return new webfont.UserAgent("OperaMini", version, engineName,
         engineVersion, this.getPlatform_(), this.getPlatformVersion_(),
-        this.getDocumentMode_(this.doc_), false);
+        this.getDocumentMode_(this.doc_), browserInfo);
   }
 
   // Otherwise, find version information for normal Opera or Opera Mobile
@@ -184,21 +185,23 @@ webfont.UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
     var version = this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.]+)/, 1);
 
     if (version != "") {
+      browserInfo[webfont.UserAgent.BrowserInfo.HAS_WEBFONT_SUPPORT] = this.getMajorVersion_(version) >= 10;
       return new webfont.UserAgent("Opera", version, engineName, engineVersion,
           this.getPlatform_(), this.getPlatformVersion_(),
-          this.getDocumentMode_(this.doc_), this.getMajorVersion_(version) >= 10);
+          this.getDocumentMode_(this.doc_), browserInfo);
     }
   }
   var version = this.getMatchingGroup_(this.userAgent_, /Opera[\/ ]([\d\.]+)/, 1);
 
   if (version != "") {
+    browserInfo[webfont.UserAgent.BrowserInfo.HAS_WEBFONT_SUPPORT] = this.getMajorVersion_(version) >= 10;
     return new webfont.UserAgent("Opera", version, engineName, engineVersion,
         this.getPlatform_(), this.getPlatformVersion_(),
-        this.getDocumentMode_(this.doc_), this.getMajorVersion_(version) >= 10);
+        this.getDocumentMode_(this.doc_), browserInfo);
   }
   return new webfont.UserAgent("Opera", webfont.UserAgentParser.UNKNOWN,
       engineName, engineVersion, this.getPlatform_(),
-      this.getPlatformVersion_(), this.getDocumentMode_(this.doc_), false);
+      this.getPlatformVersion_(), this.getDocumentMode_(this.doc_), browserInfo);
 };
 
 /**
@@ -216,6 +219,7 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
   var platformVersion = this.getPlatformVersion_();
   var webKitVersion = this.getMatchingGroup_(this.userAgent_,
       /AppleWebKit\/([\d\.\+]+)/, 1);
+  var browserInfo = {};
 
   if (webKitVersion == "") {
     webKitVersion = webfont.UserAgentParser.UNKNOWN;
@@ -241,19 +245,18 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
     version = this.getMatchingGroup_(this.userAgent_,
         /AdobeAIR\/([\d\.]+)/, 1);
   }
-  var supportWebFont = false;
   if (name == "AdobeAIR") {
     var minor = this.getMatchingGroup_(version, /\d+\.(\d+)/, 1);
-    supportWebFont = this.getMajorVersion_(version) > 2 ||
+    browserInfo[webfont.UserAgent.BrowserInfo.HAS_WEBFONT_SUPPORT] = this.getMajorVersion_(version) > 2 ||
       this.getMajorVersion_(version) == 2 && parseInt(minor, 10) >= 5;
   } else {
     var minor = this.getMatchingGroup_(webKitVersion, /\d+\.(\d+)/, 1);
-    supportWebFont = this.getMajorVersion_(webKitVersion) >= 526 ||
+    browserInfo[webfont.UserAgent.BrowserInfo.HAS_WEBFONT_SUPPORT] = this.getMajorVersion_(webKitVersion) >= 526 ||
       this.getMajorVersion_(webKitVersion) >= 525 && parseInt(minor, 10) >= 13;
   }
 
   return new webfont.UserAgent(name, version, "AppleWebKit", webKitVersion,
-      platform, platformVersion, this.getDocumentMode_(this.doc_), supportWebFont);
+      platform, platformVersion, this.getDocumentMode_(this.doc_), browserInfo);
 };
 
 /**
@@ -269,7 +272,7 @@ webfont.UserAgentParser.prototype.isGecko_ = function() {
 webfont.UserAgentParser.prototype.parseGeckoUserAgentString_ = function() {
   var name = webfont.UserAgentParser.UNKNOWN;
   var version = webfont.UserAgentParser.UNKNOWN;
-  var supportWebFont = false;
+  var browserInfo = {};
 
   if (this.userAgent_.indexOf("Firefox") != -1) {
     name = "Firefox";
@@ -280,7 +283,8 @@ webfont.UserAgentParser.prototype.parseGeckoUserAgentString_ = function() {
       var minor = this.getMatchingGroup_(versionNum, /\d+\.(\d+)/, 1);
 
       version = versionNum;
-      supportWebFont = versionNum != "" && this.getMajorVersion_(versionNum) >= 3 &&
+      browserInfo[webfont.UserAgent.BrowserInfo.HAS_WEBFONT_SUPPORT] = versionNum != "" &&
+          this.getMajorVersion_(versionNum) >= 3 &&
           parseInt(minor, 10) >= 5;
     }
   } else if (this.userAgent_.indexOf("Mozilla") != -1) {
@@ -291,12 +295,12 @@ webfont.UserAgentParser.prototype.parseGeckoUserAgentString_ = function() {
   if (geckoVersion == "") {
     geckoVersion = webfont.UserAgentParser.UNKNOWN;
   } else {
-    if (!supportWebFont) {
+    if (!browserInfo[webfont.UserAgent.BrowserInfo.HAS_WEBFONT_SUPPORT]) {
       var majorVersion = this.getMajorVersion_(geckoVersion);
       var intMinorVersion = parseInt(this.getMatchingGroup_(geckoVersion, /\d+\.(\d+)/, 1), 10);
       var subVersion = parseInt(this.getMatchingGroup_(geckoVersion, /\d+\.\d+\.(\d+)/, 1), 10);
 
-      supportWebFont = majorVersion > 1 ||
+      browserInfo[webfont.UserAgent.BrowserInfo.HAS_WEBFONT_SUPPORT] = majorVersion > 1 ||
           majorVersion == 1 && intMinorVersion > 9 ||
           majorVersion == 1 && intMinorVersion == 9 && subVersion >= 2 ||
           geckoVersion.match(/1\.9\.1b[123]/) != null ||
@@ -304,8 +308,7 @@ webfont.UserAgentParser.prototype.parseGeckoUserAgentString_ = function() {
     }
   }
   return new webfont.UserAgent(name, version, "Gecko", geckoVersion,
-      this.getPlatform_(), this.getPlatformVersion_(), this.getDocumentMode_(this.doc_),
-      supportWebFont);
+      this.getPlatform_(), this.getPlatformVersion_(), this.getDocumentMode_(this.doc_), browserInfo);
 };
 
 /**
