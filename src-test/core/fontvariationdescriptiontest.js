@@ -56,6 +56,12 @@ FontVariationDescriptionTest.prototype.testExpandFontStyle = function() {
   assertEquals('font-style:oblique;font-weight:400;', this.fvd_.expand('o4'));
 };
 
+FontVariationDescriptionTest.prototype.testExpandFontStyleImportant = function() {
+  assertEquals('font-style:normal !important;font-weight:400 !important;', this.fvd_.expand('n4', true));
+  assertEquals('font-style:italic !important;font-weight:400 !important;', this.fvd_.expand('i4', true));
+  assertEquals('font-style:oblique !important;font-weight:400 !important;', this.fvd_.expand('o4', true));
+};
+
 FontVariationDescriptionTest.prototype.testExpandFontWeight = function() {
   assertEquals('font-style:normal;font-weight:100;', this.fvd_.expand('n1'));
   assertEquals('font-style:normal;font-weight:200;', this.fvd_.expand('n2'));
