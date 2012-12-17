@@ -8,8 +8,10 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAdded = function () {
   var config = { projectId: '01e2ff27-25bf-4801-a23e-73d328e6c7cc', api: "http://fast.fonts.com/jsapidev" };
 
   var fakeDomHelper = {
-    createScriptSrc: function (s) {
-      script = { src: s };
+    createElement: function () {
+      script = {
+        addEventListener: function () {}
+      };
       return script;
     },
     insertInto: function (tag, elem) {
@@ -67,8 +69,10 @@ MonotypeScriptTest.prototype.testIfScriptTagHasCorrectSSL = function () {
   var config = { projectId: '01e2ff27-25bf-4801-a23e-73d328e6c7cc', api: "http://fast.fonts.com/jsapidev" };
 
   var fakeDomHelper = {
-    createScriptSrc: function (s) {
-      script = { src: s };
+    createElement: function () {
+      script = {
+        addEventListener: function () {}
+      };
       return script;
     },
     insertInto: function (tag, elem) {
@@ -139,8 +143,10 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurl = function () {
   var config = { projectId: '01e2ff27-25bf-4801-a23e-73d328e6c7cc' };
 
   var fakeDomHelper = {
-    createScriptSrc: function (s) {
-      script = { src: s };
+    createElement: function () {
+      script = {
+        addEventListener: function () {}
+      };
       return script;
     },
     insertInto: function (tag, elem) {
@@ -199,8 +205,10 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurlAndTheScriptUrlH
   var config = { projectId: '01e2ff27-25bf-4801-a23e-73d328e6c7cc' };
 
   var fakeDomHelper = {
-    createScriptSrc: function (s) {
-      script = { src: s };
+    createElement: function () {
+      script = {
+        addEventListener: function () {}
+      };
       return script;
     },
     insertInto: function (tag, elem) {
@@ -259,8 +267,10 @@ MonotypeScriptTest.prototype.testWithoutProjectId = function () {
   var config = {};
 
   var fakeDomHelper = {
-    createScriptSrc: function (s) {
-      script = { src: s };
+    createElement: function () {
+      script = {
+        addEventListener: function () {}
+      };
       return script;
     },
     insertInto: function (tag, elem) {

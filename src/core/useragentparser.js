@@ -14,6 +14,16 @@ webfont.UserAgentParser = function(userAgent, doc) {
 webfont.UserAgentParser.UNKNOWN = "Unknown";
 
 /**
+ * A constant for identifying a generic browser on a mobile platform that
+ * doesn't really have a name, but just came with the platform. Usually these
+ * are WebKit based, and examples are the default browser app on Android and
+ * the default browser app on BlackBerry 10.
+ * @const
+ * @type {string}
+ */
+webfont.UserAgentParser.BUILTIN_BROWSER = "BuiltinBrowser";
+
+/**
  * @const
  * @type {webfont.UserAgent}
  */
@@ -50,9 +60,12 @@ webfont.UserAgentParser.prototype.parse = function() {
  */
 webfont.UserAgentParser.prototype.getPlatform_ = function() {
   var mobileOs = this.getMatchingGroup_(this.userAgent_,
-      /(iPod|iPad|iPhone|Android|Windows Phone)/, 1);
+      /(iPod|iPad|iPhone|Android|Windows Phone|BB\d{2}|BlackBerry)/, 1);
 
   if (mobileOs != "") {
+    if (/BB\d{2}/.test(mobileOs)) {
+      mobileOs = "BlackBerry";
+    }
     return mobileOs;
   }
   var os = this.getMatchingGroup_(this.userAgent_,
@@ -90,6 +103,11 @@ webfont.UserAgentParser.prototype.getPlatformVersion_ = function() {
       /Linux ([i\d]+)/, 1);
   if (linuxVersion) {
     return linuxVersion;
+  }
+  var blackBerryVersion = this.getMatchingGroup_(this.userAgent_,
+      /(BB\d{2}|BlackBerry).*?Version\/([^\s]*)/, 2);
+  if (blackBerryVersion) {
+    return blackBerryVersion;
   }
 
   return webfont.UserAgentParser.UNKNOWN;
@@ -228,6 +246,8 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
 
   if (this.userAgent_.indexOf("Chrome") != -1 || this.userAgent_.indexOf("CrMo") != -1 || this.userAgent_.indexOf("CriOS") != -1) {
     name = "Chrome";
+  } else if (platform == "BlackBerry" || platform == "Android") {
+    name = webfont.UserAgentParser.BUILTIN_BROWSER;
   } else if (this.userAgent_.indexOf("Safari") != -1) {
     name = "Safari";
   } else if (this.userAgent_.indexOf("AdobeAIR") != -1) {
@@ -235,7 +255,9 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
   }
   var version = webfont.UserAgentParser.UNKNOWN;
 
-  if (this.userAgent_.indexOf("Version/") != -1) {
+  if (name == webfont.UserAgentParser.BUILTIN_BROWSER) {
+    version = webfont.UserAgentParser.UNKNOWN;
+  } else if (this.userAgent_.indexOf("Version/") != -1) {
     version = this.getMatchingGroup_(this.userAgent_,
         /Version\/([\d\.\w]+)/, 1);
   } else if (name == "Chrome") {
@@ -249,6 +271,10 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
     var minor = this.getMatchingGroup_(version, /\d+\.(\d+)/, 1);
     browserInfo[webfont.UserAgent.BrowserInfo.HAS_WEBFONT_SUPPORT] = this.getMajorVersion_(version) > 2 ||
       this.getMajorVersion_(version) == 2 && parseInt(minor, 10) >= 5;
+  } else if (platform == "BlackBerry") {
+    supportWebFont = parseInt(platformVersion, 10) >= 10;
+  } else if (platform == "Android") {
+    supportWebFont = parseFloat(platformVersion) > 2.1;
   } else {
     var minor = this.getMatchingGroup_(webKitVersion, /\d+\.(\d+)/, 1);
     browserInfo[webfont.UserAgent.BrowserInfo.HAS_WEBFONT_SUPPORT] = this.getMajorVersion_(webKitVersion) >= 526 ||

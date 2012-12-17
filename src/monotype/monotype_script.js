@@ -40,18 +40,12 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
   var self = this;
   var projectId = self.configuration_['projectId'];
   if (projectId) {
-    var sc = self.domHelper_.createScriptSrc(self.getScriptSrc(projectId));
+    var sc = self.domHelper_.createElement("script");
     sc["id"] = webfont.MonotypeScript.SCRIPTID + projectId;
 
-    sc["onreadystatechange"] = function (e) {
-      if (sc["readyState"] === "loaded" || sc["readyState"] === "complete") {
-        sc["onreadystatechange"] = null;
-        sc["onload"](e);
-      }
-    };
-
     var loadWindow = this.domHelper_.getLoadWindow();
-    sc["onload"] = function (e) {
+
+    function onload() {
       if (loadWindow[webfont.MonotypeScript.HOOK + projectId]) {
         var mti_fnts = loadWindow[webfont.MonotypeScript.HOOK + projectId]();
         if (mti_fnts && mti_fnts.length) {
@@ -62,8 +56,19 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
         }
       }
       support(userAgent.isSupportingWebFont());
+    }
+
+    var done = false;
+
+    sc["onload"] = sc["onreadystatechange"] = function () {
+      if (!done && (!this["readyState"] || this["readyState"] === "loaded" || this["readyState"] === "complete")) {
+        done = true;
+        onload();
+        sc["onload"] = sc["onreadystatechange"] = null;
+      }
     };
 
+    sc["src"] = self.getScriptSrc(projectId);
     this.domHelper_.insertInto('head', sc);
   }
   else {
