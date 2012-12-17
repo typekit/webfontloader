@@ -5,10 +5,7 @@ FontTest.prototype.setUp = function() {
 };
 
 FontTest.prototype.testFontLoad = function() {
-  var browserInfo = {};
-
-  browserInfo[webfont.UserAgent.BrowserInfo.HAS_WEBFONT_SUPPORT] = true;
-
+  var browserInfo = new webfont.BrowserInfo(true, false, false);
   var userAgent = new webfont.UserAgent('Firefox', '3.6', 'Gecko', '1.9.2',
       'Macintosh', '10.6', undefined, browserInfo);
   var font = new webfont.WebFont(window, this.fontModuleLoader_,
@@ -63,10 +60,7 @@ FontTest.prototype.testFontLoad = function() {
 
 FontTest.prototype.testFontLoadWithContext = function() {
   var fakeMainWindow = {};
-  var browserInfo = {};
-
-  browserInfo[webfont.UserAgent.BrowserInfo.HAS_WEBFONT_SUPPORT] = true;
-
+  var browserInfo = new webfont.BrowserInfo(true, false, false);
   var userAgent = new webfont.UserAgent('Firefox', '3.6', 'Gecko', '1.9.2',
       'Macintosh', '10.6', undefined, browserInfo);
   var font = new webfont.WebFont(fakeMainWindow, this.fontModuleLoader_,

@@ -142,6 +142,7 @@ DESC
     src/core/namespace.js
     src/core/useragent.js
     src/core/useragentparser.js
+    src/core/browserinfo.js
     src/custom/customcss.js
     src/fontdeck/fontdeck_script.js
     src/google/fontapiparser.js
