@@ -76,10 +76,3 @@ webfont.UserAgent.prototype.getDocumentMode = function() {
 webfont.UserAgent.prototype.getBrowserInfo = function() {
   return this.browserInfo_;
 };
-
-/**
- * @return {boolean}
- */
-webfont.UserAgent.prototype.isSupportingWebFont = function() {
-  return this.browserInfo_.hasWebfontSupport();
-};

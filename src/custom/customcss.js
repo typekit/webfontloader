@@ -28,7 +28,7 @@ webfont.CustomCss.prototype.load = function(onReady) {
 };
 
 webfont.CustomCss.prototype.supportUserAgent = function(userAgent, support) {
-  return support(userAgent.isSupportingWebFont());
+  return support(userAgent.getBrowserInfo().hasWebFontSupport());
 };
 
 globalNamespaceObject.addModule(webfont.CustomCss.NAME, function(configuration, domHelper) {

@@ -26,7 +26,7 @@ webfont.WebFont.prototype.load = function(configuration) {
   var eventDispatcher = new webfont.EventDispatcher(
       this.domHelper_, context.document.documentElement, configuration);
 
-  if (this.userAgent_.isSupportingWebFont()) {
+  if (this.userAgent_.getBrowserInfo().hasWebFontSupport()) {
     this.load_(eventDispatcher, configuration);
   } else {
     eventDispatcher.dispatchInactive();

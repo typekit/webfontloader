@@ -13,7 +13,7 @@ webfont.BrowserInfo = function (webfontSupport, webkitFallbackBug, androidFallba
 /**
  * @return {boolean}
  */
-webfont.BrowserInfo.prototype.hasWebfontSupport = function () {
+webfont.BrowserInfo.prototype.hasWebFontSupport = function () {
   return this.webfontSupport_;
 };
 
