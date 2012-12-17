@@ -10,9 +10,9 @@
         api: '/fonts/api'
       },
       fontactive: function(familyName, fontDescription) {
-        if (fontFamilyName == 'Droid Sans') {
+        if (familyName == 'Droid Sans') {
           var h1 = document.getElementsByTagName('h1')[0];
-          h1.innerHTML = 'Hello World. I am ' + fontFamilyName + ' (' + fontDescription + ')';
+          h1.innerHTML = 'Hello World. I am ' + familyName + ' (' + fontDescription + ')';
         }
       }
     });

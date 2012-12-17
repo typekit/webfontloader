@@ -196,21 +196,36 @@ UserAgentTest.prototype.testBrowserIsIPhone = function() {
   assertTrue(userAgent.isSupportingWebFont());
 };
 
-
 UserAgentTest.prototype.testBrowserIsAndroid = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (Linux; U; Android 2.2.1; en-ca; LG-P505R Build/FRG83) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1",
+      this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("BuiltinBrowser", userAgent.getName());
+  assertEquals("Unknown", userAgent.getVersion());
+  assertEquals("Android", userAgent.getPlatform());
+  assertEquals("2.2.1", userAgent.getPlatformVersion());
+  assertEquals("AppleWebKit", userAgent.getEngine());
+  assertEquals("533.1", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertTrue(userAgent.isSupportingWebFont());
+};
+
+UserAgentTest.prototype.testBrowserIsOldUnsupportedAndroid = function() {
   var userAgentParser = new webfont.UserAgentParser(
       "Mozilla/5.0 (Linux; U; Android 2.1-update1; en-us; Nexus One Build/ERE27) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17",
       this.defaultDocument_);
   var userAgent = userAgentParser.parse();
 
-  assertEquals("Safari", userAgent.getName());
-  assertEquals("4.0", userAgent.getVersion());
+  assertEquals("BuiltinBrowser", userAgent.getName());
+  assertEquals("Unknown", userAgent.getVersion());
   assertEquals("Android", userAgent.getPlatform());
   assertEquals("2.1-update1", userAgent.getPlatformVersion());
   assertEquals("AppleWebKit", userAgent.getEngine());
   assertEquals("530.17", userAgent.getEngineVersion());
   assertEquals(undefined, userAgent.getDocumentMode());
-  assertTrue(userAgent.isSupportingWebFont());
+  assertFalse(userAgent.isSupportingWebFont());
 };
 
 UserAgentTest.prototype.testBrowserIsAndroidChromeMobile = function() {
@@ -667,6 +682,38 @@ UserAgentTest.prototype.testBrowserGeckoHighSubVerShouldNotSupportWebFont = func
   assertEquals("5.1", userAgent.getPlatformVersion());
   assertEquals("Gecko", userAgent.getEngine());
   assertEquals("0.3.42", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertFalse(userAgent.isSupportingWebFont());
+};
+
+UserAgentTest.prototype.testBrowserBBSupportWebfont = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (BB10; Touch) AppleWebKit/537.3+ (KHTML, like Gecko) Version/10.0.9.388 Mobile Safari/537.3+",
+      this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("BuiltinBrowser", userAgent.getName());
+  assertEquals("Unknown", userAgent.getVersion());
+  assertEquals("BlackBerry", userAgent.getPlatform());
+  assertEquals("10.0.9.388", userAgent.getPlatformVersion());
+  assertEquals("AppleWebKit", userAgent.getEngine());
+  assertEquals("537.3+", userAgent.getEngineVersion());
+  assertEquals(undefined, userAgent.getDocumentMode());
+  assertTrue(userAgent.isSupportingWebFont());
+};
+
+UserAgentTest.prototype.testBrowserBBNotSupportWebfont = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (BlackBerry; U; BlackBerry 9900; en) AppleWebKit/534.11+ (KHTML, like Gecko) Version/7.1.0.346 Mobile Safari/534.11+",
+      this.defaultDocument_);
+  var userAgent = userAgentParser.parse();
+
+  assertEquals("BuiltinBrowser", userAgent.getName());
+  assertEquals("Unknown", userAgent.getVersion());
+  assertEquals("BlackBerry", userAgent.getPlatform());
+  assertEquals("7.1.0.346", userAgent.getPlatformVersion());
+  assertEquals("AppleWebKit", userAgent.getEngine());
+  assertEquals("534.11+", userAgent.getEngineVersion());
   assertEquals(undefined, userAgent.getDocumentMode());
   assertFalse(userAgent.isSupportingWebFont());
 };

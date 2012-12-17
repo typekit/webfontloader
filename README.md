@@ -147,6 +147,7 @@ Then, run the tests.
 * Ryan Carver / ryan@typekit.com
 * Jeremie Lenfant-engelmann /  jeremiele@google.com
 * Sean McBride / sean@typekit.com
+* Bram Stein / bram@typekit.com
 
 
 ## License
