@@ -1,6 +1,7 @@
 core:
   - core/namespace.js
   - core/domhelper.js
+  - core/browserinfo.js
   - core/useragent.js
   - core/useragentparser.js
   - core/eventdispatcher.js

@@ -28,7 +28,7 @@ webfont.AscenderScript.VARIATIONS = {
 };
 
 webfont.AscenderScript.prototype.supportUserAgent = function(userAgent, support) {
-  return support(userAgent.isSupportingWebFont());
+  return support(userAgent.getBrowserInfo().hasWebFontSupport());
 };
 
 webfont.AscenderScript.prototype.load = function(onReady) {

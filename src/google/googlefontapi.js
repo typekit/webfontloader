@@ -10,7 +10,7 @@ webfont.GoogleFontApi = function(userAgent, domHelper, configuration) {
 webfont.GoogleFontApi.NAME = 'google';
 
 webfont.GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) {
-  support(userAgent.isSupportingWebFont());
+  support(userAgent.getBrowserInfo().hasWebFontSupport());
 };
 
 webfont.GoogleFontApi.prototype.getFontWatchRunnerCtor = function() {

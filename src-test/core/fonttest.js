@@ -5,8 +5,9 @@ FontTest.prototype.setUp = function() {
 };
 
 FontTest.prototype.testFontLoad = function() {
+  var browserInfo = new webfont.BrowserInfo(true, false, false);
   var userAgent = new webfont.UserAgent('Firefox', '3.6', 'Gecko', '1.9.2',
-      'Macintosh', '10.6', undefined, true);
+      'Macintosh', '10.6', undefined, browserInfo);
   var font = new webfont.WebFont(window, this.fontModuleLoader_,
       function(func, timeout) { func(); }, userAgent);
   var testModule = null;
@@ -59,9 +60,9 @@ FontTest.prototype.testFontLoad = function() {
 
 FontTest.prototype.testFontLoadWithContext = function() {
   var fakeMainWindow = {};
-
+  var browserInfo = new webfont.BrowserInfo(true, false, false);
   var userAgent = new webfont.UserAgent('Firefox', '3.6', 'Gecko', '1.9.2',
-      'Macintosh', '10.6', undefined, true);
+      'Macintosh', '10.6', undefined, browserInfo);
   var font = new webfont.WebFont(fakeMainWindow, this.fontModuleLoader_,
       function(func, timeout) { func(); }, userAgent);
   var testModule = null;
@@ -91,7 +92,8 @@ FontTest.prototype.testFontLoadWithContext = function() {
 };
 
 FontTest.prototype.testFontInactive = function() {
-  var userAgent = new webfont.UserAgent('Firefox', '3.0', false);
+  var userAgent = new webfont.UserAgent('Firefox', '3.0', 'Gecko', '1.9.2',
+      'Macintosh', '10.6', undefined, new webfont.BrowserInfo(false, false, false));
   var font = new webfont.WebFont(window, this.fontModuleLoader_,
       function(func, timeout) { func(); }, userAgent);
   var testModule;
