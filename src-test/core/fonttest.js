@@ -92,7 +92,8 @@ FontTest.prototype.testFontLoadWithContext = function() {
 };
 
 FontTest.prototype.testFontInactive = function() {
-  var userAgent = new webfont.UserAgent('Firefox', '3.0', false);
+  var userAgent = new webfont.UserAgent('Firefox', '3.0', 'Gecko', '1.9.2',
+      'Macintosh', '10.6', undefined, new webfont.BrowserInfo(false, false, false));
   var font = new webfont.WebFont(window, this.fontModuleLoader_,
       function(func, timeout) { func(); }, userAgent);
   var testModule;

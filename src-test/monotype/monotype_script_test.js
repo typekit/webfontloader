@@ -45,7 +45,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAdded = function () {
     return null;
   }
   var isSupport = null;
-  var userAgent = new webfont.UserAgent("Test", "1.0", true);
+  var userAgent = new webfont.UserAgent("Test", "1.0", "TestEngine", "2.0", "TestPlatform", "3.0", undefined, new webfont.BrowserInfo(false, false, false));
   var monotypeScript = new webfont.MonotypeScript(userAgent, fakeDomHelper, config);
   monotypeScript.supportUserAgent(userAgent, function (support) { isSupport = support; });
   monotypeScript.load(function (fontFamilies) {
@@ -107,7 +107,7 @@ MonotypeScriptTest.prototype.testIfScriptTagHasCorrectSSL = function () {
     return null;
   }
   var isSupport = null;
-  var userAgent = new webfont.UserAgent("Test", "1.0", true);
+  var userAgent = new webfont.UserAgent("Test", "1.0", "TestEngine", "2.0", "TestPlatform", "3.0", undefined, new webfont.BrowserInfo(false, false, false));
   var monotypeScript = new webfont.MonotypeScript(userAgent, fakeDomHelper, config);
   monotypeScript.supportUserAgent(userAgent, function (support) { isSupport = support; });
   monotypeScript.load(function (fontFamilies) {
@@ -181,7 +181,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurl = function () {
   }
 
   var isSupport = null;
-  var userAgent = new webfont.UserAgent("Test", "1.0", true);
+  var userAgent = new webfont.UserAgent("Test", "1.0", "TestEngine", "2.0", "TestPlatform", "3.0", undefined, new webfont.BrowserInfo(false, false, false));
   var monotypeScript = new webfont.MonotypeScript(userAgent, fakeDomHelper, config);
   monotypeScript.supportUserAgent(userAgent, function (support) { isSupport = support; });
 
@@ -243,7 +243,7 @@ MonotypeScriptTest.prototype.testIfScriptTagIsAddedWithoutApiurlAndTheScriptUrlH
   }
 
   var isSupport = null;
-  var userAgent = new webfont.UserAgent("Test", "1.0", true);
+  var userAgent = new webfont.UserAgent("Test", "1.0", "TestEngine", "2.0", "TestPlatform", "3.0", undefined, new webfont.BrowserInfo(false, false, false));
   var monotypeScript = new webfont.MonotypeScript(userAgent, fakeDomHelper, config);
   monotypeScript.supportUserAgent(userAgent, function (support) { isSupport = support; });
 
@@ -291,7 +291,7 @@ MonotypeScriptTest.prototype.testWithoutProjectId = function () {
   };
 
   var isSupport = null;
-  var userAgent = new webfont.UserAgent("Test", "1.0", true);
+  var userAgent = new webfont.UserAgent("Test", "1.0", "TestEngine", "2.0", "TestPlatform", "3.0", undefined, new webfont.BrowserInfo(false, false, false));
   var monotypeScript = new webfont.MonotypeScript(userAgent, fakeDomHelper, config);
   monotypeScript.supportUserAgent(userAgent, function (support) { isSupport = support; });
 
