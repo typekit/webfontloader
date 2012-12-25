@@ -9,7 +9,7 @@ webfont.FontApiUrlBuilder = function(apiUrl, protocol, text) {
   }
   this.fontFamilies_ = [];
   this.subsets_ = [];
-  this.text_ = text;
+  this.text_ = text || '';
 };
 
 
@@ -65,7 +65,7 @@ webfont.FontApiUrlBuilder.prototype.build = function() {
   }
 
   if (this.text_.length > 0) {
-    url += '&text=' + this.webSafe(this.text_);
+    url += '&text=' + escape(this.webSafe(this.text_));
   }
 
   return url;
