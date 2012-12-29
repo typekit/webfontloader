@@ -65,7 +65,7 @@ webfont.FontApiUrlBuilder.prototype.build = function() {
   }
 
   if (this.text_.length > 0) {
-    url += '&text=' + encodeURIComponent(this.webSafe(this.text_));
+    url += '&text=' + encodeURIComponent(this.text_);
   }
 
   return url;
