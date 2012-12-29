@@ -48,3 +48,36 @@ FontApiUrlBuilderTest.prototype.testBuildProperUrlWithSubsetsNoVariations =
 	       '?family=Font1:bold,italic%7CFont2:italic%7CFont3' +
       '&subset=greek,cyrillic,latin', fontApiUrlBuilder.build());
 };
+
+
+FontApiUrlBuilderTest.prototype.testBuildProperUrlWithText = function() {
+  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder(undefined, "http:", "lorem ipsum");
+
+  fontApiUrlBuilder.setFontFamilies([ 'Font1', 'Font2' ]);
+  assertEquals("http:" + webfont.FontApiUrlBuilder.DEFAULT_API_URL +
+         '?family=Font1%7CFont2' +
+      '&text=lorem%20ipsum', fontApiUrlBuilder.build());
+};
+
+
+FontApiUrlBuilderTest.prototype.testBuildProperUrlWithSubsetsText = function() {
+  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder(undefined, "http:", "lorem ipsum");
+
+  fontApiUrlBuilder.setFontFamilies([ 'Font1:bold:greek,cyrillic',
+      'Font2:italic', 'Font3' ]);
+  assertEquals("http:" + webfont.FontApiUrlBuilder.DEFAULT_API_URL +
+         '?family=Font1:bold%7CFont2:italic%7CFont3' +
+      '&subset=greek,cyrillic&text=lorem%20ipsum', fontApiUrlBuilder.build());
+};
+
+
+FontApiUrlBuilderTest.prototype.testBuildProperUrlWithSubsetsNoVariationsText =
+    function() {
+  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder(undefined, "http:", "lorem ipsum");
+
+  fontApiUrlBuilder.setFontFamilies([ 'Font1:bold,italic:greek,cyrillic',
+      'Font2:italic', 'Font3::latin' ]);
+  assertEquals("http:" + webfont.FontApiUrlBuilder.DEFAULT_API_URL +
+         '?family=Font1:bold,italic%7CFont2:italic%7CFont3' +
+      '&subset=greek,cyrillic,latin&text=lorem%20ipsum', fontApiUrlBuilder.build());
+};
