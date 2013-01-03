@@ -8,11 +8,11 @@
  * @param {function(): number} getTime
  * @param {string} fontFamily
  * @param {string} fontDescription
- * @param {boolean} checkWebkitFallbackBug
+ * @param {boolean} hasWebKitFallbackBug
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    fontSizer, asyncCall, getTime, fontFamily, fontDescription, checkWebkitFallbackBug, opt_fontTestString) {
+    fontSizer, asyncCall, getTime, fontFamily, fontDescription, hasWebKitFallbackBug, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
@@ -22,7 +22,7 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontFamily_ = fontFamily;
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
-  this.hasWebkitFallbackBug_ = false;
+  this.hasWebKitFallbackBug_ = hasWebKitFallbackBug;
 
   this.fontRulerA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
   this.fontRulerA_.insert();
@@ -34,39 +34,12 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontRulerB_.setFont(webfont.FontWatchRunner.FALLBACK_FONTS_B, this.fontDescription_);
   this.fallbackSizeB_ = this.fontRulerB_.getSize();
 
-  // Detect webkit fallback bug and last resort sizes, if present.
-  if (checkWebkitFallbackBug) {
-    // We build an empty webfont and try to set it as the font for our ruler.
-    // Even though this will fail (since our webfont is invalid) it will
-    // actually trigger the Webkit fallback bug.
-    var nullFontFamily = this.domHelper_.insertNullFontStyle(this.fontDescription_);
-
-    // Set the font stack to include our fake webfont first, and then the
-    // respective fallback stacks. Browsers without the bug will fall back to
-    // the first font in the stack, yielding the same width. Browsers with the
-    // bug will fall back to the last resort font instead, which should be
-    // different for at least one of the font stacks. The second generic font
-    // family name in each font stack is there for Android Webkit, where the
-    // last resort font is determined by the last font in the stack instead of
-    // a hard-coded constant.
-    //
-    // See http://code.google.com/p/chromium/issues/detail?id=138257 for more
-    // information on the Chrome Android bug.
-    this.fontRulerA_.setFont(nullFontFamily + ',' + webfont.FontWatchRunner.FALLBACK_FONTS_A, this.fontDescription_);
+  if (this.hasWebKitFallbackBug_) {
+    this.fontRulerA_.setFont("''", this.fontDescription_);
     this.lastResortSizeA_ = this.fontRulerA_.getSize();
-    this.fontRulerB_.setFont(nullFontFamily + ',' + webfont.FontWatchRunner.FALLBACK_FONTS_B, this.fontDescription_);
+
+    this.fontRulerB_.setFont("''", this.fontDescription_);
     this.lastResortSizeB_ = this.fontRulerB_.getSize();
-
-    // Finally we compare the expected fallback size and the actual fallback
-    // size. If either do not match, it must mean the last resort font was being
-    // used instead so we assume the bug is present.
-    this.hasWebkitFallbackBug_ = !this.sizeEquals_(this.fallbackSizeA_, this.lastResortSizeA_) || !this.sizeEquals_(this.fallbackSizeB_, this.lastResortSizeB_);
-
-    // Clean up the empty webfont that we created and reset the rulers to the
-    // standard fallback stack.
-    this.domHelper_.removeNullFontStyle(nullFontFamily);
-    this.fontRulerA_.setFont(webfont.FontWatchRunner.FALLBACK_FONTS_A, this.fontDescription_);
-    this.fontRulerB_.setFont(webfont.FontWatchRunner.FALLBACK_FONTS_B, this.fontDescription_);
   }
 };
 
@@ -134,9 +107,9 @@ webfont.FontWatchRunner.prototype.check_ = function() {
   var sizeB = this.fontRulerB_.getSize();
 
   if ((this.sizeEquals_(sizeA, this.fallbackSizeA_) && this.sizeEquals_(sizeB, this.fallbackSizeB_)) ||
-      (this.hasWebkitFallbackBug_ && this.sizeEquals_(sizeA, this.lastResortSizeA_) && this.sizeEquals_(sizeB, this.lastResortSizeB_))) {
+      (this.hasWebKitFallbackBug_ && this.sizeEquals_(sizeA, this.lastResortSizeA_) && this.sizeEquals_(sizeB, this.lastResortSizeB_))) {
     if (this.hasTimedOut_()) {
-      if (this.hasWebkitFallbackBug_ &&
+      if (this.hasWebKitFallbackBug_ &&
           this.sizeEquals_(sizeA, this.lastResortSizeA_) &&
           this.sizeEquals_(sizeB, this.lastResortSizeB_)) {
         this.finish_(this.activeCallback_);
