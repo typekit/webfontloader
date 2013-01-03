@@ -231,7 +231,7 @@ webfont.UserAgentParser.prototype.isWebKit_ = function() {
  */
 webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
   var platform = this.getPlatform_();
-  var platformVersion = this.getPlatformVersion_();
+  var platformVersionString = this.getPlatformVersion_();
   var webKitVersionString = this.getMatchingGroup_(this.userAgent_,
       /AppleWebKit\/([\d\.\+]+)/, 1);
   var supportWebFont = false;
@@ -241,6 +241,7 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
   }
 
   var webKitVersion = this.parseVersion_(webKitVersionString);
+  var platformVersion = this.parseVersion_(platformVersionString);
 
   var name = webfont.UserAgentParser.UNKNOWN;
 
@@ -271,14 +272,18 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
     var browserVersion = this.parseVersion_(version);
     supportWebFont = browserVersion.major > 2 || browserVersion.major == 2 && browserVersion.minor >= 5;
   } else if (platform == "BlackBerry") {
-    supportWebFont = parseInt(platformVersion, 10) >= 10;
+    supportWebFont = platformVersion.major >= 10;
   } else if (platform == "Android") {
-    supportWebFont = parseFloat(platformVersion) > 2.1;
+    supportWebFont = platformVersion.major > 2 || (platformVersion.major == 2 && platformVersion.minor > 1);
   } else {
     supportWebFont = webKitVersion.major >= 526 || webKitVersion.major >= 525 && webKitVersion.minor >= 13;
   }
+
+  var hasWebKitFallbackBug = webKitVersion.major < 536 && webKitVersion.minor < 11;
+  var hasAndroidFontStackBug = hasWebKitFallbackBug && platform == "Android";
+
   return new webfont.UserAgent(name, version, "AppleWebKit", webKitVersionString,
-      platform, platformVersion, this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(supportWebFont, false, false));
+      platform, platformVersionString, this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(supportWebFont, hasWebKitFallbackBug, hasAndroidFontStackBug));
 };
 
 /**
