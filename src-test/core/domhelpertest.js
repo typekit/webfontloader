@@ -107,16 +107,6 @@ DomHelperTest.prototype.testHasSupportForStyle = function() {
   assertTrue(this.domHelper_.hasSupportForStyle_());
 };
 
-DomHelperTest.prototype.testInsertNullFontStyle = function() {
-  var counter = webfont.DomHelper.nullFontCounter_,
-      name = this.domHelper_.insertNullFontStyle('');
-
-  assertNotNull(name);
-  assertEquals(name, '__webfontloader_test_' + counter + '__');
-  assertNotEquals(counter, webfont.DomHelper.nullFontCounter_);
-  assertNotNull(webfont.DomHelper.nullFontStyles_[name]);
-};
-
 DomHelperTest.prototype.testGetWindows = function() {
   var fakeMainWindow = 'main window';
   var fakeLoadWindow = 'load window';
