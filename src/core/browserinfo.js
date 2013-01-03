@@ -2,12 +2,10 @@
  * @constructor
  * @param {boolean} webfontSupport
  * @param {boolean} webKitFallbackBug
- * @param {boolean} androidFontStackBug
  */
-webfont.BrowserInfo = function (webfontSupport, webKitFallbackBug, androidFontStackBug) {
+webfont.BrowserInfo = function (webfontSupport, webKitFallbackBug) {
   this.webfontSupport_ = webfontSupport;
   this.webKitFallbackBug_ = webKitFallbackBug;
-  this.androidFontStackBug_ = androidFontStackBug;
 };
 
 /**
@@ -22,11 +20,4 @@ webfont.BrowserInfo.prototype.hasWebFontSupport = function () {
  */
 webfont.BrowserInfo.prototype.hasWebKitFallbackBug = function () {
   return this.webKitFallbackBug_;
-};
-
-/**
- * @return {boolean}
- */
-webfont.BrowserInfo.prototype.hasAndroidFontStackBug = function () {
-  return this.androidFontStackBug_;
 };

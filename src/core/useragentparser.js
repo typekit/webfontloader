@@ -35,7 +35,7 @@ webfont.UserAgentParser.UNKNOWN_USER_AGENT = new webfont.UserAgent(
     webfont.UserAgentParser.UNKNOWN,
     webfont.UserAgentParser.UNKNOWN,
     undefined,
-    new webfont.BrowserInfo(false, false, false));
+    new webfont.BrowserInfo(false, false));
 
 /**
  * Parses the user agent string and returns an object.
@@ -142,12 +142,12 @@ webfont.UserAgentParser.prototype.parseIeUserAgentString_ = function() {
         (platform == "Windows Phone" && platformVersion.major >= 8);
 
     return new webfont.UserAgent(name, version, name, version,
-        platform, platformVersionString, this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(supportWebFont, false, false));
+        platform, platformVersionString, this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(supportWebFont, false));
   }
 
   return new webfont.UserAgent("MSIE", webfont.UserAgentParser.UNKNOWN,
       "MSIE", webfont.UserAgentParser.UNKNOWN,
-      platform, platformVersionString, this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(false, false, false));
+      platform, platformVersionString, this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(false, false));
 };
 
 /**
@@ -192,7 +192,7 @@ webfont.UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
 
     return new webfont.UserAgent("OperaMini", version, engineName,
         engineVersion, this.getPlatform_(), this.getPlatformVersion_(),
-        this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(false, false, false));
+        this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(false, false));
   }
 
   // Otherwise, find version information for normal Opera or Opera Mobile
@@ -203,7 +203,7 @@ webfont.UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
       var version = this.parseVersion_(versionString);
       return new webfont.UserAgent("Opera", versionString, engineName, engineVersion,
           this.getPlatform_(), this.getPlatformVersion_(),
-          this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(version.major >= 10, false, false));
+          this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(version.major >= 10, false));
     }
   }
   var versionString = this.getMatchingGroup_(this.userAgent_, /Opera[\/ ]([\d\.]+)/, 1);
@@ -212,11 +212,11 @@ webfont.UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
     var version = this.parseVersion_(versionString);
     return new webfont.UserAgent("Opera", versionString, engineName, engineVersion,
         this.getPlatform_(), this.getPlatformVersion_(),
-        this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(version.major >= 10, false, false));
+        this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(version.major >= 10, false));
   }
   return new webfont.UserAgent("Opera", webfont.UserAgentParser.UNKNOWN,
       engineName, engineVersion, this.getPlatform_(),
-      this.getPlatformVersion_(), this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(false, false, false));
+      this.getPlatformVersion_(), this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(false, false));
 };
 
 /**
@@ -280,10 +280,9 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
   }
 
   var hasWebKitFallbackBug = webKitVersion.major < 536 || (webKitVersion.major == 536 && webKitVersion.minor < 11);
-  var hasAndroidFontStackBug = hasWebKitFallbackBug && platform == "Android";
 
   return new webfont.UserAgent(name, version, "AppleWebKit", webKitVersionString,
-      platform, platformVersionString, this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(supportWebFont, hasWebKitFallbackBug, hasAndroidFontStackBug));
+      platform, platformVersionString, this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(supportWebFont, hasWebKitFallbackBug));
 };
 
 /**
@@ -332,7 +331,7 @@ webfont.UserAgentParser.prototype.parseGeckoUserAgentString_ = function() {
     }
   }
   return new webfont.UserAgent(name, version, "Gecko", geckoVersionString,
-      this.getPlatform_(), this.getPlatformVersion_(), this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(supportWebFont, false, false));
+      this.getPlatform_(), this.getPlatformVersion_(), this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(supportWebFont, false));
 };
 
 /**
