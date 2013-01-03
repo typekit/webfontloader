@@ -717,3 +717,34 @@ UserAgentTest.prototype.testBrowserBBNotSupportWebfont = function() {
   assertEquals(undefined, userAgent.getDocumentMode());
   assertFalse(userAgent.getBrowserInfo().hasWebFontSupport());
 };
+
+UserAgentTest.prototype.testBrowserWebKitFallbackBug = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5",
+      this.defaultDocument_);
+
+  var userAgent = userAgentParser.parse();
+
+  assertTrue(userAgent.getBrowserInfo().hasWebKitFallbackBug());
+};
+
+UserAgentTest.prototype.testBrowserWebKitNoFallbackBug = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.814.2 Safari/536.11",
+      this.defaultDocument_);
+
+  var userAgent = userAgentParser.parse();
+
+  assertFalse(userAgent.getBrowserInfo().hasWebKitFallbackBug());
+};
+
+UserAgentTest.prototype.testBrowserFontStackBug = function() {
+  var userAgentParser = new webfont.UserAgentParser(
+      "Mozilla/5.0 (Linux; U; Android 4.0.3; de-ch; HTC Sensation Build/IML74K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30",
+      this.defaultDocument_);
+
+  var userAgent = userAgentParser.parse();
+
+  assertTrue(userAgent.getBrowserInfo().hasWebKitFallbackBug());
+  assertTrue(userAgent.getBrowserInfo().hasAndroidFontStackBug());
+};

@@ -279,7 +279,7 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
     supportWebFont = webKitVersion.major >= 526 || webKitVersion.major >= 525 && webKitVersion.minor >= 13;
   }
 
-  var hasWebKitFallbackBug = webKitVersion.major < 536 && webKitVersion.minor < 11;
+  var hasWebKitFallbackBug = webKitVersion.major < 536 || (webKitVersion.major == 536 && webKitVersion.minor < 11);
   var hasAndroidFontStackBug = hasWebKitFallbackBug && platform == "Android";
 
   return new webfont.UserAgent(name, version, "AppleWebKit", webKitVersionString,
