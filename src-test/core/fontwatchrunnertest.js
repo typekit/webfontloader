@@ -144,12 +144,6 @@ FontWatchRunnerTest.prototype.setUp = function() {
             height: 3
           };
         }
-      } else if (el.style.fontFamily == "") {
-        // Return the last resort width
-        return {
-          width: 2,
-          height: 2
-        };
       } else {
         // Return the default width
         return {
@@ -177,11 +171,6 @@ FontWatchRunnerTest.prototype.setUp = function() {
             height: 1
           };
         }
-      } else if (el.style.fontFamily == "") {
-        return {
-          width: 2,
-          height: 2
-        };
       } else {
         return {
           width: 1,
@@ -209,12 +198,6 @@ FontWatchRunnerTest.prototype.setUp = function() {
             height: 2
           };
         }
-      } else if (el.style.fontFamily == "") {
-        // Return the default width
-        return {
-          width: 2,
-          height: 2
-        };
       } else {
         return {
           width: 1,
@@ -241,11 +224,6 @@ FontWatchRunnerTest.prototype.setUp = function() {
             height: 3
           };
         }
-      } else if (el.style.fontFamily == "") {
-        return {
-          width: 2,
-          height: 2
-        };
       } else {
         return {
           width: 1,
