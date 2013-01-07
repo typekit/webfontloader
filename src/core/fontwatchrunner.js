@@ -115,7 +115,7 @@ webfont.FontWatchRunner.prototype.sizeMatches_ = function(size, genericFontFamil
 webfont.FontWatchRunner.prototype.sizesMatchGenericFontSizes_ = function(a, b) {
   for (var genericFontFamily in webfont.FontWatchRunner.GenericFontFamily) {
     if (webfont.FontWatchRunner.GenericFontFamily.hasOwnProperty(genericFontFamily)) {
-      if (this.sizeMatches_(a, genericFontFamily) && this.sizeMatches_(b, genericFontFamily)) {
+      if (this.sizeMatches_(a, webfont.FontWatchRunner.GenericFontFamily[genericFontFamily]) && this.sizeMatches_(b, webfont.FontWatchRunner.GenericFontFamily[genericFontFamily])) {
         return true;
       }
     }
