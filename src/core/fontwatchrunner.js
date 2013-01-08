@@ -41,8 +41,7 @@ webfont.FontWatchRunner.GenericFontFamily = {
   SERIF: 'serif',
   SANS_SERIF: 'sans-serif',
   MONOSPACE: 'monospace',
-  CURSIVE: 'cursive',
-  FANTASY: 'fantasy'
+  EMOJI: 'Apple Color Emoji'
 };
 
 /**
