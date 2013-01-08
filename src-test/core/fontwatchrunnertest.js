@@ -125,6 +125,7 @@ FontWatchRunnerTest.prototype.setUp = function() {
    * See: https://bugs.webkit.org/show_bug.cgi?id=76684
    */
   this.timesToDelayChangedSizeWebkit_ = 1;
+  this.firstCallToRetrieveSizeWebkit_ = true;
   this.fakeWebkitFontSizer_ = {
     getSize: function(el) {
       if (el.style.fontFamily.indexOf(self.fontFamily_) !== -1) {
@@ -145,11 +146,19 @@ FontWatchRunnerTest.prototype.setUp = function() {
           };
         }
       } else {
-        // Return the default width
-        return {
-          width: 1,
-          height: 1
-        };
+        if (self.firstCallToRetrieveSizeWebkit_) {
+          self.firstCallToRetrieveSizeWebkit_ = false;
+          return {
+            width: 2,
+            height: 2
+          };
+        } else {
+          // Return the default width
+          return {
+            width: 1,
+            height: 1
+          };
+        }
       }
     }
   };
@@ -165,17 +174,25 @@ FontWatchRunnerTest.prototype.setUp = function() {
           };
         } else {
           // Return the original width, indicating the font
-          // failed to load. This should trigger `inactive`.
+          // failed to load. This should incorrectly trigger `inactive`.
           return {
             width: 1,
             height: 1
           };
         }
       } else {
-        return {
-          width: 1,
-          height: 1
-        };
+        if (self.firstCallToRetrieveSizeWebkit_) {
+          self.firstCallToRetrieveSizeWebkit_ = false;
+          return {
+            width: 2,
+            height: 2
+          };
+        } else {
+          return {
+            width: 1,
+            height: 1
+          };
+        }
       }
     }
   };
@@ -199,10 +216,18 @@ FontWatchRunnerTest.prototype.setUp = function() {
           };
         }
       } else {
-        return {
-          width: 1,
-          height: 1
-        };
+        if (self.firstCallToRetrieveSizeWebkit_) {
+          self.firstCallToRetrieveSizeWebkit_ = false;
+          return {
+            width: 2,
+            height: 2
+          };
+        } else {
+          return {
+            width: 1,
+            height: 1
+          };
+        }
       }
     }
   };
@@ -225,10 +250,18 @@ FontWatchRunnerTest.prototype.setUp = function() {
           };
         }
       } else {
-        return {
-          width: 1,
-          height: 1
-        };
+        if (self.firstCallToRetrieveSizeWebkit_) {
+          self.firstCallToRetrieveSizeWebkit_ = false;
+          return {
+            width: 2,
+            height: 2
+          };
+        } else {
+          return {
+            width: 1,
+            height: 1
+          };
+        }
       }
     }
   };
@@ -326,6 +359,7 @@ FontWatchRunnerTest.prototype.testWatchFontWaitForLoadInactive = function() {
 FontWatchRunnerTest.prototype.testWatchFontWebkitWithFastFont = function() {
   this.timesToGetTimeBeforeTimeout_ = 10;
   this.timesToDelayChangedSizeWebkit_ = 1;
+  this.firstCallToRetrieveSizeWebkit_ = true;
 
   var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
       this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizer_,
@@ -341,6 +375,7 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitWithFastFont = function() {
 FontWatchRunnerTest.prototype.testWatchFontWebkitWithSlowFont = function() {
   this.timesToGetTimeBeforeTimeout_ = 10;
   this.timesToDelayChangedSizeWebkit_ = 2;
+  this.firstCallToRetrieveSizeWebkit_ = true;
 
   var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
       this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizer_,
@@ -356,6 +391,7 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitWithSlowFont = function() {
 FontWatchRunnerTest.prototype.testWatchFontWebkitWithEqualMetrics = function() {
   this.timesToGetTimeBeforeTimeout_ = 10;
   this.timesToDelayChangedSizeWebkit_ = 2;
+  this.firstCallToRetrieveSizeWebkit_ = true;
 
   var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
       this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizerWithEqualMetrics_,
@@ -371,6 +407,7 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitWithEqualMetrics = function() {
 FontWatchRunnerTest.prototype.testWatchFontWebkitWithDifferentMetrics = function() {
   this.timesToGetTimeBeforeTimeout_ = 10;
   this.timesToDelayChangedSizeWebkit_ = 2;
+  this.firstCallToRetrieveSizeWebkit_ = true;
 
   var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
       this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizeWithDifferentMetrics_,
@@ -386,6 +423,7 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitWithDifferentMetrics = function
 FontWatchRunnerTest.prototype.testWatchFontWebkitFailedLoad = function() {
   this.timesToGetTimeBeforeTimeout_ = 10;
   this.timesToDelayChangedSizeWebkit_ = 5;
+  this.firstCallToRetrieveSizeWebkit_ = true;
 
   var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
       this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizerFailedLoad_,
@@ -394,8 +432,8 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitFailedLoad = function() {
 
   fontWatchRunner.start();
   assertEquals(9, this.asyncCount_);
-  assertEquals(1, this.fontInactiveCalled_);
-  assertEquals(true, this.fontInactive_['fontFamily1 n4']);
+  assertEquals(1, this.fontActiveCalled_);
+  assertEquals(true, this.fontActive_['fontFamily1 n4']);
 };
 
 FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
@@ -408,19 +446,19 @@ FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
       this.fontDescription_, false);
 
   fontWatchRunner.start();
-  assertEquals(2, this.createElementCalled_);
+  assertEquals(3, this.createElementCalled_);
   assertEquals('span', this.createdElements_[0]['name']);
   assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.FALLBACK_FONTS_A));
+  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.GenericFontFamily.SERIF));
   assertEquals('BESbswy', this.createdElements_[0]['innerHtml']);
 
   assertEquals('span', this.createdElements_[1]['name']);
   assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.FALLBACK_FONTS_B));
+  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.GenericFontFamily.SANS_SERIF));
   assertEquals('BESbswy', this.createdElements_[1]['innerHtml']);
 
-  assertEquals(2, this.insertIntoCalled_);
-  assertEquals(2, this.removeElementCalled_);
+  assertEquals(3, this.insertIntoCalled_);
+  assertEquals(3, this.removeElementCalled_);
 };
 
 FontWatchRunnerTest.prototype.testDomWithNotDefaultTestString = function() {
@@ -434,18 +472,18 @@ FontWatchRunnerTest.prototype.testDomWithNotDefaultTestString = function() {
 
   fontWatchRunner.start();
 
-  assertEquals(2, this.createElementCalled_);
+  assertEquals(3, this.createElementCalled_);
   assertEquals('span', this.createdElements_[0]['name']);
   assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.FALLBACK_FONTS_A));
+  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.GenericFontFamily.SERIF));
   assertEquals('testString', this.createdElements_[0]['innerHtml']);
 
   assertEquals('span', this.createdElements_[1]['name']);
   assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.FALLBACK_FONTS_B));
+  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.GenericFontFamily.SANS_SERIF));
   assertEquals('testString', this.createdElements_[1]['innerHtml']);
 
-  assertEquals(2, this.insertIntoCalled_);
-  assertEquals(2, this.removeElementCalled_);
+  assertEquals(3, this.insertIntoCalled_);
+  assertEquals(3, this.removeElementCalled_);
 
 };
