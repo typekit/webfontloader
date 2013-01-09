@@ -23,21 +23,21 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
   this.hasWebKitFallbackBug_ = hasWebKitFallbackBug;
-  this.genericFontFamilySizes_ = {};
+  this.lastResortSizes_ = {};
 
   this.fontRulerA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
   this.fontRulerA_.insert();
   this.fontRulerB_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
   this.fontRulerB_.insert();
 
-  this.setupGenericFontFamilySizes_();
+  this.setupLastResortSizes_();
 };
 
 /**
  * @enum {string}
  * @const
  */
-webfont.FontWatchRunner.GenericFontFamily = {
+webfont.FontWatchRunner.LastResortFonts = {
   SERIF: 'serif',
   SANS_SERIF: 'sans-serif',
   MONOSPACE: 'monospace',
@@ -56,15 +56,15 @@ webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESbswy';
 /**
  * @private
  */
-webfont.FontWatchRunner.prototype.setupGenericFontFamilySizes_ = function() {
+webfont.FontWatchRunner.prototype.setupLastResortSizes_ = function() {
   var fontRuler = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
 
   fontRuler.insert();
 
-  for (var genericFontFamily in webfont.FontWatchRunner.GenericFontFamily) {
-    if (webfont.FontWatchRunner.GenericFontFamily.hasOwnProperty(genericFontFamily)) {
-      fontRuler.setFont(webfont.FontWatchRunner.GenericFontFamily[genericFontFamily], this.fontDescription_);
-      this.genericFontFamilySizes_[webfont.FontWatchRunner.GenericFontFamily[genericFontFamily]] = fontRuler.getSize();
+  for (var font in webfont.FontWatchRunner.LastResortFonts) {
+    if (webfont.FontWatchRunner.LastResortFonts.hasOwnProperty(font)) {
+      fontRuler.setFont(webfont.FontWatchRunner.LastResortFonts[font], this.fontDescription_);
+      this.lastResortSizes_[webfont.FontWatchRunner.LastResortFonts[font]] = fontRuler.getSize();
     }
   }
   fontRuler.remove();
@@ -73,8 +73,8 @@ webfont.FontWatchRunner.prototype.setupGenericFontFamilySizes_ = function() {
 webfont.FontWatchRunner.prototype.start = function() {
   this.started_ = this.getTime_();
 
-  this.fontRulerA_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.GenericFontFamily.SERIF, this.fontDescription_);
-  this.fontRulerB_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.GenericFontFamily.SANS_SERIF, this.fontDescription_);
+  this.fontRulerA_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.LastResortFonts.SERIF, this.fontDescription_);
+  this.fontRulerB_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.LastResortFonts.SANS_SERIF, this.fontDescription_);
 
   this.check_();
 };
@@ -95,11 +95,11 @@ webfont.FontWatchRunner.prototype.sizeEquals_ = function(a, b) {
  *
  * @private
  * @param {?{width: number, height: number}} size
- * @param {string} genericFontFamily
+ * @param {string} lastResortFont
  * @return {boolean}
  */
-webfont.FontWatchRunner.prototype.sizeMatches_ = function(size, genericFontFamily) {
-  return this.sizeEquals_(size, this.genericFontFamilySizes_[genericFontFamily]);
+webfont.FontWatchRunner.prototype.sizeMatches_ = function(size, lastResortFont) {
+  return this.sizeEquals_(size, this.lastResortSizes_[lastResortFont]);
 };
 
 /**
@@ -111,10 +111,11 @@ webfont.FontWatchRunner.prototype.sizeMatches_ = function(size, genericFontFamil
  * @param {?{width: number, height: number}} b
  * @return {boolean}
  */
-webfont.FontWatchRunner.prototype.sizesMatchGenericFontSizes_ = function(a, b) {
-  for (var genericFontFamily in webfont.FontWatchRunner.GenericFontFamily) {
-    if (webfont.FontWatchRunner.GenericFontFamily.hasOwnProperty(genericFontFamily)) {
-      if (this.sizeMatches_(a, webfont.FontWatchRunner.GenericFontFamily[genericFontFamily]) && this.sizeMatches_(b, webfont.FontWatchRunner.GenericFontFamily[genericFontFamily])) {
+webfont.FontWatchRunner.prototype.sizesMatchLastResortSizes_ = function(a, b) {
+  for (var font in webfont.FontWatchRunner.LastResortFonts) {
+    if (webfont.FontWatchRunner.LastResortFonts.hasOwnProperty(font)) {
+      if (this.sizeMatches_(a, webfont.FontWatchRunner.LastResortFonts[font]) &&
+          this.sizeMatches_(b, webfont.FontWatchRunner.LastResortFonts[font])) {
         return true;
       }
     }
@@ -144,10 +145,10 @@ webfont.FontWatchRunner.prototype.check_ = function() {
   var sizeA = this.fontRulerA_.getSize();
   var sizeB = this.fontRulerB_.getSize();
 
-  if ((this.sizeMatches_(sizeA, webfont.FontWatchRunner.GenericFontFamily.SERIF) && this.sizeMatches_(sizeB, webfont.FontWatchRunner.GenericFontFamily.SANS_SERIF)) ||
-      (this.hasWebKitFallbackBug_ && this.sizesMatchGenericFontSizes_(sizeA, sizeB))) {
+  if ((this.sizeMatches_(sizeA, webfont.FontWatchRunner.LastResortFonts.SERIF) && this.sizeMatches_(sizeB, webfont.FontWatchRunner.LastResortFonts.SANS_SERIF)) ||
+      (this.hasWebKitFallbackBug_ && this.sizesMatchLastResortSizes_(sizeA, sizeB))) {
     if (this.hasTimedOut_()) {
-      if (this.hasWebKitFallbackBug_ && this.sizesMatchGenericFontSizes_(sizeA, sizeB)) {
+      if (this.hasWebKitFallbackBug_ && this.sizesMatchLastResortSizes_(sizeA, sizeB)) {
         this.finish_(this.activeCallback_);
       } else {
         this.finish_(this.inactiveCallback_);

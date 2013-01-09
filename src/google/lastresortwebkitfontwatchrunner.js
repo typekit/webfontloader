@@ -20,8 +20,8 @@ webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
       getTime, fontFamily, fontDescription, hasWebkitFallbackBug, opt_fontTestString);
   this.webKitLastResortFontSizes_ = this.setUpWebKitLastResortFontSizes_();
   this.webKitLastResortSizeChange_ = false;
-  this.lastObservedSizeA_ = this.genericFontFamilySizes_[webfont.FontWatchRunner.GenericFontFamily.SERIF];
-  this.lastObservedSizeB_ = this.genericFontFamilySizes_[webfont.FontWatchRunner.GenericFontFamily.SANS_SERIF];;
+  this.lastObservedSizeA_ = this.lastResortSizes_[webfont.FontWatchRunner.LastResortFonts.SERIF];
+  this.lastObservedSizeB_ = this.lastResortSizes_[webfont.FontWatchRunner.LastResortFonts.SANS_SERIF];;
 };
 webfont.extendsClass(webfont.FontWatchRunner, webfont.LastResortWebKitFontWatchRunner);
 

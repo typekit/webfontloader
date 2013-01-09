@@ -449,12 +449,12 @@ FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
   assertEquals(3, this.createElementCalled_);
   assertEquals('span', this.createdElements_[0]['name']);
   assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.GenericFontFamily.SERIF));
+  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.LastResortFonts.SERIF));
   assertEquals('BESbswy', this.createdElements_[0]['innerHtml']);
 
   assertEquals('span', this.createdElements_[1]['name']);
   assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.GenericFontFamily.SANS_SERIF));
+  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.LastResortFonts.SANS_SERIF));
   assertEquals('BESbswy', this.createdElements_[1]['innerHtml']);
 
   assertEquals(3, this.insertIntoCalled_);
@@ -475,12 +475,12 @@ FontWatchRunnerTest.prototype.testDomWithNotDefaultTestString = function() {
   assertEquals(3, this.createElementCalled_);
   assertEquals('span', this.createdElements_[0]['name']);
   assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.GenericFontFamily.SERIF));
+  assertNotEquals(-1, this.createdElements_[0]['attrs']['style'].indexOf(webfont.FontWatchRunner.LastResortFonts.SERIF));
   assertEquals('testString', this.createdElements_[0]['innerHtml']);
 
   assertEquals('span', this.createdElements_[1]['name']);
   assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf('fontFamily1'));
-  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.GenericFontFamily.SANS_SERIF));
+  assertNotEquals(-1, this.createdElements_[1]['attrs']['style'].indexOf(webfont.FontWatchRunner.LastResortFonts.SANS_SERIF));
   assertEquals('testString', this.createdElements_[1]['innerHtml']);
 
   assertEquals(3, this.insertIntoCalled_);
