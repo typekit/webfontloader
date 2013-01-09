@@ -57,9 +57,7 @@ FontWatchRunnerTest.prototype.setUp = function() {
           break;
         }
       }
-    },
-    insertNullFontStyle: function () { return '__webfontloader_test_0'; },
-    removeNullFontStyle: function () { return true; }
+    }
   };
 
   this.timesToCheckSizesBeforeChange_ = 0;
