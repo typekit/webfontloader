@@ -223,7 +223,7 @@ webfont.UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
  * @private
  */
 webfont.UserAgentParser.prototype.isWebKit_ = function() {
-  return this.userAgent_.indexOf("AppleWebKit") != -1 || this.userAgent_.indexOf("AppleWebkit") != -1;
+  return /AppleWeb(?:K|k)it/.test(this.userAgent_);
 };
 
 /**
