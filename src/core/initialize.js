@@ -25,3 +25,4 @@ webfont.UserAgent.prototype['getPlatformVersion'] = webfont.UserAgent.prototype.
 webfont.UserAgent.prototype['getDocumentMode'] = webfont.UserAgent.prototype.getDocumentMode;
 webfont.UserAgent.prototype['getBrowserInfo'] = webfont.UserAgent.prototype.getBrowserInfo;
 webfont.BrowserInfo.prototype['hasWebFontSupport'] = webfont.BrowserInfo.prototype.hasWebFontSupport;
+webfont.BrowserInfo.prototype['hasWebKitFallbackBug'] = webfont.BrowserInfo.prototype.hasWebKitFallbackBug;
