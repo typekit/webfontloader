@@ -1,6 +1,7 @@
 source :gemcutter
 
 gem "rake"
+gem "jasmine"
 
 group :demos do
   gem "rack"
