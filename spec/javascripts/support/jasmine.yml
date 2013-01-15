@@ -13,6 +13,7 @@
 src_files:
     - src/core/namespace.js
     - src/core/domhelper.js
+    - src/core/cssclassname.js
 
 # stylesheets
 #
