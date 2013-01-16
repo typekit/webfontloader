@@ -16,6 +16,8 @@ src_files:
     - src/core/cssclassname.js
     - src/core/cssfontfamilyname.js
     - src/core/fontvariationdescription.js
+    - src/core/useragent.js
+    - src/core/useragentparser.js
 
 # stylesheets
 #
