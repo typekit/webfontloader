@@ -15,6 +15,7 @@ src_files:
     - src/core/domhelper.js
     - src/core/cssclassname.js
     - src/core/cssfontfamilyname.js
+    - src/core/fontvariationdescription.js
 
 # stylesheets
 #
