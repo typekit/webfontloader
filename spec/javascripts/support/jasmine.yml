@@ -18,6 +18,7 @@ src_files:
     - src/core/fontvariationdescription.js
     - src/core/useragent.js
     - src/core/useragentparser.js
+    - src/core/fontmoduleloader.js
 
 # stylesheets
 #
