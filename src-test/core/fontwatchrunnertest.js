@@ -68,23 +68,14 @@ FontWatchRunnerTest.prototype.setUp = function() {
         if (self.timesToCheckSizesBeforeChange_ <= 0) {
           // Decrement by 0.5 because we're checking two separate font stacks each iteration
           self.timesToCheckSizesBeforeChange_ -= 0.5;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         } else {
           // Decrement by 0.5 because we're checking two separate font stacks each iteration
           self.timesToCheckSizesBeforeChange_ -= 0.5;
-          return {
-            width: 1,
-            height: 1
-          };
+          return new webfont.Size(1, 1);
         }
       } else {
-        return {
-          width: 1,
-          height: 1
-        };
+        return new webfont.Size(1, 1);
       }
     }
   };
@@ -94,22 +85,13 @@ FontWatchRunnerTest.prototype.setUp = function() {
       if (el.style.fontFamily.indexOf(self.fontFamily_) != -1) {
         if (self.timesToCheckSizesBeforeChange_ <= 0) {
           self.timesToCheckSizesBeforeChange_ -= 0.5;
-          return {
-            width: 1,
-            height: 2
-          };
+          return new webfont.Size(1, 2);
         } else {
           self.timesToCheckSizesBeforeChange_ -= 0.5;
-          return {
-            width: 1,
-            height: 1
-          };
+          return new webfont.Size(1, 1);
         }
       } else {
-        return {
-          width: 1,
-          height: 1
-        };
+        return new webfont.Size(1, 1);
       }
     }
   };
@@ -132,30 +114,18 @@ FontWatchRunnerTest.prototype.setUp = function() {
           // Return the incorrect width for a certain number of cycles.
           // The actual number depends on how fast or how slow the font
           // is parsed and applied.
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         } else {
           // Return the correct width
-          return {
-            width: 3,
-            height: 3
-          };
+          return new webfont.Size(3, 3);
         }
       } else {
         if (self.firstCallToRetrieveSizeWebkit_) {
           self.firstCallToRetrieveSizeWebkit_ = false;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         } else {
           // Return the default width
-          return {
-            width: 1,
-            height: 1
-          };
+          return new webfont.Size(1, 1);
         }
       }
     }
@@ -166,30 +136,18 @@ FontWatchRunnerTest.prototype.setUp = function() {
       if (el.style.fontFamily.indexOf(self.fontFamily_) !== -1) {
         if (self.timesToDelayChangedSizeWebkit_ > 0) {
           self.timesToDelayChangedSizeWebkit_ -= 0.5;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         } else {
           // Return the original width, indicating the font
           // failed to load. This should incorrectly trigger `inactive`.
-          return {
-            width: 1,
-            height: 1
-          };
+          return new webfont.Size(1, 1);
         }
       } else {
         if (self.firstCallToRetrieveSizeWebkit_) {
           self.firstCallToRetrieveSizeWebkit_ = false;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         } else {
-          return {
-            width: 1,
-            height: 1
-          };
+          return new webfont.Size(1, 1);
         }
       }
     }
@@ -200,31 +158,19 @@ FontWatchRunnerTest.prototype.setUp = function() {
       if (el.style.fontFamily.indexOf(self.fontFamily_) !== -1) {
         if (self.timesToDelayChangedSizeWebkit_ > 0) {
           self.timesToDelayChangedSizeWebkit_ -= 0.5;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         } else {
           // This time the fallback font picked by Webkit has the
           // same metrics as the font being loaded. This is a rare
           // case but we should be able to handle it.
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         }
       } else {
         if (self.firstCallToRetrieveSizeWebkit_) {
           self.firstCallToRetrieveSizeWebkit_ = false;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         } else {
-          return {
-            width: 1,
-            height: 1
-          };
+          return new webfont.Size(1, 1);
         }
       }
     }
@@ -235,30 +181,18 @@ FontWatchRunnerTest.prototype.setUp = function() {
       if (el.style.fontFamily.indexOf(self.fontFamily_) !== -1) {
         if (self.timesToDelayChangedSizeWebkit_ > 0) {
           self.timesToDelayChangedSizeWebkit_ -= 0.5;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         } else {
           // Even though the width is the same, the height
           // is different, so this should trigger the active event.
-          return {
-            width: 2,
-            height: 3
-          };
+          return new webfont.Size(2, 3);
         }
       } else {
         if (self.firstCallToRetrieveSizeWebkit_) {
           self.firstCallToRetrieveSizeWebkit_ = false;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         } else {
-          return {
-            width: 1,
-            height: 1
-          };
+          return new webfont.Size(1, 1);
         }
       }
     }

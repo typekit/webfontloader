@@ -80,10 +80,7 @@ webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {
   var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.domHelper_,
       eventDispatcher, {
         getSize: function(elem) {
-          return {
-            width: elem.offsetWidth,
-            height: elem.offsetHeight
-          };
+          return new webfont.Size(elem.offsetWidth, elem.offsetHeight);
         }}, self.asyncCall_, function() {
           return new Date().getTime();
         });

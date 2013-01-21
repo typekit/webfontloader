@@ -3,7 +3,7 @@
  * of a given font and string.
  * @constructor
  * @param {webfont.DomHelper} domHelper
- * @param {Object.<string, function(Object): {width: number, height: number}>} fontSizer
+ * @param {Object.<string, function(Object): webfont.Size>} fontSizer
  * @param {string} fontTestString
  */
 webfont.FontRuler = function(domHelper, fontSizer, fontTestString) {
@@ -47,7 +47,7 @@ webfont.FontRuler.prototype.computeStyleString_ = function(fontFamily, opt_fontD
 };
 
 /**
- * @return {{width: number, height: number}}
+ * @return {webfont.Size}
  */
 webfont.FontRuler.prototype.getSize = function() {
   return this.fontSizer_.getSize(this.el_);

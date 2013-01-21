@@ -133,6 +133,7 @@ DESC
     src/core/cssfontfamilyname.js
     src/core/domhelper.js
     src/core/eventdispatcher.js
+    src/core/size.js
     src/core/font.js
     src/core/fontmoduleloader.js
     src/core/fontruler.js

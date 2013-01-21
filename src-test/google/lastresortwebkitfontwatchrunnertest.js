@@ -84,38 +84,23 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontIgnored =
       this.fakeDomHelper_, {getSize: function() {
         if (originalSizeCount > 0) {
           originalSizeCount--;
-          return {
-            width: 1,
-            height: 1
-          };
+          return new webfont.Size(1, 1);
         }
         if (lastResortFontsCount > 0) {
           lastResortFontsCount--;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         }
         if (firstSize > 0) {
           firstSize--;
-          return {
-            width: 1,
-            height: 1
-          };
+          return new webfont.Size(1, 1);
         }
         if (secondSize > 0) {
           secondSize--;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         }
         if (thirdSize > 0) {
           thirdSize--;
-          return {
-            width: 3,
-            height: 3
-          };
+          return new webfont.Size(3, 3);
         }
       }}, this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
       this.fontDescription_, false);
@@ -144,29 +129,17 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontActiveWhenSizeMa
       this.fakeDomHelper_, {getSize: function() {
         if (originalSizeCount > 0) {
           originalSizeCount--;
-          return {
-            width: 1,
-            height: 1
-          };
+          return new webfont.Size(1, 1);
         }
         if (lastResortFontsCount > 0) {
           lastResortFontsCount--;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         }
         if (firstSize > 0) {
           firstSize--;
-          return {
-            width: 1,
-            height: 1
-          };
+          return new webfont.Size(1, 1);
         }
-        return {
-          width: 2,
-          height: 2
-        };
+        return new webfont.Size(2, 2);
       }}, this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
       this.fontDescription_, false);
 
@@ -194,50 +167,29 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontInactiveWhenSize
       this.fakeDomHelper_, {getSize: function(elem) {
         if (originalSizeCount > 0) {
           originalSizeCount--;
-          return {
-            width: 1,
-            height: 1
-          };
+          return new webfont.Size(1, 1);
         }
         if (lastResortFontsCount > 0) {
           lastResortFontsCount--;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         }
         if (firstSize > 0) {
           firstSize--;
-          return {
-            width: 1,
-            height: 1
-          };
+          return new webfont.Size(1, 1)
         }
         if (secondSize > 0) {
           secondSize--;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2)
         }
         if (thirdSize == 2) {
           thirdSize--;
-          return {
-            width: 2,
-            height: 2
-          };
+          return new webfont.Size(2, 2);
         }
         if (thirdSize == 1) {
           thirdSize--;
-          return {
-            width: 4,
-            height: 4
-          };
+          return new webfont.Size(4, 4);
         }
-        return {
-          width: 2,
-          height: 2
-        };
+        return new webfont.Size(2, 2);
       }}, this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
       this.fontDescription_, false);
 

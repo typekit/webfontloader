@@ -3,7 +3,7 @@
  * @param {function(string, string)} activeCallback
  * @param {function(string, string)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
- * @param {Object.<string, function(Object): {width: number, height: number}>} fontSizer
+ * @param {Object.<string, function(Object): webfont.Size>} fontSizer
  * @param {function(function(), number=)} asyncCall
  * @param {function(): number} getTime
  * @param {string} fontFamily

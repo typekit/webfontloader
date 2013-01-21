@@ -3,7 +3,7 @@
  * @param {function(string, string)} activeCallback
  * @param {function(string, string)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
- * @param {Object.<string, function(Object): {width: number, height: number}>} fontSizer
+ * @param {Object.<string, function(Object): webfont.Size>} fontSizer
  * @param {function(function(), number=)} asyncCall
  * @param {function(): number} getTime
  * @param {string} fontFamily
@@ -88,26 +88,15 @@ webfont.FontWatchRunner.prototype.start = function() {
 };
 
 /**
- * @private
- * Returns true if two metrics are the same.
- * @param {?{width: number, height: number}} a
- * @param {?{width: number, height: number}} b
- * @return {boolean}
- */
-webfont.FontWatchRunner.prototype.sizeEquals_ = function(a, b) {
-  return !!a && !!b && a.width === b.width && a.height === b.height;
-};
-
-/**
  * Returns true if the given size matches the generic font family size.
  *
  * @private
- * @param {?{width: number, height: number}} size
+ * @param {?webfont.Size} size
  * @param {string} lastResortFont
  * @return {boolean}
  */
 webfont.FontWatchRunner.prototype.sizeMatches_ = function(size, lastResortFont) {
-  return this.sizeEquals_(size, this.lastResortSizes_[lastResortFont]);
+  return size.equals(this.lastResortSizes_[lastResortFont]);
 };
 
 /**
@@ -115,8 +104,8 @@ webfont.FontWatchRunner.prototype.sizeMatches_ = function(size, lastResortFont) 
  * sizes.
  *
  * @private
- * @param {?{width: number, height: number}} a
- * @param {?{width: number, height: number}} b
+ * @param {?webfont.Size} a
+ * @param {?webfont.Size} b
  * @return {boolean}
  */
 webfont.FontWatchRunner.prototype.sizesMatchLastResortSizes_ = function(a, b) {

@@ -3,7 +3,7 @@
  * @param {webfont.UserAgent} userAgent
  * @param {webfont.DomHelper} domHelper
  * @param {webfont.EventDispatcher} eventDispatcher
- * @param {Object.<string, function(Object): number>} fontSizer
+ * @param {Object.<string, function(Object): webfont.Size>} fontSizer
  * @param {function(function(), number=)} asyncCall
  * @param {function(): number} getTime
  */
