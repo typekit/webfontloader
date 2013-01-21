@@ -38,7 +38,7 @@ webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
  *     function(string, string), webfont.DomHelper,
  *     Object.<string, function(Object): number>,
  *     function(function(), number=), function(): number, string, string,
- *     boolean, string=)} fontWatchRunnerCtor The font watch runner constructor.
+ *     boolean, Object.<string,boolean>=, string=)} fontWatchRunnerCtor The font watch runner constructor.
  * @param {boolean} last True if this is the last set of families to watch.
  */
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
@@ -71,7 +71,7 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
       var inactiveCallback = webfont.bind(this, this.fontInactive_)
       var fontWatchRunner = new fontWatchRunnerCtor(activeCallback,
           inactiveCallback, this.domHelper_, this.fontSizer_, this.asyncCall_,
-          this.getTime_, fontFamily, fontDescription, this.hasWebKitFallbackBug_, fontTestString);
+          this.getTime_, fontFamily, fontDescription, this.hasWebKitFallbackBug_, null, fontTestString);
 
       fontWatchRunner.start();
     }

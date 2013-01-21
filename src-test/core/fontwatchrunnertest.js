@@ -368,6 +368,39 @@ FontWatchRunnerTest.prototype.testWatchFontWebkitFailedLoad = function() {
   assertEquals(true, this.fontActive_['fontFamily1 n4']);
 };
 
+FontWatchRunnerTest.prototype.testWatchFontWebkitWithEqualMetricsIncompatibleFont = function() {
+  this.timesToGetTimeBeforeTimeout_ = 10;
+  this.timesToDelayChangedSizeWebkit_ = 2;
+  this.firstCallToRetrieveSizeWebkit_ = true;
+
+  var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
+      this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizerWithEqualMetrics_,
+      this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
+      this.fontDescription_, true, { 'fontFamily2': true });
+
+  fontWatchRunner.start();
+  assertEquals(9, this.asyncCount_);
+  assertEquals(1, this.fontInactiveCalled_);
+  assertEquals(true, this.fontInactive_['fontFamily1 n4']);
+};
+
+FontWatchRunnerTest.prototype.testWatchFontWebkitWithEqualMetricsCompatibleFont = function() {
+  this.timesToGetTimeBeforeTimeout_ = 10;
+  this.timesToDelayChangedSizeWebkit_ = 2;
+  this.firstCallToRetrieveSizeWebkit_ = true;
+
+  var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
+      this.inactiveCallback_, this.fakeDomHelper_, this.fakeWebkitFontSizerWithEqualMetrics_,
+      this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
+      this.fontDescription_, true, { 'fontFamily1': true });
+
+  fontWatchRunner.start();
+  assertEquals(9, this.asyncCount_);
+  assertEquals(1, this.fontActiveCalled_);
+  assertEquals(true, this.fontActive_['fontFamily1 n4']);
+};
+
+
 FontWatchRunnerTest.prototype.testDomWithDefaultTestString = function() {
   this.timesToCheckSizesBeforeChange_ = 3;
   this.timesToGetTimeBeforeTimeout_ = 10;
@@ -400,7 +433,7 @@ FontWatchRunnerTest.prototype.testDomWithNotDefaultTestString = function() {
   var fontWatchRunner = new webfont.FontWatchRunner(this.activeCallback_,
       this.inactiveCallback_, this.fakeDomHelper_, this.fakeFontSizer_,
       this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
-      this.fontDescription_, false, 'testString');
+      this.fontDescription_, false, null, 'testString');
 
   fontWatchRunner.start();
 

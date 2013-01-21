@@ -9,10 +9,11 @@
  * @param {string} fontFamily
  * @param {string} fontDescription
  * @param {boolean} hasWebKitFallbackBug
+ * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    fontSizer, asyncCall, getTime, fontFamily, fontDescription, hasWebKitFallbackBug, opt_fontTestString) {
+    fontSizer, asyncCall, getTime, fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
@@ -24,6 +25,8 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
   this.hasWebKitFallbackBug_ = hasWebKitFallbackBug;
   this.lastResortSizes_ = {};
+
+  this.metricCompatibleFonts_ = opt_metricCompatibleFonts || null;
 
   this.fontRulerA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
   this.fontRulerA_.insert();
@@ -145,7 +148,9 @@ webfont.FontWatchRunner.prototype.check_ = function() {
   if ((this.sizeMatches_(sizeA, webfont.FontWatchRunner.LastResortFonts.SERIF) && this.sizeMatches_(sizeB, webfont.FontWatchRunner.LastResortFonts.SANS_SERIF)) ||
       (this.hasWebKitFallbackBug_ && this.sizesMatchLastResortSizes_(sizeA, sizeB))) {
     if (this.hasTimedOut_()) {
-      if (this.hasWebKitFallbackBug_ && this.sizesMatchLastResortSizes_(sizeA, sizeB)) {
+      if (this.hasWebKitFallbackBug_ &&
+          this.sizesMatchLastResortSizes_(sizeA, sizeB) &&
+          (this.metricCompatibleFonts_ === null || this.metricCompatibleFonts_.hasOwnProperty(this.fontFamily_))) {
         this.finish_(this.activeCallback_);
       } else {
         this.finish_(this.inactiveCallback_);
