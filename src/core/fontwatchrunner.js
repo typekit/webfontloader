@@ -133,6 +133,42 @@ webfont.FontWatchRunner.prototype.hasTimedOut_ = function() {
 };
 
 /**
+ * Returns true if both fonts match the normal fallback fonts.
+ *
+ * @private
+ * @param {webfont.Size} sizeA
+ * @param {webfont.Size} sizeB
+ * @return {boolean}
+ */
+webfont.FontWatchRunner.prototype.isFallbackFont_ = function (sizeA, sizeB) {
+  return this.sizeMatches_(sizeA, webfont.FontWatchRunner.LastResortFonts.SERIF) &&
+         this.sizeMatches_(sizeB, webfont.FontWatchRunner.LastResortFonts.SANS_SERIF);
+};
+
+/**
+ * Returns true if the WebKit bug is present and both sizes match a last resort font.
+ *
+ * @private
+ * @param {webfont.Size} sizeA
+ * @param {webfont.Size} sizeB
+ * @return {boolean}
+ */
+webfont.FontWatchRunner.prototype.isLastResortFont_ = function (sizeA, sizeB) {
+  return this.hasWebKitFallbackBug_ && this.sizesMatchLastResortSizes_(sizeA, sizeB);
+};
+
+/**
+ * Returns true if the current font is metric compatible. Also returns true
+ * if we do not have a list of metric compatible fonts.
+ *
+ * @private
+ * @return {boolean}
+ */
+webfont.FontWatchRunner.prototype.isMetricCompatibleFont_ = function () {
+  return this.metricCompatibleFonts_ === null || this.metricCompatibleFonts_.hasOwnProperty(this.fontFamily_);
+};
+
+/**
  * Checks the size of the two spans against their original sizes during each
  * async loop. If the size of one of the spans is different than the original
  * size, then we know that the font is rendering and finish with the active
@@ -145,12 +181,9 @@ webfont.FontWatchRunner.prototype.check_ = function() {
   var sizeA = this.fontRulerA_.getSize();
   var sizeB = this.fontRulerB_.getSize();
 
-  if ((this.sizeMatches_(sizeA, webfont.FontWatchRunner.LastResortFonts.SERIF) && this.sizeMatches_(sizeB, webfont.FontWatchRunner.LastResortFonts.SANS_SERIF)) ||
-      (this.hasWebKitFallbackBug_ && this.sizesMatchLastResortSizes_(sizeA, sizeB))) {
+  if (this.isFallbackFont_(sizeA, sizeB) || this.isLastResortFont_(sizeA, sizeB)) {
     if (this.hasTimedOut_()) {
-      if (this.hasWebKitFallbackBug_ &&
-          this.sizesMatchLastResortSizes_(sizeA, sizeB) &&
-          (this.metricCompatibleFonts_ === null || this.metricCompatibleFonts_.hasOwnProperty(this.fontFamily_))) {
+      if (this.isLastResortFont_(sizeA, sizeB) && this.isMetricCompatibleFont_()) {
         this.finish_(this.activeCallback_);
       } else {
         this.finish_(this.inactiveCallback_);
