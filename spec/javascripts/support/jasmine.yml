@@ -21,6 +21,7 @@ src_files:
     - src/core/fontmoduleloader.js
     - src/core/eventdispatcher.js
     - src/core/fontwatchrunner.js
+    - src/core/fontwatcher.js
 
 # stylesheets
 #
