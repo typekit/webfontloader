@@ -20,6 +20,7 @@ src_files:
     - src/core/useragentparser.js
     - src/core/fontmoduleloader.js
     - src/core/eventdispatcher.js
+    - src/core/fontwatchrunner.js
 
 # stylesheets
 #
