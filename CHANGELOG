@@ -1,3 +1,7 @@
+v1.1.2 (January 21, 2013)
+* Added parameter to Google module to do character based subsetting.
+* Made WebKit useragent check less strict about capitalization for LG L160 phones that apparently use 'AppleWebkit' instead of 'AppleWebKit' in their useragent strings.
+
 v1.1.1 (December 12, 2012)
 * Added the ability to recognize BlackBerry devices, which have web font support (WOFF) in platform version 10+
 * Added a new browser name "BuiltinBrowser" to recognize built-in browsers on mobile platforms which we previously called "Safari" (applies to Android's "Browser" app and BlackBerry's built-in browser)

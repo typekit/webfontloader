@@ -223,7 +223,7 @@ webfont.UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
  * @private
  */
 webfont.UserAgentParser.prototype.isWebKit_ = function() {
-  return this.userAgent_.indexOf("AppleWebKit") != -1;
+  return /AppleWeb(K|k)it/.test(this.userAgent_);
 };
 
 /**
@@ -233,7 +233,7 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
   var platform = this.getPlatform_();
   var platformVersionString = this.getPlatformVersion_();
   var webKitVersionString = this.getMatchingGroup_(this.userAgent_,
-      /AppleWebKit\/([\d\.\+]+)/, 1);
+      /AppleWeb(?:K|k)it\/([\d\.\+]+)/, 1);
   var supportWebFont = false;
 
   if (webKitVersionString == "") {

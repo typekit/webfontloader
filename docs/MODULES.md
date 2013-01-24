@@ -14,8 +14,16 @@ Using Google's Font API, name the font families you'd like to load.
       }
     });
 
-Learn more about the [Google Font API][gfontapi].
+Learn more about the [Google Font API][gfontapi]. You can also supply the `text` parameter to perform character subsetting:
 
+    WebFont.load({
+      google: {
+        families: ['Droid Sans', 'Droid Serif'],
+        text: 'abcdedfghijklmopqrstuvwxyz!'
+      }
+    });
+
+This functionality is only available for the Google module.
 
 ## Typekit
 

@@ -1,7 +1,7 @@
 /**
  * @constructor
  */
-webfont.FontApiUrlBuilder = function(apiUrl, protocol) {
+webfont.FontApiUrlBuilder = function(apiUrl, protocol, text) {
   if (apiUrl) {
     this.apiUrl_ = apiUrl;
   } else {
@@ -9,6 +9,7 @@ webfont.FontApiUrlBuilder = function(apiUrl, protocol) {
   }
   this.fontFamilies_ = [];
   this.subsets_ = [];
+  this.text_ = text || '';
 };
 
 
@@ -61,6 +62,10 @@ webfont.FontApiUrlBuilder.prototype.build = function() {
 
   if (this.subsets_.length > 0) {
     url += '&subset=' + this.subsets_.join(',');
+  }
+
+  if (this.text_.length > 0) {
+    url += '&text=' + encodeURIComponent(this.text_);
   }
 
   return url;
