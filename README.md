@@ -119,13 +119,24 @@ Please open [an issue][issues]. Sample pages are greatly appreciated.
 Is there something else WebFont Loader should do? Did you find a bug and want
 to fix it?
 
+### Building
+
+Run rake:
+
+    rake
+
 ### Testing
+
+You can run uncompressed, debuggable code by starting the demo server in dev mode:
+
+    rake demodev
 
 WebFont Loader has an extensive test suite that runs via
 [jsTestDriver][jstestdriver]. Please add tests for any changes.
 
-To run tests, first boot the test server. This open a browser
-and start listing for test executions. You can register multiple browsers.
+To run tests, first boot the test server. Then open a browser and navigate to
+the test server url listed by `rake test` to start listing for test executions.
+You can register multiple browsers.
 
     rake test:boot
 
