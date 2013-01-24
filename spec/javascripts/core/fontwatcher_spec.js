@@ -3,10 +3,12 @@ describe('FontWatcher', function () {
       DomHelper = webfont.DomHelper,
       domHelper = new DomHelper(window),
       eventDispatcher = {},
+      testStrings = null,
       activeFontFamilies = [];
 
   beforeEach(function () {
     activeFontFamilies = [];
+    testStrings = jasmine.createSpy('testStrings');
     eventDispatcher.dispatchLoading = jasmine.createSpy('dispatchLoading');
     eventDispatcher.dispatchFontLoading = jasmine.createSpy('dispatchFontLoading');
     eventDispatcher.dispatchFontActive = jasmine.createSpy('dispatchFontActive');
@@ -21,6 +23,10 @@ describe('FontWatcher', function () {
     this.inactiveCallback = inactiveCallback;
     this.fontFamily = fontFamily;
     this.fontDescription = fontDescription;
+
+    if (opt_fontTestString) {
+      testStrings(opt_fontTestString);
+    }
   }
 
   FakeFontWatchRunner.prototype.start = function () {
@@ -125,6 +131,59 @@ describe('FontWatcher', function () {
 
       expect(eventDispatcher.dispatchActive).toHaveBeenCalled();
       expect(eventDispatcher.dispatchInactive).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('watch multiple fonts with descriptions', function () {
+    it('should call the correct callbacks', function () {
+      activeFontFamilies = ['fontFamily1', 'fontFamily2'];
+      var fontWatcher = new FontWatcher(domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
+          jasmine.createSpy('fakeAsyncCall'), jasmine.createSpy('fakeGetTime'));
+
+      fontWatcher.watch(['fontFamily1', 'fontFamily2', 'fontFamily3'], {
+        'fontFamily1': ['i7'],
+        'fontFamily2': null,
+        'fontFamily3': ['n4', 'i4', 'n7']
+      }, {}, FakeFontWatchRunner, true);
+
+      expect(eventDispatcher.dispatchFontLoading.callCount).toEqual(5);
+      expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith('fontFamily1', 'i7');
+      expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith('fontFamily2', 'n4');
+      expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith('fontFamily3', 'n4');
+      expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith('fontFamily3', 'i4');
+      expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith('fontFamily3', 'n7');
+
+      expect(eventDispatcher.dispatchFontActive.callCount).toEqual(2);
+      expect(eventDispatcher.dispatchFontActive).toHaveBeenCalledWith('fontFamily1', 'i7');
+      expect(eventDispatcher.dispatchFontActive).toHaveBeenCalledWith('fontFamily2', 'n4');
+
+      expect(eventDispatcher.dispatchFontInactive.callCount).toEqual(3);
+      expect(eventDispatcher.dispatchFontInactive).toHaveBeenCalledWith('fontFamily3', 'n4');
+      expect(eventDispatcher.dispatchFontInactive).toHaveBeenCalledWith('fontFamily3', 'i4');
+      expect(eventDispatcher.dispatchFontInactive).toHaveBeenCalledWith('fontFamily3', 'n7');
+
+      expect(eventDispatcher.dispatchInactive).not.toHaveBeenCalled();
+      expect(eventDispatcher.dispatchActive).toHaveBeenCalled();
+    });
+  });
+
+  describe('watch multiple fonts with test strings', function () {
+    it('should use the correct tests strings', function () {
+      activeFontFamilies = ['fontFamily1', 'fontFamily2'];
+
+      var fontWatcher = new FontWatcher(domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
+          jasmine.createSpy('fakeAsyncCall'), jasmine.createSpy('fakeGetTime'));
+
+      fontWatcher.watch(['fontFamily1', 'fontFamily2', 'fontFamily3', 'fontFamily4'], {}, {
+        'fontFamily1': 'testString1',
+        'fontFamily2': null,
+        'fontFamily3': 'testString2',
+        'fontFamily4': null
+      }, FakeFontWatchRunner, true);
+
+      expect(testStrings.callCount).toEqual(2);
+      expect(testStrings).toHaveBeenCalledWith('testString1');
+      expect(testStrings).toHaveBeenCalledWith('testString2');
     });
   });
 });
