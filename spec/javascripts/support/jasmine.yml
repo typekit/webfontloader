@@ -24,6 +24,7 @@ src_files:
     - src/core/fontwatcher.js
     - src/core/font.js
     - src/google/fontapiparser.js
+    - src/google/fontapiurlbuilder.js
 
 # stylesheets
 #
