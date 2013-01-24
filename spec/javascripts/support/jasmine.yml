@@ -23,6 +23,7 @@ src_files:
     - src/core/fontwatchrunner.js
     - src/core/fontwatcher.js
     - src/core/font.js
+    - src/google/fontapiparser.js
 
 # stylesheets
 #
