@@ -13,11 +13,12 @@ CustomCssTest.prototype.testFoo = function() {
     }
   };
   var defaultModule = new webfont.CustomCss(fakeDomHelper, {
-      families: [ 'Font1', 'Font2', 'Font3' ], urls: [ 'http://moo',
+      families: [ 'Font1:n7', 'Font2:i4,i7', 'Font3' ], urls: [ 'http://moo',
           'http://meuh' ]});
   var families = null;
+  var variations = null;
 
-  defaultModule.load(function(fontFamilies) { families = fontFamilies; });
+  defaultModule.load(function(fontFamilies, fontVariations) { families = fontFamilies; variations = fontVariations;});
   assertEquals('head', head);
   assertEquals(2, links.length);
   assertEquals('http://moo', links[0]);
@@ -27,4 +28,8 @@ CustomCssTest.prototype.testFoo = function() {
   assertEquals('Font1', families[0]);
   assertEquals('Font2', families[1]);
   assertEquals('Font3', families[2]);
+  assertEquals('n7', variations["Font1"][0]);
+  assertEquals('i4', variations["Font2"][0]);
+  assertEquals('i7', variations["Font2"][1]);
+  assertEquals(undefined, variations["Font3"]);
 };
