@@ -16,10 +16,11 @@ webfont.CustomCss = function(domHelper, configuration) {
 webfont.CustomCss.NAME = 'custom';
 
 webfont.CustomCss.prototype.load = function(onReady) {
+  var i, len;
   var urls = this.configuration_['urls'] || [];
   var familiesConfiguration = this.configuration_['families'] || [];
 
-  for (var i = 0, len = urls.length; i < len; i++) {
+  for (i = 0, len = urls.length; i < len; i++) {
     var url = urls[i];
 
     this.domHelper_.insertInto('head', this.domHelper_.createCssLink(url));
