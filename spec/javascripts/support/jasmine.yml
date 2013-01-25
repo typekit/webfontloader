@@ -28,6 +28,7 @@ src_files:
     - src/google/fontapiurlbuilder.js
     - src/google/googlefontapi.js
     - src/custom/customcss.js
+    - src/ascender/ascender_script.js
 
 # stylesheets
 #
