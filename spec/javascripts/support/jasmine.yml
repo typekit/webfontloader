@@ -31,6 +31,7 @@ src_files:
     - src/ascender/ascender_script.js
     - src/fontdeck/fontdeck_script.js
     - src/monotype/monotype_script.js
+    - src/typekit/typekit_script.js
 
 # stylesheets
 #
