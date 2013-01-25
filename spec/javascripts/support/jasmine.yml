@@ -29,6 +29,7 @@ src_files:
     - src/google/googlefontapi.js
     - src/custom/customcss.js
     - src/ascender/ascender_script.js
+    - src/fontdeck/fontdeck_script.js
 
 # stylesheets
 #
