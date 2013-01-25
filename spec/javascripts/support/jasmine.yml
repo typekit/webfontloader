@@ -30,6 +30,7 @@ src_files:
     - src/custom/customcss.js
     - src/ascender/ascender_script.js
     - src/fontdeck/fontdeck_script.js
+    - src/monotype/monotype_script.js
 
 # stylesheets
 #
