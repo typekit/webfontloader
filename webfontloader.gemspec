@@ -133,8 +133,10 @@ DESC
     src/core/cssfontfamilyname.js
     src/core/domhelper.js
     src/core/eventdispatcher.js
+    src/core/size.js
     src/core/font.js
     src/core/fontmoduleloader.js
+    src/core/fontruler.js
     src/core/fontvariationdescription.js
     src/core/fontwatcher.js
     src/core/fontwatchrunner.js
@@ -142,6 +144,7 @@ DESC
     src/core/namespace.js
     src/core/useragent.js
     src/core/useragentparser.js
+    src/core/browserinfo.js
     src/custom/customcss.js
     src/fontdeck/fontdeck_script.js
     src/google/fontapiparser.js

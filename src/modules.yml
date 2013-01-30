@@ -1,12 +1,15 @@
 core:
   - core/namespace.js
   - core/domhelper.js
+  - core/browserinfo.js
   - core/useragent.js
   - core/useragentparser.js
   - core/eventdispatcher.js
   - core/fontmoduleloader.js
+  - core/size.js
   - core/fontwatcher.js
   - core/fontwatchrunner.js
+  - core/fontruler.js
   - core/font.js
   - core/cssclassname.js
   - core/cssfontfamilyname.js
