@@ -1,3 +1,9 @@
+v1.2.0 (January 30, 2013)
+* Improved font watching for browsers with the WebKit web font fallback bug
+* Improved font watching in general by comparing both width and height
+* UserAgent user interface has changed with the introduction of a BrowserInfo object that contains information derived from the user agent string
+* The custom module now supports loading font variations
+
 v1.1.2 (January 21, 2013)
 * Added parameter to Google module to do character based subsetting.
 * Made WebKit useragent check less strict about capitalization for LG L160 phones that apparently use 'AppleWebkit' instead of 'AppleWebKit' in their useragent strings.
