@@ -55,7 +55,7 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
           }
         }
       }
-      support(userAgent.isSupportingWebFont());
+      support(userAgent.getBrowserInfo().hasWebFontSupport());
     }
 
     var done = false;
