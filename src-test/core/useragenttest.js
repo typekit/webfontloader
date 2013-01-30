@@ -751,5 +751,5 @@ UserAgentTest.prototype.testBrowserWebKitVSWebkit = function() {
   assertEquals("AppleWebKit", userAgent.getEngine());
   assertEquals("534.30", userAgent.getEngineVersion());
   assertEquals(undefined, userAgent.getDocumentMode());
-  assertTrue(userAgent.isSupportingWebFont());
+  assertTrue(userAgent.getBrowserInfo().hasWebFontSupport());
 };
