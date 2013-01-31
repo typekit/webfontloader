@@ -1,12 +1,16 @@
 describe('FontWatcher', function () {
   var FontWatcher = webfont.FontWatcher,
+      UserAgent = webfont.UserAgent,
+      BrowserInfo = webfont.BrowserInfo,
       DomHelper = webfont.DomHelper,
       domHelper = new DomHelper(window),
       eventDispatcher = {},
       testStrings = null,
+      userAgent = null,
       activeFontFamilies = [];
 
   beforeEach(function () {
+    userAgent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.3', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false));
     activeFontFamilies = [];
     testStrings = jasmine.createSpy('testStrings');
     eventDispatcher.dispatchLoading = jasmine.createSpy('dispatchLoading');
@@ -40,7 +44,7 @@ describe('FontWatcher', function () {
   describe('watch one font not last', function () {
     it('should not call font inactive, inactive or active', function () {
       activeFontFamilies = ['fontFamily1'];
-      var fontWatcher = new FontWatcher(domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
+      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
           jasmine.createSpy('fakeAsyncCall'), jasmine.createSpy('fakeGetTime'));
 
       fontWatcher.watch(['fontFamily1'], {}, {}, FakeFontWatchRunner, false);
@@ -53,7 +57,7 @@ describe('FontWatcher', function () {
   describe('watch one font active', function () {
     it('should call font active and active', function () {
       activeFontFamilies = ['fontFamily1'];
-      var fontWatcher = new FontWatcher(domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
+      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
           jasmine.createSpy('fakeAsyncCall'), jasmine.createSpy('fakeGetTime'));
 
       fontWatcher.watch(['fontFamily1'], {}, {}, FakeFontWatchRunner, true);
@@ -68,7 +72,7 @@ describe('FontWatcher', function () {
   describe('watch one font inactive', function () {
     it('should call inactive', function () {
       activeFontFamilies = [];
-      var fontWatcher = new FontWatcher(domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
+      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
           jasmine.createSpy('fakeAsyncCall'), jasmine.createSpy('fakeGetTime'));
 
       fontWatcher.watch(['fontFamily1'], {}, {}, FakeFontWatchRunner, true);
@@ -83,7 +87,7 @@ describe('FontWatcher', function () {
   describe('watch multiple fonts active', function () {
     it('should call font active and active', function () {
       activeFontFamilies = ['fontFamily1', 'fontFamily2', 'fontFamily3'];
-      var fontWatcher = new FontWatcher(domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
+      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
           jasmine.createSpy('fakeAsyncCall'), jasmine.createSpy('fakeGetTime'));
 
       fontWatcher.watch(['fontFamily1', 'fontFamily2', 'fontFamily3'], {}, {}, FakeFontWatchRunner, true);
@@ -98,7 +102,7 @@ describe('FontWatcher', function () {
   describe('watch multiple fonts inactive', function () {
     it('should call inactive', function () {
       activeFontFamilies = [];
-      var fontWatcher = new FontWatcher(domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
+      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
           jasmine.createSpy('fakeAsyncCall'), jasmine.createSpy('fakeGetTime'));
 
       fontWatcher.watch(['fontFamily1', 'fontFamily2', 'fontFamily3'], {}, {}, FakeFontWatchRunner, true);
@@ -113,7 +117,7 @@ describe('FontWatcher', function () {
   describe('watch multiple fonts mixed', function () {
     it('should call the correct callbacks', function () {
       activeFontFamilies = ['fontFamily1', 'fontFamily3'];
-      var fontWatcher = new FontWatcher(domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
+      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
           jasmine.createSpy('fakeAsyncCall'), jasmine.createSpy('fakeGetTime'));
 
       fontWatcher.watch(['fontFamily1', 'fontFamily2', 'fontFamily3'], {}, {}, FakeFontWatchRunner, true);
@@ -137,7 +141,7 @@ describe('FontWatcher', function () {
   describe('watch multiple fonts with descriptions', function () {
     it('should call the correct callbacks', function () {
       activeFontFamilies = ['fontFamily1', 'fontFamily2'];
-      var fontWatcher = new FontWatcher(domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
+      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
           jasmine.createSpy('fakeAsyncCall'), jasmine.createSpy('fakeGetTime'));
 
       fontWatcher.watch(['fontFamily1', 'fontFamily2', 'fontFamily3'], {
@@ -171,7 +175,7 @@ describe('FontWatcher', function () {
     it('should use the correct tests strings', function () {
       activeFontFamilies = ['fontFamily1', 'fontFamily2'];
 
-      var fontWatcher = new FontWatcher(domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
+      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
           jasmine.createSpy('fakeAsyncCall'), jasmine.createSpy('fakeGetTime'));
 
       fontWatcher.watch(['fontFamily1', 'fontFamily2', 'fontFamily3', 'fontFamily4'], {}, {

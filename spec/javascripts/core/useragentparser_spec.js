@@ -48,8 +48,13 @@ describe('UserAgentParser', function () {
           return false;
         }
 
-        if (actual.isSupportingWebFont() !== expected.webFontSupport) {
-          this.message = msg('web font support', actual.isSupportingWebFont(), expected.webFontSupport);
+        if (actual.getBrowserInfo().hasWebFontSupport() !== expected.browserInfo.hasWebFontSupport) {
+          this.message = msg('web font support', actual.getBrowserInfo().hasWebFontSupport(), expected.browserInfo.hasWebFontSupport);
+          return false;
+        }
+
+        if (actual.getBrowserInfo().hasWebKitFallbackBug() !== expected.browserInfo.hasWebKitFallbackBug) {
+          this.message = msg('web kit fallback bug', actual.getBrowserInfo().hasWebKitFallbackBug(), expected.browserInfo.hasWebKitFallbackBug);
           return false;
         }
 
@@ -74,7 +79,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '531.9',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
       });
 
@@ -88,7 +96,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '531.9',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: true
+          }
         });
       });
     });
@@ -104,7 +115,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '1.9.2.3',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
 
         expect(parse('Mozilla/5.0 (X11; U; Linux i686; ru-RU; rv:1.9.2a1pre) Gecko/20090405 Ubuntu/9.04 (jaunty) Firefox/3.6a1pre'))
@@ -116,7 +130,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '1.9.2a1pre',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -130,7 +147,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '2.0b1',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -146,7 +166,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '13.0',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -160,7 +183,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '1.8.1.19',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: false
+          }
         });
       });
     });
@@ -176,7 +202,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '533.2',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
       });
 
@@ -190,7 +219,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '535.19',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
       });
 
@@ -204,7 +236,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '535.7',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
       });
 
@@ -218,7 +253,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '534.46.0',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
       });
 
@@ -232,7 +270,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '534.46.0',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
       });
     });
@@ -248,7 +289,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '531.21.8',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
 
         expect(parse('Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10_4_11; tr) AppleWebKit/528.4+ (KHTML, like Gecko) Version/4.0dp1 Safari/526.11.2'))
@@ -260,7 +304,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '528.4+',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
       });
 
@@ -274,7 +321,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '528.18',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
       });
 
@@ -288,7 +338,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '531.21.10',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
 
         expect(parse('Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B360 Safari/531.21.10"'))
@@ -300,7 +353,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '531.21.10',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
 
         expect(parse('Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.10'))
@@ -312,7 +368,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '531.21.10',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
       });
 
@@ -326,7 +385,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '525.18.1',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
 
         expect(parse('Mozilla/5.0 (iPod; U; CPU iPhone OS 3_1 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7C144 Safari/528.16'))
@@ -338,7 +400,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '528.18',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
       });
     });
@@ -354,7 +419,10 @@ describe('UserAgentParser', function () {
           engine: 'MSIE',
           engineVersion: '7.0',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
 
         expect(parse('Mozilla/4.0 (compatible; MSIE 7.0b; Windows NT 5.1; Media Center PC 3.0; .NET CLR 1.0.3705; .NET CLR 1.1.4322; .NET CLR 2.0.50727; InfoPath.1)'))
@@ -366,7 +434,10 @@ describe('UserAgentParser', function () {
           engine: 'MSIE',
           engineVersion: '7.0b',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -380,7 +451,10 @@ describe('UserAgentParser', function () {
           engine: 'MSIE',
           engineVersion: '7.0',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -394,7 +468,10 @@ describe('UserAgentParser', function () {
           engine: 'MSIE',
           engineVersion: '10.0',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -408,7 +485,10 @@ describe('UserAgentParser', function () {
           engine: 'MSIE',
           engineVersion: '9.0',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -422,7 +502,10 @@ describe('UserAgentParser', function () {
           engine: 'MSIE',
           engineVersion: '5.23',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -436,7 +519,10 @@ describe('UserAgentParser', function () {
           engine: 'MSIE',
           engineVersion: '8.0',
           documentMode: 8,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
       });
     });
@@ -452,7 +538,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '533.1',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
         });
       });
 
@@ -466,7 +555,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '530.17',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: true
+          }
         });
       });
 
@@ -480,7 +572,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '537.3+',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -494,7 +589,10 @@ describe('UserAgentParser', function () {
           engine: 'AppleWebKit',
           engineVersion: '534.11+',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: true
+          }
         });
       });
     });
@@ -510,7 +608,10 @@ describe('UserAgentParser', function () {
           engine: 'Presto',
           engineVersion: '2.5.22',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -524,7 +625,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '1.8.1',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -538,7 +642,10 @@ describe('UserAgentParser', function () {
           engine: 'Presto',
           engineVersion: '2.1.1',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -552,7 +659,10 @@ describe('UserAgentParser', function () {
           engine: 'Presto',
           engineVersion: '2.10.254',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -566,7 +676,10 @@ describe('UserAgentParser', function () {
           engine: 'Presto',
           engineVersion: '2.8.119',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: false
+          }
         });
       });
     });
@@ -582,7 +695,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '1.9.1.4',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -596,7 +712,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '2.5.8',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -610,7 +729,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '1.10.1b',
           documentMode: undefined,
-          webFontSupport: true
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
         });
       });
 
@@ -624,7 +746,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '1.b',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: false
+          }
         });
 
         expect(parse('Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:1.b) Gecko/20091016 (.NET CLR 3.5.30729)'))
@@ -636,7 +761,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '1.b',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: false
+          }
         });
 
         expect(parse('Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:1.9) Gecko/20091016 (.NET CLR 3.5.30729)'))
@@ -648,7 +776,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '1.9',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: false
+          }
         });
 
         expect(parse('Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:0.10.1) Gecko/20091016 (.NET CLR 3.5.30729)'))
@@ -660,7 +791,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '0.10.1',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: false
+          }
         });
 
         expect(parse('Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:0.3.42) Gecko/20091016 (.NET CLR 3.5.30729)'))
@@ -672,7 +806,10 @@ describe('UserAgentParser', function () {
           engine: 'Gecko',
           engineVersion: '0.3.42',
           documentMode: undefined,
-          webFontSupport: false
+          browserInfo: {
+            hasWebFontSupport: false,
+            hasWebKitFallbackBug: false
+          }
         });
       });
     });

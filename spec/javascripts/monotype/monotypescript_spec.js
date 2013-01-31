@@ -1,5 +1,6 @@
 describe('MonotypeScript', function () {
   var MonotypeScript = webfont.MonotypeScript,
+      BrowserInfo = webfont.BrowserInfo,
       UserAgent = webfont.UserAgent;
 
   var configuration = {
@@ -26,7 +27,7 @@ describe('MonotypeScript', function () {
     };
     support = jasmine.createSpy('support');
     load = jasmine.createSpy('load');
-    useragent = new UserAgent('Test', '1.0', true);
+    useragent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.3', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false));
 
     monotype = new MonotypeScript(useragent, fakeDomHelper, configuration);
     monotype.supportUserAgent(useragent, support);

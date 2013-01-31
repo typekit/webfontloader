@@ -1,12 +1,13 @@
 describe('WebFont', function () {
   var WebFont = webfont.WebFont,
       UserAgent = webfont.UserAgent,
+      BrowserInfo = webfont.BrowserInfo,
       FontModuleLoader = webfont.FontModuleLoader,
       fontModuleLoader = null,
       userAgent = null;
 
   beforeEach(function () {
-    userAgent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, true);
+    userAgent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false));
     fontModuleLoader = new FontModuleLoader();
   });
 
@@ -114,7 +115,7 @@ describe('WebFont', function () {
         testModule = null;
 
     beforeEach(function () {
-      font = new WebFont(window, fontModuleLoader, function (func, timeout) { func(); }, new UserAgent('Firefox', '3.0', false));
+      font = new WebFont(window, fontModuleLoader, function (func, timeout) { func(); }, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(false, false)));
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
@@ -139,5 +140,4 @@ describe('WebFont', function () {
       expect(inactive).toHaveBeenCalled();
     });
   });
-
 });

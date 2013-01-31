@@ -16,10 +16,13 @@ src_files:
     - src/core/cssclassname.js
     - src/core/cssfontfamilyname.js
     - src/core/fontvariationdescription.js
+    - src/core/browserinfo.js
     - src/core/useragent.js
     - src/core/useragentparser.js
     - src/core/fontmoduleloader.js
     - src/core/eventdispatcher.js
+    - src/core/size.js
+    - src/core/fontruler.js
     - src/core/fontwatchrunner.js
     - src/core/fontwatcher.js
     - src/core/font.js
