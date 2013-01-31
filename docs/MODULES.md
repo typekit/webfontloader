@@ -78,7 +78,7 @@ provides.
 
 You can specify a specific font variation or set of variations to load and watch
 by appending the variations separated by commas to the family name separated by 
-a colon. variations are specified using (FVD notation)[fvd].
+a colon. Variations are specified using [FVD notation][fvd].
 
     WebFont.load({
       custom: {
