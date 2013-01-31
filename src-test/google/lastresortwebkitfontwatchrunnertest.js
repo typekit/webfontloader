@@ -81,33 +81,32 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontIgnored =
   var fontWatchRunner = new webfont.LastResortWebKitFontWatchRunner(
       this.activeCallback_,
       this.inactiveCallback_,
-      this.fakeDomHelper_, {getWidth: function() {
+      this.fakeDomHelper_, {getSize: function() {
         if (originalSizeCount > 0) {
           originalSizeCount--;
-          return 1;
+          return new webfont.Size(1, 1);
         }
         if (lastResortFontsCount > 0) {
           lastResortFontsCount--;
-          return 2;
+          return new webfont.Size(2, 2);
         }
         if (firstSize > 0) {
           firstSize--;
-          return 1;
+          return new webfont.Size(1, 1);
         }
         if (secondSize > 0) {
           secondSize--;
-          return 2;
+          return new webfont.Size(2, 2);
         }
         if (thirdSize > 0) {
           thirdSize--;
-          return 3;
+          return new webfont.Size(3, 3);
         }
       }}, this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
-      this.fontDescription_);
+      this.fontDescription_, false);
 
   fontWatchRunner.start();
-
-  assertEquals(2, this.asyncCount_);
+  assertEquals(1, this.asyncCount_);
 
   // When on webkit time out ends up activating the font.
   assertEquals(1, this.fontActiveCalled_);
@@ -127,22 +126,22 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontActiveWhenSizeMa
   var fontWatchRunner = new webfont.LastResortWebKitFontWatchRunner(
       this.activeCallback_,
       this.inactiveCallback_,
-      this.fakeDomHelper_, {getWidth: function() {
+      this.fakeDomHelper_, {getSize: function() {
         if (originalSizeCount > 0) {
           originalSizeCount--;
-          return 1;
+          return new webfont.Size(1, 1);
         }
         if (lastResortFontsCount > 0) {
           lastResortFontsCount--;
-          return 2;
+          return new webfont.Size(2, 2);
         }
         if (firstSize > 0) {
           firstSize--;
-          return 1;
+          return new webfont.Size(1, 1);
         }
-        return 2;
+        return new webfont.Size(2, 2);
       }}, this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
-      this.fontDescription_);
+      this.fontDescription_, false);
 
   fontWatchRunner.start();
 
@@ -165,33 +164,34 @@ LastResortWebKitFontWatchRunnerTest.prototype.testLastResortFontInactiveWhenSize
   var fontWatchRunner = new webfont.LastResortWebKitFontWatchRunner(
       this.activeCallback_,
       this.inactiveCallback_,
-      this.fakeDomHelper_, {getWidth: function(elem) {
+      this.fakeDomHelper_, {getSize: function(elem) {
         if (originalSizeCount > 0) {
           originalSizeCount--;
-          return 1;
+          return new webfont.Size(1, 1);
         }
         if (lastResortFontsCount > 0) {
           lastResortFontsCount--;
-          return 2;
+          return new webfont.Size(2, 2);
         }
         if (firstSize > 0) {
           firstSize--;
-          return 1;
+          return new webfont.Size(1, 1)
         }
         if (secondSize > 0) {
           secondSize--;
-          return 2;
+          return new webfont.Size(2, 2)
         }
         if (thirdSize == 2) {
           thirdSize--;
-          return 2;
+          return new webfont.Size(2, 2);
         }
         if (thirdSize == 1) {
           thirdSize--;
-          return 4;
+          return new webfont.Size(4, 4);
         }
+        return new webfont.Size(2, 2);
       }}, this.fakeAsyncCall_, this.fakeGetTime_, this.fontFamily_,
-      this.fontDescription_);
+      this.fontDescription_, false);
 
   fontWatchRunner.start();
 

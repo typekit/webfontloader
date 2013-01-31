@@ -10,7 +10,7 @@ webfont.GoogleFontApi = function(userAgent, domHelper, configuration) {
 webfont.GoogleFontApi.NAME = 'google';
 
 webfont.GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) {
-  support(userAgent.isSupportingWebFont());
+  support(userAgent.getBrowserInfo().hasWebFontSupport());
 };
 
 webfont.GoogleFontApi.prototype.getFontWatchRunnerCtor = function() {
@@ -35,7 +35,7 @@ webfont.GoogleFontApi.prototype.load = function(onReady) {
 webfont.GoogleFontApi.prototype.insertLink_ = function(onReady) {
   var domHelper = this.domHelper_;
   var fontApiUrlBuilder = new webfont.FontApiUrlBuilder(
-      this.configuration_['api'], domHelper.getProtocol());
+      this.configuration_['api'], domHelper.getProtocol(), this.configuration_['text']);
   var fontFamilies = this.configuration_['families'];
   fontApiUrlBuilder.setFontFamilies(fontFamilies);
 

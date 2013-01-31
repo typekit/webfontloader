@@ -6,11 +6,11 @@
  * @param {string} platform
  * @param {string} platformVersion
  * @param {number|undefined} documentMode
- * @param {boolean} webFontSupport
+ * @param {!webfont.BrowserInfo} browserInfo
  * @constructor
  */
 webfont.UserAgent = function(name, version, engine, engineVersion, platform,
-    platformVersion, documentMode, webFontSupport) {
+    platformVersion, documentMode, browserInfo) {
   this.name_ = name;
   this.version_ = version;
   this.engine_ = engine;
@@ -18,7 +18,7 @@ webfont.UserAgent = function(name, version, engine, engineVersion, platform,
   this.platform_ = platform;
   this.platformVersion_ = platformVersion;
   this.documentMode_ = documentMode;
-  this.webFontSupport_ = webFontSupport;
+  this.browserInfo_ = browserInfo;
 };
 
 /**
@@ -71,8 +71,8 @@ webfont.UserAgent.prototype.getDocumentMode = function() {
 };
 
 /**
- * @return {boolean}
+ * @return {webfont.BrowserInfo}
  */
-webfont.UserAgent.prototype.isSupportingWebFont = function() {
-  return this.webFontSupport_;
+webfont.UserAgent.prototype.getBrowserInfo = function() {
+  return this.browserInfo_;
 };

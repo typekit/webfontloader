@@ -26,7 +26,7 @@ webfont.WebFont.prototype.load = function(configuration) {
   var eventDispatcher = new webfont.EventDispatcher(
       this.domHelper_, context.document.documentElement, configuration);
 
-  if (this.userAgent_.isSupportingWebFont()) {
+  if (this.userAgent_.getBrowserInfo().hasWebFontSupport()) {
     this.load_(eventDispatcher, configuration);
   } else {
     eventDispatcher.dispatchInactive();
@@ -77,10 +77,10 @@ webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {
 
   this.moduleFailedLoading_ = this.moduleLoading_ = modules.length;
 
-  var fontWatcher = new webfont.FontWatcher(this.domHelper_,
+  var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.domHelper_,
       eventDispatcher, {
-        getWidth: function(elem) {
-          return elem.offsetWidth;
+        getSize: function(elem) {
+          return new webfont.Size(elem.offsetWidth, elem.offsetHeight);
         }}, self.asyncCall_, function() {
           return new Date().getTime();
         });
