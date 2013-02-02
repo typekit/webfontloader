@@ -684,6 +684,42 @@ describe('UserAgentParser', function () {
       });
     });
 
+    describe('WebKit fallback bug', function () {
+      it('should detect the bug in older browsers', function () {
+        expect(parse('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5'))
+        .toMatchUserAgent({
+          name: 'Chrome',
+          version: '19.0.1084.9',
+          platform: 'Linux',
+          platformVersion: 'Unknown',
+          engine: 'AppleWebKit',
+          engineVersion: '536.5',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
+        });
+      });
+
+      it('should detect the bug in older browsers', function () {
+        expect(parse('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.814.2 Safari/536.11'))
+        .toMatchUserAgent({
+          name: 'Chrome',
+          version: '20.0.814.2',
+          platform: 'Linux',
+          platformVersion: 'Unknown',
+          engine: 'AppleWebKit',
+          engineVersion: '536.11',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false
+          }
+        });
+      });
+    });
+
     describe('Invented user agents', function () {
       it('should detect Gecko as supporting web fonts', function () {
         expect(parse('Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:1.9.1.4) Gecko/20091016 (.NET CLR 3.5.30729)'))
