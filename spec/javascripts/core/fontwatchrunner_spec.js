@@ -177,6 +177,40 @@ describe('FontWatchRunner', function () {
       expect(asyncCount).toEqual(2);
       expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
     });
+
+    it('should call inactive when we are loading a metric incompatible font', function () {
+      actualSizes = [
+        LAST_RESORT_SIZE, LAST_RESORT_SIZE,
+        LAST_RESORT_SIZE, LAST_RESORT_SIZE
+      ];
+
+      timesToGetTimeBeforeTimeout = 2;
+
+      var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true,
+          { 'My Other Family': true });
+
+      fontWatchRunner.start();
+      expect(asyncCount).toEqual(1);
+      expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
+    });
+
+    it('should call active when we are loading a metric compatible font', function () {
+      actualSizes = [
+        LAST_RESORT_SIZE, LAST_RESORT_SIZE,
+        LAST_RESORT_SIZE, LAST_RESORT_SIZE
+      ];
+
+      timesToGetTimeBeforeTimeout = 2;
+
+      var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true,
+          { 'My Family': true });
+
+      fontWatchRunner.start();
+      expect(asyncCount).toEqual(1);
+      expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
+    });
   });
 
   describe('test string', function () {
