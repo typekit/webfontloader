@@ -63,11 +63,6 @@ require 'webfontloader'
 CLEAN.include("target")
 CLEAN.include("tmp")
 
-# JsTestDriver
-JsTestPort = "9876"
-JsTestServer = "http://localhost:#{JsTestPort}"
-JsTestJar = "tools/jstestdriver/JsTestDriver-1.2.1.jar"
-
 # JsCompiler
 JsCompilerJar = "tools/compiler/compiler.jar"
 
@@ -84,15 +79,6 @@ SourceJs  = FileList["src/**/*"]
 
 directory "target"
 directory "tmp"
-
-file "tmp/jsTestDriver.conf" => AllJs + ["tmp"] do |t|
-  require 'yaml'
-  config = {
-    "server" => JsTestServer,
-    "load" => (@modules.all_source_files + @modules.all_test_globs).map { |f| "../#{f}" }
-  }
-  File.open(t.name, "w") { |f| YAML.dump(config, f) }
-end
 
 desc "Compile the JavaScript into target/webfont.js"
 task :compile => "target/webfont.js"
@@ -143,27 +129,8 @@ end
 desc "Test everything"
 task :default => [:clean, :gzipbytes, :test]
 
-namespace :test do
-  task :server do
-    system "java -jar #{JsTestJar} --port #{JsTestPort}"
-  end
-  task :capture do
-    system "open #{JsTestServer}/capture?strict"
-  end
-  desc "Execute tests against a running server"
-  task :run => ["tmp/jsTestDriver.conf"] do |t|
-    config = t.prerequisites.first
-    system "java -jar #{JsTestJar} --config #{config} --server #{JsTestServer} --tests all --captureConsole --verbose"
-  end
-  desc "Boot the test server and capture a browser"
-  multitask :boot => ['test:server', 'test:capture']
-end
-
 desc "Run all tests"
-task :test => ["tmp/jsTestDriver.conf"] do |t|
-  config = t.prerequisites.first
-  system "java -jar #{JsTestJar} --port #{JsTestPort} --config #{config} --server #{JsTestServer} --browser open --tests all --captureConsole --verbose"
-end
+task :test => :jasmine
 
 desc "Start the demo server"
 task :demo => "target/webfont.js" do |t|
