@@ -92,23 +92,6 @@ works with Google, Typekit, Ascender, Fontdeck, Fonts.com Web fonts and your own
 CSS. Learn more in [transitions][trn].
 
 
-## More to see
-
-A full suite of demo pages is included in this source. Here you can find some
-live examples using the JS and CSS events.
-
-To view the demos, just boot up our demo server and start browsing.
-
-    $ rake demo
-
-You may need a few rubygems to run the server. Get them with [Bundler](http://gembundler.com/).
-
-    $ gem install bundler
-    $ bundle install
-
-Browse the demos [source code][demos].
-
-
 ## Problems?
 
 Please open [an issue][issues]. Sample pages are greatly appreciated.
@@ -119,37 +102,54 @@ Please open [an issue][issues]. Sample pages are greatly appreciated.
 Is there something else WebFont Loader should do? Did you find a bug and want
 to fix it?
 
+### Installing development requirements
+
+You'll need a few rubygems to run the tests, demo server, and other rake tasks, which should be installed with [Bundler](http://gembundler.com/).
+
+    $ gem install bundler
+    $ bundle install
+
 ### Building
 
-Run rake:
+To build a JS file from source, just run rake:
 
-    rake
+    $ rake
+
+### Demos
+
+A full suite of demo pages is included in this source. Here you can find some
+live examples using the JS and CSS events. Run the demo server with:
+
+    $ rake demo
+
+You can also run the demos with uncompressed, debuggable code to aid in
+development. Just start the server in dev mode:
+
+    $ rake demodev
+
+Browse the demos [source code][demos].
 
 ### Testing
 
-You can run uncompressed, debuggable code by starting the demo server in dev mode:
+WebFont Loader has an extensive test suite that runs via jasmine. The test suite
+should be passing before submitting a pull request, and new tests should be added
+for any new functionality.
 
-    rake demodev
+To run tests, first boot the local test server:
 
-WebFont Loader has an extensive test suite that runs via
-[jsTestDriver][jstestdriver]. Please add tests for any changes.
+    $ rake test
 
-To run tests, first boot the test server. Then open a browser and navigate to
-the test server url listed by `rake test` to start listing for test executions.
-You can register multiple browsers.
+Then open a browser and navigate to the given URL. The tests will run
+automatically.
 
-    rake test:boot
-
-Then, run the tests.
-
-    rake test
 
 ## Contributing
 
 * Fork webfontloader
 * Create a topic branch - `git checkout -b my_branch`
 * Push to your branch - `git push origin my_branch`
-* Create an [issue][issues] with a link to your branch
+* Make sure all tests are passing
+* Create a pull request for your branch
 * That's it!
 
 
@@ -173,5 +173,4 @@ WebFont Loader is released under the [Apache 2.0][lic] license.
 [demos]: http://github.com/typekit/webfontloader/blob/master/lib/webfontloader/demo/public
 [gfontapi]: https://code.google.com/apis/webfonts/
 [gajax]: http://code.google.com/apis/ajaxlibs/
-[jstestdriver]: http://code.google.com/p/js-test-driver/
 [issues]: https://github.com/typekit/webfontloader/issues
