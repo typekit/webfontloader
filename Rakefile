@@ -131,7 +131,8 @@ desc "Test everything"
 task :default => [:clean, :gzipbytes, :test]
 
 desc "Run all tests"
-task :test => :jasmine
+task :test do |t|
+end
 
 desc "Start the demo server"
 task :demo => "target/webfont.js" do |t|
@@ -220,6 +221,3 @@ task :validate do
     exit!
   end
 end
-
-# Jasmine
-load 'jasmine/tasks/jasmine.rake'
