@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="../tools/jasmine/jasmine.css">
+ </head>
+  <body>
+    <script src="../tools/jasmine/jasmine.js"></script>
+    <script src="../tools/jasmine/jasmine-html.js"></script>
+
+    <script src="../src/core/namespace.js"></script>
+    <script src="../src/core/domhelper.js"></script>
+    <script src="../src/core/cssclassname.js"></script>
+    <script src="../src/core/cssfontfamilyname.js"></script>
+    <script src="../src/core/fontvariationdescription.js"></script>
+    <script src="../src/core/browserinfo.js"></script>
+    <script src="../src/core/useragent.js"></script>
+    <script src="../src/core/useragentparser.js"></script>
+    <script src="../src/core/fontmoduleloader.js"></script>
+    <script src="../src/core/eventdispatcher.js"></script>
+    <script src="../src/core/size.js"></script>
+    <script src="../src/core/fontruler.js"></script>
+    <script src="../src/core/fontwatchrunner.js"></script>
+    <script src="../src/core/fontwatcher.js"></script>
+    <script src="../src/core/font.js"></script>
+    <script src="../src/core/initialize.js"></script>
+    <script src="../src/google/fontapiparser.js"></script>
+    <script src="../src/google/fontapiurlbuilder.js"></script>
+    <script src="../src/google/googlefontapi.js"></script>
+    <script src="../src/google/lastresortwebkitfontwatchrunner.js"></script>
+    <script src="../src/custom/customcss.js"></script>
+    <script src="../src/ascender/ascender_script.js"></script>
+    <script src="../src/fontdeck/fontdeck_script.js"></script>
+    <script src="../src/monotype/monotype_script.js"></script>
+    <script src="../src/typekit/typekit_script.js"></script>
+
+    <script src="../spec/core/domhelper_spec.js"></script>
+    <script src="../spec/core/cssclassname_spec.js"></script>
+    <script src="../spec/core/cssfontfamilyname_spec.js"></script>
+    <script src="../spec/core/fontvariationdescription_spec.js"></script>
+    <script src="../spec/core/useragentparser_spec.js"></script>
+    <script src="../spec/core/fontmoduleloader_spec.js"></script>
+    <script src="../spec/core/eventdispatcher_spec.js"></script>
+    <script src="../spec/core/size_spec.js"></script>
+    <script src="../spec/core/fontwatchrunner_spec.js"></script>
+    <script src="../spec/core/fontwatcher_spec.js"></script>
+    <script src="../spec/core/font_spec.js"></script>
+    <script src="../spec/google/fontapiparser_spec.js"></script>
+    <script src="../spec/google/fontapiurlbuilder_spec.js"></script>
+    <script src="../spec/google/googlefontapi_spec.js"></script>
+    <script src="../spec/google/lastresortwebkitfontwatchrunner_spec.js"></script>
+    <script src="../spec/custom/customcss_spec.js"></script>
+    <script src="../spec/ascender/ascenderscript_spec.js"></script>
+    <script src="../spec/fontdeck/fontdeckscript_spec.js"></script>
+    <script src="../spec/monotype/monotypescript_spec.js"></script>
+    <script src="../spec/typekit/typekitscript_spec.js"></script>
+
+    <script>
+      (function () {
+        var env = jasmine.getEnv();
+
+        env.updateInterval = 1000;
+
+        var htmlReporter = new jasmine.HtmlReporter();
+
+        env.addReporter(htmlReporter);
+        env.specFilter = function (spec) {
+          return htmlReporter.specFilter(spec);
+        };
+
+        var currentOnload = window.onload;
+
+        window.onload = function () {
+          if (currentOnload) {
+            currentOnload();
+          }
+          env.execute();
+        };
+      }());
+    </script>
+  </body>
+</html>
