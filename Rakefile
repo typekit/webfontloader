@@ -132,6 +132,7 @@ task :default => [:clean, :gzipbytes, :test]
 
 desc "Run all tests"
 task :test do |t|
+  exec "phantomjs tools/jasmine-phantomjs/jasmine-phantomjs.js spec/index.html"
 end
 
 desc "Start the demo server"
