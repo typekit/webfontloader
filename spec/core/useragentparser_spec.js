@@ -597,6 +597,273 @@ describe('UserAgentParser', function () {
       });
     });
 
+    describe('Kindle Fire', function () {
+      describe('2nd generation', function () {
+        it('should detect Silk desktop view', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; en-us; KFOT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Safari/535.19 Silk-Accelerated=false'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+
+        it('should detect Silk mobile view', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFOT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Mobile Safari/535.19 Silk-Accelerated=false'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+
+        it('should detect WebView', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFOT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Version/4.0 Safari/535.19'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+      });
+
+      describe('HD 7"', function () {
+        it('should detect Silk desktop view', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; en-us; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Safari/535.19 Silk-Accelerated=false'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+
+        it('should detect Silk mobile view', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Mobile Safari/535.19 Silk-Accelerated=false'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+
+        it('should detect WebView', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; <locale>; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Version/4.0 Safari/535.19'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+      });
+
+      describe('HD 8.9" Wi-Fi', function () {
+        it('should detect Silk desktop view', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; en-us; KFJWI Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Safari/535.19 Silk-Accelerated=false'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+
+        it('should detect Silk mobile view', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFJWI Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Mobile Safari/535.19 Silk-Accelerated=false'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+
+        it('should detect WebView', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFJWI Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Version/4.0 Safari/535.19'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+      });
+
+      describe('HD 8.9" WAN', function () {
+        it('should detect Silk desktop view', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; en-us; KFJWA Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Safari/535.19 Silk-Accelerated=false'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+
+        it('should detect Silk mobile view', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFJWA Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Mobile Safari/535.19 Silk-Accelerated=false'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+
+        it('should detect WebView', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFJWA Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Version/4.0 Safari/535.19'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+      });
+
+      describe('1st generation', function () {
+        it('should detect Silk desktop view', function () {
+          expect(parse('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-us; Silk/1.0.22.79_10013310) AppleWebKit/533.16 (KHTML, like Gecko) Version/5.0 Safari/533.16 Silk-Accelerated=false'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+
+        it('should detect Silk mobile view', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; Silk/1.0.22.79_10013310) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1 Silk-Accelerated=false'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+
+        it('should detect WebView', function () {
+          expect(parse('Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; Kindle Fire Build/GINGERBREAD) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Safari/533.1'))
+          .toMatchUserAgent({
+            name: 'BuiltinBrowser',
+            version: 'Unknown',
+            platform: 'Kindle Fire',
+            platformVersion: 'Unknown',
+            engine: 'AppleWebKit',
+            engineVersion: '535.19',
+            documentMode: undefined,
+            browserInfo: {
+              hasWebFontSupport: false,
+              hasWebKitFallbackBug: true
+            }
+          });
+        });
+      });
+    });
+
     describe('Opera', function () {
       it('should detect Opera', function () {
         expect(parse('Opera/9.80 (Linux i686; U; en) Presto/2.5.22 Version/10.51'))
