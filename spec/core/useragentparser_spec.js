@@ -595,23 +595,6 @@ describe('UserAgentParser', function () {
           }
         });
       });
-
-      it('should detect the Kindle Fire 2 as supporting web fonts', function () {
-        expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFOTE Build/IML74K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30'))
-        .toMatchUserAgent({
-          name: 'BuiltinBrowser',
-          version: 'Unknown',
-          platform: 'Android',
-          platformVersion: '4.0.3',
-          engine: 'AppleWebKit',
-          engineVersion: '534.30',
-          documentMode: undefined,
-          browserInfo: {
-            hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
-          }
-        });
-      });
     });
 
     describe('Opera', function () {
