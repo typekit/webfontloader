@@ -93,7 +93,6 @@ describe('DomHelper', function () {
       expect(div.className).toEqual('moo meu moo');
     });
 
-    /*
     it('should normalize spaces and tabs', function () {
       var div = domHelper.createElement('div');
 
@@ -101,7 +100,6 @@ describe('DomHelper', function () {
       domHelper.appendClassName(div, '      foo ');
       expect(div.className).toEqual('meu foo');
     });
-    */
   });
 
   describe('#removeClassName', function () {
