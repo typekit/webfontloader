@@ -60,11 +60,13 @@ webfont.UserAgentParser.prototype.parse = function() {
  */
 webfont.UserAgentParser.prototype.getPlatform_ = function() {
   var mobileOs = this.getMatchingGroup_(this.userAgent_,
-      /(iPod|iPad|iPhone|Android|Windows Phone|BB\d{2}|BlackBerry)/, 1);
+      /(iPod|iPad|iPhone|Windows Phone|Android|BB\d{2}|BlackBerry|KFOT|KFTT|KFJWI|KFJWA|Silk|Kindle Fire)/, 1);
 
   if (mobileOs != "") {
     if (/BB\d{2}/.test(mobileOs)) {
       mobileOs = "BlackBerry";
+    } else if (/KFOT|KFTT|KFJWI|KFJWA|Silk|Kindle Fire/.test(this.userAgent_)) {
+      mobileOs = "Kindle Fire";
     }
     return mobileOs;
   }
@@ -84,6 +86,10 @@ webfont.UserAgentParser.prototype.getPlatform_ = function() {
  * @private
  */
 webfont.UserAgentParser.prototype.getPlatformVersion_ = function() {
+  if (/KFOT|KFTT|KFJWI|KFJWA|Silk|Kindle Fire/.test(this.userAgent_)) {
+    return webfont.UserAgentParser.UNKNOWN;
+  }
+
   var genericVersion = this.getMatchingGroup_(this.userAgent_,
       /(OS X|Windows NT|Android|CrOS) ([^;)]+)/, 2);
   if (genericVersion) {
@@ -247,7 +253,7 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
 
   if (this.userAgent_.indexOf("Chrome") != -1 || this.userAgent_.indexOf("CrMo") != -1 || this.userAgent_.indexOf("CriOS") != -1) {
     name = "Chrome";
-  } else if (platform == "BlackBerry" || platform == "Android") {
+  } else if (platform == "BlackBerry" || platform == "Android" || platform == 'Kindle Fire') {
     name = webfont.UserAgentParser.BUILTIN_BROWSER;
   } else if (this.userAgent_.indexOf("Safari") != -1) {
     name = "Safari";

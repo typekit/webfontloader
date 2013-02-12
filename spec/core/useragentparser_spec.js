@@ -610,7 +610,7 @@ describe('UserAgentParser', function () {
             engineVersion: '535.19',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -627,7 +627,7 @@ describe('UserAgentParser', function () {
             engineVersion: '535.19',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -644,7 +644,7 @@ describe('UserAgentParser', function () {
             engineVersion: '535.19',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -663,7 +663,7 @@ describe('UserAgentParser', function () {
             engineVersion: '535.19',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -680,7 +680,7 @@ describe('UserAgentParser', function () {
             engineVersion: '535.19',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -697,7 +697,7 @@ describe('UserAgentParser', function () {
             engineVersion: '535.19',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -716,7 +716,7 @@ describe('UserAgentParser', function () {
             engineVersion: '535.19',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -733,7 +733,7 @@ describe('UserAgentParser', function () {
             engineVersion: '535.19',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -750,7 +750,7 @@ describe('UserAgentParser', function () {
             engineVersion: '535.19',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -769,7 +769,7 @@ describe('UserAgentParser', function () {
             engineVersion: '535.19',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -786,7 +786,7 @@ describe('UserAgentParser', function () {
             engineVersion: '535.19',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -803,7 +803,7 @@ describe('UserAgentParser', function () {
             engineVersion: '535.19',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -819,10 +819,10 @@ describe('UserAgentParser', function () {
             platform: 'Kindle Fire',
             platformVersion: 'Unknown',
             engine: 'AppleWebKit',
-            engineVersion: '535.19',
+            engineVersion: '533.16',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -836,10 +836,10 @@ describe('UserAgentParser', function () {
             platform: 'Kindle Fire',
             platformVersion: 'Unknown',
             engine: 'AppleWebKit',
-            engineVersion: '535.19',
+            engineVersion: '533.1',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
@@ -853,10 +853,10 @@ describe('UserAgentParser', function () {
             platform: 'Kindle Fire',
             platformVersion: 'Unknown',
             engine: 'AppleWebKit',
-            engineVersion: '535.19',
+            engineVersion: '533.1',
             documentMode: undefined,
             browserInfo: {
-              hasWebFontSupport: false,
+              hasWebFontSupport: true,
               hasWebKitFallbackBug: true
             }
           });
