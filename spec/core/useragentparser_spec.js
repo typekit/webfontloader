@@ -687,7 +687,7 @@ describe('UserAgentParser', function () {
         });
 
         it('should detect WebView', function () {
-          expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; <locale>; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Version/4.0 Safari/535.19'))
+          expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Version/4.0 Safari/535.19'))
           .toMatchUserAgent({
             name: 'BuiltinBrowser',
             version: 'Unknown',
