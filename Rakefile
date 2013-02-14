@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'rake'
 require 'date'
-require 'jasmine'
 
 #############################################################################
 #
