@@ -562,6 +562,22 @@ describe('UserAgentParser', function () {
         });
       });
 
+      it('should detect Android builtin browser in Desktop Mode', function () {
+        expect(parse('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.45 Safari/535.19'))
+        .toMatchUserAgent({
+          name: 'Chrome',
+          version: '18.0.1025.45',
+          platform: 'Linux',
+          platformVersion: 'Unknown',
+          engine: 'AppleWebKit',
+          engineVersion: '535.19',
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true
+          }
+        });
+      });
+
       it('should detect BlackBerry 10 as supporting web fonts', function () {
         expect(parse('Mozilla/5.0 (BB10; Touch) AppleWebKit/537.3+ (KHTML, like Gecko) Version/10.0.9.388 Mobile Safari/537.3+'))
         .toMatchUserAgent({
