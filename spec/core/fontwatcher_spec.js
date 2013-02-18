@@ -41,6 +41,17 @@ describe('FontWatcher', function () {
     }
   };
 
+  describe('watch zero fonts', function () {
+    it('should call inactive when there are no fonts to load', function () {
+      activeFontFamilies = [];
+      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher, jasmine.createSpy('fakeFontSizer'),
+          jasmine.createSpy('fakeAsyncCall'), jasmine.createSpy('fakeGetTime'));
+
+      fontWatcher.watch([], {}, {}, FakeFontWatchRunner, true);
+      expect(eventDispatcher.dispatchInactive).toHaveBeenCalled();
+    });
+  });
+
   describe('watch one font not last', function () {
     it('should not call font inactive, inactive or active', function () {
       activeFontFamilies = ['fontFamily1'];
