@@ -221,6 +221,24 @@ describe('FontWatchRunner', function () {
     });
   });
 
+  describe('webkit metrics bug', function () {
+    it('should correctly call active even though the height is different', function () {
+      actualSizes = [
+        FALLBACK_SIZE_A, FALLBACK_SIZE_B,
+        new Size(1, 2), new Size(2, 3), // Same as FALLBACK_SIZE_A and FALLBACK_SIZE_B except that the height is different.
+        TARGET_SIZE, TARGET_SIZE
+      ];
+
+      var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, new BrowserInfo(true, false, true));
+
+      fontWatchRunner.start();
+
+      expect(asyncCount).toEqual(2);
+      expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
+    });
+  });
+
   describe('test string', function () {
     var fontWatchRunner = null;
 

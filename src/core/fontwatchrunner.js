@@ -99,7 +99,11 @@ webfont.FontWatchRunner.prototype.start = function() {
  * @return {boolean}
  */
 webfont.FontWatchRunner.prototype.sizeMatches_ = function(size, lastResortFont) {
-  return size.equals(this.lastResortSizes_[lastResortFont]);
+  if (this.browserInfo_.hasWebKitMetricsBug()) {
+    return size.equalsWidth(this.lastResortSizes_[lastResortFont]);
+  } else {
+    return size.equals(this.lastResortSizes_[lastResortFont]);
+  }
 };
 
 /**
