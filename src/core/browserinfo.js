@@ -3,9 +3,10 @@
  * @param {boolean} webfontSupport
  * @param {boolean} webKitFallbackBug
  */
-webfont.BrowserInfo = function (webfontSupport, webKitFallbackBug) {
+webfont.BrowserInfo = function (webfontSupport, webKitFallbackBug, webKitMetricsBug) {
   this.webfontSupport_ = webfontSupport;
   this.webKitFallbackBug_ = webKitFallbackBug;
+  this.webKitMetricsBug_ = webKitMetricsBug;
 };
 
 /**
@@ -20,4 +21,11 @@ webfont.BrowserInfo.prototype.hasWebFontSupport = function () {
  */
 webfont.BrowserInfo.prototype.hasWebKitFallbackBug = function () {
   return this.webKitFallbackBug_;
+};
+
+/**
+ * @return {boolean}
+ */
+webfont.BrowserInfo.prototype.hasWebKitMetricsBug = function () {
+  return this.webKitMetricsBug_;
 };
