@@ -58,6 +58,11 @@ describe('UserAgentParser', function () {
           return false;
         }
 
+        if (actual.getBrowserInfo().hasWebKitMetricsBug() !== expected.browserInfo.hasWebKitMetricsBug) {
+          this.message = msg('web kit metrics bug', actual.getBrowserInfo().hasWebKitMetricsBug(), expected.browserInfo.hasWebKitFallbackBug);
+          return false;
+        }
+
         return true;
       }
     });
@@ -81,7 +86,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
           }
         });
       });
@@ -98,7 +104,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
           }
         });
       });
@@ -117,7 +124,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
 
@@ -132,7 +140,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -149,7 +158,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -168,7 +178,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -185,7 +196,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -204,7 +216,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
           }
         });
       });
@@ -221,7 +234,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -238,7 +252,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -255,7 +270,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
           }
         });
       });
@@ -272,7 +288,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
           }
         });
       });
@@ -291,7 +308,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
           }
         });
 
@@ -306,7 +324,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
           }
         });
       });
@@ -323,7 +342,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
           }
         });
       });
@@ -340,7 +360,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
           }
         });
 
@@ -355,7 +376,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
           }
         });
 
@@ -370,7 +392,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
           }
         });
       });
@@ -387,7 +410,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
           }
         });
 
@@ -402,7 +426,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
           }
         });
       });
@@ -421,7 +446,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
 
@@ -436,7 +462,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -453,7 +480,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -470,7 +498,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -487,7 +516,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -504,7 +534,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -521,7 +552,8 @@ describe('UserAgentParser', function () {
           documentMode: 8,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -540,7 +572,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -557,7 +590,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -574,7 +608,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -591,7 +626,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -610,7 +646,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -627,7 +664,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -644,7 +682,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -661,7 +700,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -678,7 +718,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -697,7 +738,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -714,7 +756,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -733,7 +776,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -750,7 +794,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -767,7 +812,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -784,7 +830,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
 
@@ -799,7 +846,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
 
@@ -814,7 +862,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
 
@@ -829,7 +878,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
 
@@ -844,7 +894,8 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: false
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
           }
         });
       });
