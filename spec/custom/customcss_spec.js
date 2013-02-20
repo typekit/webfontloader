@@ -2,17 +2,24 @@ describe('CustomCss', function () {
   var CustomCss = webfont.CustomCss;
 
   describe('insert links correctly', function () {
-    var fakeDomHelper = {
-          createCssLink: jasmine.createSpy('createCssLink'),
-          insertInto: jasmine.createSpy('insertInto')
-        },
-        load = jasmine.createSpy('load'),
-        defaultModule = new CustomCss(fakeDomHelper, {
-          families: ['Font1', 'Font2', 'Font3'],
-          urls: ['http://moo', 'http://meuh']
-        });
+    var fakeDomHelper = null,
+        load = null;
 
-    defaultModule.load(load);
+    beforeEach(function () {
+      fakeDomHelper = {
+        createCssLink: jasmine.createSpy('createCssLink'),
+        insertInto: jasmine.createSpy('insertInto')
+      };
+
+      load = jasmine.createSpy('load');
+
+      var defaultModule = new CustomCss(fakeDomHelper, {
+        families: ['Font1', 'Font2', 'Font3'],
+        urls: ['http://moo', 'http://meuh']
+      });
+
+      defaultModule.load(load);
+    });
 
     it('should have inserted the links correctly', function () {
       expect(fakeDomHelper.createCssLink.callCount).toEqual(2);

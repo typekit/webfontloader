@@ -93,7 +93,6 @@ describe('DomHelper', function () {
       expect(div.className).toEqual('moo meu moo');
     });
 
-    /*
     it('should normalize spaces and tabs', function () {
       var div = domHelper.createElement('div');
 
@@ -101,7 +100,6 @@ describe('DomHelper', function () {
       domHelper.appendClassName(div, '      foo ');
       expect(div.className).toEqual('meu foo');
     });
-    */
   });
 
   describe('#removeClassName', function () {
@@ -126,8 +124,12 @@ describe('DomHelper', function () {
   });
 
   describe('#hasClassName', function () {
-    var div = domHelper.createElement('div');
-    domHelper.appendClassName(div, 'moo moo-meu');
+    var div = null;
+
+    beforeEach(function () {
+       div = domHelper.createElement('div');
+       domHelper.appendClassName(div, 'moo moo-meu');
+    });
 
     it('should return true', function () {
       expect(domHelper.hasClassName(div, 'moo')).toBe(true);
@@ -141,10 +143,14 @@ describe('DomHelper', function () {
   });
 
   describe('#setStyle', function () {
-    var div = domHelper.createElement('div');
+    var div = null;
 
-    domHelper.setStyle(div, 'left:3px;top:1px;');
+    beforeEach(function () {
+      div = domHelper.createElement('div');
+    });
+
     it('should set the style correctly', function () {
+      domHelper.setStyle(div, 'left:3px;top:1px;');
       expect(div.style.left).toEqual('3px');
       expect(div.style.top).toEqual('1px');
     });

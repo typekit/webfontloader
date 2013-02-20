@@ -105,7 +105,9 @@ You'll need a few rubygems to run the tests, demo server, and other rake tasks, 
     $ gem install bundler
     $ bundle install
 
-To run the tests in a headless WebKit you will also need to have [PhantomJS](http://www.phantomjs.org) installed.
+To run the tests in a headless WebKit you will also need to have [PhantomJS](http://www.phantomjs.org) installed. You can install PhantomJS by downloading a binary of using HomeBrew.
+
+    $ brew install phantomjs
 
 ### Building
 
@@ -129,11 +131,13 @@ Browse the demos [source code][demos].
 
 ### Testing
 
-WebFont Loader has an extensive test suite that runs via jasmine. The test suite
+WebFont Loader has an extensive test suite that runs via Jasmine. The test suite
 should be passing before submitting a pull request, and new tests should be added
 for any new functionality.
 
-To run tests, open up `spec/index.html` in your browser and check the results.
+To run tests, open up `spec/index.html` in a browser and check the results. The
+test suite will run automatically. Again, before submitting a pull request
+please run the test suite in multiple browsers and list them in the pull request.
 
 To run tests in a headless WebKit using [PhantomJS](http://www.phantomjs.org) run:
 
