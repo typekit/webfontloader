@@ -5,18 +5,13 @@ if (system.args.length !== 1) {
   var page = webpage.create();
 
   page.onConsoleMessage = function (msg) {
-    if (msg === 'ConsoleReporter finished') {
-      var status = page.evaluate(function () {
-        return JASMINE_STATUS;
-      });
-
-      if (status === 'success') {
+    console.log(msg);
+    if (/^SUCCESS|FAILURE/.test(msg)) {
+      if (/^SUCCESS/.test(msg)) {
         phantom.exit(0);
       } else {
         phantom.exit(1);
       }
-    } else {
-      console.log(msg);
     }
   };
 
