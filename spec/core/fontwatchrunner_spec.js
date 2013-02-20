@@ -370,23 +370,29 @@ describe('FontWatchRunner', function () {
     });
 
     it('should be the default', function () {
+      actualSizes = [
+        TARGET_SIZE, TARGET_SIZE
+      ];
+
       fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
           domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, false);
+
+      fontWatchRunner.start();
 
       expect(domHelper.createElement.mostRecentCall.args[2]).toEqual('BESbswy');
     });
 
     it('should be a custom string', function () {
+      actualSizes = [
+        TARGET_SIZE, TARGET_SIZE
+      ];
+
       fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
           domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, false, {}, 'TestString');
 
-      expect(domHelper.createElement.mostRecentCall.args[2]).toEqual('TestString');
-    });
+      fontWatchRunner.start();
 
-    afterEach(function () {
-      // This is just to ensure we don't leave any DOM nodes behind because these
-      // tests do not actually do any font watching.
-      fontWatchRunner.finish_(function () {});
+      expect(domHelper.createElement.mostRecentCall.args[2]).toEqual('TestString');
     });
   });
 });

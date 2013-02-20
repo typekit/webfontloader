@@ -28,10 +28,8 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
 
   this.metricCompatibleFonts_ = opt_metricCompatibleFonts || null;
 
-  this.fontRulerA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
-  this.fontRulerA_.insert();
-  this.fontRulerB_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
-  this.fontRulerB_.insert();
+  this.fontRulerA_ = null;
+  this.fontRulerB_ = null;
 
   this.setupLastResortSizes_();
 };
@@ -82,6 +80,11 @@ webfont.FontWatchRunner.prototype.setupLastResortSizes_ = function() {
 };
 
 webfont.FontWatchRunner.prototype.start = function() {
+  this.fontRulerA_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
+  this.fontRulerA_.insert();
+  this.fontRulerB_ = new webfont.FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
+  this.fontRulerB_.insert();
+
   this.started_ = this.getTime_();
 
   this.fontRulerA_.setFont(this.fontFamily_ + ',' + webfont.FontWatchRunner.LastResortFonts.SERIF, this.fontDescription_);
