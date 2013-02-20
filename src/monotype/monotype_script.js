@@ -39,6 +39,7 @@ webfont.MonotypeScript.SCRIPTID = '__MonotypeAPIScript__';
 webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support) {
   var self = this;
   var projectId = self.configuration_['projectId'];
+  var version = self.configuration_['version'];
   if (projectId) {
     var sc = self.domHelper_.createElement("script");
     sc["id"] = webfont.MonotypeScript.SCRIPTID + projectId;
@@ -68,7 +69,7 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
       }
     };
 
-    sc["src"] = self.getScriptSrc(projectId);
+    sc["src"] = self.getScriptSrc(projectId, version);
     this.domHelper_.insertInto('head', sc);
   }
   else {
@@ -76,10 +77,10 @@ webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support
   }
 };
 
-webfont.MonotypeScript.prototype.getScriptSrc = function (projectId) {
+webfont.MonotypeScript.prototype.getScriptSrc = function (projectId, version) {
   var p = this.domHelper_.getProtocol();
   var api = (this.configuration_['api'] || 'fast.fonts.com/jsapi').replace(/^.*http(s?):(\/\/)?/, "");
-  return p + "//" + api + '/' + projectId + '.js';
+  return p + "//" + api + '/' + projectId + '.js' + ( version ? '?v='+ version : '' );
 };
 
 webfont.MonotypeScript.prototype.load = function (onReady) {
