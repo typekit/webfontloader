@@ -2,9 +2,12 @@ describe('FontApiParser', function () {
   var FontApiParser = webfont.FontApiParser;
 
   describe('parsed values are coherent', function () {
-    var parser = new FontApiParser(['Tangerine', 'Droid Serif:bi', 'Yanone Kaffeesatz:200,300,400,700', 'Cantarell:italic,b', 'Exo:100italic', 'Lobster:200n']);
+    var parser = null;
 
-    parser.parse();
+    beforeEach(function () {
+      parser = new FontApiParser(['Tangerine', 'Droid Serif:bi', 'Yanone Kaffeesatz:200,300,400,700', 'Cantarell:italic,b', 'Exo:100italic', 'Lobster:200n']);
+      parser.parse();
+    });
 
     it('should parse families correctly', function () {
       var fontFamilies = parser.getFontFamilies();
@@ -60,9 +63,12 @@ describe('FontApiParser', function () {
   });
 
   describe('mix of numeric weight and style', function () {
-    var parser = new FontApiParser(['Nobile:700i,b,200i,r,i700']);
+    var parser = null;
 
-    parser.parse();
+    beforeEach(function () {
+      parser = new FontApiParser(['Nobile:700i,b,200i,r,i700']);
+      parser.parse();
+    });
 
     it('should parse families correctly', function () {
       var families = parser.getFontFamilies();
@@ -85,9 +91,12 @@ describe('FontApiParser', function () {
   });
 
   describe('typo bild instead of bold', function () {
-    var parser = new FontApiParser(['Nobile:bild']);
+    var parser = null;
 
-    parser.parse();
+    beforeEach(function () {
+      parser = new FontApiParser(['Nobile:bild']);
+      parser.parse();
+    });
 
     it('should parse families correctly', function () {
       var families = parser.getFontFamilies();
@@ -107,9 +116,12 @@ describe('FontApiParser', function () {
   });
 
   describe('nonsense', function () {
-    var parser = new FontApiParser(['Nobile:dwe,^%^%fewf,$9940@#!@#$%^&*()_+}POIBJ{}{']);
+    var parser = null;
 
-    parser.parse();
+    beforeEach(function () {
+      parser = new FontApiParser(['Nobile:dwe,^%^%fewf,$9940@#!@#$%^&*()_+}POIBJ{}{']);
+      parser.parse();
+    });
 
     it('should parse families correctly', function () {
       var families = parser.getFontFamilies();
@@ -129,9 +141,12 @@ describe('FontApiParser', function () {
   });
 
   describe('no weight and one subset defined', function () {
-    var parser = new FontApiParser(['Cantarell::greek']);
+    var parser = null;
 
-    parser.parse();
+    beforeEach(function () {
+      parser = new FontApiParser(['Cantarell::greek']);
+      parser.parse();
+    });
 
     it('should parse families correctly', function () {
       var families = parser.getFontFamilies();
@@ -159,9 +174,12 @@ describe('FontApiParser', function () {
   });
 
   describe('no weight and multiple subsets defined', function () {
-    var parser = new FontApiParser(['Cantarell::cyrillic,greek,latin']);
+    var parser = null;
 
-    parser.parse();
+    beforeEach(function () {
+      parser = new FontApiParser(['Cantarell::cyrillic,greek,latin']);
+      parser.parse();
+    });
 
     it('should parse families correctly', function () {
       var families = parser.getFontFamilies();
@@ -189,9 +207,12 @@ describe('FontApiParser', function () {
   });
 
   describe('weight and multiple subsets defined', function () {
-    var parser = new FontApiParser(['Cantarell:regular,bold:cyrillic,greek,latin']);
+    var parser = null;
 
-    parser.parse();
+    beforeEach(function () {
+      parser = new FontApiParser(['Cantarell:regular,bold:cyrillic,greek,latin']);
+      parser.parse();
+    });
 
     it('should parse families correctly', function () {
       var families = parser.getFontFamilies();
@@ -220,9 +241,12 @@ describe('FontApiParser', function () {
   });
 
   describe('Hanuman is backward compatible', function () {
-    var parser = new FontApiParser(['Hanuman']);
+    var parser = null;
 
-    parser.parse();
+    beforeEach(function () {
+      parser = new FontApiParser(['Hanuman']);
+      parser.parse();
+    });
 
     it('should parse families correctly', function () {
       var families = parser.getFontFamilies();
@@ -250,9 +274,12 @@ describe('FontApiParser', function () {
   });
 
   describe('Hanuman is forward compatible', function () {
-    var parser = new FontApiParser(['Hanuman::khmer']);
+    var parser = null;
 
-    parser.parse();
+    beforeEach(function () {
+      parser = new FontApiParser(['Hanuman::khmer']);
+      parser.parse();
+    });
 
     it('should parse families correctly', function () {
       var families = parser.getFontFamilies();
@@ -280,9 +307,12 @@ describe('FontApiParser', function () {
   });
 
   describe('plus replaced with space', function () {
-    var parser = new FontApiParser(['Erica+One', 'Droid+Serif::latin', 'Yanone+Kaffeesatz:400,700:latin']);
+    var parser = null;
 
-    parser.parse();
+    beforeEach(function () {
+      parser = new FontApiParser(['Erica+One', 'Droid+Serif::latin', 'Yanone+Kaffeesatz:400,700:latin']);
+      parser.parse();
+    });
 
     it('should parse families correctly', function () {
       var fontFamilies = parser.getFontFamilies();
