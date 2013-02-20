@@ -7,7 +7,7 @@
   <body>
     <script src="../tools/jasmine/jasmine.js"></script>
     <script src="../tools/jasmine/jasmine-html.js"></script>
-    <script src="../tools/jasmine-phantomjs/console-reporter.js"></script>
+    <script src="../tools/jasmine-phantomjs/terminal-reporter.js"></script>
 
     <script src="../src/core/namespace.js"></script>
     <script src="../src/core/domhelper.js"></script>
@@ -64,9 +64,12 @@
         env.updateInterval = 1000;
 
         var htmlReporter = new jasmine.HtmlReporter(),
-            consoleReporter = new jasmine.ConsoleReporter();
+            terminalReporter = new jasmine.TerminalReporter({
+              verbosity: 3,
+              color: true
+            });
 
-        env.addReporter(consoleReporter);
+        env.addReporter(terminalReporter);
         env.addReporter(htmlReporter);
         env.specFilter = function (spec) {
           return htmlReporter.specFilter(spec);
