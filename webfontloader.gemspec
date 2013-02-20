@@ -56,9 +56,10 @@ DESC
 
   ## List your development dependencies here. Development dependencies are
   ## those that are only needed during development
-  s.add_development_dependency('rack', ["~>1.2.1"])
-  s.add_development_dependency('sinatra', ["~>1.0"])
-  s.add_development_dependency('vegas', ["~>0.1.6"])
+  s.add_development_dependency('rake')
+  s.add_development_dependency('rack', ["~>1.5.1"])
+  s.add_development_dependency('sinatra', ["~>1.3.4"])
+  s.add_development_dependency('vegas', ["~>0.1.11"])
 
   ## Leave this section as-is. It will be automatically generated from the
   ## contents of your Git repository via the gemspec task. DO NOT REMOVE
