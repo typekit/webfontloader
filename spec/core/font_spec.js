@@ -110,6 +110,81 @@ describe('WebFont', function () {
     });
   });
 
+  describe('module failed to provide families and descriptions because it did not initialize properly', function () {
+    var font = null,
+        testModule = null,
+        inactive = jasmine.createSpy('inactive'),
+        active = jasmine.createSpy('active');
+
+    beforeEach(function () {
+      font = new WebFont(window, fontModuleLoader, function (func, timeout) { func(); }, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false)));
+      font.addModule('test', function (conf, domHelper) {
+        testModule = new function () {
+          this.conf = conf;
+          this.families = [];
+          this.descriptions = {};
+        };
+
+        testModule.getFontWatchRunnerCtor = function () {
+          function FakeFontWatchRunner(activeCallback, inactiveCallback) {
+            this.inactive = inactiveCallback;
+            this.active = activeCallback;
+          };
+
+          FakeFontWatchRunner.prototype.start = function () {
+            if (conf.id) {
+              this.active('Font1', 'n4');
+            } else {
+              this.inactive('Font1', 'n4');
+            }
+          };
+
+          return FakeFontWatchRunner;
+        };
+
+        testModule.supportUserAgent = function (userAgent, support) {
+          if (conf.id) {
+            // The monotype module only initializes font
+            // and description if there is a kit id.
+            this.families = ['Font1'];
+            this.description = { 'Font1': ['n4'] };
+          }
+          support(true);
+        };
+        testModule.load = function (onReady) {
+          onReady(this.families, this.description);
+        };
+
+        return testModule;
+      });
+    });
+
+    it('should load with a project id', function () {
+      font.load({
+        test: {
+          id: 'hello world'
+        },
+        inactive: inactive,
+        active: active
+      });
+
+      expect(testModule).not.toBeNull();
+      expect(active).toHaveBeenCalled();
+    });
+
+    it('should not load without a project id', function () {
+      font.load({
+        test: {
+        },
+        inactive: inactive,
+        active: active
+      });
+
+      expect(testModule).not.toBeNull();
+      expect(inactive).toHaveBeenCalled();
+    });
+  });
+
   describe('font inactive', function () {
     var font = null,
         testModule = null;
