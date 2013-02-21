@@ -45,6 +45,11 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
     fontTestStrings, fontWatchRunnerCtor, last) {
   var length = fontFamilies.length;
 
+  if (length === 0) {
+    this.eventDispatcher_.dispatchInactive();
+    return;
+  }
+
   for (var i = 0; i < length; i++) {
     var fontFamily = fontFamilies[i];
     if (!fontDescriptions[fontFamily]) {
