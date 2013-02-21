@@ -136,7 +136,9 @@ webfont.DomHelper.prototype.appendClassName = function(e, name) {
     }
   }
   classes.push(name);
-  e.className = classes.join(' ').replace(/^\s+/, '');
+  e.className = classes.join(' ')
+                  .replace(/\s+/g, ' ')
+                  .replace(/^\s+|\s+$/, '');
 };
 
 /**
@@ -152,8 +154,9 @@ webfont.DomHelper.prototype.removeClassName = function(e, name) {
       remainingClasses.push(classes[i]);
     }
   }
-  e.className = remainingClasses.join(' ').replace(/^\s+/, '')
-      .replace(/\s+$/, '');
+  e.className = remainingClasses.join(' ')
+                  .replace(/\s+/g, ' ')
+                  .replace(/^\s+|\s+$/, '');
 };
 
 /**

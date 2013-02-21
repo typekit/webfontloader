@@ -61,7 +61,8 @@ When using [Fonts.com web fonts][mtiwfs]
     <script type="text/javascript">
       WebFont.load({
         monotype: {
-          projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+          projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+          version: 12345 // (optional, flushes the CDN cache)
         }
       });
     </script>

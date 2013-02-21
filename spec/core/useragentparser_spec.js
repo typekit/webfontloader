@@ -596,6 +596,78 @@ describe('UserAgentParser', function () {
         });
       });
 
+      it('should detect Android builtin browser in Desktop mode (Nexus 7)', function () {
+        expect(parse('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.34 Safari/534.24'))
+        .toMatchUserAgent({
+          name: 'Chrome',
+          version: '11.0.696.34',
+          platform: 'Linux',
+          platformVersion: 'Unknown',
+          engine: 'AppleWebKit',
+          engineVersion: '534.24',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
+
+      it('should detect Android builtin browser in Mobile mode (Nexus 7)', function () {
+        expect(parse('Mozilla/5.0 (Linux; U; Android 4.1.2; en-us; sdk Build/MASTER) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30'))
+        .toMatchUserAgent({
+          name: 'BuiltinBrowser',
+          version: 'Unknown',
+          platform: 'Android',
+          platformVersion: '4.1.2',
+          engine: 'AppleWebKit',
+          engineVersion: '534.30',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
+
+      it('should detect Android builtin browser in Desktop mode (Nexus S)', function () {
+        expect(parse('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.34 Safari/534.24'))
+        .toMatchUserAgent({
+          name: 'Chrome',
+          version: '11.0.696.34',
+          platform: 'Linux',
+          platformVersion: 'Unknown',
+          engine: 'AppleWebKit',
+          engineVersion: '534.24',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
+
+      it('should detect Android builtin browser in Mobile mode (Nexus S)', function () {
+        expect(parse('Mozilla/5.0 (Linux; U; Android 4.1.2; en-us; Nexus S Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30'))
+        .toMatchUserAgent({
+          name: 'BuiltinBrowser',
+          version: 'Unknown',
+          platform: 'Android',
+          platformVersion: '4.1.2',
+          engine: 'AppleWebKit',
+          engineVersion: '534.30',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
+
       it('should detect BlackBerry 10 as supporting web fonts', function () {
         expect(parse('Mozilla/5.0 (BB10; Touch) AppleWebKit/537.3+ (KHTML, like Gecko) Version/10.0.9.388 Mobile Safari/537.3+'))
         .toMatchUserAgent({

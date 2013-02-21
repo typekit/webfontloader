@@ -1,8 +1,10 @@
 describe('FontWatchRunner', function () {
   var FontWatchRunner = webfont.FontWatchRunner,
       BrowserInfo = webfont.BrowserInfo,
+      UserAgentParser = webfont.UserAgentParser,
       Size = webfont.Size,
       DomHelper = webfont.DomHelper,
+      FontRuler = webfont.FontRuler,
       domHelper = new DomHelper(window),
       fontFamily = 'My Family',
       fontDescription = 'n4';
@@ -239,6 +241,153 @@ describe('FontWatchRunner', function () {
     });
   });
 
+  describe('real browser testing', function () {
+    var fontSizer = null,
+        asyncCall = null,
+        getTime = null,
+        userAgent = null;
+
+    beforeEach(function () {
+      var userAgentParser = new UserAgentParser(window.navigator.userAgent, window.document);
+
+      userAgent = userAgentParser.parse();
+
+      fontSizer = {
+        getSize: function (el) {
+          return new Size(el.offsetWidth, el.offsetHeight);
+        }
+      };
+
+      asyncCall = function (func, timeout) {
+        window.setTimeout(func, timeout);
+      };
+
+      getTime = function () {
+        return new Date().getTime();
+      };
+    });
+
+    it('should fail to load a null font', function () {
+      var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+          domHelper, fontSizer, asyncCall, getTime, '__webfontloader_test__', '', userAgent.getBrowserInfo());
+
+      runs(function () {
+        fontWatchRunner.start();
+      });
+
+      waitsFor(function () {
+        return activeCallback.wasCalled || inactiveCallback.wasCalled;
+      });
+
+      runs(function () {
+        expect(inactiveCallback).toHaveBeenCalledWith('__webfontloader_test__', '');
+      });
+    });
+
+    it('should load font succesfully', function () {
+      var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+          domHelper, fontSizer, asyncCall, getTime, 'SourceSansA', '', userAgent.getBrowserInfo()),
+          ruler = new FontRuler(domHelper, fontSizer, 'abcdef'),
+          activeSize = null,
+          originalSize = null,
+          finalCheck = false;
+
+      runs(function () {
+        ruler.insert();
+        ruler.setFont('monospace');
+        originalSize = ruler.getSize();
+        ruler.setFont("'SourceSansA', monospace");
+        fontWatchRunner.start();
+      });
+
+      waitsFor(function () {
+        return activeCallback.wasCalled || inactiveCallback.wasCalled;
+      });
+
+      runs(function () {
+        expect(activeCallback).toHaveBeenCalledWith('SourceSansA', '');
+        activeSize = ruler.getSize();
+        expect(activeSize).not.toEqual(originalSize);
+
+        window.setTimeout(function () {
+          finalCheck = true;
+        }, 200);
+      });
+
+      waitsFor(function () {
+        return finalCheck;
+      });
+
+      runs(function () {
+        expect(ruler.getSize()).not.toEqual(originalSize);
+        expect(ruler.getSize()).toEqual(activeSize);
+      });
+    });
+
+    it('should attempt to load a non-existing font', function () {
+      var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+          domHelper, fontSizer, asyncCall, getTime, 'Elena', '', userAgent.getBrowserInfo());
+
+      runs(function () {
+        fontWatchRunner.start();
+      });
+
+      waitsFor(function () {
+        return activeCallback.wasCalled || inactiveCallback.wasCalled;
+      });
+
+      runs(function () {
+        expect(inactiveCallback).toHaveBeenCalledWith('Elena', '');
+      });
+    });
+
+    it('should load even if @font-face is inserted after watching has started', function () {
+      var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+          domHelper, fontSizer, asyncCall, getTime, 'SourceSansB', '', userAgent.getBrowserInfo()),
+          ruler = new FontRuler(domHelper, fontSizer, 'abcdef'),
+          activeSize = null,
+          originalSize = null,
+          finalCheck = false;
+
+      runs(function () {
+        ruler.insert();
+        ruler.setFont('monospace');
+        originalSize = ruler.getSize();
+        ruler.setFont("'SourceSansB', monospace");
+        fontWatchRunner.start();
+        var link = document.createElement('link');
+
+        link.rel = "stylesheet";
+        link.href= "fonts/sourcesansb.css";
+
+        document.head.appendChild(link);
+      });
+
+      waitsFor(function () {
+        return activeCallback.wasCalled || inactiveCallback.wasCalled;
+      });
+
+      runs(function () {
+        expect(activeCallback).toHaveBeenCalledWith('SourceSansB', '');
+        activeSize = ruler.getSize();
+        expect(activeSize).not.toEqual(originalSize);
+
+        window.setTimeout(function () {
+          finalCheck = true;
+        }, 200);
+      });
+
+      waitsFor(function () {
+        return finalCheck;
+      });
+
+      runs(function () {
+        expect(ruler.getSize()).not.toEqual(originalSize);
+        expect(ruler.getSize()).toEqual(activeSize);
+      });
+    });
+  });
+
   describe('test string', function () {
     var fontWatchRunner = null;
 
@@ -247,23 +396,29 @@ describe('FontWatchRunner', function () {
     });
 
     it('should be the default', function () {
+      actualSizes = [
+        TARGET_SIZE, TARGET_SIZE
+      ];
+
       fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
           domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, browserInfo);
+
+      fontWatchRunner.start();
 
       expect(domHelper.createElement.mostRecentCall.args[2]).toEqual('BESbswy');
     });
 
     it('should be a custom string', function () {
+      actualSizes = [
+        TARGET_SIZE, TARGET_SIZE
+      ];
+
       fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
           domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, browserInfo, {}, 'TestString');
 
-      expect(domHelper.createElement.mostRecentCall.args[2]).toEqual('TestString');
-    });
+      fontWatchRunner.start();
 
-    afterEach(function () {
-      // This is just to ensure we don't leave any DOM nodes behind because these
-      // tests do not actually do any font watching.
-      fontWatchRunner.finish_(function () {});
+      expect(domHelper.createElement.mostRecentCall.args[2]).toEqual('TestString');
     });
   });
 });

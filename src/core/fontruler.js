@@ -41,7 +41,7 @@ webfont.FontRuler.prototype.computeStyleString_ = function(fontFamily, opt_fontD
   var variationCss = opt_fontDescription ? this.fvd_.expand(opt_fontDescription) : '';
   var styleString = "position:absolute;top:-999px;left:-999px;" +
       "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
-      "padding:0;font-variant:normal;font-family:" +
+      "padding:0;font-variant:normal;white-space:nowrap;font-family:" +
       this.nameHelper_.quote(fontFamily) + ";" + variationCss;
   return styleString;
 };
