@@ -40,7 +40,7 @@ goog.scope(function () {
         this.configuration_['blocking'] != true;
 
     if (nonBlockingIe) {
-      domHelper.whenBodyExists(webfont.bind(this, this.insertLink_, onReady));
+      domHelper.whenBodyExists(goog.bind(this.insertLink_, this, onReady));
     } else {
       this.insertLink_(onReady);
     }
