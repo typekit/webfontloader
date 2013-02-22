@@ -12,22 +12,25 @@ goog.require('webfont.FontRuler');
  * @param {function(): number} getTime
  * @param {string} fontFamily
  * @param {string} fontDescription
- * @param {boolean} hasWebkitFallbackBug
+ * @param {boolean} hasWebKitFallbackBug
+ * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
  * @param {string=} opt_fontTestString
  * @extends webfont.FontWatchRunner
  */
 webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
     inactiveCallback, domHelper, fontSizer, asyncCall, getTime, fontFamily,
-    fontDescription, hasWebkitFallbackBug, opt_fontTestString) {
-  webfont.LastResortWebKitFontWatchRunner.superCtor_.call(this,
-      activeCallback, inactiveCallback, domHelper, fontSizer, asyncCall,
-      getTime, fontFamily, fontDescription, hasWebkitFallbackBug, opt_fontTestString);
+    fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
+
+  goog.base(this, activeCallback, inactiveCallback, domHelper, fontSizer, asyncCall,
+            getTime, fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString);
+
   this.webKitLastResortFontSizes_ = this.setUpWebKitLastResortFontSizes_();
   this.webKitLastResortSizeChange_ = false;
   this.lastObservedSizeA_ = this.lastResortSizes_[webfont.FontWatchRunner.LastResortFonts.SERIF];
   this.lastObservedSizeB_ = this.lastResortSizes_[webfont.FontWatchRunner.LastResortFonts.SANS_SERIF];;
 };
-webfont.extendsClass(webfont.FontWatchRunner, webfont.LastResortWebKitFontWatchRunner);
+
+goog.inherits(webfont.LastResortWebKitFontWatchRunner, webfont.FontWatchRunner)
 
 webfont.LastResortWebKitFontWatchRunner.METRICS_COMPATIBLE_FONTS = {
     "Arimo": true,
