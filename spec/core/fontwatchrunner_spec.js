@@ -190,7 +190,7 @@ describe('FontWatchRunner', function () {
 
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
           domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true,
-          { 'My Other Family': true });
+          0, { 'My Other Family': true });
 
       fontWatchRunner.start();
       expect(asyncCount).toEqual(1);
@@ -207,7 +207,7 @@ describe('FontWatchRunner', function () {
 
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
           domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true,
-          { 'My Family': true });
+          0, { 'My Family': true });
 
       fontWatchRunner.start();
       expect(asyncCount).toEqual(1);
@@ -243,7 +243,8 @@ describe('FontWatchRunner', function () {
 
     it('should fail to load a null font', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontSizer, asyncCall, getTime, '__webfontloader_test__', '', userAgent.getBrowserInfo().hasWebKitFallbackBug());
+          domHelper, fontSizer, asyncCall, getTime, '__webfontloader_test__', '',
+          userAgent.getBrowserInfo().hasWebKitFallbackBug(), 500);
 
       runs(function () {
         fontWatchRunner.start();
@@ -260,7 +261,8 @@ describe('FontWatchRunner', function () {
 
     it('should load font succesfully', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontSizer, asyncCall, getTime, 'SourceSansA', '', userAgent.getBrowserInfo().hasWebKitFallbackBug()),
+          domHelper, fontSizer, asyncCall, getTime, 'SourceSansA', '',
+          userAgent.getBrowserInfo().hasWebKitFallbackBug(), 500),
           ruler = new FontRuler(domHelper, fontSizer, 'abcdef'),
           activeSize = null,
           originalSize = null,
@@ -300,7 +302,8 @@ describe('FontWatchRunner', function () {
 
     it('should attempt to load a non-existing font', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontSizer, asyncCall, getTime, 'Elena', '', userAgent.getBrowserInfo().hasWebKitFallbackBug());
+          domHelper, fontSizer, asyncCall, getTime, 'Elena', '',
+          userAgent.getBrowserInfo().hasWebKitFallbackBug(), 500);
 
       runs(function () {
         fontWatchRunner.start();
@@ -317,7 +320,8 @@ describe('FontWatchRunner', function () {
 
     it('should load even if @font-face is inserted after watching has started', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontSizer, asyncCall, getTime, 'SourceSansB', '', userAgent.getBrowserInfo().hasWebKitFallbackBug()),
+          domHelper, fontSizer, asyncCall, getTime, 'SourceSansB', '',
+          userAgent.getBrowserInfo().hasWebKitFallbackBug(), 500),
           ruler = new FontRuler(domHelper, fontSizer, 'abcdef'),
           activeSize = null,
           originalSize = null,
@@ -388,7 +392,8 @@ describe('FontWatchRunner', function () {
       ];
 
       fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, false, {}, 'TestString');
+          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily,
+          fontDescription, false, 0, {}, 'TestString');
 
       fontWatchRunner.start();
 

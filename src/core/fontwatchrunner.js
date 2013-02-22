@@ -9,11 +9,13 @@
  * @param {string} fontFamily
  * @param {string} fontDescription
  * @param {boolean} hasWebKitFallbackBug
+ * @param {number=} opt_timeout
  * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    fontSizer, asyncCall, getTime, fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
+    fontSizer, asyncCall, getTime, fontFamily, fontDescription, hasWebKitFallbackBug,
+    opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
@@ -25,6 +27,7 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
   this.hasWebKitFallbackBug_ = hasWebKitFallbackBug;
   this.lastResortSizes_ = {};
+  this.timeout = opt_timeout || 5000;
 
   this.metricCompatibleFonts_ = opt_metricCompatibleFonts || null;
 
@@ -132,7 +135,7 @@ webfont.FontWatchRunner.prototype.sizesMatchLastResortSizes_ = function(a, b) {
  * @return {boolean}
  */
 webfont.FontWatchRunner.prototype.hasTimedOut_ = function() {
-  return this.getTime_() - this.started_ >= 5000;
+  return this.getTime_() - this.started_ >= this.timeout;
 };
 
 /**

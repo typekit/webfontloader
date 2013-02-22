@@ -22,7 +22,7 @@ describe('FontWatcher', function () {
   });
 
   function FakeFontWatchRunner(activeCallback, inactiveCallback, domHelper, fontSizer, asyncCall, getTime,
-    fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
+    fontFamily, fontDescription, hasWebKitFallbackBug, timeout, opt_metricCompatibleFonts, opt_fontTestString) {
     this.activeCallback = activeCallback;
     this.inactiveCallback = inactiveCallback;
     this.fontFamily = fontFamily;
