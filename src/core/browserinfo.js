@@ -1,3 +1,5 @@
+goog.provide('webfont.BrowserInfo');
+
 /**
  * @constructor
  * @param {boolean} webfontSupport
@@ -8,16 +10,20 @@ webfont.BrowserInfo = function (webfontSupport, webKitFallbackBug) {
   this.webKitFallbackBug_ = webKitFallbackBug;
 };
 
-/**
- * @return {boolean}
- */
-webfont.BrowserInfo.prototype.hasWebFontSupport = function () {
-  return this.webfontSupport_;
-};
+goog.scope(function () {
+  var BrowserInfo = webfont.BrowserInfo;
 
-/**
- * @return {boolean}
- */
-webfont.BrowserInfo.prototype.hasWebKitFallbackBug = function () {
-  return this.webKitFallbackBug_;
-};
+  /**
+   * @return {boolean}
+   */
+  BrowserInfo.prototype.hasWebFontSupport = function () {
+    return this.webfontSupport_;
+  };
+
+  /**
+   * @return {boolean}
+   */
+  BrowserInfo.prototype.hasWebKitFallbackBug = function () {
+    return this.webKitFallbackBug_;
+  };
+});

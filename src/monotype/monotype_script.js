@@ -1,3 +1,5 @@
+goog.provide('webfont.MonotypeScript');
+
 /**
 webfont.load({
 monotype: {
@@ -36,56 +38,60 @@ webfont.MonotypeScript.HOOK = '__mti_fntLst';
  */
 webfont.MonotypeScript.SCRIPTID = '__MonotypeAPIScript__';
 
-webfont.MonotypeScript.prototype.supportUserAgent = function (userAgent, support) {
-  var self = this;
-  var projectId = self.configuration_['projectId'];
-  var version = self.configuration_['version'];
-  if (projectId) {
-    var sc = self.domHelper_.createElement("script");
-    sc["id"] = webfont.MonotypeScript.SCRIPTID + projectId;
+goog.scope(function () {
+  var MonotypeScript = webfont.MonotypeScript;
 
-    var loadWindow = this.domHelper_.getLoadWindow();
+  MonotypeScript.prototype.supportUserAgent = function (userAgent, support) {
+    var self = this;
+    var projectId = self.configuration_['projectId'];
+    var version = self.configuration_['version'];
+    if (projectId) {
+      var sc = self.domHelper_.createElement("script");
+      sc["id"] = MonotypeScript.SCRIPTID + projectId;
 
-    function onload() {
-      if (loadWindow[webfont.MonotypeScript.HOOK + projectId]) {
-        var mti_fnts = loadWindow[webfont.MonotypeScript.HOOK + projectId]();
-        if (mti_fnts && mti_fnts.length) {
-          var i;
-          for (i = 0; i < mti_fnts.length; i++) {
-            self.fontFamilies_.push(mti_fnts[i]["fontfamily"]);
+      var loadWindow = this.domHelper_.getLoadWindow();
+
+      function onload() {
+        if (loadWindow[MonotypeScript.HOOK + projectId]) {
+          var mti_fnts = loadWindow[webfont.MonotypeScript.HOOK + projectId]();
+          if (mti_fnts && mti_fnts.length) {
+            var i;
+            for (i = 0; i < mti_fnts.length; i++) {
+              self.fontFamilies_.push(mti_fnts[i]["fontfamily"]);
+            }
           }
         }
+        support(userAgent.getBrowserInfo().hasWebFontSupport());
       }
-      support(userAgent.getBrowserInfo().hasWebFontSupport());
+
+      var done = false;
+
+      sc["onload"] = sc["onreadystatechange"] = function () {
+        if (!done && (!this["readyState"] || this["readyState"] === "loaded" || this["readyState"] === "complete")) {
+          done = true;
+          onload();
+          sc["onload"] = sc["onreadystatechange"] = null;
+        }
+      };
+
+      sc["src"] = self.getScriptSrc(projectId, version);
+      this.domHelper_.insertInto('head', sc);
     }
+    else {
+      support(true);
+    }
+  };
 
-    var done = false;
+  MonotypeScript.prototype.getScriptSrc = function (projectId, version) {
+    var p = this.domHelper_.getProtocol();
+    var api = (this.configuration_['api'] || 'fast.fonts.com/jsapi').replace(/^.*http(s?):(\/\/)?/, "");
+    return p + "//" + api + '/' + projectId + '.js' + ( version ? '?v='+ version : '' );
+  };
 
-    sc["onload"] = sc["onreadystatechange"] = function () {
-      if (!done && (!this["readyState"] || this["readyState"] === "loaded" || this["readyState"] === "complete")) {
-        done = true;
-        onload();
-        sc["onload"] = sc["onreadystatechange"] = null;
-      }
-    };
-
-    sc["src"] = self.getScriptSrc(projectId, version);
-    this.domHelper_.insertInto('head', sc);
-  }
-  else {
-    support(true);
-  }
-};
-
-webfont.MonotypeScript.prototype.getScriptSrc = function (projectId, version) {
-  var p = this.domHelper_.getProtocol();
-  var api = (this.configuration_['api'] || 'fast.fonts.com/jsapi').replace(/^.*http(s?):(\/\/)?/, "");
-  return p + "//" + api + '/' + projectId + '.js' + ( version ? '?v='+ version : '' );
-};
-
-webfont.MonotypeScript.prototype.load = function (onReady) {
-  onReady(this.fontFamilies_, this.fontVariations_);
-};
+  MonotypeScript.prototype.load = function (onReady) {
+    onReady(this.fontFamilies_, this.fontVariations_);
+  };
+});
 
 globalNamespaceObject.addModule(webfont.MonotypeScript.NAME, function (configuration, domHelper) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);

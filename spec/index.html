@@ -14,7 +14,22 @@
     <script src="../tools/jasmine/jasmine.js"></script>
     <script src="../tools/jasmine/jasmine-html.js"></script>
     <script src="../tools/jasmine-phantomjs/terminal-reporter.js"></script>
+    <script src="../tools/compiler/base.js"></script>
+    <script src="../spec/deps.js"></script>
 
+    <script>
+      goog.require('webfont');
+
+      // Require the modules because they don't have an explicit
+      // dependency on core.
+      goog.require('webfont.TypekitScript');
+      goog.require('webfont.AscenderScript');
+      goog.require('webfont.FontdeckScript');
+      goog.require('webfont.MonotypeScript');
+      goog.require('webfont.CustomCss');
+      goog.require('webfont.GoogleFontApi');
+    </script>
+    <!--
     <script src="../src/core/namespace.js"></script>
     <script src="../src/core/domhelper.js"></script>
     <script src="../src/core/cssclassname.js"></script>
@@ -40,7 +55,7 @@
     <script src="../src/fontdeck/fontdeck_script.js"></script>
     <script src="../src/monotype/monotype_script.js"></script>
     <script src="../src/typekit/typekit_script.js"></script>
-
+    -->
     <script src="../spec/core/domhelper_spec.js"></script>
     <script src="../spec/core/cssclassname_spec.js"></script>
     <script src="../spec/core/cssfontfamilyname_spec.js"></script>

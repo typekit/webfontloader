@@ -1,3 +1,5 @@
+goog.provide('webfont.FontModuleLoader');
+
 /**
  * @constructor
  */
@@ -5,21 +7,25 @@ webfont.FontModuleLoader = function() {
   this.modules_ = {};
 };
 
-webfont.FontModuleLoader.prototype.addModuleFactory = function(name, factory) {
-  this.modules_[name] = factory;
-};
+goog.scope(function () {
+  var FontModuleLoader = webfont.FontModuleLoader;
 
-webfont.FontModuleLoader.prototype.getModules = function(configuration, domHelper) {
-  var modules = [];
+  FontModuleLoader.prototype.addModuleFactory = function(name, factory) {
+    this.modules_[name] = factory;
+  };
 
-  for (var key in configuration) {
-    if (configuration.hasOwnProperty(key)) {
-      var moduleFactory = this.modules_[key];
+  FontModuleLoader.prototype.getModules = function(configuration, domHelper) {
+    var modules = [];
 
-      if (moduleFactory) {
-        modules.push(moduleFactory(configuration[key], domHelper));
+    for (var key in configuration) {
+      if (configuration.hasOwnProperty(key)) {
+        var moduleFactory = this.modules_[key];
+
+        if (moduleFactory) {
+          modules.push(moduleFactory(configuration[key], domHelper));
+        }
       }
     }
-  }
-  return modules;
-};
+    return modules;
+  };
+});

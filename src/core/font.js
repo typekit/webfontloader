@@ -1,3 +1,10 @@
+goog.provide('webfont.WebFont');
+
+goog.require('webfont.DomHelper');
+goog.require('webfont.EventDispatcher');
+goog.require('webfont.FontWatcher');
+goog.require('webfont.Size');
+
 /**
  * @param {Window} mainWindow The main application window containing
  *   webfontloader.js.
@@ -15,81 +22,89 @@ webfont.WebFont = function(mainWindow, fontModuleLoader, asyncCall, userAgent) {
   this.moduleFailedLoading_ = 0;
 };
 
-webfont.WebFont.prototype.addModule = function(name, factory) {
-  this.fontModuleLoader_.addModuleFactory(name, factory);
-};
+goog.scope(function () {
+  var WebFont = webfont.WebFont,
+      DomHelper = webfont.DomHelper,
+      EventDispatcher = webfont.EventDispatcher,
+      FontWatcher = webfont.FontWatcher,
+      Size = webfont.Size;
 
-webfont.WebFont.prototype.load = function(configuration) {
-  var context = configuration['context'] || this.mainWindow_;
-  this.domHelper_ = new webfont.DomHelper(this.mainWindow_, context);
+  WebFont.prototype.addModule = function(name, factory) {
+    this.fontModuleLoader_.addModuleFactory(name, factory);
+  };
 
-  var eventDispatcher = new webfont.EventDispatcher(
-      this.domHelper_, context.document.documentElement, configuration);
+  WebFont.prototype.load = function(configuration) {
+    var context = configuration['context'] || this.mainWindow_;
+    this.domHelper_ = new DomHelper(this.mainWindow_, context);
 
-  if (this.userAgent_.getBrowserInfo().hasWebFontSupport()) {
-    this.load_(eventDispatcher, configuration);
-  } else {
-    eventDispatcher.dispatchInactive();
-  }
-};
+    var eventDispatcher = new EventDispatcher(
+        this.domHelper_, context.document.documentElement, configuration);
 
-webfont.WebFont.prototype.isModuleSupportingUserAgent_ = function(module, eventDispatcher,
-    fontWatcher, support) {
-  var fontWatchRunnerCtor = module.getFontWatchRunnerCtor ?
-      module.getFontWatchRunnerCtor() : webfont.FontWatchRunner;
-  if (!support) {
+    if (this.userAgent_.getBrowserInfo().hasWebFontSupport()) {
+      this.load_(eventDispatcher, configuration);
+    } else {
+      eventDispatcher.dispatchInactive();
+    }
+  };
+
+  WebFont.prototype.isModuleSupportingUserAgent_ = function(module, eventDispatcher,
+      fontWatcher, support) {
+    var fontWatchRunnerCtor = module.getFontWatchRunnerCtor ?
+        module.getFontWatchRunnerCtor() : webfont.FontWatchRunner;
+    if (!support) {
+      var allModulesLoaded = --this.moduleLoading_ == 0;
+
+      this.moduleFailedLoading_--;
+      if (allModulesLoaded) {
+        if (this.moduleFailedLoading_ == 0) {
+          eventDispatcher.dispatchInactive();
+        } else {
+          eventDispatcher.dispatchLoading();
+        }
+      }
+      fontWatcher.watch([], {}, {}, fontWatchRunnerCtor, allModulesLoaded);
+      return;
+    }
+    module.load(webfont.bind(this, this.onModuleReady_, eventDispatcher,
+        fontWatcher, fontWatchRunnerCtor));
+  };
+
+  WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher,
+      fontWatchRunnerCtor, fontFamilies, opt_fontDescriptions, opt_fontTestStrings) {
     var allModulesLoaded = --this.moduleLoading_ == 0;
 
-    this.moduleFailedLoading_--;
     if (allModulesLoaded) {
-      if (this.moduleFailedLoading_ == 0) {
-        eventDispatcher.dispatchInactive();
-      } else {
-        eventDispatcher.dispatchLoading();
-      }
+      eventDispatcher.dispatchLoading();
     }
-    fontWatcher.watch([], {}, {}, fontWatchRunnerCtor, allModulesLoaded);
-    return;
-  }
-  module.load(webfont.bind(this, this.onModuleReady_, eventDispatcher,
-      fontWatcher, fontWatchRunnerCtor));
-};
+    this.asyncCall_(webfont.bind(this, function(_fontWatcher, _fontFamilies,
+        _fontDescriptions, _fontTestStrings, _fontWatchRunnerCtor,
+        _allModulesLoaded) {
+          _fontWatcher.watch(_fontFamilies, _fontDescriptions || {},
+            _fontTestStrings || {}, _fontWatchRunnerCtor, _allModulesLoaded);
+        }, fontWatcher, fontFamilies, opt_fontDescriptions, opt_fontTestStrings,
+        fontWatchRunnerCtor, allModulesLoaded));
+  };
 
-webfont.WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher,
-    fontWatchRunnerCtor, fontFamilies, opt_fontDescriptions, opt_fontTestStrings) {
-  var allModulesLoaded = --this.moduleLoading_ == 0;
+  WebFont.prototype.load_ = function(eventDispatcher, configuration) {
+    var modules = this.fontModuleLoader_.getModules(configuration, this.domHelper_),
+        self = this;
 
-  if (allModulesLoaded) {
-    eventDispatcher.dispatchLoading();
-  }
-  this.asyncCall_(webfont.bind(this, function(_fontWatcher, _fontFamilies,
-      _fontDescriptions, _fontTestStrings, _fontWatchRunnerCtor,
-      _allModulesLoaded) {
-        _fontWatcher.watch(_fontFamilies, _fontDescriptions || {},
-          _fontTestStrings || {}, _fontWatchRunnerCtor, _allModulesLoaded);
-      }, fontWatcher, fontFamilies, opt_fontDescriptions, opt_fontTestStrings,
-      fontWatchRunnerCtor, allModulesLoaded));
-};
+    this.moduleFailedLoading_ = this.moduleLoading_ = modules.length;
 
-webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {
-  var modules = this.fontModuleLoader_.getModules(configuration, this.domHelper_),
-      self = this;
+    var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.domHelper_,
+        eventDispatcher, {
+          getSize: function(elem) {
+            return new Size(elem.offsetWidth, elem.offsetHeight);
+          }}, self.asyncCall_, function() {
+            return new Date().getTime();
+          });
 
-  this.moduleFailedLoading_ = this.moduleLoading_ = modules.length;
+    for (var i = 0, len = modules.length; i < len; i++) {
+      var module = modules[i];
 
-  var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.domHelper_,
-      eventDispatcher, {
-        getSize: function(elem) {
-          return new webfont.Size(elem.offsetWidth, elem.offsetHeight);
-        }}, self.asyncCall_, function() {
-          return new Date().getTime();
-        });
-
-  for (var i = 0, len = modules.length; i < len; i++) {
-    var module = modules[i];
-
-    module.supportUserAgent(this.userAgent_,
-        webfont.bind(this, this.isModuleSupportingUserAgent_, module,
-        eventDispatcher, fontWatcher));
-  }
-};
+      module.supportUserAgent(this.userAgent_,
+          webfont.bind(this, this.isModuleSupportingUserAgent_, module,
+          eventDispatcher, fontWatcher));
+    }
+  };
+});
