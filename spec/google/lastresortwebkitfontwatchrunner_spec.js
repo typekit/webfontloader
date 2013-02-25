@@ -7,20 +7,14 @@ describe('LastResortWebKitFontWatchRunner', function () {
       fontFamily = 'My Family',
       fontDescription = 'n4';
 
-  var timesToCheckSizeBeforeChange = 0,
-      TARGET_SIZE = new Size(3, 3),
+  var TARGET_SIZE = new Size(3, 3),
       FALLBACK_SIZE_A = new Size(1, 1),
       FALLBACK_SIZE_B = new Size(2, 2),
       LAST_RESORT_SIZE = new Size(4, 4),
 
       setupSizes = [FALLBACK_SIZE_A, FALLBACK_SIZE_B, LAST_RESORT_SIZE],
       actualSizes = [],
-      fakeGetSizeCount = 0,
-      setupFinished = false,
       timesToGetTimeBeforeTimeout = 10,
-      originalGoogNow = null,
-      setupFinished = false,
-      originalStartMethod = null,
       activeCallback = null,
       inactiveCallback = null;
 
@@ -28,8 +22,13 @@ describe('LastResortWebKitFontWatchRunner', function () {
     jasmine.Clock.useMock();
 
     actualSizes = [];
-    setupFinished = false;
-    fakeGetSizeCount = 0;
+
+    activeCallback = jasmine.createSpy('activeCallback');
+    inactiveCallback = jasmine.createSpy('inactiveCallback');
+    timesToGetTimeBeforeTimeout = 10;
+
+    var setupFinished = false,
+        fakeGetSizeCount = 0;
 
     spyOn(FontRuler.prototype, 'getSize').andCallFake(function () {
       var result = null;
@@ -49,35 +48,22 @@ describe('LastResortWebKitFontWatchRunner', function () {
       return result;
     });
 
-    asyncCount = 0;
-    timesToGetTimeBeforeTimeout = 10;
-    activeCallback = jasmine.createSpy('activeCallback');
-    inactiveCallback = jasmine.createSpy('inactiveCallback');
-
-    originalStartMethod = LastResortWebKitFontWatchRunner.prototype.start;
-
-    originalGoogNow = goog.now;
-
-    goog.now = function () {
+    spyOn(goog, 'now').andCallFake(function () {
       if (timesToGetTimeBeforeTimeout <= 0) {
         return 6000;
       } else {
         timesToGetTimeBeforeTimeout -= 1;
         return 1;
       }
-    };
+    });
 
-    LastResortWebKitFontWatchRunner.prototype.start = function () {
+    var originalStart = LastResortWebKitFontWatchRunner.prototype.start;
+
+    spyOn(LastResortWebKitFontWatchRunner.prototype, 'start').andCallFake(function () {
       setupFinished = true;
       fakeGetSizeCount = 0;
-      originalStartMethod.apply(this);
-    };
-  });
-
-  afterEach(function () {
-    LastResortWebKitFontWatchRunner.prototype.start = originalStartMethod;
-
-    goog.now = originalGoogNow;
+      originalStart.apply(this);
+    });
   });
 
   it('should ignore fallback size and call active', function () {

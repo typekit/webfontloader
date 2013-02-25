@@ -26,12 +26,7 @@ describe('FontWatchRunner', function () {
 
         setupSizes = [],
         actualSizes = [],
-        fakeGetSizeCount = 0,
-        setupFinished = false,
-        timesToGetTimeBeforeTimeout = 10,
-        originalGoogNow = null,
-        setupFinished = false,
-        originalStartMethod = null;
+        timesToGetTimeBeforeTimeout = 10;
 
     beforeEach(function () {
       jasmine.Clock.useMock();
@@ -40,13 +35,11 @@ describe('FontWatchRunner', function () {
 
       actualSizes = [];
 
-      fakeGetSizeCount = 0;
-
-      setupFinished = false;
+      var setupFinished = false,
+          fakeGetSizeCount = 0;
 
       spyOn(FontRuler.prototype, 'getSize').andCallFake(function () {
         var result = null;
-
         if (setupFinished) {
           // If you are getting an exception here your tests does not specify enough
           // size data to run properly.
@@ -64,29 +57,23 @@ describe('FontWatchRunner', function () {
 
       timesToGetBeforeTimeout = 10;
 
-      originalGoogNow = goog.now;
-
-      goog.now = function () {
+      spyOn(goog, 'now').andCallFake(function () {
         if (timesToGetTimeBeforeTimeout <= 0) {
           return 6000;
         } else {
           timesToGetTimeBeforeTimeout -= 1;
           return 1;
         }
-      };
+      });
 
-      originalStartMethod = FontWatchRunner.prototype.start;
+      var originalStart = FontWatchRunner.prototype.start;
 
-      FontWatchRunner.prototype.start = function () {
+      spyOn(FontWatchRunner.prototype, 'start').andCallFake(function () {
         setupFinished = true;
         fakeGetSizeCount = 0;
-        originalStartMethod.apply(this);
-      };
-    });
 
-    afterEach(function () {
-      goog.now = originalGoogNow;
-      FontWatchRunner.prototype.start = originalStartMethod;
+        originalStart.apply(this);
+      });
     });
 
     it('should call active if fonts are already loaded', function () {
