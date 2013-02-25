@@ -1,6 +1,7 @@
 goog.provide('webfont.BrowserInfo');
 
 /**
+ * @export
  * @constructor
  * @param {boolean} webfontSupport
  * @param {boolean} webKitFallbackBug
@@ -14,6 +15,7 @@ goog.scope(function () {
   var BrowserInfo = webfont.BrowserInfo;
 
   /**
+   * @export
    * @return {boolean}
    */
   BrowserInfo.prototype.hasWebFontSupport = function () {
@@ -21,6 +23,7 @@ goog.scope(function () {
   };
 
   /**
+   * @export
    * @return {boolean}
    */
   BrowserInfo.prototype.hasWebKitFallbackBug = function () {
