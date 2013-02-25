@@ -38,14 +38,7 @@ describe('FontWatchRunner', function () {
         }
       },
       timesToGetTimeBeforeTimeout = 10,
-      fakeGetTime = function () {
-        if (timesToGetTimeBeforeTimeout <= 0) {
-          return 6000;
-        } else {
-          timesToGetTimeBeforeTimeout -= 1;
-          return 1;
-        }
-      },
+      originalGoogNow = null,
       asyncCount = 0,
       fakeAsyncCall = function (func, timeout) {
         asyncCount += 1;
@@ -68,6 +61,17 @@ describe('FontWatchRunner', function () {
 
     originalStartMethod = FontWatchRunner.prototype.start;
 
+    originalGoogNow = goog.now;
+
+    goog.now = function () {
+      if (timesToGetTimeBeforeTimeout <= 0) {
+        return 6000;
+      } else {
+        timesToGetTimeBeforeTimeout -= 1;
+        return 1;
+      }
+    };
+
     FontWatchRunner.prototype.start = function () {
       setupFinished = true;
       fakeGetSizeCount = 0;
@@ -77,6 +81,7 @@ describe('FontWatchRunner', function () {
 
   afterEach(function () {
     FontWatchRunner.prototype.start = originalStartMethod;
+    goog.now = originalGoogNow;
   });
 
   it('should call active if fonts are already loaded', function () {
@@ -85,7 +90,7 @@ describe('FontWatchRunner', function () {
     ];
 
     var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, false);
+        domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, false);
 
     fontWatchRunner.start();
 
@@ -102,7 +107,7 @@ describe('FontWatchRunner', function () {
     ];
 
     var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, false);
+        domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, false);
 
     fontWatchRunner.start();
     expect(asyncCount).toEqual(3);
@@ -121,7 +126,7 @@ describe('FontWatchRunner', function () {
     ];
 
     var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, false);
+        domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, false);
 
     fontWatchRunner.start();
 
@@ -137,7 +142,7 @@ describe('FontWatchRunner', function () {
       ];
 
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true);
+          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true);
 
       fontWatchRunner.start();
 
@@ -154,7 +159,7 @@ describe('FontWatchRunner', function () {
       timesToGetTimeBeforeTimeout = 2;
 
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true);
+          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true);
 
       fontWatchRunner.start();
 
@@ -172,7 +177,7 @@ describe('FontWatchRunner', function () {
       timesToGetTimeBeforeTimeout = 3;
 
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true);
+          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true);
 
       fontWatchRunner.start();
 
@@ -189,7 +194,7 @@ describe('FontWatchRunner', function () {
       timesToGetTimeBeforeTimeout = 2;
 
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true,
+          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true,
           { 'My Other Family': true });
 
       fontWatchRunner.start();
@@ -206,7 +211,7 @@ describe('FontWatchRunner', function () {
       timesToGetTimeBeforeTimeout = 2;
 
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true,
+          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true,
           { 'My Family': true });
 
       fontWatchRunner.start();
@@ -218,7 +223,6 @@ describe('FontWatchRunner', function () {
   describe('real browser testing', function () {
     var fontSizer = null,
         asyncCall = null,
-        getTime = null,
         userAgent = null;
 
     beforeEach(function () {
@@ -236,14 +240,12 @@ describe('FontWatchRunner', function () {
         window.setTimeout(func, timeout);
       };
 
-      getTime = function () {
-        return new Date().getTime();
-      };
+      goog.now = originalGoogNow;
     });
 
     it('should fail to load a null font', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontSizer, asyncCall, getTime, '__webfontloader_test__', '', userAgent.getBrowserInfo().hasWebKitFallbackBug());
+          domHelper, fontSizer, asyncCall, '__webfontloader_test__', '', userAgent.getBrowserInfo().hasWebKitFallbackBug());
 
       runs(function () {
         fontWatchRunner.start();
@@ -260,7 +262,7 @@ describe('FontWatchRunner', function () {
 
     it('should load font succesfully', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontSizer, asyncCall, getTime, 'SourceSansA', '', userAgent.getBrowserInfo().hasWebKitFallbackBug()),
+          domHelper, fontSizer, asyncCall, 'SourceSansA', '', userAgent.getBrowserInfo().hasWebKitFallbackBug()),
           ruler = new FontRuler(domHelper, fontSizer, 'abcdef'),
           activeSize = null,
           originalSize = null,
@@ -300,7 +302,7 @@ describe('FontWatchRunner', function () {
 
     it('should attempt to load a non-existing font', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontSizer, asyncCall, getTime, 'Elena', '', userAgent.getBrowserInfo().hasWebKitFallbackBug());
+          domHelper, fontSizer, asyncCall, 'Elena', '', userAgent.getBrowserInfo().hasWebKitFallbackBug());
 
       runs(function () {
         fontWatchRunner.start();
@@ -317,7 +319,7 @@ describe('FontWatchRunner', function () {
 
     it('should load even if @font-face is inserted after watching has started', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontSizer, asyncCall, getTime, 'SourceSansB', '', userAgent.getBrowserInfo().hasWebKitFallbackBug()),
+          domHelper, fontSizer, asyncCall, 'SourceSansB', '', userAgent.getBrowserInfo().hasWebKitFallbackBug()),
           ruler = new FontRuler(domHelper, fontSizer, 'abcdef'),
           activeSize = null,
           originalSize = null,
@@ -375,7 +377,7 @@ describe('FontWatchRunner', function () {
       ];
 
       fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, false);
+          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, false);
 
       fontWatchRunner.start();
 
@@ -388,7 +390,7 @@ describe('FontWatchRunner', function () {
       ];
 
       fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, false, {}, 'TestString');
+          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, false, {}, 'TestString');
 
       fontWatchRunner.start();
 

@@ -9,7 +9,6 @@ goog.require('webfont.FontRuler');
  * @param {webfont.DomHelper} domHelper
  * @param {Object.<string, function(Object): webfont.Size>} fontSizer
  * @param {function(function(), number=)} asyncCall
- * @param {function(): number} getTime
  * @param {string} fontFamily
  * @param {string} fontDescription
  * @param {boolean} hasWebKitFallbackBug
@@ -17,13 +16,12 @@ goog.require('webfont.FontRuler');
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    fontSizer, asyncCall, getTime, fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
+    fontSizer, asyncCall, fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
   this.fontSizer_ = fontSizer;
   this.asyncCall_ = asyncCall;
-  this.getTime_ = getTime;
   this.fontFamily_ = fontFamily;
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
@@ -93,7 +91,7 @@ goog.scope(function () {
     this.fontRulerB_ = new FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
     this.fontRulerB_.insert();
 
-    this.started_ = this.getTime_();
+    this.started_ = goog.now();
 
     this.fontRulerA_.setFont(this.fontFamily_ + ',' + FontWatchRunner.LastResortFonts.SERIF, this.fontDescription_);
     this.fontRulerB_.setFont(this.fontFamily_ + ',' + FontWatchRunner.LastResortFonts.SANS_SERIF, this.fontDescription_);
@@ -140,7 +138,7 @@ goog.scope(function () {
    * @return {boolean}
    */
   FontWatchRunner.prototype.hasTimedOut_ = function() {
-    return this.getTime_() - this.started_ >= 5000;
+    return goog.now() - this.started_ >= 5000;
   };
 
   /**

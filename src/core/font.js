@@ -95,9 +95,7 @@ goog.scope(function () {
         eventDispatcher, {
           getSize: function(elem) {
             return new Size(elem.offsetWidth, elem.offsetHeight);
-          }}, self.asyncCall_, function() {
-            return new Date().getTime();
-          });
+          }}, self.asyncCall_);
 
     for (var i = 0, len = modules.length; i < len; i++) {
       var module = modules[i];

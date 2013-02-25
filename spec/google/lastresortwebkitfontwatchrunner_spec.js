@@ -36,14 +36,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
         }
       },
       timesToGetTimeBeforeTimeout = 10,
-      fakeGetTime = function () {
-        if (timesToGetTimeBeforeTimeout <= 0) {
-          return 6000;
-        } else {
-          timesToGetTimeBeforeTimeout -= 1;
-          return 1;
-        }
-      },
+      originalGoogNow = null,
       asyncCount = 0,
       fakeAsyncCall = function (func, timeout) {
         asyncCount += 1;
@@ -66,6 +59,17 @@ describe('LastResortWebKitFontWatchRunner', function () {
 
     originalStartMethod = LastResortWebKitFontWatchRunner.prototype.start;
 
+    originalGoogNow = goog.now;
+
+    goog.now = function () {
+      if (timesToGetTimeBeforeTimeout <= 0) {
+        return 6000;
+      } else {
+        timesToGetTimeBeforeTimeout -= 1;
+        return 1;
+      }
+    };
+
     LastResortWebKitFontWatchRunner.prototype.start = function () {
       setupFinished = true;
       fakeGetSizeCount = 0;
@@ -75,6 +79,8 @@ describe('LastResortWebKitFontWatchRunner', function () {
 
   afterEach(function () {
     LastResortWebKitFontWatchRunner.prototype.start = originalStartMethod;
+
+    goog.now = originalGoogNow;
   });
 
   it('should ignore fallback size and call active', function () {
@@ -84,7 +90,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
     ];
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true);
+        domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true);
 
     fontWatchRunner.start();
 
@@ -101,7 +107,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 2;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, 'Arimo', fontDescription, true);
+        domHelper, fakeFontSizer, fakeAsyncCall, 'Arimo', fontDescription, true);
 
     fontWatchRunner.start();
 
@@ -119,7 +125,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 3;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true);
+        domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true);
 
     fontWatchRunner.start();
 
@@ -136,7 +142,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 2;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true);
+        domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true);
 
     fontWatchRunner.start();
     expect(asyncCount).toEqual(1);

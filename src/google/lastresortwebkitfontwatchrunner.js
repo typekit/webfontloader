@@ -9,7 +9,6 @@ goog.require('webfont.FontRuler');
  * @param {webfont.DomHelper} domHelper
  * @param {Object.<string, function(Object): webfont.Size>} fontSizer
  * @param {function(function(), number=)} asyncCall
- * @param {function(): number} getTime
  * @param {string} fontFamily
  * @param {string} fontDescription
  * @param {boolean} hasWebKitFallbackBug
@@ -18,11 +17,11 @@ goog.require('webfont.FontRuler');
  * @extends webfont.FontWatchRunner
  */
 webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
-    inactiveCallback, domHelper, fontSizer, asyncCall, getTime, fontFamily,
+    inactiveCallback, domHelper, fontSizer, asyncCall, fontFamily,
     fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
 
   goog.base(this, activeCallback, inactiveCallback, domHelper, fontSizer, asyncCall,
-            getTime, fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString);
+            fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString);
 
   this.webKitLastResortFontSizes_ = this.setUpWebKitLastResortFontSizes_();
   this.webKitLastResortSizeChange_ = false;
@@ -91,7 +90,7 @@ goog.scope(function () {
         (!this.webKitLastResortFontSizes_[sizeA.width] &&
          !this.webKitLastResortFontSizes_[sizeB.width])) {
       this.finish_(this.activeCallback_);
-    } else if (this.getTime_() - this.started_ >= 5000) {
+    } else if (goog.now() - this.started_ >= 5000) {
 
       // In order to handle the fact that a font could be the same size as the
       // default browser font on a webkit browser, mark the font as active
