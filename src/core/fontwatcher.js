@@ -38,8 +38,8 @@ goog.scope(function () {
    *     each family.
    * @param {function(new:webfont.FontWatchRunner, function(string, string),
    *     function(string, string), webfont.DomHelper,
-   *     Object.<string, function(Object): number>,
-   *     string, string, boolean, Object.<string,boolean>=, string=)} fontWatchRunnerCtor The font watch runner constructor.
+   *     Object.<string, function(Object): webfont.Size>,
+   *     string, string, boolean, Object.<string, boolean>=, string=)} fontWatchRunnerCtor The font watch runner constructor.
    * @param {boolean} last True if this is the last set of families to watch.
    */
   FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
