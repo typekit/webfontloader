@@ -2,6 +2,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
   var LastResortWebKitFontWatchRunner = webfont.LastResortWebKitFontWatchRunner,
       Size = webfont.Size,
       DomHelper = webfont.DomHelper,
+      FontRuler = webfont.FontRuler,
       domHelper = new DomHelper(window),
       fontFamily = 'My Family',
       fontDescription = 'n4';
@@ -16,25 +17,6 @@ describe('LastResortWebKitFontWatchRunner', function () {
       actualSizes = [],
       fakeGetSizeCount = 0,
       setupFinished = false,
-      fakeFontSizer = {
-        getSize: function (el) {
-          var result = null;
-
-          if (setupFinished) {
-            // If you are getting an exception here your tests does not specify enough
-            // size data to run properly.
-            if (fakeGetSizeCount >= actualSizes.length) {
-              throw 'Invalid test data';
-            }
-            result = actualSizes[fakeGetSizeCount];
-            fakeGetSizeCount += 1;
-          } else {
-            result = setupSizes[Math.min(fakeGetSizeCount, setupSizes.length - 1)];
-            fakeGetSizeCount += 1;
-          }
-          return result;
-        }
-      },
       timesToGetTimeBeforeTimeout = 10,
       originalGoogNow = null,
       setupFinished = false,
@@ -48,6 +30,24 @@ describe('LastResortWebKitFontWatchRunner', function () {
     actualSizes = [];
     setupFinished = false;
     fakeGetSizeCount = 0;
+
+    spyOn(FontRuler.prototype, 'getSize').andCallFake(function () {
+      var result = null;
+
+      if (setupFinished) {
+        // If you are getting an exception here your tests does not specify enough
+        // size data to run properly.
+        if (fakeGetSizeCount >= actualSizes.length) {
+          throw 'Invalid test data';
+        }
+        result = actualSizes[fakeGetSizeCount];
+        fakeGetSizeCount += 1;
+      } else {
+        result = setupSizes[Math.min(fakeGetSizeCount, setupSizes.length - 1)];
+        fakeGetSizeCount += 1;
+      }
+      return result;
+    });
 
     asyncCount = 0;
     timesToGetTimeBeforeTimeout = 10;
@@ -87,7 +87,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
     ];
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fontFamily, fontDescription, true);
+        domHelper, fontFamily, fontDescription, true);
 
     fontWatchRunner.start();
 
@@ -104,7 +104,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 2;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, 'Arimo', fontDescription, true);
+        domHelper, 'Arimo', fontDescription, true);
 
     fontWatchRunner.start();
 
@@ -122,7 +122,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 3;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fontFamily, fontDescription, true);
+        domHelper, fontFamily, fontDescription, true);
 
     fontWatchRunner.start();
 
@@ -139,7 +139,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 2;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fontFamily, fontDescription, true);
+        domHelper, fontFamily, fontDescription, true);
 
     fontWatchRunner.start();
     jasmine.Clock.tick(1 * 25);

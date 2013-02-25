@@ -7,7 +7,6 @@ goog.require('webfont.FontRuler');
  * @param {function(string, string)} activeCallback
  * @param {function(string, string)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
- * @param {Object.<string, function(Object): webfont.Size>} fontSizer
  * @param {string} fontFamily
  * @param {string} fontDescription
  * @param {boolean} hasWebKitFallbackBug
@@ -15,11 +14,10 @@ goog.require('webfont.FontRuler');
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    fontSizer, fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
+    fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
-  this.fontSizer_ = fontSizer;
   this.fontFamily_ = fontFamily;
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
@@ -70,7 +68,7 @@ goog.scope(function () {
    * @private
    */
   FontWatchRunner.prototype.setupLastResortSizes_ = function() {
-    var fontRuler = new FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
+    var fontRuler = new FontRuler(this.domHelper_, this.fontTestString_);
 
     fontRuler.insert();
 
@@ -84,9 +82,9 @@ goog.scope(function () {
   };
 
   FontWatchRunner.prototype.start = function() {
-    this.fontRulerA_ = new FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
+    this.fontRulerA_ = new FontRuler(this.domHelper_, this.fontTestString_);
     this.fontRulerA_.insert();
-    this.fontRulerB_ = new FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
+    this.fontRulerB_ = new FontRuler(this.domHelper_, this.fontTestString_);
     this.fontRulerB_.insert();
 
     this.started_ = goog.now();

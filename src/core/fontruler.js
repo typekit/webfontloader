@@ -2,18 +2,17 @@ goog.provide('webfont.FontRuler');
 
 goog.require('webfont.CssFontFamilyName');
 goog.require('webfont.FontVariationDescription');
+goog.require('webfont.Size');
 
 /**
  * An element that can be used to measure the metrics
  * of a given font and string.
  * @constructor
  * @param {webfont.DomHelper} domHelper
- * @param {Object.<string, function(Object): webfont.Size>} fontSizer
  * @param {string} fontTestString
  */
-webfont.FontRuler = function(domHelper, fontSizer, fontTestString) {
+webfont.FontRuler = function(domHelper, fontTestString) {
   this.domHelper_ = domHelper;
-  this.fontSizer_ = fontSizer;
   this.fontTestString_ = fontTestString;
   this.nameHelper_ = new webfont.CssFontFamilyName();
   this.fvd_ = new webfont.FontVariationDescription();
@@ -21,7 +20,8 @@ webfont.FontRuler = function(domHelper, fontSizer, fontTestString) {
 };
 
 goog.scope(function () {
-  var FontRuler = webfont.FontRuler;
+  var FontRuler = webfont.FontRuler,
+      Size = webfont.Size;
 
   /**
    * @param {string} fontFamily
@@ -58,7 +58,7 @@ goog.scope(function () {
    * @return {webfont.Size}
    */
   FontRuler.prototype.getSize = function() {
-    return this.fontSizer_.getSize(this.el_);
+    return new Size(this.el_.offsetWidth, this.el_.offsetHeight);
   };
 
   /**

@@ -9,7 +9,7 @@ goog.addDependency("../../src/core/domhelper.js", ["webfont.DomHelper"], []);
 goog.addDependency("../../src/core/eventdispatcher.js", ["webfont.EventDispatcher"], ["webfont.CssClassName"]);
 goog.addDependency("../../src/core/font.js", ["webfont.WebFont"], ["webfont.DomHelper","webfont.EventDispatcher","webfont.FontWatcher","webfont.Size"]);
 goog.addDependency("../../src/core/fontmoduleloader.js", ["webfont.FontModuleLoader"], []);
-goog.addDependency("../../src/core/fontruler.js", ["webfont.FontRuler"], ["webfont.CssFontFamilyName","webfont.FontVariationDescription"]);
+goog.addDependency("../../src/core/fontruler.js", ["webfont.FontRuler"], ["webfont.CssFontFamilyName","webfont.FontVariationDescription","webfont.Size"]);
 goog.addDependency("../../src/core/fontvariationdescription.js", ["webfont.FontVariationDescription"], []);
 goog.addDependency("../../src/core/fontwatcher.js", ["webfont.FontWatcher"], ["webfont.FontWatchRunner"]);
 goog.addDependency("../../src/core/fontwatchrunner.js", ["webfont.FontWatchRunner"], ["webfont.FontRuler"]);

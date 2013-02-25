@@ -7,7 +7,6 @@ goog.require('webfont.FontRuler');
  * @param {function(string, string)} activeCallback
  * @param {function(string, string)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
- * @param {Object.<string, function(Object): webfont.Size>} fontSizer
  * @param {string} fontFamily
  * @param {string} fontDescription
  * @param {boolean} hasWebKitFallbackBug
@@ -16,10 +15,10 @@ goog.require('webfont.FontRuler');
  * @extends webfont.FontWatchRunner
  */
 webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
-    inactiveCallback, domHelper, fontSizer, fontFamily,
+    inactiveCallback, domHelper, fontFamily,
     fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
 
-  goog.base(this, activeCallback, inactiveCallback, domHelper, fontSizer,
+  goog.base(this, activeCallback, inactiveCallback, domHelper,
             fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString);
 
   this.webKitLastResortFontSizes_ = this.setUpWebKitLastResortFontSizes_();
@@ -53,7 +52,7 @@ goog.scope(function () {
     var lastResortFonts = ['Times New Roman', 'Arial', 'Times', 'Sans', 'Serif'];
     var lastResortFontSizes = lastResortFonts.length;
     var webKitLastResortFontSizes = {};
-    var fontRuler = new FontRuler(this.domHelper_, this.fontSizer_, this.fontTestString_);
+    var fontRuler = new FontRuler(this.domHelper_, this.fontTestString_);
 
     fontRuler.insert();
     fontRuler.setFont(lastResortFonts[0], this.fontDescription_);

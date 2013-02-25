@@ -84,11 +84,7 @@ goog.scope(function () {
 
     this.moduleFailedLoading_ = this.moduleLoading_ = modules.length;
 
-    var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.domHelper_,
-        eventDispatcher, {
-          getSize: function(elem) {
-            return new Size(elem.offsetWidth, elem.offsetHeight);
-          }});
+    var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.domHelper_, eventDispatcher);
 
     for (var i = 0, len = modules.length; i < len; i++) {
       var module = modules[i];
