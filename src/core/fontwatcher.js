@@ -8,7 +8,7 @@ goog.require('webfont.FontWatchRunner');
  * @param {webfont.DomHelper} domHelper
  * @param {webfont.EventDispatcher} eventDispatcher
  * @param {Object.<string, function(Object): webfont.Size>} fontSizer
- * @param {function(function(), number=)} asyncCall
+ * @param {function(function(), number)} asyncCall
  * @param {function(): number} getTime
  */
 webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer,
@@ -44,7 +44,7 @@ goog.scope(function () {
    * @param {function(new:webfont.FontWatchRunner, function(string, string),
    *     function(string, string), webfont.DomHelper,
    *     Object.<string, function(Object): number>,
-   *     function(function(), number=), function(): number, string, string,
+   *     function(function(), number), function(): number, string, string,
    *     boolean, Object.<string,boolean>=, string=)} fontWatchRunnerCtor The font watch runner constructor.
    * @param {boolean} last True if this is the last set of families to watch.
    */

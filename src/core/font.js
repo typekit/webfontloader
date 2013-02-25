@@ -9,7 +9,7 @@ goog.require('webfont.Size');
  * @param {Window} mainWindow The main application window containing
  *   webfontloader.js.
  * @param {webfont.FontModuleLoader} fontModuleLoader A loader instance to use.
- * @param {function(function(), number=)} asyncCall An async function to use.
+ * @param {function(function(), number)} asyncCall An async function to use.
  * @param {webfont.UserAgent} userAgent The detected user agent to load for.
  * @constructor
  */
@@ -82,7 +82,7 @@ goog.scope(function () {
           _fontWatcher.watch(_fontFamilies, _fontDescriptions || {},
             _fontTestStrings || {}, _fontWatchRunnerCtor, _allModulesLoaded);
         }, this, fontWatcher, fontFamilies, opt_fontDescriptions, opt_fontTestStrings,
-        fontWatchRunnerCtor, allModulesLoaded));
+        fontWatchRunnerCtor, allModulesLoaded), 0);
   };
 
   WebFont.prototype.load_ = function(eventDispatcher, configuration) {
