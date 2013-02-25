@@ -8,7 +8,6 @@ goog.require('webfont.FontRuler');
  * @param {function(string, string)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
  * @param {Object.<string, function(Object): webfont.Size>} fontSizer
- * @param {function(function(), number=)} asyncCall
  * @param {string} fontFamily
  * @param {string} fontDescription
  * @param {boolean} hasWebKitFallbackBug
@@ -16,12 +15,11 @@ goog.require('webfont.FontRuler');
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    fontSizer, asyncCall, fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
+    fontSizer, fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
   this.fontSizer_ = fontSizer;
-  this.asyncCall_ = asyncCall;
   this.fontFamily_ = fontFamily;
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
@@ -209,11 +207,9 @@ goog.scope(function () {
    * @private
    */
   FontWatchRunner.prototype.asyncCheck_ = function() {
-    this.asyncCall_(function(context, func) {
-      return function() {
-        func.call(context);
-      }
-    }(this, this.check_), 25);
+    setTimeout(goog.bind(function () {
+      this.check_();
+    }, this), 25);
   };
 
   /**

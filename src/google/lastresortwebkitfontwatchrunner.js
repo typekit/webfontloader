@@ -8,7 +8,6 @@ goog.require('webfont.FontRuler');
  * @param {function(string, string)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
  * @param {Object.<string, function(Object): webfont.Size>} fontSizer
- * @param {function(function(), number=)} asyncCall
  * @param {string} fontFamily
  * @param {string} fontDescription
  * @param {boolean} hasWebKitFallbackBug
@@ -17,10 +16,10 @@ goog.require('webfont.FontRuler');
  * @extends webfont.FontWatchRunner
  */
 webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
-    inactiveCallback, domHelper, fontSizer, asyncCall, fontFamily,
+    inactiveCallback, domHelper, fontSizer, fontFamily,
     fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
 
-  goog.base(this, activeCallback, inactiveCallback, domHelper, fontSizer, asyncCall,
+  goog.base(this, activeCallback, inactiveCallback, domHelper, fontSizer,
             fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString);
 
   this.webKitLastResortFontSizes_ = this.setUpWebKitLastResortFontSizes_();

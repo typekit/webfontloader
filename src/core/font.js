@@ -9,14 +9,12 @@ goog.require('webfont.Size');
  * @param {Window} mainWindow The main application window containing
  *   webfontloader.js.
  * @param {webfont.FontModuleLoader} fontModuleLoader A loader instance to use.
- * @param {function(function(), number)} asyncCall An async function to use.
  * @param {webfont.UserAgent} userAgent The detected user agent to load for.
  * @constructor
  */
-webfont.WebFont = function(mainWindow, fontModuleLoader, asyncCall, userAgent) {
+webfont.WebFont = function(mainWindow, fontModuleLoader, userAgent) {
   this.mainWindow_ = mainWindow;
   this.fontModuleLoader_ = fontModuleLoader;
-  this.asyncCall_ = asyncCall;
   this.userAgent_ = userAgent;
   this.moduleLoading_ = 0;
   this.moduleFailedLoading_ = 0;
@@ -76,13 +74,8 @@ goog.scope(function () {
     if (allModulesLoaded) {
       eventDispatcher.dispatchLoading();
     }
-    this.asyncCall_(goog.bind(function(_fontWatcher, _fontFamilies,
-        _fontDescriptions, _fontTestStrings, _fontWatchRunnerCtor,
-        _allModulesLoaded) {
-          _fontWatcher.watch(_fontFamilies, _fontDescriptions || {},
-            _fontTestStrings || {}, _fontWatchRunnerCtor, _allModulesLoaded);
-        }, this, fontWatcher, fontFamilies, opt_fontDescriptions, opt_fontTestStrings,
-        fontWatchRunnerCtor, allModulesLoaded), 0);
+
+    setTimeout(goog.bind(fontWatcher.watch, fontWatcher, fontFamilies, opt_fontDescriptions || {}, opt_fontTestStrings || {}, fontWatchRunnerCtor, allModulesLoaded), 0);
   };
 
   WebFont.prototype.load_ = function(eventDispatcher, configuration) {
@@ -95,7 +88,7 @@ goog.scope(function () {
         eventDispatcher, {
           getSize: function(elem) {
             return new Size(elem.offsetWidth, elem.offsetHeight);
-          }}, self.asyncCall_);
+          }});
 
     for (var i = 0, len = modules.length; i < len; i++) {
       var module = modules[i];

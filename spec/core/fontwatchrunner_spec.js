@@ -3,23 +3,50 @@ describe('FontWatchRunner', function () {
       UserAgentParser = webfont.UserAgentParser,
       Size = webfont.Size,
       DomHelper = webfont.DomHelper,
-      FontRuler = webfont.FontRuler,
-      domHelper = new DomHelper(window),
-      fontFamily = 'My Family',
-      fontDescription = 'n4';
+      FontRuler = webfont.FontRuler;
 
-  var timesToCheckSizeBeforeChange = 0,
-      TARGET_SIZE = new Size(3, 3),
-      FALLBACK_SIZE_A = new Size(1, 1),
-      FALLBACK_SIZE_B = new Size(2, 2),
-      LAST_RESORT_SIZE = new Size(4, 4),
+  var domHelper = null,
+      activeCallback = null,
+      inactiveCallback = null;
 
-      setupSizes = [FALLBACK_SIZE_A, FALLBACK_SIZE_B, LAST_RESORT_SIZE],
-      actualSizes = [],
-      fakeGetSizeCount = 0,
-      setupFinished = false,
+  beforeEach(function () {
+    domHelper = new DomHelper(window);
+
+    activeCallback = jasmine.createSpy('activeCallback');
+    inactiveCallback = jasmine.createSpy('inactiveCallback');
+  });
+
+  describe('Fake browser', function () {
+    var fontFamily =  'My Family',
+        fontDescription = 'n4',
+        TARGET_SIZE = new Size(3, 3),
+        FALLBACK_SIZE_A = new Size(1, 1),
+        FALLBACK_SIZE_B = new Size(2, 2),
+        LAST_RESORT_SIZE = new Size(4, 4),
+
+        setupSizes = [],
+        actualSizes = [],
+        fakeGetSizeCount = 0,
+        setupFinished = false,
+        fakeFontSizer = null,
+        timesToGetTimeBeforeTimeout = 10,
+        originalGoogNow = null,
+        setupFinished = false,
+        originalStartMethod = null;
+
+    beforeEach(function () {
+      jasmine.Clock.useMock();
+
+      setupSizes = [FALLBACK_SIZE_A, FALLBACK_SIZE_B, LAST_RESORT_SIZE];
+
+      actualSizes = [];
+
+      fakeGetSizeCount = 0;
+
+      setupFinished = false;
+
       fakeFontSizer = {
-        getSize: function (el) {
+        getSize: function () {
           var result = null;
 
           if (setupFinished) {
@@ -36,193 +63,213 @@ describe('FontWatchRunner', function () {
           }
           return result;
         }
-      },
-      timesToGetTimeBeforeTimeout = 10,
-      originalGoogNow = null,
-      asyncCount = 0,
-      fakeAsyncCall = function (func, timeout) {
-        asyncCount += 1;
-        func();
-      },
-      setupFinished = false,
-      originalStartMethod = null,
-      activeCallback = null,
-      inactiveCallback = null;
+      };
 
-  beforeEach(function () {
-    actualSizes = [];
-    setupFinished = false;
-    fakeGetSizeCount = 0;
+      timesToGetBeforeTimeout = 10;
 
-    asyncCount = 0;
-    timesToGetTimeBeforeTimeout = 10;
-    activeCallback = jasmine.createSpy('activeCallback');
-    inactiveCallback = jasmine.createSpy('inactiveCallback');
+      originalGoogNow = goog.now;
 
-    originalStartMethod = FontWatchRunner.prototype.start;
+      goog.now = function () {
+        if (timesToGetTimeBeforeTimeout <= 0) {
+          return 6000;
+        } else {
+          timesToGetTimeBeforeTimeout -= 1;
+          return 1;
+        }
+      };
 
-    originalGoogNow = goog.now;
+      originalStartMethod = FontWatchRunner.prototype.start;
 
-    goog.now = function () {
-      if (timesToGetTimeBeforeTimeout <= 0) {
-        return 6000;
-      } else {
-        timesToGetTimeBeforeTimeout -= 1;
-        return 1;
-      }
-    };
+      FontWatchRunner.prototype.start = function () {
+        setupFinished = true;
+        fakeGetSizeCount = 0;
+        originalStartMethod.apply(this);
+      };
+    });
 
-    FontWatchRunner.prototype.start = function () {
-      setupFinished = true;
-      fakeGetSizeCount = 0;
-      originalStartMethod.apply(this);
-    };
-  });
+    afterEach(function () {
+      goog.now = originalGoogNow;
+      FontWatchRunner.prototype.start = originalStartMethod;
+    });
 
-  afterEach(function () {
-    FontWatchRunner.prototype.start = originalStartMethod;
-    goog.now = originalGoogNow;
-  });
-
-  it('should call active if fonts are already loaded', function () {
-    actualSizes = [
-      TARGET_SIZE, TARGET_SIZE
-    ];
-
-    var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, false);
-
-    fontWatchRunner.start();
-
-    expect(asyncCount).toEqual(0);
-    expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
-  });
-
-  it('should wait for font load and call active', function () {
-    actualSizes = [
-      FALLBACK_SIZE_A, FALLBACK_SIZE_B,
-      FALLBACK_SIZE_A, FALLBACK_SIZE_B,
-      FALLBACK_SIZE_A, FALLBACK_SIZE_B,
-      TARGET_SIZE, TARGET_SIZE
-    ];
-
-    var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, false);
-
-    fontWatchRunner.start();
-    expect(asyncCount).toEqual(3);
-    expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
-  });
-
-  it('should wait for font inactive and call inactive', function () {
-    timesToGetTimeBeforeTimeout = 5;
-
-    actualSizes = [
-      FALLBACK_SIZE_A, FALLBACK_SIZE_B,
-      FALLBACK_SIZE_A, FALLBACK_SIZE_B,
-      FALLBACK_SIZE_A, FALLBACK_SIZE_B,
-      FALLBACK_SIZE_A, FALLBACK_SIZE_B,
-      FALLBACK_SIZE_A, FALLBACK_SIZE_B
-    ];
-
-    var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, false);
-
-    fontWatchRunner.start();
-
-    expect(asyncCount).toEqual(4);
-    expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
-  });
-
-  describe('WebKit fallback bug', function () {
-    it('should ignore fallback size and call active', function () {
+    it('should call active if fonts are already loaded', function () {
       actualSizes = [
-        LAST_RESORT_SIZE, LAST_RESORT_SIZE,
         TARGET_SIZE, TARGET_SIZE
       ];
 
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true);
+          domHelper, fakeFontSizer, fontFamily, fontDescription, false);
 
       fontWatchRunner.start();
 
-      expect(asyncCount).toEqual(1);
+      jasmine.Clock.tick(1 * 25);
       expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
     });
 
-    it('should consider last resort font as having identical metrics and call active', function () {
+    it('should wait for font load and call active', function () {
       actualSizes = [
-        LAST_RESORT_SIZE, LAST_RESORT_SIZE,
-        LAST_RESORT_SIZE, LAST_RESORT_SIZE
+        FALLBACK_SIZE_A, FALLBACK_SIZE_B,
+        FALLBACK_SIZE_A, FALLBACK_SIZE_B,
+        FALLBACK_SIZE_A, FALLBACK_SIZE_B,
+        TARGET_SIZE, TARGET_SIZE
       ];
 
-      timesToGetTimeBeforeTimeout = 2;
-
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true);
+          domHelper, fakeFontSizer, fontFamily, fontDescription, false);
 
       fontWatchRunner.start();
 
-      expect(asyncCount).toEqual(1);
+      jasmine.Clock.tick(3 * 25);
       expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
     });
 
-    it('should fail to load font and call inactive', function () {
+    it('should wait for font inactive and call inactive', function () {
+      timesToGetTimeBeforeTimeout = 5;
+
       actualSizes = [
-        LAST_RESORT_SIZE, LAST_RESORT_SIZE,
-        LAST_RESORT_SIZE, LAST_RESORT_SIZE,
+        FALLBACK_SIZE_A, FALLBACK_SIZE_B,
+        FALLBACK_SIZE_A, FALLBACK_SIZE_B,
+        FALLBACK_SIZE_A, FALLBACK_SIZE_B,
+        FALLBACK_SIZE_A, FALLBACK_SIZE_B,
         FALLBACK_SIZE_A, FALLBACK_SIZE_B
       ];
 
-      timesToGetTimeBeforeTimeout = 3;
-
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true);
+          domHelper, fakeFontSizer, fontFamily, fontDescription, false);
 
       fontWatchRunner.start();
 
-      expect(asyncCount).toEqual(2);
+      jasmine.Clock.tick(4 * 25);
       expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
     });
 
-    it('should call inactive when we are loading a metric incompatible font', function () {
-      actualSizes = [
-        LAST_RESORT_SIZE, LAST_RESORT_SIZE,
-        LAST_RESORT_SIZE, LAST_RESORT_SIZE
-      ];
+    describe('WebKit fallback bug', function () {
+      it('should ignore fallback size and call active', function () {
+        actualSizes = [
+          LAST_RESORT_SIZE, LAST_RESORT_SIZE,
+          TARGET_SIZE, TARGET_SIZE
+        ];
 
-      timesToGetTimeBeforeTimeout = 2;
+        var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+            domHelper, fakeFontSizer, fontFamily, fontDescription, true);
 
-      var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true,
-          { 'My Other Family': true });
+        fontWatchRunner.start();
 
-      fontWatchRunner.start();
-      expect(asyncCount).toEqual(1);
-      expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
+        jasmine.Clock.tick(1 * 25);
+        expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
+      });
+
+      it('should consider last resort font as having identical metrics and call active', function () {
+        actualSizes = [
+          LAST_RESORT_SIZE, LAST_RESORT_SIZE,
+          LAST_RESORT_SIZE, LAST_RESORT_SIZE
+        ];
+
+        timesToGetTimeBeforeTimeout = 2;
+
+        var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+            domHelper, fakeFontSizer, fontFamily, fontDescription, true);
+
+        fontWatchRunner.start();
+
+        jasmine.Clock.tick(1 * 25);
+        expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
+      });
+
+      it('should fail to load font and call inactive', function () {
+        actualSizes = [
+          LAST_RESORT_SIZE, LAST_RESORT_SIZE,
+          LAST_RESORT_SIZE, LAST_RESORT_SIZE,
+          FALLBACK_SIZE_A, FALLBACK_SIZE_B
+        ];
+
+        timesToGetTimeBeforeTimeout = 3;
+
+        var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+            domHelper, fakeFontSizer, fontFamily, fontDescription, true);
+
+        fontWatchRunner.start();
+
+        jasmine.Clock.tick(2 * 25);
+        expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
+      });
+
+      it('should call inactive when we are loading a metric incompatible font', function () {
+        actualSizes = [
+          LAST_RESORT_SIZE, LAST_RESORT_SIZE,
+          LAST_RESORT_SIZE, LAST_RESORT_SIZE
+        ];
+
+        timesToGetTimeBeforeTimeout = 2;
+
+        var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+            domHelper, fakeFontSizer, fontFamily, fontDescription, true,
+            { 'My Other Family': true });
+
+        fontWatchRunner.start();
+
+        jasmine.Clock.tick(1 * 25);
+        expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
+      });
+
+      it('should call active when we are loading a metric compatible font', function () {
+        actualSizes = [
+          LAST_RESORT_SIZE, LAST_RESORT_SIZE,
+          LAST_RESORT_SIZE, LAST_RESORT_SIZE
+        ];
+
+        timesToGetTimeBeforeTimeout = 2;
+
+        var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+            domHelper, fakeFontSizer, fontFamily, fontDescription, true,
+            { 'My Family': true });
+
+        fontWatchRunner.start();
+
+        jasmine.Clock.tick(1 * 25);
+        expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
+      });
     });
 
-    it('should call active when we are loading a metric compatible font', function () {
-      actualSizes = [
-        LAST_RESORT_SIZE, LAST_RESORT_SIZE,
-        LAST_RESORT_SIZE, LAST_RESORT_SIZE
-      ];
+    describe('test string', function () {
+      var fontWatchRunner = null;
 
-      timesToGetTimeBeforeTimeout = 2;
+      beforeEach(function () {
+        spyOn(domHelper, 'createElement').andCallThrough();
+      });
 
-      var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true,
-          { 'My Family': true });
+      it('should be the default', function () {
+        actualSizes = [
+          TARGET_SIZE, TARGET_SIZE
+        ];
 
-      fontWatchRunner.start();
-      expect(asyncCount).toEqual(1);
-      expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
+        fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+            domHelper, fakeFontSizer, fontFamily, fontDescription, false);
+
+        fontWatchRunner.start();
+
+        jasmine.Clock.tick(1 * 25);
+        expect(domHelper.createElement.mostRecentCall.args[2]).toEqual('BESbswy');
+      });
+
+      it('should be a custom string', function () {
+        actualSizes = [
+          TARGET_SIZE, TARGET_SIZE
+        ];
+
+        fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+            domHelper, fakeFontSizer, fontFamily, fontDescription, false, {}, 'TestString');
+
+        fontWatchRunner.start();
+
+        jasmine.Clock.tick(1 * 25);
+        expect(domHelper.createElement.mostRecentCall.args[2]).toEqual('TestString');
+      });
     });
   });
 
   describe('real browser testing', function () {
     var fontSizer = null,
-        asyncCall = null,
         userAgent = null;
 
     beforeEach(function () {
@@ -235,17 +282,11 @@ describe('FontWatchRunner', function () {
           return new Size(el.offsetWidth, el.offsetHeight);
         }
       };
-
-      asyncCall = function (func, timeout) {
-        window.setTimeout(func, timeout);
-      };
-
-      goog.now = originalGoogNow;
     });
 
     it('should fail to load a null font', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontSizer, asyncCall, '__webfontloader_test__', '', userAgent.getBrowserInfo().hasWebKitFallbackBug());
+          domHelper, fontSizer, '__webfontloader_test__', '', userAgent.getBrowserInfo().hasWebKitFallbackBug());
 
       runs(function () {
         fontWatchRunner.start();
@@ -262,7 +303,7 @@ describe('FontWatchRunner', function () {
 
     it('should load font succesfully', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontSizer, asyncCall, 'SourceSansA', '', userAgent.getBrowserInfo().hasWebKitFallbackBug()),
+          domHelper, fontSizer, 'SourceSansA', '', userAgent.getBrowserInfo().hasWebKitFallbackBug()),
           ruler = new FontRuler(domHelper, fontSizer, 'abcdef'),
           activeSize = null,
           originalSize = null,
@@ -302,7 +343,7 @@ describe('FontWatchRunner', function () {
 
     it('should attempt to load a non-existing font', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontSizer, asyncCall, 'Elena', '', userAgent.getBrowserInfo().hasWebKitFallbackBug());
+          domHelper, fontSizer, 'Elena', '', userAgent.getBrowserInfo().hasWebKitFallbackBug());
 
       runs(function () {
         fontWatchRunner.start();
@@ -319,7 +360,7 @@ describe('FontWatchRunner', function () {
 
     it('should load even if @font-face is inserted after watching has started', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontSizer, asyncCall, 'SourceSansB', '', userAgent.getBrowserInfo().hasWebKitFallbackBug()),
+          domHelper, fontSizer, 'SourceSansB', '', userAgent.getBrowserInfo().hasWebKitFallbackBug()),
           ruler = new FontRuler(domHelper, fontSizer, 'abcdef'),
           activeSize = null,
           originalSize = null,
@@ -361,40 +402,6 @@ describe('FontWatchRunner', function () {
         expect(ruler.getSize()).not.toEqual(originalSize);
         expect(ruler.getSize()).toEqual(activeSize);
       });
-    });
-  });
-
-  describe('test string', function () {
-    var fontWatchRunner = null;
-
-    beforeEach(function () {
-      spyOn(domHelper, 'createElement').andCallThrough();
-    });
-
-    it('should be the default', function () {
-      actualSizes = [
-        TARGET_SIZE, TARGET_SIZE
-      ];
-
-      fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, false);
-
-      fontWatchRunner.start();
-
-      expect(domHelper.createElement.mostRecentCall.args[2]).toEqual('BESbswy');
-    });
-
-    it('should be a custom string', function () {
-      actualSizes = [
-        TARGET_SIZE, TARGET_SIZE
-      ];
-
-      fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, false, {}, 'TestString');
-
-      fontWatchRunner.start();
-
-      expect(domHelper.createElement.mostRecentCall.args[2]).toEqual('TestString');
     });
   });
 });

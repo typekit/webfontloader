@@ -37,17 +37,14 @@ describe('LastResortWebKitFontWatchRunner', function () {
       },
       timesToGetTimeBeforeTimeout = 10,
       originalGoogNow = null,
-      asyncCount = 0,
-      fakeAsyncCall = function (func, timeout) {
-        asyncCount += 1;
-        func();
-      },
       setupFinished = false,
       originalStartMethod = null,
       activeCallback = null,
       inactiveCallback = null;
 
   beforeEach(function () {
+    jasmine.Clock.useMock();
+
     actualSizes = [];
     setupFinished = false;
     fakeGetSizeCount = 0;
@@ -90,11 +87,11 @@ describe('LastResortWebKitFontWatchRunner', function () {
     ];
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true);
+        domHelper, fakeFontSizer, fontFamily, fontDescription, true);
 
     fontWatchRunner.start();
 
-    expect(asyncCount).toEqual(1);
+    jasmine.Clock.tick(1 * 25);
     expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
   });
 
@@ -107,11 +104,11 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 2;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, 'Arimo', fontDescription, true);
+        domHelper, fakeFontSizer, 'Arimo', fontDescription, true);
 
     fontWatchRunner.start();
 
-    expect(asyncCount).toEqual(1);
+    jasmine.Clock.tick(1 * 25);
     expect(activeCallback).toHaveBeenCalledWith('Arimo', 'n4');
   });
 
@@ -125,11 +122,11 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 3;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true);
+        domHelper, fakeFontSizer, fontFamily, fontDescription, true);
 
     fontWatchRunner.start();
 
-    expect(asyncCount).toEqual(2);
+    jasmine.Clock.tick(2 * 25);
     expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
   });
 
@@ -142,10 +139,10 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 2;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fontFamily, fontDescription, true);
+        domHelper, fakeFontSizer, fontFamily, fontDescription, true);
 
     fontWatchRunner.start();
-    expect(asyncCount).toEqual(1);
+    jasmine.Clock.tick(1 * 25);
     expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
   });
 });

@@ -8,14 +8,11 @@ goog.require('webfont.FontWatchRunner');
  * @param {webfont.DomHelper} domHelper
  * @param {webfont.EventDispatcher} eventDispatcher
  * @param {Object.<string, function(Object): webfont.Size>} fontSizer
- * @param {function(function(), number)} asyncCall
  */
-webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer,
-    asyncCall) {
+webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer) {
   this.domHelper_ = domHelper;
   this.eventDispatcher_ = eventDispatcher;
   this.fontSizer_ = fontSizer;
-  this.asyncCall_ = asyncCall;
   this.currentlyWatched_ = 0;
   this.last_ = false;
   this.success_ = false;
@@ -42,8 +39,7 @@ goog.scope(function () {
    * @param {function(new:webfont.FontWatchRunner, function(string, string),
    *     function(string, string), webfont.DomHelper,
    *     Object.<string, function(Object): number>,
-   *     function(function(), number), string, string,
-   *     boolean, Object.<string,boolean>=, string=)} fontWatchRunnerCtor The font watch runner constructor.
+   *     string, string, boolean, Object.<string,boolean>=, string=)} fontWatchRunnerCtor The font watch runner constructor.
    * @param {boolean} last True if this is the last set of families to watch.
    */
   FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
@@ -80,7 +76,7 @@ goog.scope(function () {
         var activeCallback = goog.bind(this.fontActive_, this);
         var inactiveCallback = goog.bind(this.fontInactive_, this)
         var fontWatchRunner = new fontWatchRunnerCtor(activeCallback,
-            inactiveCallback, this.domHelper_, this.fontSizer_, this.asyncCall_,
+            inactiveCallback, this.domHelper_, this.fontSizer_,
             fontFamily, fontDescription, this.hasWebKitFallbackBug_, null, fontTestString);
 
         fontWatchRunner.start();
