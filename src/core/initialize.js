@@ -12,7 +12,7 @@ var globalNamespaceObject = window[globalName] = (function() {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
   var fontModuleLoader = new webfont.FontModuleLoader();
-  return new webfont.WebFont(window, fontModuleLoader, window.setTimeout, userAgent);
+  return new webfont.WebFont(window, fontModuleLoader, userAgent);
 })();
 
 // Export the public API.
