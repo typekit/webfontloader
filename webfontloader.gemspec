@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.2.0'
-  s.date              = '2013-01-30'
+  s.version           = '1.2.1'
+  s.date              = '2013-02-26'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -108,25 +108,40 @@ DESC
     lib/webfontloader/demo/public/typekit.html
     lib/webfontloader/demo/server.rb
     lib/webfontloader/modules.rb
-    src-test/ascender/ascender_script_test.js
-    src-test/core/cssclassnametest.js
-    src-test/core/cssfontfamilynametest.js
-    src-test/core/domhelpertest.js
-    src-test/core/eventdispatchertest.js
-    src-test/core/fontmoduleloadertest.js
-    src-test/core/fonttest.js
-    src-test/core/fontvariationdescriptiontest.js
-    src-test/core/fontwatchertest.js
-    src-test/core/fontwatchrunnertest.js
-    src-test/core/useragenttest.js
-    src-test/custom/customcsstest.js
-    src-test/fontdeck/fontdeck_script_test.js
-    src-test/google/fontapiparsertest.js
-    src-test/google/fontapiurlbuildertest.js
-    src-test/google/googlefontapitest.js
-    src-test/google/lastresortwebkitfontwatchrunnertest.js
-    src-test/monotype/monotype_script_test.js
-    src-test/typekit/typekit_script_test.js
+    spec/ascender/ascenderscript_spec.js
+    spec/core/cssclassname_spec.js
+    spec/core/cssfontfamilyname_spec.js
+    spec/core/domhelper_spec.js
+    spec/core/eventdispatcher_spec.js
+    spec/core/font_spec.js
+    spec/core/fontmoduleloader_spec.js
+    spec/core/fontruler_spec.js
+    spec/core/fontvariationdescription_spec.js
+    spec/core/fontwatcher_spec.js
+    spec/core/fontwatchrunner_spec.js
+    spec/core/size_spec.js
+    spec/core/useragentparser_spec.js
+    spec/custom/customcss_spec.js
+    spec/fontdeck/fontdeckscript_spec.js
+    spec/fonts/LICENSE.txt
+    spec/fonts/nullfont.css
+    spec/fonts/nullfont1.css
+    spec/fonts/nullfont2.css
+    spec/fonts/nullfont3.css
+    spec/fonts/sourcesans.eot
+    spec/fonts/sourcesans.otf
+    spec/fonts/sourcesans.svg
+    spec/fonts/sourcesans.ttf
+    spec/fonts/sourcesans.woff
+    spec/fonts/sourcesansa.css
+    spec/fonts/sourcesansb.css
+    spec/google/fontapiparser_spec.js
+    spec/google/fontapiurlbuilder_spec.js
+    spec/google/googlefontapi_spec.js
+    spec/google/lastresortwebkitfontwatchrunner_spec.js
+    spec/index.html
+    spec/monotype/monotypescript_spec.js
+    spec/typekit/typekitscript_spec.js
     src/ascender/ascender_script.js
     src/async_load.js
     src/closure.js
@@ -156,7 +171,12 @@ DESC
     src/monotype/monotype_script.js
     src/typekit/typekit_script.js
     tools/compiler/compiler.jar
-    tools/jstestdriver/JsTestDriver-1.2.1.jar
+    tools/jasmine-phantomjs/jasmine-phantomjs.js
+    tools/jasmine-phantomjs/terminal-reporter.js
+    tools/jasmine/MIT.LICENSE
+    tools/jasmine/jasmine-html.js
+    tools/jasmine/jasmine.css
+    tools/jasmine/jasmine.js
     webfontloader.gemspec
   ]
   # = MANIFEST =

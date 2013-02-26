@@ -1,3 +1,12 @@
+v1.2.1 (February 26, 2013)
+* Fix the possibility of test strings wrapping to a new line and thereby breaking font watching.
+* Change the FontWatchRunner to not create DOM elements until it is started.
+* Fix the possibility of extraneous whitespace in class names.
+* Add a cache buster parameter to the Monotype/Fonts.com module.
+* Fix the case where there are no fonts to load. Webfontloader will now fire the inactive event correctly.
+* Test suite now uses the active browser to test font watching in addition to the mocked font watching tests.
+* Test suite is now using Jasmine instead of JSTestDriver.
+
 v1.2.0 (January 30, 2013)
 * Improved font watching for browsers with the WebKit web font fallback bug
 * Improved font watching in general by comparing both width and height
