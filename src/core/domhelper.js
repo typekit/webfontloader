@@ -105,12 +105,17 @@ webfont.DomHelper.prototype.removeElement = function(node) {
  * @param {string} src The URL of the stylesheet.
  * @return {Element} a link element.
  */
-webfont.DomHelper.prototype.createCssLink = function(src) {
-  return this.createElement('link', {
+webfont.DomHelper.prototype.createCssLink = function(src, media) {
+  var opts = {
     'rel': 'stylesheet',
     'href': src
-  });
+  };
+  if ( typeof media !== 'undefined' ) {
+    opts.media = media;
+  }
+  return this.createElement('link', opts);
 };
+
 
 /**
  * Creates a link to a javascript document.
