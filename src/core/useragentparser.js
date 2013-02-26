@@ -60,7 +60,7 @@ webfont.UserAgentParser.prototype.parse = function() {
  */
 webfont.UserAgentParser.prototype.getPlatform_ = function() {
   var mobileOs = this.getMatchingGroup_(this.userAgent_,
-      /(iPod|iPad|iPhone|Windows Phone|Android|BB\d{2}|BlackBerry)/, 1);
+      /(iPod|iPad|iPhone|Android|Windows Phone|BB\d{2}|BlackBerry)/, 1);
 
   if (mobileOs != "") {
     if (/BB\d{2}/.test(mobileOs)) {
