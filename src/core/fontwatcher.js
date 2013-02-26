@@ -6,9 +6,10 @@
  * @param {Object.<string, function(Object): webfont.Size>} fontSizer
  * @param {function(function(), number=)} asyncCall
  * @param {function(): number} getTime
+ * @param {number=} opt_timeout
  */
 webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer,
-    asyncCall, getTime) {
+    asyncCall, getTime, opt_timeout) {
   this.domHelper_ = domHelper;
   this.eventDispatcher_ = eventDispatcher;
   this.fontSizer_ = fontSizer;
@@ -17,6 +18,7 @@ webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer,
   this.currentlyWatched_ = 0;
   this.last_ = false;
   this.success_ = false;
+  this.timeout = opt_timeout;
 
   this.hasWebKitFallbackBug_ = userAgent.getBrowserInfo().hasWebKitFallbackBug();
 };
@@ -77,7 +79,7 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
       var fontWatchRunner = new fontWatchRunnerCtor(activeCallback,
           inactiveCallback, this.domHelper_, this.fontSizer_, this.asyncCall_,
           this.getTime_, fontFamily, fontDescription,
-          this.hasWebKitFallbackBug_, 0, null, fontTestString);
+          this.hasWebKitFallbackBug_, this.timeout, null, fontTestString);
 
       fontWatchRunner.start();
     }

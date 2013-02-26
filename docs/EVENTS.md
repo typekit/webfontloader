@@ -112,7 +112,18 @@ load. You can use events to gracefully degrade in this situation.
 
 > The `Font Inactive` event will be triggered after 5 seconds if the font
 fails to render. If *at least* one font succesfully renders, the `Active`
-event will be triggered, else the `Inative` even will be triggered.
+event will be triggered, else the `Inactive` even will be triggered.
+
+You can configure the timeout by using the `timeout` configuration on the
+`WebFont.load` function.
+
+    WebFont.load({
+      timeout: 2000, // Set the timeout to two seconds
+      ...
+    });
+
+The timeout value should be in milliseconds, and defaults to 5 seconds if
+not supplied.
 
 ### Browser Support
 

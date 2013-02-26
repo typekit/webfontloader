@@ -73,6 +73,7 @@ webfont.WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher
 
 webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {
   var modules = this.fontModuleLoader_.getModules(configuration, this.domHelper_),
+      timeout = configuration['timeout'],
       self = this;
 
   this.moduleFailedLoading_ = this.moduleLoading_ = modules.length;
@@ -83,7 +84,7 @@ webfont.WebFont.prototype.load_ = function(eventDispatcher, configuration) {
           return new webfont.Size(elem.offsetWidth, elem.offsetHeight);
         }}, self.asyncCall_, function() {
           return new Date().getTime();
-        });
+        }, timeout);
 
   for (var i = 0, len = modules.length; i < len; i++) {
     var module = modules[i];
