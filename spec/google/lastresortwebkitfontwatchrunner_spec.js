@@ -1,5 +1,6 @@
 describe('LastResortWebKitFontWatchRunner', function () {
   var LastResortWebKitFontWatchRunner = webfont.LastResortWebKitFontWatchRunner,
+      BrowserInfo = webfont.BrowserInfo,
       Size = webfont.Size,
       DomHelper = webfont.DomHelper,
       domHelper = new DomHelper(window),
@@ -12,6 +13,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
       FALLBACK_SIZE_B = new Size(2, 2),
       LAST_RESORT_SIZE = new Size(4, 4),
 
+      browserInfo = new BrowserInfo(true, true, false),
       setupSizes = [FALLBACK_SIZE_A, FALLBACK_SIZE_B, LAST_RESORT_SIZE],
       actualSizes = [],
       fakeGetSizeCount = 0,
@@ -84,7 +86,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
     ];
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true);
+        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, browserInfo);
 
     fontWatchRunner.start();
 
@@ -101,7 +103,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 2;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, 'Arimo', fontDescription, true);
+        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, 'Arimo', fontDescription, browserInfo);
 
     fontWatchRunner.start();
 
@@ -119,7 +121,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 3;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true);
+        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, browserInfo);
 
     fontWatchRunner.start();
 
@@ -136,7 +138,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 2;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true);
+        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, browserInfo);
 
     fontWatchRunner.start();
     expect(asyncCount).toEqual(1);
