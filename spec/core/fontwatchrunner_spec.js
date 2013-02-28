@@ -214,7 +214,7 @@ describe('FontWatchRunner', function () {
       timesToGetTimeBeforeTimeout = 2;
 
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true,
+          domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, fallbackBugBrowserInfo,
           0, { 'My Family': true });
 
       fontWatchRunner.start();
