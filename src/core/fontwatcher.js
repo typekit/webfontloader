@@ -73,7 +73,7 @@ goog.scope(function () {
         this.eventDispatcher_.dispatchFontLoading(fontFamily, fontDescription);
 
         var activeCallback = goog.bind(this.fontActive_, this);
-        var inactiveCallback = goog.bind(this.fontInactive_, this)
+        var inactiveCallback = goog.bind(this.fontInactive_, this);
         var fontWatchRunner = new fontWatchRunnerCtor(activeCallback,
             inactiveCallback, this.domHelper_, fontFamily, fontDescription,
             this.browserInfo_, this.timeout_, null, fontTestString);
