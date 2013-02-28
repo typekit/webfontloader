@@ -6,9 +6,10 @@
  * @param {Object.<string, function(Object): webfont.Size>} fontSizer
  * @param {function(function(), number=)} asyncCall
  * @param {function(): number} getTime
+ * @param {number=} opt_timeout
  */
 webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer,
-    asyncCall, getTime) {
+    asyncCall, getTime, opt_timeout) {
   this.domHelper_ = domHelper;
   this.eventDispatcher_ = eventDispatcher;
   this.fontSizer_ = fontSizer;
@@ -17,6 +18,7 @@ webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer,
   this.currentlyWatched_ = 0;
   this.last_ = false;
   this.success_ = false;
+  this.timeout_ = opt_timeout;
 
   this.browserInfo_ = userAgent.getBrowserInfo();
 };
@@ -38,7 +40,7 @@ webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
  *     function(string, string), webfont.DomHelper,
  *     Object.<string, function(Object): number>,
  *     function(function(), number=), function(): number, string, string,
- *     webfont.BrowserInfo, Object.<string,boolean>=, string=)} fontWatchRunnerCtor The font watch runner constructor.
+ *     webfont.BrowserInfo, number=, Object.<string,boolean>=, string=)} fontWatchRunnerCtor The font watch runner constructor.
  * @param {boolean} last True if this is the last set of families to watch.
  */
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
@@ -76,7 +78,8 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
       var inactiveCallback = webfont.bind(this, this.fontInactive_)
       var fontWatchRunner = new fontWatchRunnerCtor(activeCallback,
           inactiveCallback, this.domHelper_, this.fontSizer_, this.asyncCall_,
-          this.getTime_, fontFamily, fontDescription, this.browserInfo_, null, fontTestString);
+          this.getTime_, fontFamily, fontDescription,
+          this.browserInfo_, this.timeout_, null, fontTestString);
 
       fontWatchRunner.start();
     }
