@@ -1,4 +1,7 @@
+goog.provide('webfont.UserAgent');
+
 /**
+ * @export
  * @param {string} name
  * @param {string} version
  * @param {string} engine
@@ -21,58 +24,70 @@ webfont.UserAgent = function(name, version, engine, engineVersion, platform,
   this.browserInfo_ = browserInfo;
 };
 
-/**
- * @return {string}
- */
-webfont.UserAgent.prototype.getName = function() {
-  return this.name_;
-};
+goog.scope(function () {
+  var UserAgent = webfont.UserAgent;
 
-/**
- * @return {string}
- */
-webfont.UserAgent.prototype.getVersion = function() {
-  return this.version_;
-};
+  /**
+   * @export
+   * @return {string}
+   */
+  UserAgent.prototype.getName = function() {
+    return this.name_;
+  };
 
-/**
- * @return {string}
- */
-webfont.UserAgent.prototype.getEngine = function() {
-  return this.engine_;
-};
+  /**
+   * @export
+   * @return {string}
+   */
+  UserAgent.prototype.getVersion = function() {
+    return this.version_;
+  };
 
-/**
- * @return {string}
- */
-webfont.UserAgent.prototype.getEngineVersion = function() {
-  return this.engineVersion_;
-};
+  /**
+   * @export
+   * @return {string}
+   */
+  UserAgent.prototype.getEngine = function() {
+    return this.engine_;
+  };
 
-/**
- * @return {string}
- */
-webfont.UserAgent.prototype.getPlatform = function() {
-  return this.platform_;
-};
+  /**
+   * @export
+   * @return {string}
+   */
+  UserAgent.prototype.getEngineVersion = function() {
+    return this.engineVersion_;
+  };
 
-/**
- * @return {string}
- */
-webfont.UserAgent.prototype.getPlatformVersion = function() {
-  return this.platformVersion_;
-};
+  /**
+   * @export
+   * @return {string}
+   */
+  UserAgent.prototype.getPlatform = function() {
+    return this.platform_;
+  };
 
-/**
- * @return {number|undefined}
- */
-webfont.UserAgent.prototype.getDocumentMode = function() {
-  return this.documentMode_;
-};
+  /**
+   * @export
+   * @return {string}
+   */
+  UserAgent.prototype.getPlatformVersion = function() {
+    return this.platformVersion_;
+  };
 
-/**
- * @return {webfont.BrowserInfo}
- */
-webfont.UserAgent.prototype.getBrowserInfo = function() {
-  return this.browserInfo_;
-};
+  /**
+   * @export
+   * @return {number|undefined}
+   */
+  UserAgent.prototype.getDocumentMode = function() {
+    return this.documentMode_;
+  };
+
+  /**
+   * @export
+   * @return {webfont.BrowserInfo}
+   */
+  UserAgent.prototype.getBrowserInfo = function() {
+    return this.browserInfo_;
+  };
+});

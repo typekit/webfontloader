@@ -1,3 +1,5 @@
+goog.provide('webfont.CustomCss');
+
 /**
  *
  * WebFont.load({
@@ -15,38 +17,42 @@ webfont.CustomCss = function(domHelper, configuration) {
 
 webfont.CustomCss.NAME = 'custom';
 
-webfont.CustomCss.prototype.load = function(onReady) {
-  var i, len;
-  var urls = this.configuration_['urls'] || [];
-  var familiesConfiguration = this.configuration_['families'] || [];
+goog.scope(function () {
+  var CustomCss = webfont.CustomCss;
 
-  for (i = 0, len = urls.length; i < len; i++) {
-    var url = urls[i];
+  CustomCss.prototype.load = function(onReady) {
+    var i, len;
+    var urls = this.configuration_['urls'] || [];
+    var familiesConfiguration = this.configuration_['families'] || [];
 
-    this.domHelper_.insertInto('head', this.domHelper_.createCssLink(url));
-  }
+    for (i = 0, len = urls.length; i < len; i++) {
+      var url = urls[i];
 
-  var families = [];
-  var variations = {};
-  for (i = 0, len = familiesConfiguration.length; i < len; i++) {
-    var components = familiesConfiguration[i].split(":");
-    var family = components[0];
-    var familyVariations = components[1];
-
-    families.push(family);
-
-    if (familyVariations) {
-      var newVariations = familyVariations.split(",");
-      variations[family] = (variations[family] || []).concat(newVariations);
+      this.domHelper_.insertInto('head', this.domHelper_.createCssLink(url));
     }
-  }
 
-  onReady(families, variations);
-};
+    var families = [];
+    var variations = {};
+    for (i = 0, len = familiesConfiguration.length; i < len; i++) {
+      var components = familiesConfiguration[i].split(":");
+      var family = components[0];
+      var familyVariations = components[1];
 
-webfont.CustomCss.prototype.supportUserAgent = function(userAgent, support) {
-  return support(userAgent.getBrowserInfo().hasWebFontSupport());
-};
+      families.push(family);
+
+      if (familyVariations) {
+        var newVariations = familyVariations.split(",");
+        variations[family] = (variations[family] || []).concat(newVariations);
+      }
+    }
+
+    onReady(families, variations);
+  };
+
+  CustomCss.prototype.supportUserAgent = function(userAgent, support) {
+    return support(userAgent.getBrowserInfo().hasWebFontSupport());
+  };
+});
 
 globalNamespaceObject.addModule(webfont.CustomCss.NAME, function(configuration, domHelper) {
   return new webfont.CustomCss(domHelper, configuration);
