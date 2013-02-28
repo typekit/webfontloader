@@ -37,7 +37,16 @@ describe('FontWatcher', function () {
   }
 
   FakeFontWatchRunner.prototype.start = function () {
-    if (activeFontFamilies.indexOf(this.fontFamily) > -1) {
+    var found = false;
+
+    for (var i = 0; i < activeFontFamilies.length; i += 1) {
+      if (activeFontFamilies[i] === this.fontFamily) {
+        found = true;
+        break;
+      }
+    }
+
+    if (found) {
       this.activeCallback(this.fontFamily, this.fontDescription);
     } else {
       this.inactiveCallback(this.fontFamily, this.fontDescription);
