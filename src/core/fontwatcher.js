@@ -18,7 +18,7 @@ webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer,
   this.currentlyWatched_ = 0;
   this.last_ = false;
   this.success_ = false;
-  this.timeout = opt_timeout;
+  this.timeout_ = opt_timeout;
 
   this.browserInfo_ = userAgent.getBrowserInfo();
 };
@@ -79,7 +79,7 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
       var fontWatchRunner = new fontWatchRunnerCtor(activeCallback,
           inactiveCallback, this.domHelper_, this.fontSizer_, this.asyncCall_,
           this.getTime_, fontFamily, fontDescription,
-          this.browserInfo_, this.timeout, null, fontTestString);
+          this.browserInfo_, this.timeout_, null, fontTestString);
 
       fontWatchRunner.start();
     }
