@@ -1,3 +1,8 @@
+v1.3.0 (February 28, 2013)
+* New optional configuration parameter `timeout` which lets you customize the default timeout.
+* Change the Typekit module to use `use.typekit.net` instead of `use.typekit.com`.
+* Disable height check on OSX and iOS WebKit based browsers which suffer from a metrics bug when loading web fonts.
+
 v1.2.1 (February 26, 2013)
 * Fix the possibility of test strings wrapping to a new line and thereby breaking font watching.
 * Change the FontWatchRunner to not create DOM elements until it is started.
