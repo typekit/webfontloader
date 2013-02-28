@@ -20,7 +20,7 @@ webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, fontSizer,
   this.success_ = false;
   this.timeout = opt_timeout;
 
-  this.hasWebKitFallbackBug_ = userAgent.getBrowserInfo().hasWebKitFallbackBug();
+  this.browserInfo_ = userAgent.getBrowserInfo();
 };
 
 /**
@@ -40,7 +40,7 @@ webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
  *     function(string, string), webfont.DomHelper,
  *     Object.<string, function(Object): number>,
  *     function(function(), number=), function(): number, string, string,
- *     boolean, number=, Object.<string,boolean>=, string=)} fontWatchRunnerCtor The font watch runner constructor.
+ *     webfont.BrowserInfo, number=, Object.<string,boolean>=, string=)} fontWatchRunnerCtor The font watch runner constructor.
  * @param {boolean} last True if this is the last set of families to watch.
  */
 webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
@@ -79,7 +79,7 @@ webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
       var fontWatchRunner = new fontWatchRunnerCtor(activeCallback,
           inactiveCallback, this.domHelper_, this.fontSizer_, this.asyncCall_,
           this.getTime_, fontFamily, fontDescription,
-          this.hasWebKitFallbackBug_, this.timeout, null, fontTestString);
+          this.browserInfo_, this.timeout, null, fontTestString);
 
       fontWatchRunner.start();
     }

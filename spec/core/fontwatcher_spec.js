@@ -11,7 +11,7 @@ describe('FontWatcher', function () {
       activeFontFamilies = [];
 
   beforeEach(function () {
-    userAgent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.3', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false));
+    userAgent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.3', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false, false));
     activeFontFamilies = [];
     testStrings = jasmine.createSpy('testStrings');
     timeout = jasmine.createSpy('timeout');

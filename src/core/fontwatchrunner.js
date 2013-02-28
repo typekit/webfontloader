@@ -8,13 +8,13 @@
  * @param {function(): number} getTime
  * @param {string} fontFamily
  * @param {string} fontDescription
- * @param {boolean} hasWebKitFallbackBug
+ * @param {webfont.BrowserInfo} browserInfo
  * @param {number=} opt_timeout
  * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    fontSizer, asyncCall, getTime, fontFamily, fontDescription, hasWebKitFallbackBug,
+    fontSizer, asyncCall, getTime, fontFamily, fontDescription, browserInfo,
     opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
@@ -25,7 +25,7 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontFamily_ = fontFamily;
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
-  this.hasWebKitFallbackBug_ = hasWebKitFallbackBug;
+  this.browserInfo_ = browserInfo;
   this.lastResortSizes_ = {};
   this.timeout = opt_timeout || 5000;
 
@@ -105,7 +105,11 @@ webfont.FontWatchRunner.prototype.start = function() {
  * @return {boolean}
  */
 webfont.FontWatchRunner.prototype.sizeMatches_ = function(size, lastResortFont) {
-  return size.equals(this.lastResortSizes_[lastResortFont]);
+  if (this.browserInfo_.hasWebKitMetricsBug()) {
+    return size.equalsWidth(this.lastResortSizes_[lastResortFont]);
+  } else {
+    return size.equals(this.lastResortSizes_[lastResortFont]);
+  }
 };
 
 /**
@@ -160,7 +164,7 @@ webfont.FontWatchRunner.prototype.isFallbackFont_ = function (sizeA, sizeB) {
  * @return {boolean}
  */
 webfont.FontWatchRunner.prototype.isLastResortFont_ = function (sizeA, sizeB) {
-  return this.hasWebKitFallbackBug_ && this.sizesMatchLastResortSizes_(sizeA, sizeB);
+  return this.browserInfo_.hasWebKitFallbackBug() && this.sizesMatchLastResortSizes_(sizeA, sizeB);
 };
 
 /**
