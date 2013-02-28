@@ -7,7 +7,7 @@ describe('WebFont', function () {
       userAgent = null;
 
   beforeEach(function () {
-    userAgent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false));
+    userAgent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false, false));
     fontModuleLoader = new FontModuleLoader();
   });
 
@@ -190,7 +190,7 @@ describe('WebFont', function () {
         testModule = null;
 
     beforeEach(function () {
-      font = new WebFont(window, fontModuleLoader, function (func, timeout) { func(); }, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(false, false)));
+      font = new WebFont(window, fontModuleLoader, function (func, timeout) { func(); }, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(false, false, false)));
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
