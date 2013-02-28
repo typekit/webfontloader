@@ -112,12 +112,32 @@ load. You can use events to gracefully degrade in this situation.
 
 > The `Font Inactive` event will be triggered after 5 seconds if the font
 fails to render. If *at least* one font succesfully renders, the `Active`
-event will be triggered, else the `Inative` even will be triggered.
+event will be triggered, else the `Inactive` even will be triggered.
+
+You can configure the timeout by using the `timeout` configuration on the
+`WebFont.load` function.
+
+    WebFont.load({
+      timeout: 2000, // Set the timeout to two seconds
+      ...
+    });
+
+The timeout value should be in milliseconds, and defaults to 5 seconds if
+not supplied.
 
 ### Browser Support
 
 Every web browser has varying levels of support for fonts linked via
-@font-face.
+@font-face. Support for web fonts is determined using the browser user agent
+string. The user agent string may claim to support a web font format
+when it in fact does not. This is especially noticable on mobile browsers
+with a "Desktop" mode, which usually identify as Chrome on Linux.
+In this case a web font provider may decide to send WOFF fonts to the
+device because the real desktop Chrome supports it, while the mobile
+browser does not. The WebFont Loader is not designed to handle these
+cases and it chooses to believe the user agent string. Web font providers
+may or may not build on top of the basic WebFont Loader functionality
+to handle these special cases individually.
 
 > If WebFont Loader determines that the current browser does not support
 `@font-face`, the `Inactive` event will be triggered.

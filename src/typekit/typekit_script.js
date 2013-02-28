@@ -18,7 +18,7 @@ goog.scope(function () {
 
   TypekitScript.prototype.getScriptSrc = function(kitId) {
     var protocol = this.domHelper_.getProtocol();
-    var api = this.configuration_['api'] || protocol + '//use.typekit.com';
+    var api = this.configuration_['api'] || protocol + '//use.typekit.net';
     return api + '/' + kitId + '.js';
   };
 

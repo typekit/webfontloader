@@ -40,7 +40,7 @@ webfont.UserAgentParser.UNKNOWN_USER_AGENT = new webfont.UserAgent(
     webfont.UserAgentParser.UNKNOWN,
     webfont.UserAgentParser.UNKNOWN,
     undefined,
-    new webfont.BrowserInfo(false, false));
+    new webfont.BrowserInfo(false, false, false));
 
 
 goog.scope(function () {
@@ -153,12 +153,13 @@ goog.scope(function () {
           (platform == "Windows Phone" && platformVersion.major >= 8);
 
       return new UserAgent(name, version, name, version,
-          platform, platformVersionString, this.getDocumentMode_(this.doc_), new BrowserInfo(supportWebFont, false));
+          platform, platformVersionString, this.getDocumentMode_(this.doc_), new BrowserInfo(supportWebFont, false, false));
+
     }
 
     return new UserAgent("MSIE", webfont.UserAgentParser.UNKNOWN,
         "MSIE", webfont.UserAgentParser.UNKNOWN,
-        platform, platformVersionString, this.getDocumentMode_(this.doc_), new BrowserInfo(false, false));
+        platform, platformVersionString, this.getDocumentMode_(this.doc_), new BrowserInfo(false, false, false));
   };
 
   /**
@@ -203,7 +204,7 @@ goog.scope(function () {
 
       return new UserAgent("OperaMini", version, engineName,
           engineVersion, this.getPlatform_(), this.getPlatformVersion_(),
-          this.getDocumentMode_(this.doc_), new BrowserInfo(false, false));
+          this.getDocumentMode_(this.doc_), new BrowserInfo(false, false, false));
     }
 
     // Otherwise, find version information for normal Opera or Opera Mobile
@@ -214,7 +215,7 @@ goog.scope(function () {
         var version = this.parseVersion_(versionString);
         return new UserAgent("Opera", versionString, engineName, engineVersion,
             this.getPlatform_(), this.getPlatformVersion_(),
-            this.getDocumentMode_(this.doc_), new BrowserInfo(version.major >= 10, false));
+            this.getDocumentMode_(this.doc_), new BrowserInfo(version.major >= 10, false, false));
       }
     }
     var versionString = this.getMatchingGroup_(this.userAgent_, /Opera[\/ ]([\d\.]+)/, 1);
@@ -223,11 +224,11 @@ goog.scope(function () {
       var version = this.parseVersion_(versionString);
       return new UserAgent("Opera", versionString, engineName, engineVersion,
           this.getPlatform_(), this.getPlatformVersion_(),
-          this.getDocumentMode_(this.doc_), new BrowserInfo(version.major >= 10, false));
+          this.getDocumentMode_(this.doc_), new BrowserInfo(version.major >= 10, false, false));
     }
     return new UserAgent("Opera", UserAgentParser.UNKNOWN,
         engineName, engineVersion, this.getPlatform_(),
-        this.getPlatformVersion_(), this.getDocumentMode_(this.doc_), new BrowserInfo(false, false));
+        this.getPlatformVersion_(), this.getDocumentMode_(this.doc_), new BrowserInfo(false, false, false));
   };
 
   /**
@@ -253,7 +254,6 @@ goog.scope(function () {
 
     var webKitVersion = this.parseVersion_(webKitVersionString);
     var platformVersion = this.parseVersion_(platformVersionString);
-
     var name = UserAgentParser.UNKNOWN;
 
     if (this.userAgent_.indexOf("Chrome") != -1 || this.userAgent_.indexOf("CrMo") != -1 || this.userAgent_.indexOf("CriOS") != -1) {
@@ -289,11 +289,11 @@ goog.scope(function () {
     } else {
       supportWebFont = webKitVersion.major >= 526 || webKitVersion.major >= 525 && webKitVersion.minor >= 13;
     }
-
-    var hasWebKitFallbackBug = webKitVersion.major < 536 || (webKitVersion.major == 536 && webKitVersion.minor < 11);
+    var hasWebKitFallbackBug = webKitVersion.major < 536 || (webKitVersion.major == 536 && webKitVersion.minor < 11),
+        hasWebKitMetricsBug = platform == 'iPhone' || platform == 'iPad' || platform == 'iPod' || platform == 'Macintosh';
 
     return new UserAgent(name, version, "AppleWebKit", webKitVersionString,
-        platform, platformVersionString, this.getDocumentMode_(this.doc_), new BrowserInfo(supportWebFont, hasWebKitFallbackBug));
+        platform, platformVersionString, this.getDocumentMode_(this.doc_), new BrowserInfo(supportWebFont, hasWebKitFallbackBug, hasWebKitMetricsBug));
   };
 
   /**
@@ -342,7 +342,7 @@ goog.scope(function () {
       }
     }
     return new UserAgent(name, version, "Gecko", geckoVersionString,
-        this.getPlatform_(), this.getPlatformVersion_(), this.getDocumentMode_(this.doc_), new BrowserInfo(supportWebFont, false));
+        this.getPlatform_(), this.getPlatformVersion_(), this.getDocumentMode_(this.doc_), new BrowserInfo(supportWebFont, false, false));
   };
 
   /**

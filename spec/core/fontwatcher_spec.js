@@ -6,13 +6,15 @@ describe('FontWatcher', function () {
       domHelper = new DomHelper(window),
       eventDispatcher = {},
       testStrings = null,
+      timeout = null,
       userAgent = null,
       activeFontFamilies = [];
 
   beforeEach(function () {
-    userAgent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.3', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false));
+    userAgent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.3', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false, false));
     activeFontFamilies = [];
     testStrings = jasmine.createSpy('testStrings');
+    timeout = jasmine.createSpy('timeout');
     eventDispatcher.dispatchLoading = jasmine.createSpy('dispatchLoading');
     eventDispatcher.dispatchFontLoading = jasmine.createSpy('dispatchFontLoading');
     eventDispatcher.dispatchFontActive = jasmine.createSpy('dispatchFontActive');
@@ -22,11 +24,12 @@ describe('FontWatcher', function () {
   });
 
   function FakeFontWatchRunner(activeCallback, inactiveCallback, domHelper,
-    fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
+    fontFamily, fontDescription, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
     this.activeCallback = activeCallback;
     this.inactiveCallback = inactiveCallback;
     this.fontFamily = fontFamily;
     this.fontDescription = fontDescription;
+    timeout(opt_timeout);
 
     if (opt_fontTestString) {
       testStrings(opt_fontTestString);
@@ -191,5 +194,13 @@ describe('FontWatcher', function () {
       expect(testStrings).toHaveBeenCalledWith('testString1');
       expect(testStrings).toHaveBeenCalledWith('testString2');
     });
+  });
+
+  it('should pass on the timeout to FontWatchRunner', function () {
+    var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher, 4000);
+
+    fontWatcher.watch(['fontFamily1'], {}, {}, FakeFontWatchRunner, true);
+
+    expect(timeout).toHaveBeenCalledWith(4000);
   });
 });

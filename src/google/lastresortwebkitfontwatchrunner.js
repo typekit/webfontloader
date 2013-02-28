@@ -9,17 +9,18 @@ goog.require('webfont.FontRuler');
  * @param {webfont.DomHelper} domHelper
  * @param {string} fontFamily
  * @param {string} fontDescription
- * @param {boolean} hasWebKitFallbackBug
+ * @param {webfont.BrowserInfo} browserInfo
+ * @param {number=} opt_timeout
  * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
  * @param {string=} opt_fontTestString
  * @extends webfont.FontWatchRunner
  */
 webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
     inactiveCallback, domHelper, fontFamily,
-    fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
+    fontDescription, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
 
   goog.base(this, activeCallback, inactiveCallback, domHelper,
-            fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString);
+            fontFamily, fontDescription, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString);
 
   this.webKitLastResortFontSizes_ = this.setUpWebKitLastResortFontSizes_();
   this.webKitLastResortSizeChange_ = false;

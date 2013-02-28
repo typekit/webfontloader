@@ -80,11 +80,12 @@ goog.scope(function () {
 
   WebFont.prototype.load_ = function(eventDispatcher, configuration) {
     var modules = this.fontModuleLoader_.getModules(configuration, this.domHelper_),
+        timeout = configuration['timeout'],
         self = this;
 
     this.moduleFailedLoading_ = this.moduleLoading_ = modules.length;
 
-    var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.domHelper_, eventDispatcher);
+    var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.domHelper_, eventDispatcher, timeout);
 
     for (var i = 0, len = modules.length; i < len; i++) {
       var module = modules[i];

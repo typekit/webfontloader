@@ -9,20 +9,22 @@ goog.require('webfont.FontRuler');
  * @param {webfont.DomHelper} domHelper
  * @param {string} fontFamily
  * @param {string} fontDescription
- * @param {boolean} hasWebKitFallbackBug
+ * @param {webfont.BrowserInfo} browserInfo
+ * @param {number=} opt_timeout
  * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    fontFamily, fontDescription, hasWebKitFallbackBug, opt_metricCompatibleFonts, opt_fontTestString) {
+    fontFamily, fontDescription, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
   this.fontFamily_ = fontFamily;
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
-  this.hasWebKitFallbackBug_ = hasWebKitFallbackBug;
+  this.browserInfo_ = browserInfo;
   this.lastResortSizes_ = {};
+  this.timeout_ = opt_timeout || 5000;
 
   this.metricCompatibleFonts_ = opt_metricCompatibleFonts || null;
 
@@ -104,7 +106,11 @@ goog.scope(function () {
    * @return {boolean}
    */
   FontWatchRunner.prototype.sizeMatches_ = function(size, lastResortFont) {
-    return size.equals(this.lastResortSizes_[lastResortFont]);
+    if (this.browserInfo_.hasWebKitMetricsBug()) {
+      return size.equalsWidth(this.lastResortSizes_[lastResortFont]);
+    } else {
+      return size.equals(this.lastResortSizes_[lastResortFont]);
+    }
   };
 
   /**
@@ -134,7 +140,7 @@ goog.scope(function () {
    * @return {boolean}
    */
   FontWatchRunner.prototype.hasTimedOut_ = function() {
-    return goog.now() - this.started_ >= 5000;
+    return goog.now() - this.started_ >= this.timeout_;
   };
 
   /**
@@ -159,7 +165,7 @@ goog.scope(function () {
    * @return {boolean}
    */
   FontWatchRunner.prototype.isLastResortFont_ = function (sizeA, sizeB) {
-    return this.hasWebKitFallbackBug_ && this.sizesMatchLastResortSizes_(sizeA, sizeB);
+    return this.browserInfo_.hasWebKitFallbackBug() && this.sizesMatchLastResortSizes_(sizeA, sizeB);
   };
 
   /**
@@ -193,7 +199,7 @@ goog.scope(function () {
         } else {
           this.finish_(this.inactiveCallback_);
         }
-      } else {
+     } else {
         this.asyncCheck_();
       }
     } else {

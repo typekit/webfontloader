@@ -7,15 +7,17 @@ goog.require('webfont.FontWatchRunner');
  * @param {webfont.UserAgent} userAgent
  * @param {webfont.DomHelper} domHelper
  * @param {webfont.EventDispatcher} eventDispatcher
+ * @param {number=} opt_timeout
  */
-webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher) {
+webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, opt_timeout) {
   this.domHelper_ = domHelper;
   this.eventDispatcher_ = eventDispatcher;
   this.currentlyWatched_ = 0;
   this.last_ = false;
   this.success_ = false;
+  this.timeout_ = opt_timeout;
 
-  this.hasWebKitFallbackBug_ = userAgent.getBrowserInfo().hasWebKitFallbackBug();
+  this.browserInfo_ = userAgent.getBrowserInfo();
 };
 
 /**
@@ -36,7 +38,7 @@ goog.scope(function () {
    *     each family.
    * @param {function(new:webfont.FontWatchRunner, function(string, string),
    *     function(string, string), webfont.DomHelper,
-   *     string, string, boolean, Object.<string, boolean>=, string=)} fontWatchRunnerCtor The font watch runner constructor.
+   *     string, string, webfont.BrowserInfo, number=, Object.<string, boolean>=, string=)} fontWatchRunnerCtor The font watch runner constructor.
    * @param {boolean} last True if this is the last set of families to watch.
    */
   FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
@@ -74,7 +76,7 @@ goog.scope(function () {
         var inactiveCallback = goog.bind(this.fontInactive_, this)
         var fontWatchRunner = new fontWatchRunnerCtor(activeCallback,
             inactiveCallback, this.domHelper_, fontFamily, fontDescription,
-            this.hasWebKitFallbackBug_, null, fontTestString);
+            this.browserInfo_, this.timeout_, null, fontTestString);
 
         fontWatchRunner.start();
       }
