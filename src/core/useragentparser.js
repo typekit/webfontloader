@@ -280,7 +280,7 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
   }
 
   var hasWebKitFallbackBug = webKitVersion.major < 536 || (webKitVersion.major == 536 && webKitVersion.minor < 11),
-      hasWebKitMetricsBug = platform == 'iPhone' || platform == 'iPad' || platform == 'iPod' || platform == 'Macintosh';
+      hasWebKitMetricsBug = platform == 'iPhone' || platform == 'iPad' || platform == 'iPod' || platform == 'Macintosh' || platform == 'Linux';
 
   return new webfont.UserAgent(name, version, "AppleWebKit", webKitVersionString,
       platform, platformVersionString, this.getDocumentMode_(this.doc_), new webfont.BrowserInfo(supportWebFont, hasWebKitFallbackBug, hasWebKitMetricsBug));
