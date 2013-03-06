@@ -23,7 +23,7 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontDescription_ = fontDescription;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
   this.browserInfo_ = browserInfo;
-  this.lastResortSizes_ = {};
+  this.lastResortWidths_ = {};
   this.timeout_ = opt_timeout || 5000;
 
   this.metricCompatibleFonts_ = opt_metricCompatibleFonts || null;
@@ -31,7 +31,7 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontRulerA_ = null;
   this.fontRulerB_ = null;
 
-  this.setupLastResortSizes_();
+  this.setupLastResortWidths_();
 };
 
 /**
@@ -69,7 +69,7 @@ goog.scope(function () {
   /**
    * @private
    */
-  FontWatchRunner.prototype.setupLastResortSizes_ = function() {
+  FontWatchRunner.prototype.setupLastResortWidths_ = function() {
     var fontRuler = new FontRuler(this.domHelper_, this.fontTestString_);
 
     fontRuler.insert();
@@ -77,7 +77,7 @@ goog.scope(function () {
     for (var font in FontWatchRunner.LastResortFonts) {
       if (FontWatchRunner.LastResortFonts.hasOwnProperty(font)) {
         fontRuler.setFont(FontWatchRunner.LastResortFonts[font], this.fontDescription_);
-        this.lastResortSizes_[FontWatchRunner.LastResortFonts[font]] = fontRuler.getSize();
+        this.lastResortWidths_[FontWatchRunner.LastResortFonts[font]] = fontRuler.getWidth();
       }
     }
     fontRuler.remove();
@@ -98,35 +98,31 @@ goog.scope(function () {
   };
 
   /**
-   * Returns true if the given size matches the generic font family size.
+   * Returns true if the given width matches the generic font family width.
    *
    * @private
-   * @param {?webfont.Size} size
+   * @param {number} width
    * @param {string} lastResortFont
    * @return {boolean}
    */
-  FontWatchRunner.prototype.sizeMatches_ = function(size, lastResortFont) {
-    if (this.browserInfo_.hasWebKitMetricsBug()) {
-      return size.equalsWidth(this.lastResortSizes_[lastResortFont]);
-    } else {
-      return size.equals(this.lastResortSizes_[lastResortFont]);
-    }
+  FontWatchRunner.prototype.widthMatches_ = function(width, lastResortFont) {
+    return width === this.lastResortWidths_[lastResortFont];
   };
 
   /**
-   * Return true if the given sizes match any of the generic font family
-   * sizes.
+   * Return true if the given widths match any of the generic font family
+   * widths.
    *
    * @private
-   * @param {?webfont.Size} a
-   * @param {?webfont.Size} b
+   * @param {number} a
+   * @param {number} b
    * @return {boolean}
    */
-  FontWatchRunner.prototype.sizesMatchLastResortSizes_ = function(a, b) {
+  FontWatchRunner.prototype.widthsMatchLastResortWidths_ = function(a, b) {
     for (var font in FontWatchRunner.LastResortFonts) {
       if (FontWatchRunner.LastResortFonts.hasOwnProperty(font)) {
-        if (this.sizeMatches_(a, FontWatchRunner.LastResortFonts[font]) &&
-            this.sizeMatches_(b, FontWatchRunner.LastResortFonts[font])) {
+        if (this.widthMatches_(a, FontWatchRunner.LastResortFonts[font]) &&
+            this.widthMatches_(b, FontWatchRunner.LastResortFonts[font])) {
           return true;
         }
       }
@@ -147,25 +143,25 @@ goog.scope(function () {
    * Returns true if both fonts match the normal fallback fonts.
    *
    * @private
-   * @param {webfont.Size} sizeA
-   * @param {webfont.Size} sizeB
+   * @param {number} a
+   * @param {number} b
    * @return {boolean}
    */
-  FontWatchRunner.prototype.isFallbackFont_ = function (sizeA, sizeB) {
-    return this.sizeMatches_(sizeA, FontWatchRunner.LastResortFonts.SERIF) &&
-           this.sizeMatches_(sizeB, FontWatchRunner.LastResortFonts.SANS_SERIF);
+  FontWatchRunner.prototype.isFallbackFont_ = function (a, b) {
+    return this.widthMatches_(a, FontWatchRunner.LastResortFonts.SERIF) &&
+           this.widthMatches_(b, FontWatchRunner.LastResortFonts.SANS_SERIF);
   };
 
   /**
-   * Returns true if the WebKit bug is present and both sizes match a last resort font.
+   * Returns true if the WebKit bug is present and both widths match a last resort font.
    *
    * @private
-   * @param {webfont.Size} sizeA
-   * @param {webfont.Size} sizeB
+   * @param {number} a
+   * @param {number} b
    * @return {boolean}
    */
-  FontWatchRunner.prototype.isLastResortFont_ = function (sizeA, sizeB) {
-    return this.browserInfo_.hasWebKitFallbackBug() && this.sizesMatchLastResortSizes_(sizeA, sizeB);
+  FontWatchRunner.prototype.isLastResortFont_ = function (a, b) {
+    return this.browserInfo_.hasWebKitFallbackBug() && this.widthsMatchLastResortWidths_(a, b);
   };
 
   /**
@@ -180,21 +176,21 @@ goog.scope(function () {
   };
 
   /**
-   * Checks the size of the two spans against their original sizes during each
-   * async loop. If the size of one of the spans is different than the original
-   * size, then we know that the font is rendering and finish with the active
+   * Checks the width of the two spans against their original widths during each
+   * async loop. If the width of one of the spans is different than the original
+   * width, then we know that the font is rendering and finish with the active
    * callback. If we wait more than 5 seconds and nothing has changed, we finish
    * with the inactive callback.
    *
    * @private
    */
   FontWatchRunner.prototype.check_ = function() {
-    var sizeA = this.fontRulerA_.getSize();
-    var sizeB = this.fontRulerB_.getSize();
+    var widthA = this.fontRulerA_.getWidth();
+    var widthB = this.fontRulerB_.getWidth();
 
-    if (this.isFallbackFont_(sizeA, sizeB) || this.isLastResortFont_(sizeA, sizeB)) {
+    if (this.isFallbackFont_(widthA, widthB) || this.isLastResortFont_(widthA, widthB)) {
       if (this.hasTimedOut_()) {
-        if (this.isLastResortFont_(sizeA, sizeB) && this.isMetricCompatibleFont_()) {
+        if (this.isLastResortFont_(widthA, widthB) && this.isMetricCompatibleFont_()) {
           this.finish_(this.activeCallback_);
         } else {
           this.finish_(this.inactiveCallback_);
