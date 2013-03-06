@@ -75,6 +75,9 @@ goog.scope(function () {
     return webKitLastResortFontSizes;
   };
 
+  /**
+   * @override
+   */
   LastResortWebKitFontWatchRunner.prototype.check_ = function() {
     var sizeA = this.fontRulerA_.getSize();
     var sizeB = this.fontRulerB_.getSize();

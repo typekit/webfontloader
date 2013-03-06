@@ -27,10 +27,17 @@ goog.scope(function () {
       FontWatcher = webfont.FontWatcher,
       Size = webfont.Size;
 
+  /**
+   * @param {string} name
+   * @param {webfont.FontModuleFactory} factory
+   */
   WebFont.prototype.addModule = function(name, factory) {
     this.fontModuleLoader_.addModuleFactory(name, factory);
   };
 
+  /**
+   * @param {Object} configuration
+   */
   WebFont.prototype.load = function(configuration) {
     var context = configuration['context'] || this.mainWindow_;
     this.domHelper_ = new DomHelper(this.mainWindow_, context);
@@ -45,10 +52,18 @@ goog.scope(function () {
     }
   };
 
+  /**
+   * @param {webfont.FontModule} module
+   * @param {webfont.EventDispatcher} eventDispatcher
+   * @param {webfont.FontWatcher} fontWatcher
+   * @param {boolean} support
+   */
   WebFont.prototype.isModuleSupportingUserAgent_ = function(module, eventDispatcher,
       fontWatcher, support) {
     var fontWatchRunnerCtor = module.getFontWatchRunnerCtor ?
-        module.getFontWatchRunnerCtor() : webfont.FontWatchRunner;
+        module.getFontWatchRunnerCtor() : webfont.FontWatchRunner,
+        that = this;
+
     if (!support) {
       var allModulesLoaded = --this.moduleLoading_ == 0;
 
@@ -63,21 +78,46 @@ goog.scope(function () {
       fontWatcher.watch([], {}, {}, fontWatchRunnerCtor, allModulesLoaded);
       return;
     }
-    module.load(goog.bind(this.onModuleReady_, this, eventDispatcher,
-        fontWatcher, fontWatchRunnerCtor));
+
+    module.load(function (fontFamilies, fontVariations) {
+      that.onModuleReady_(eventDispatcher, fontWatcher, fontWatchRunnerCtor, fontFamilies, fontVariations);
+    });
   };
 
+  /**
+   * @param {webfont.EventDispatcher} eventDispatcher
+   * @param {webfont.FontWatcher} fontWatcher
+   * @param {function(new:webfont.FontWatchRunner,
+   *                  function(string, string),
+   *                  function(string, string),
+   *                  webfont.DomHelper,
+   *                  string,
+   *                  string,
+   *                  webfont.BrowserInfo,
+   *                  number=,
+   *                  Object.<string, boolean>=,
+   *                  string=)} fontWatchRunnerCtor
+   * @param {webfont.FontFamilies} fontFamilies
+   * @param {webfont.FontVariations=} opt_fontVariations
+   * @param {webfont.FontTestStrings=} opt_fontTestStrings
+   */
   WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher,
-      fontWatchRunnerCtor, fontFamilies, opt_fontDescriptions, opt_fontTestStrings) {
+      fontWatchRunnerCtor, fontFamilies, opt_fontVariations, opt_fontTestStrings) {
     var allModulesLoaded = --this.moduleLoading_ == 0;
 
     if (allModulesLoaded) {
       eventDispatcher.dispatchLoading();
     }
 
-    setTimeout(goog.bind(fontWatcher.watch, fontWatcher, fontFamilies, opt_fontDescriptions || {}, opt_fontTestStrings || {}, fontWatchRunnerCtor, allModulesLoaded), 0);
+    setTimeout(function () {
+      fontWatcher.watch(fontFamilies, opt_fontVariations || {}, opt_fontTestStrings || {}, fontWatchRunnerCtor, allModulesLoaded);
+    }, 0);
   };
 
+  /**
+   * @param {webfont.EventDispatcher} eventDispatcher
+   * @param {Object} configuration
+   */
   WebFont.prototype.load_ = function(eventDispatcher, configuration) {
     var modules = this.fontModuleLoader_.getModules(configuration, this.domHelper_),
         timeout = configuration['timeout'],

@@ -4,6 +4,7 @@ goog.require('webfont.FontVariationDescription');
 
 /**
  * @constructor
+ * @implements {webfont.FontModule}
  */
 webfont.FontdeckScript = function(domHelper, configuration) {
   this.domHelper_ = domHelper;

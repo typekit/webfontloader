@@ -10,6 +10,7 @@ projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'//this is your Fonts.com Web fo
 
 /**
  * @constructor
+ * @implements {webfont.FontModule}
  */
 webfont.MonotypeScript = function (userAgent, domHelper, configuration) {
   this.userAgent_ = userAgent;

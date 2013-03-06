@@ -9,6 +9,7 @@ goog.provide('webfont.CustomCss');
  * });
  *
  * @constructor
+ * @implements {webfont.FontModule}
  */
 webfont.CustomCss = function(domHelper, configuration) {
   this.domHelper_ = domHelper;

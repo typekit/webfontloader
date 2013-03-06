@@ -2,6 +2,7 @@ goog.provide('webfont.TypekitScript');
 
 /**
  * @constructor
+ * @implements {webfont.FontModule}
  */
 webfont.TypekitScript = function(domHelper, configuration) {
   this.domHelper_ = domHelper;

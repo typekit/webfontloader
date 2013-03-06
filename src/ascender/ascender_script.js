@@ -10,6 +10,7 @@ goog.provide('webfont.AscenderScript');
  * });
  *
  * @constructor
+ * @implements {webfont.FontModule}
  */
 webfont.AscenderScript = function(domHelper, configuration) {
   this.domHelper_ = domHelper;

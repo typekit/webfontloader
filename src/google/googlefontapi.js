@@ -7,6 +7,7 @@ goog.require('webfont.LastResortWebKitFontWatchRunner');
 
 /**
  * @constructor
+ * @implements {webfont.FontModule}
  */
 webfont.GoogleFontApi = function(userAgent, domHelper, configuration) {
   this.userAgent_ = userAgent;
