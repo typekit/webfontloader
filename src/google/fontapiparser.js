@@ -1,3 +1,7 @@
+goog.provide('webfont.FontApiParser');
+
+goog.require('webfont.FontVariationDescription');
+
 /**
  * @constructor
  */
@@ -56,122 +60,126 @@ webfont.FontApiParser.VARIATION_MATCH =
         "(?:(?:semi|demi|extra|ultra)-?)?bold|black|heavy|l|r|b|[1-9]00)?(n|i" +
         "|normal|italic)?$");
 
-webfont.FontApiParser.prototype.parse = function() {
-  var length = this.fontFamilies_.length;
+goog.scope(function () {
+  var FontApiParser = webfont.FontApiParser;
 
-  for (var i = 0; i < length; i++) {
-    var elements = this.fontFamilies_[i].split(":");
-    var fontFamily = elements[0].replace(/\+/g, " ");
-    var variations = ['n4'];
+  FontApiParser.prototype.parse = function() {
+    var length = this.fontFamilies_.length;
 
-    if (elements.length >= 2) {
-      var fvds = this.parseVariations_(elements[1]);
+    for (var i = 0; i < length; i++) {
+      var elements = this.fontFamilies_[i].split(":");
+      var fontFamily = elements[0].replace(/\+/g, " ");
+      var variations = ['n4'];
 
-      if (fvds.length > 0) {
-        variations = fvds;
+      if (elements.length >= 2) {
+        var fvds = this.parseVariations_(elements[1]);
+
+        if (fvds.length > 0) {
+          variations = fvds;
+        }
+        if (elements.length == 3) {
+          var subsets = this.parseSubsets_(elements[2]);
+          if (subsets.length > 0) {
+            var fontTestString = FontApiParser.INT_FONTS[subsets[0]];
+
+            if (fontTestString) {
+              this.fontTestStrings_[fontFamily] = fontTestString;
+            }
+          }
+        }
       }
-      if (elements.length == 3) {
-        var subsets = this.parseSubsets_(elements[2]);
-        if (subsets.length > 0) {
-          var fontTestString = webfont.FontApiParser.INT_FONTS[subsets[0]];
 
-          if (fontTestString) {
-	    this.fontTestStrings_[fontFamily] = fontTestString;
-	  }
-	}
+      // For backward compatibility
+      if (!this.fontTestStrings_[fontFamily]) {
+        var hanumanTestString = FontApiParser.INT_FONTS[fontFamily];
+        if (hanumanTestString) {
+          this.fontTestStrings_[fontFamily] = hanumanTestString;
+        }
+      }
+      this.parsedFontFamilies_.push(fontFamily);
+      this.variations_[fontFamily] = variations;
+    }
+  };
+
+  FontApiParser.prototype.generateFontVariationDescription_ = function(variation) {
+    if (!variation.match(/^[\w]+$/)) {
+      return '';
+    }
+    var normalizedVariation = variation.toLowerCase();
+    var groups = FontApiParser.VARIATION_MATCH.exec(normalizedVariation);
+    if (groups == null) {
+      return '';
+    }
+    var styleMatch = this.normalizeStyle_(groups[2]);
+    var weightMatch = this.normalizeWeight_(groups[1]);
+    var css = this.fvd_.expand([styleMatch, weightMatch].join(''));
+    return css ? this.fvd_.compact(css) : null;
+  };
+
+
+  FontApiParser.prototype.normalizeStyle_ = function(parsedStyle) {
+    if (parsedStyle == null) {
+      return 'n';
+    }
+    return FontApiParser.STYLES[parsedStyle];
+  };
+
+
+  FontApiParser.prototype.normalizeWeight_ = function(parsedWeight) {
+    if (parsedWeight == null) {
+      return '4';
+    }
+    var weight = FontApiParser.WEIGHTS[parsedWeight];
+    if (weight) {
+      return weight;
+    }
+    if (isNaN(parsedWeight)) {
+      return '4';
+    }
+    return parsedWeight.substr(0, 1);
+  };
+
+
+  FontApiParser.prototype.parseVariations_ = function(variations) {
+    var finalVariations = [];
+
+    if (!variations) {
+      return finalVariations;
+    }
+    var providedVariations = variations.split(",");
+    var length = providedVariations.length;
+
+    for (var i = 0; i < length; i++) {
+      var variation = providedVariations[i];
+      var fvd = this.generateFontVariationDescription_(variation);
+
+      if (fvd) {
+        finalVariations.push(fvd);
       }
     }
-
-    // For backward compatibility
-    if (!this.fontTestStrings_[fontFamily]) {
-      var hanumanTestString = webfont.FontApiParser.INT_FONTS[fontFamily];
-      if (hanumanTestString) {
-        this.fontTestStrings_[fontFamily] = hanumanTestString;
-      }
-    }
-    this.parsedFontFamilies_.push(fontFamily);
-    this.variations_[fontFamily] = variations;
-  }
-};
-
-webfont.FontApiParser.prototype.generateFontVariationDescription_ = function(variation) {
-  if (!variation.match(/^[\w]+$/)) {
-    return '';
-  }
-  var normalizedVariation = variation.toLowerCase();
-  var groups = webfont.FontApiParser.VARIATION_MATCH.exec(normalizedVariation);
-  if (groups == null) {
-    return '';
-  }
-  var styleMatch = this.normalizeStyle_(groups[2]);
-  var weightMatch = this.normalizeWeight_(groups[1]);
-  var css = this.fvd_.expand([styleMatch, weightMatch].join(''));
-  return css ? this.fvd_.compact(css) : null;
-};
-
-
-webfont.FontApiParser.prototype.normalizeStyle_ = function(parsedStyle) {
-  if (parsedStyle == null) {
-    return 'n';
-  }
-  return webfont.FontApiParser.STYLES[parsedStyle];
-};
-
-
-webfont.FontApiParser.prototype.normalizeWeight_ = function(parsedWeight) {
-  if (parsedWeight == null) {
-    return '4';
-  }
-  var weight = webfont.FontApiParser.WEIGHTS[parsedWeight];
-  if (weight) {
-    return weight;
-  }
-  if (isNaN(parsedWeight)) {
-    return '4';
-  }
-  return parsedWeight.substr(0, 1);
-};
-
-
-webfont.FontApiParser.prototype.parseVariations_ = function(variations) {
-  var finalVariations = [];
-
-  if (!variations) {
     return finalVariations;
-  }
-  var providedVariations = variations.split(",");
-  var length = providedVariations.length;
+  };
 
-  for (var i = 0; i < length; i++) {
-    var variation = providedVariations[i];
-    var fvd = this.generateFontVariationDescription_(variation);
 
-    if (fvd) {
-      finalVariations.push(fvd);
+  FontApiParser.prototype.parseSubsets_ = function(subsets) {
+    var finalSubsets = [];
+
+    if (!subsets) {
+      return finalSubsets;
     }
-  }
-  return finalVariations;
-};
+    return subsets.split(",");
+  };
 
 
-webfont.FontApiParser.prototype.parseSubsets_ = function(subsets) {
-  var finalSubsets = [];
+  FontApiParser.prototype.getFontFamilies = function() {
+    return this.parsedFontFamilies_;
+  };
 
-  if (!subsets) {
-    return finalSubsets;
-  }
-  return subsets.split(",");
-};
+  FontApiParser.prototype.getVariations = function() {
+    return this.variations_;
+  };
 
-
-webfont.FontApiParser.prototype.getFontFamilies = function() {
-  return this.parsedFontFamilies_;
-};
-
-webfont.FontApiParser.prototype.getVariations = function() {
-  return this.variations_;
-};
-
-webfont.FontApiParser.prototype.getFontTestStrings = function() {
-  return this.fontTestStrings_;
-};
+  FontApiParser.prototype.getFontTestStrings = function() {
+    return this.fontTestStrings_;
+  };
+});
