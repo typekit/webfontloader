@@ -118,7 +118,7 @@ goog.scope(function () {
 
 
   FontApiParser.prototype.normalizeStyle_ = function(parsedStyle) {
-    if (parsedStyle == null) {
+    if (parsedStyle == null || parsedStyle == '') {
       return 'n';
     }
     return FontApiParser.STYLES[parsedStyle];
@@ -126,7 +126,7 @@ goog.scope(function () {
 
 
   FontApiParser.prototype.normalizeWeight_ = function(parsedWeight) {
-    if (parsedWeight == null) {
+    if (parsedWeight == null || parsedWeight == '') {
       return '4';
     }
     var weight = FontApiParser.WEIGHTS[parsedWeight];
