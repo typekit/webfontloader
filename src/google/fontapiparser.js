@@ -10,7 +10,6 @@ webfont.FontApiParser = function(fontFamilies) {
   this.parsedFontFamilies_ = [];
   this.variations_ = {};
   this.fontTestStrings_ = {};
-  this.fvd_ = new webfont.FontVariationDescription();
 };
 
 
@@ -61,7 +60,8 @@ webfont.FontApiParser.VARIATION_MATCH =
         "|normal|italic)?$");
 
 goog.scope(function () {
-  var FontApiParser = webfont.FontApiParser;
+  var FontApiParser = webfont.FontApiParser,
+      FontVariationDescription = webfont.FontVariationDescription;
 
   FontApiParser.prototype.parse = function() {
     var length = this.fontFamilies_.length;
@@ -112,8 +112,7 @@ goog.scope(function () {
     }
     var styleMatch = this.normalizeStyle_(groups[2]);
     var weightMatch = this.normalizeWeight_(groups[1]);
-    var css = this.fvd_.expand([styleMatch, weightMatch].join(''));
-    return css ? this.fvd_.compact(css) : null;
+    return new FontVariationDescription([styleMatch, weightMatch].join('')).toString();
   };
 
 

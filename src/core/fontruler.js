@@ -15,12 +15,12 @@ webfont.FontRuler = function(domHelper, fontTestString) {
   this.domHelper_ = domHelper;
   this.fontTestString_ = fontTestString;
   this.nameHelper_ = new webfont.CssFontFamilyName();
-  this.fvd_ = new webfont.FontVariationDescription();
   this.el_ = this.domHelper_.createElement('span', {}, this.fontTestString_);
 };
 
 goog.scope(function () {
   var FontRuler = webfont.FontRuler,
+      FontVariationDescription = webfont.FontVariationDescription,
       Size = webfont.Size;
 
   /**
@@ -46,11 +46,11 @@ goog.scope(function () {
    * @return {string}
    */
   FontRuler.prototype.computeStyleString_ = function(fontFamily, opt_fontDescription) {
-    var variationCss = opt_fontDescription ? this.fvd_.expand(opt_fontDescription) : '';
-    var styleString = "position:absolute;top:-999px;left:-999px;" +
+    var fvd = new FontVariationDescription(opt_fontDescription),
+        styleString = "position:absolute;top:-999px;left:-999px;" +
         "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
         "padding:0;font-variant:normal;white-space:nowrap;font-family:" +
-        this.nameHelper_.quote(fontFamily) + ";" + variationCss;
+        this.nameHelper_.quote(fontFamily) + ";" + fvd.toCss();
     return styleString;
   };
 

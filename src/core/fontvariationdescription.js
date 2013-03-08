@@ -2,42 +2,20 @@ goog.provide('webfont.FontVariationDescription');
 
 /**
  * @constructor
+ * @param {string=} str
  */
-webfont.FontVariationDescription = function() {
-  this.properties_ = webfont.FontVariationDescription.PROPERTIES;
-  this.values_ = webfont.FontVariationDescription.VALUES;
-};
+webfont.FontVariationDescription = function (str) {
+  this.style = 'n';
+  this.weight =  '4';
 
-/**
- * @const
- */
-webfont.FontVariationDescription.PROPERTIES = [
-  'font-style',
-  'font-weight'
-];
-
-/**
- * @const
- */
-webfont.FontVariationDescription.VALUES = {
-  'font-style': [
-    ['n', 'normal'],
-    ['i', 'italic'],
-    ['o', 'oblique']
-  ],
-  'font-weight': [
-    ['1', '100'],
-    ['2', '200'],
-    ['3', '300'],
-    ['4', '400'],
-    ['5', '500'],
-    ['6', '600'],
-    ['7', '700'],
-    ['8', '800'],
-    ['9', '900'],
-    ['4', 'normal'],
-    ['7', 'bold']
-  ]
+  if (str) {
+    str = str.replace(/\s*/g, '');
+    if (str.length === 2) {
+      this.parseFvd(str);
+    } else {
+      this.parseCss(str);
+    }
+  }
 };
 
 goog.scope(function () {
@@ -45,96 +23,58 @@ goog.scope(function () {
 
   /**
    * @private
-   * @constructor
+   * @param {string} fvd
    */
-  FontVariationDescription.Item = function(index, property, values) {
-    this.index_ = index;
-    this.property_ = property;
-    this.values_ = values;
-  }
+  FontVariationDescription.prototype.parseFvd = function (fvd) {
+    var match = fvd.match(/([nio])([1-9])/i);
 
-  FontVariationDescription.Item.prototype.compact = function(output, value) {
-    for (var i = 0; i < this.values_.length; i++) {
-      if (value == this.values_[i][1]) {
-        output[this.index_] = this.values_[i][0];
-        return;
-      }
+    if (match) {
+      this.style = match[1];
+      this.weight = parseInt(match[2], 10);
     }
-  }
-
-  FontVariationDescription.Item.prototype.expand = function(output, value) {
-    for (var i = 0; i < this.values_.length; i++) {
-      if (value == this.values_[i][0]) {
-        output[this.index_] = this.property_ + ':' + this.values_[i][1];
-        return;
-      }
-    }
-  }
-
-  /**
-   * Compacts CSS declarations into an FVD.
-   * @param {string} input A string of CSS declarations such as
-   *    'font-weight:normal;font-style:italic'.
-   * @return {string} The equivalent FVD such as 'n4'.
-   */
-  FontVariationDescription.prototype.compact = function(input) {
-    var result = ['n', '4'];
-    var descriptors = input.split(';');
-
-    for (var i = 0, len = descriptors.length; i < len; i++) {
-      var pair = descriptors[i].replace(/\s+/g, '').split(':');
-      if (pair.length == 2) {
-        var property = pair[0];
-        var value = pair[1];
-        var item = this.getItem_(property);
-        if (item) {
-          item.compact(result, value);
-        }
-      }
-    }
-
-    return result.join('');
   };
 
   /**
-   * Expands a FVD string into equivalent CSS declarations.
-   * @param {string} fvd The FVD string, such as 'n4'.
-   * @return {?string} The equivalent CSS such as
-   *    'font-weight:normal;font-style:italic' or null if it cannot be parsed.
-   */
-  FontVariationDescription.prototype.expand = function(fvd) {
-    if (fvd.length != 2) {
-      return null;
-    }
-
-    var result = [null, null];
-
-    for (var i = 0, len = this.properties_.length; i < len; i++) {
-      var property = this.properties_[i];
-      var key = fvd.substr(i, 1);
-      var values = this.values_[property];
-      var item = new webfont.FontVariationDescription.Item(i, property, values);
-      item.expand(result, key);
-    }
-
-    if (result[0] && result[1]) {
-      return result.join(';') + ';';
-    } else {
-      return null;
-    }
-  }
-
-  /**
    * @private
+   * @param {string} css
    */
-  FontVariationDescription.prototype.getItem_ = function(property) {
-    for (var i = 0; i < this.properties_.length; i++) {
-      if (property == this.properties_[i]) {
-        var values = this.values_[property];
-        return new webfont.FontVariationDescription.Item(i, property, values);
+  FontVariationDescription.prototype.parseCss = function (css) {
+    var style = css.match(/font-style:(normal|oblique|italic)/i),
+        weight = css.match(/font-weight:([1-9]00|normal|bold)/i);
+
+    if (style && style[1]) {
+      this.style = style[1].substr(0, 1).toLowerCase();
+    }
+
+    if (weight) {
+      if (/bold/i.test(weight[1])) {
+        this.weight = 7;
+      } else if (/[1-9]00/.test(weight[1])) {
+        this.weight = parseInt(weight[1].substr(0, 1), 10);
       }
     }
+  };
 
-    return null;
+  /**
+   * @return {string}
+   */
+  FontVariationDescription.prototype.toString = function () {
+    return this.style + this.weight;
+  };
+
+  /**
+   * @return {string}
+   */
+  FontVariationDescription.prototype.toCss = function () {
+    var style = 'normal',
+        weight = this.weight + '00';
+
+    if (this.style === 'o') {
+      style = 'oblique';
+    } else if (this.style === 'i') {
+      style = 'italic';
+    }
+
+    return 'font-style:' + style + ';font-weight:' + weight + ';';
   };
 });

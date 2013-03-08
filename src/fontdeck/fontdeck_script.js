@@ -11,7 +11,6 @@ webfont.FontdeckScript = function(domHelper, configuration) {
   this.configuration_ = configuration;
   this.fontFamilies_ = [];
   this.fontVariations_ = {};
-  this.fvd_ = new webfont.FontVariationDescription();
 };
 
 webfont.FontdeckScript.NAME = 'fontdeck';
@@ -19,7 +18,8 @@ webfont.FontdeckScript.HOOK = '__webfontfontdeckmodule__';
 webfont.FontdeckScript.API = '//f.fontdeck.com/s/css/js/';
 
 goog.scope(function () {
-  var FontdeckScript = webfont.FontdeckScript;
+  var FontdeckScript = webfont.FontdeckScript,
+      FontVariationDescription = webfont.FontVariationDescription;
 
   FontdeckScript.prototype.getScriptSrc = function(projectId) {
     var protocol = this.domHelper_.getProtocol();
@@ -48,7 +48,7 @@ goog.scope(function () {
           var font = data['fonts'][i];
           // Add the FVDs
           self.fontFamilies_.push(font['name']);
-          self.fontVariations_[font['name']] = [self.fvd_.compact("font-weight:" + font['weight'] + ";font-style:" + font['style'])];
+          self.fontVariations_[font['name']] = [new FontVariationDescription("font-weight:" + font['weight'] + ";font-style:" + font['style']).toString()];
         }
         support(fontdeckSupports);
       };
