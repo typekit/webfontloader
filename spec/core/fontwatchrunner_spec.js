@@ -1,5 +1,7 @@
 describe('FontWatchRunner', function () {
   var FontWatchRunner = webfont.FontWatchRunner,
+      FontFamily = webfont.FontFamily,
+      FontVariationDescription = webfont.FontVariationDescription,
       BrowserInfo = webfont.BrowserInfo,
       UserAgentParser = webfont.UserAgentParser,
       Size = webfont.Size,
@@ -18,8 +20,7 @@ describe('FontWatchRunner', function () {
   });
 
   describe('Fake browser', function () {
-    var fontFamily =  'My Family',
-        fontDescription = 'n4',
+    var fontFamily =  new FontFamily('My Family', new FontVariationDescription('n4')),
         TARGET_SIZE = new Size(3, 3),
         FALLBACK_SIZE_A = new Size(1, 1),
         FALLBACK_SIZE_B = new Size(2, 2),
@@ -85,12 +86,12 @@ describe('FontWatchRunner', function () {
       ];
 
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontFamily, fontDescription, browserInfo);
+          domHelper, fontFamily, browserInfo);
 
       fontWatchRunner.start();
 
       jasmine.Clock.tick(1 * 25);
-      expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
+      expect(activeCallback).toHaveBeenCalledWith(fontFamily);
     });
 
     it('should wait for font load and call active', function () {
@@ -102,12 +103,12 @@ describe('FontWatchRunner', function () {
       ];
 
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontFamily, fontDescription, browserInfo);
+          domHelper, fontFamily, browserInfo);
 
       fontWatchRunner.start();
 
       jasmine.Clock.tick(3 * 25);
-      expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
+      expect(activeCallback).toHaveBeenCalledWith(fontFamily);
     });
 
     it('should wait for font inactive and call inactive', function () {
@@ -122,12 +123,12 @@ describe('FontWatchRunner', function () {
       ];
 
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, fontFamily, fontDescription, browserInfo);
+          domHelper, fontFamily, browserInfo);
 
       fontWatchRunner.start();
 
       jasmine.Clock.tick(4 * 25);
-      expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
+      expect(inactiveCallback).toHaveBeenCalledWith(fontFamily);
     });
 
     describe('WebKit fallback bug', function () {
@@ -138,12 +139,12 @@ describe('FontWatchRunner', function () {
         ];
 
         var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, fontFamily, fontDescription, fallbackBugBrowserInfo);
+            domHelper, fontFamily, fallbackBugBrowserInfo);
 
         fontWatchRunner.start();
 
         jasmine.Clock.tick(1 * 25);
-        expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
+        expect(activeCallback).toHaveBeenCalledWith(fontFamily);
       });
 
       it('should consider last resort font as having identical metrics and call active', function () {
@@ -155,12 +156,12 @@ describe('FontWatchRunner', function () {
         timesToGetTimeBeforeTimeout = 2;
 
         var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, fontFamily, fontDescription, fallbackBugBrowserInfo);
+            domHelper, fontFamily, fallbackBugBrowserInfo);
 
         fontWatchRunner.start();
 
         jasmine.Clock.tick(1 * 25);
-        expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
+        expect(activeCallback).toHaveBeenCalledWith(fontFamily);
       });
 
       it('should fail to load font and call inactive', function () {
@@ -173,12 +174,12 @@ describe('FontWatchRunner', function () {
         timesToGetTimeBeforeTimeout = 3;
 
         var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, fontFamily, fontDescription, fallbackBugBrowserInfo);
+            domHelper, fontFamily, fallbackBugBrowserInfo);
 
         fontWatchRunner.start();
 
         jasmine.Clock.tick(2 * 25);
-        expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
+        expect(inactiveCallback).toHaveBeenCalledWith(fontFamily);
       });
 
       it('should call inactive when we are loading a metric incompatible font', function () {
@@ -190,13 +191,13 @@ describe('FontWatchRunner', function () {
         timesToGetTimeBeforeTimeout = 2;
 
         var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, fontFamily, fontDescription, fallbackBugBrowserInfo,
+            domHelper, fontFamily, fallbackBugBrowserInfo,
             0, { 'My Other Family': true });
 
         fontWatchRunner.start();
 
         jasmine.Clock.tick(1 * 25);
-        expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
+        expect(inactiveCallback).toHaveBeenCalledWith(fontFamily);
       });
 
       it('should call active when we are loading a metric compatible font', function () {
@@ -208,13 +209,13 @@ describe('FontWatchRunner', function () {
         timesToGetTimeBeforeTimeout = 2;
 
         var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, fontFamily, fontDescription, fallbackBugBrowserInfo,
+            domHelper, fontFamily, fallbackBugBrowserInfo,
             0, { 'My Family': true });
 
         fontWatchRunner.start();
 
         jasmine.Clock.tick(1 * 25);
-        expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
+        expect(activeCallback).toHaveBeenCalledWith(fontFamily);
       });
     });
 
@@ -227,12 +228,12 @@ describe('FontWatchRunner', function () {
         ];
 
         var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, fontFamily, fontDescription, new BrowserInfo(true, false, true));
+            domHelper, fontFamily, new BrowserInfo(true, false, true));
 
         fontWatchRunner.start();
 
         jasmine.Clock.tick(2 * 25);
-        expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
+        expect(activeCallback).toHaveBeenCalledWith(fontFamily);
       });
     });
 
@@ -248,7 +249,7 @@ describe('FontWatchRunner', function () {
           TARGET_SIZE, TARGET_SIZE
         ];
         fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, fontFamily, fontDescription, browserInfo);
+            domHelper, fontFamily, browserInfo);
 
         fontWatchRunner.start();
 
@@ -262,7 +263,7 @@ describe('FontWatchRunner', function () {
         ];
 
         fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, fontFamily, fontDescription, browserInfo, 0, {}, 'TestString');
+            domHelper, fontFamily, browserInfo, 0, {}, 'TestString');
 
         fontWatchRunner.start();
 
@@ -273,17 +274,26 @@ describe('FontWatchRunner', function () {
   });
 
   describe('real browser testing', function () {
-    var userAgent = null;
+    var userAgent = null,
+        nullFont = null,
+        sourceSansA = null,
+        sourceSansB = null,
+        elena = null;
 
     beforeEach(function () {
       var userAgentParser = new UserAgentParser(window.navigator.userAgent, window.document);
+
+      nullFont = new FontFamily('__webfontloader_test__');
+      sourceSansA = new FontFamily('SourceSansA');
+      sourceSansB = new FontFamily('SourceSansB');
+      elena = new FontFamily('Elena');
 
       userAgent = userAgentParser.parse();
     });
 
     it('should fail to load a null font', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, '__webfontloader_test__', '', userAgent.getBrowserInfo(), 500);
+          domHelper, nullFont, userAgent.getBrowserInfo(), 500);
 
       runs(function () {
         fontWatchRunner.start();
@@ -294,13 +304,13 @@ describe('FontWatchRunner', function () {
       });
 
       runs(function () {
-        expect(inactiveCallback).toHaveBeenCalledWith('__webfontloader_test__', '');
+        expect(inactiveCallback).toHaveBeenCalledWith(nullFont);
       });
     });
 
     it('should load font succesfully', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, 'SourceSansA', '', userAgent.getBrowserInfo(), 500),
+          domHelper, sourceSansA, userAgent.getBrowserInfo(), 500),
           ruler = new FontRuler(domHelper, 'abcdef'),
           activeSize = null,
           originalSize = null,
@@ -319,7 +329,7 @@ describe('FontWatchRunner', function () {
       });
 
       runs(function () {
-        expect(activeCallback).toHaveBeenCalledWith('SourceSansA', '');
+        expect(activeCallback).toHaveBeenCalledWith(sourceSansA);
         activeSize = ruler.getSize();
         expect(activeSize).not.toEqual(originalSize);
 
@@ -340,7 +350,7 @@ describe('FontWatchRunner', function () {
 
     it('should attempt to load a non-existing font', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, 'Elena', '', userAgent.getBrowserInfo(), 500);
+          domHelper, elena, userAgent.getBrowserInfo(), 500);
 
       runs(function () {
         fontWatchRunner.start();
@@ -351,13 +361,13 @@ describe('FontWatchRunner', function () {
       });
 
       runs(function () {
-        expect(inactiveCallback).toHaveBeenCalledWith('Elena', '');
+        expect(inactiveCallback).toHaveBeenCalledWith(elena);
       });
     });
 
     it('should load even if @font-face is inserted after watching has started', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, 'SourceSansB', '', userAgent.getBrowserInfo(), 500),
+          domHelper, sourceSansB, userAgent.getBrowserInfo(), 500),
           ruler = new FontRuler(domHelper, 'abcdef'),
           activeSize = null,
           originalSize = null,
@@ -382,7 +392,7 @@ describe('FontWatchRunner', function () {
       });
 
       runs(function () {
-        expect(activeCallback).toHaveBeenCalledWith('SourceSansB', '');
+        expect(activeCallback).toHaveBeenCalledWith(sourceSansB);
         activeSize = ruler.getSize();
         expect(activeSize).not.toEqual(originalSize);
 

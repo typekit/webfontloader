@@ -1,5 +1,6 @@
 describe('GoogleFontApi', function () {
   var GoogleFontApi = webfont.GoogleFontApi,
+      FontFamily = webfont.FontFamily,
       UserAgent = webfont.UserAgent,
       userAgent = null,
       link = '',
@@ -25,14 +26,12 @@ describe('GoogleFontApi', function () {
 
   describe('call onReady with font family loading', function () {
     var googleFontApi = null,
-        families = null,
-        descriptions = null;
+        families = null;
 
     beforeEach(function () {
       googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, { families: ['Font1', 'Font2'] });
-      googleFontApi.load(function (fontFamilies, fontDescriptions) {
+      googleFontApi.load(function (fontFamilies) {
         families = fontFamilies;
-        descriptions = fontDescriptions;
       });
     });
 
@@ -44,36 +43,22 @@ describe('GoogleFontApi', function () {
     it('has the correct families', function () {
       expect(families).not.toBeNull();
       expect(families.length).toEqual(2);
-      expect(families[0]).toEqual('Font1');
-      expect(families[1]).toEqual('Font2');
-    });
-
-    it('has the correct font descriptions', function () {
-      var font1 = descriptions['Font1'];
-      expect(font1).not.toBeNull();
-      expect(font1.length).toEqual(1);
-      expect(font1[0]).toEqual('n4');
-
-      var font2 = descriptions['Font2'];
-      expect(font2).not.toBeNull();
-      expect(font2.length).toEqual(1);
-      expect(font1[0]).toEqual('n4');
+      expect(families[0]).toEqual(new FontFamily('Font1'));
+      expect(families[1]).toEqual(new FontFamily('Font2'));
     });
   });
 
   describe('call onReady with font family loading and custom API url', function () {
     var googleFontApi = null,
-        families = null,
-        descriptions = null;
+        families = null;
 
     beforeEach(function () {
       googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, {
         api: 'http://moo',
         families: ['Font1', 'Font2']
       });
-      googleFontApi.load(function (fontFamilies, fontDescriptions) {
+      googleFontApi.load(function (fontFamilies) {
         families = fontFamilies;
-        descriptions = fontDescriptions;
       });
     });
 
@@ -85,14 +70,12 @@ describe('GoogleFontApi', function () {
 
   describe('spaces replaced by plus', function () {
     var googleFontApi = null,
-        families = null,
-        descriptions = null;
+        families = null;
 
     beforeEach(function () {
       googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, { families: ['Font1 WithSpace', 'Font2 WithSpaceToo'] });
-      googleFontApi.load(function (fontFamilies, fontDescriptions) {
+      googleFontApi.load(function (fontFamilies) {
         families = fontFamilies;
-        descriptions = fontDescriptions;
       });
     });
 
@@ -104,14 +87,12 @@ describe('GoogleFontApi', function () {
 
   describe('load with variations', function () {
     var googleFontApi = null,
-        families = null,
-        descriptions = null;
+        families = null;
 
     beforeEach(function () {
       googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, { families: ['Font1 WithSpace:bi', 'Font2 WithSpaceToo:b,r'] });
-      googleFontApi.load(function (fontFamilies, fontDescriptions) {
+      googleFontApi.load(function (fontFamilies) {
         families = fontFamilies;
-        descriptions = fontDescriptions;
       });
     });
 

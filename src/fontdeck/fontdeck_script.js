@@ -1,5 +1,6 @@
 goog.provide('webfont.FontdeckScript');
 
+goog.require('webfont.FontFamily');
 goog.require('webfont.FontVariationDescription');
 
 /**
@@ -19,6 +20,7 @@ webfont.FontdeckScript.API = '//f.fontdeck.com/s/css/js/';
 
 goog.scope(function () {
   var FontdeckScript = webfont.FontdeckScript,
+      FontFamily = webfont.FontFamily,
       FontVariationDescription = webfont.FontVariationDescription;
 
   FontdeckScript.prototype.getScriptSrc = function(projectId) {
@@ -45,10 +47,11 @@ goog.scope(function () {
       // and what fonts are provided.
       loadWindow[webfont.FontdeckScript.HOOK][projectId] = function(fontdeckSupports, data) {
         for (var i = 0, j = data['fonts'].length; i<j; ++i) {
-          var font = data['fonts'][i];
-          // Add the FVDs
-          self.fontFamilies_.push(font['name']);
-          self.fontVariations_[font['name']] = [new FontVariationDescription("font-weight:" + font['weight'] + ";font-style:" + font['style']).toString()];
+          var font = data['fonts'][i],
+              family = font['name'],
+              fvd = new FontVariationDescription('font-weight:' + font['weight'] + ';font-style:' + font['style']);
+
+          self.fontFamilies_.push(new FontFamily(family, fvd));
         }
         support(fontdeckSupports);
       };
@@ -63,7 +66,7 @@ goog.scope(function () {
   };
 
   FontdeckScript.prototype.load = function(onReady) {
-    onReady(this.fontFamilies_, this.fontVariations_);
+    onReady(this.fontFamilies_);
   };
 });
 

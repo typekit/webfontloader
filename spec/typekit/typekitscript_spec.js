@@ -1,5 +1,7 @@
 describe('TypekitScript', function () {
-  var TypekitScript = webfont.TypekitScript;
+  var TypekitScript = webfont.TypekitScript,
+      FontFamily = webfont.FontFamily,
+      FontVariationDescription = webfont.FontVariationDescription;
 
   var configuration = {
     id: 'abc'
@@ -48,7 +50,7 @@ describe('TypekitScript', function () {
 
     typekit.load(load);
 
-    expect(load).toHaveBeenCalledWith(['Font1', 'Font2'], { 'Font1': undefined, 'Font2': undefined });
+    expect(load).toHaveBeenCalledWith([new FontFamily('Font1'), new FontFamily('Font2')]);
   });
 
   it('should load with variations', function () {
@@ -66,7 +68,11 @@ describe('TypekitScript', function () {
 
     typekit.load(load);
 
-    expect(load).toHaveBeenCalledWith(['Font1', 'Font2'], { 'Font1': ['n7', 'i7'], 'Font2': undefined });
+    expect(load).toHaveBeenCalledWith([
+      new FontFamily('Font1', new FontVariationDescription('n7')),
+      new FontFamily('Font1', new FontVariationDescription('i7')),
+      new FontFamily('Font2', new FontVariationDescription('n4'))
+    ]);
   });
 
   it('should load through the alternative API', function () {
@@ -88,6 +94,6 @@ describe('TypekitScript', function () {
 
     typekit.load(load);
 
-    expect(load).toHaveBeenCalledWith([], {});
+    expect(load).toHaveBeenCalledWith([]);
   });
 });

@@ -1,5 +1,6 @@
 goog.provide('webfont.FontApiParser');
 
+goog.require('webfont.FontFamily');
 goog.require('webfont.FontVariationDescription');
 
 /**
@@ -8,7 +9,6 @@ goog.require('webfont.FontVariationDescription');
 webfont.FontApiParser = function(fontFamilies) {
   this.fontFamilies_ = fontFamilies;
   this.parsedFontFamilies_ = [];
-  this.variations_ = {};
   this.fontTestStrings_ = {};
 };
 
@@ -61,6 +61,7 @@ webfont.FontApiParser.VARIATION_MATCH =
 
 goog.scope(function () {
   var FontApiParser = webfont.FontApiParser,
+      FontFamily = webfont.FontFamily,
       FontVariationDescription = webfont.FontVariationDescription;
 
   FontApiParser.prototype.parse = function() {
@@ -69,7 +70,7 @@ goog.scope(function () {
     for (var i = 0; i < length; i++) {
       var elements = this.fontFamilies_[i].split(":");
       var fontFamily = elements[0].replace(/\+/g, " ");
-      var variations = ['n4'];
+      var variations = [new FontVariationDescription('n4')];
 
       if (elements.length >= 2) {
         var fvds = this.parseVariations_(elements[1]);
@@ -96,8 +97,10 @@ goog.scope(function () {
           this.fontTestStrings_[fontFamily] = hanumanTestString;
         }
       }
-      this.parsedFontFamilies_.push(fontFamily);
-      this.variations_[fontFamily] = variations;
+
+      for (var j = 0; j < variations.length; j += 1) {
+        this.parsedFontFamilies_.push(new FontFamily(fontFamily, variations[j]));
+      }
     }
   };
 
@@ -112,7 +115,7 @@ goog.scope(function () {
     }
     var styleMatch = this.normalizeStyle_(groups[2]);
     var weightMatch = this.normalizeWeight_(groups[1]);
-    return new FontVariationDescription([styleMatch, weightMatch].join('')).toString();
+    return new FontVariationDescription([styleMatch, weightMatch].join(''));
   };
 
 
@@ -172,10 +175,6 @@ goog.scope(function () {
 
   FontApiParser.prototype.getFontFamilies = function() {
     return this.parsedFontFamilies_;
-  };
-
-  FontApiParser.prototype.getVariations = function() {
-    return this.variations_;
   };
 
   FontApiParser.prototype.getFontTestStrings = function() {

@@ -1,5 +1,7 @@
 describe('AscenderScript', function () {
-  var AscenderScript = webfont.AscenderScript;
+  var AscenderScript = webfont.AscenderScript,
+      FontFamily = webfont.FontFamily,
+      FontVariationDescription = webfont.FontVariationDescription;
 
   var configuration = {
     key: 'ec2de397-11ae-4c10-937f-bf94283a70c1',
@@ -30,14 +32,14 @@ describe('AscenderScript', function () {
     });
 
     it('should parse variations correctly', function () {
-      expect(ascenderScript.parseVariations('regular')).toEqual(['n4']);
-      expect(ascenderScript.parseVariations('bold')).toEqual(['n7']);
-      expect(ascenderScript.parseVariations('italic')).toEqual(['i4']);
-      expect(ascenderScript.parseVariations('bolditalic')).toEqual(['i7']);
-      expect(ascenderScript.parseVariations('regular,')).toEqual(['n4']);
-      expect(ascenderScript.parseVariations('regular,bold')).toEqual(['n4', 'n7']);
-      expect(ascenderScript.parseVariations('regular,,bold')).toEqual(['n4', 'n7']);
-      expect(ascenderScript.parseVariations('n4,n7')).toEqual(['n4', 'n7']);
+      expect(ascenderScript.parseVariations('regular')).toEqual([new FontVariationDescription('n4')]);
+      expect(ascenderScript.parseVariations('bold')).toEqual([new FontVariationDescription('n7')]);
+      expect(ascenderScript.parseVariations('italic')).toEqual([new FontVariationDescription('i4')]);
+      expect(ascenderScript.parseVariations('bolditalic')).toEqual([new FontVariationDescription('i7')]);
+      expect(ascenderScript.parseVariations('regular,')).toEqual([new FontVariationDescription('n4')]);
+      expect(ascenderScript.parseVariations('regular,bold')).toEqual([new FontVariationDescription('n4'), new FontVariationDescription('n7')]);
+      expect(ascenderScript.parseVariations('regular,,bold')).toEqual([new FontVariationDescription('n4'), new FontVariationDescription('n7')]);
+      expect(ascenderScript.parseVariations('n4,n7')).toEqual([new FontVariationDescription('n4'), new FontVariationDescription('n7')]);
     });
   })
 });

@@ -1,5 +1,8 @@
 goog.provide('webfont.MonotypeScript');
 
+goog.require('webfont.FontFamily');
+goog.require('webfont.FontVariationDescription');
+
 /**
 webfont.load({
 monotype: {
@@ -17,7 +20,6 @@ webfont.MonotypeScript = function (userAgent, domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
   this.fontFamilies_ = [];
-  this.fontVariations_ = {};
 };
 
 /**
@@ -40,7 +42,9 @@ webfont.MonotypeScript.HOOK = '__mti_fntLst';
 webfont.MonotypeScript.SCRIPTID = '__MonotypeAPIScript__';
 
 goog.scope(function () {
-  var MonotypeScript = webfont.MonotypeScript;
+  var MonotypeScript = webfont.MonotypeScript,
+      FontFamily = webfont.FontFamily,
+      FontVariationDescription = webfont.FontVariationDescription;
 
   MonotypeScript.prototype.supportUserAgent = function (userAgent, support) {
     var self = this;
@@ -55,10 +59,9 @@ goog.scope(function () {
       function onload() {
         if (loadWindow[MonotypeScript.HOOK + projectId]) {
           var mti_fnts = loadWindow[webfont.MonotypeScript.HOOK + projectId]();
-          if (mti_fnts && mti_fnts.length) {
-            var i;
-            for (i = 0; i < mti_fnts.length; i++) {
-              self.fontFamilies_.push(mti_fnts[i]["fontfamily"]);
+          if (mti_fnts) {
+            for (var i = 0; i < mti_fnts.length; i++) {
+              self.fontFamilies_.push(new FontFamily(mti_fnts[i]["fontfamily"]));
             }
           }
         }
@@ -90,7 +93,7 @@ goog.scope(function () {
   };
 
   MonotypeScript.prototype.load = function (onReady) {
-    onReady(this.fontFamilies_, this.fontVariations_);
+    onReady(this.fontFamilies_);
   };
 });
 

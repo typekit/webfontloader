@@ -4,11 +4,10 @@ goog.require('webfont.FontRuler');
 
 /**
  * @constructor
- * @param {function(string, string)} activeCallback
- * @param {function(string, string)} inactiveCallback
+ * @param {function(webfont.FontFamily)} activeCallback
+ * @param {function(webfont.FontFamily)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
- * @param {string} fontFamily
- * @param {string} fontDescription
+ * @param {webfont.FontFamily} fontFamily
  * @param {webfont.BrowserInfo} browserInfo
  * @param {number=} opt_timeout
  * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
@@ -17,10 +16,10 @@ goog.require('webfont.FontRuler');
  */
 webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
     inactiveCallback, domHelper, fontFamily,
-    fontDescription, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
+    browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
 
   goog.base(this, activeCallback, inactiveCallback, domHelper,
-            fontFamily, fontDescription, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString);
+            fontFamily, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString);
 
   this.webKitLastResortFontSizes_ = this.setUpWebKitLastResortFontSizes_();
   this.webKitLastResortSizeChange_ = false;
@@ -52,22 +51,23 @@ goog.scope(function () {
       .setUpWebKitLastResortFontSizes_ = function() {
     var lastResortFonts = ['Times New Roman', 'Arial', 'Times', 'Sans', 'Serif'];
     var lastResortFontSizes = lastResortFonts.length;
+    var variation = this.fontFamily_.getVariation().toString();
     var webKitLastResortFontSizes = {};
     var fontRuler = new FontRuler(this.domHelper_, this.fontTestString_);
 
     fontRuler.insert();
-    fontRuler.setFont(lastResortFonts[0], this.fontDescription_);
+    fontRuler.setFont(lastResortFonts[0], variation);
 
     webKitLastResortFontSizes[fontRuler.getSize().width] = true;
     for (var i = 1; i < lastResortFontSizes; i++) {
       var font = lastResortFonts[i];
-      fontRuler.setFont(font, this.fontDescription_);
+      fontRuler.setFont(font, variation);
       webKitLastResortFontSizes[fontRuler.getSize().width] = true;
 
       // Another WebKit quirk if the normal weight/style is loaded first,
       // the size of the normal weight is returned when loading another weight.
-      if (this.fontDescription_[1] != '4') {
-        fontRuler.setFont(font, this.fontDescription_[0] + '4');
+      if (variation.charAt(1) != '4') {
+        fontRuler.setFont(font, variation.charAt(0) + '4');
         webKitLastResortFontSizes[fontRuler.getSize().width] = true;
       }
     }
@@ -101,7 +101,7 @@ goog.scope(function () {
       if (this.webKitLastResortFontSizes_[sizeA.width]
           && this.webKitLastResortFontSizes_[sizeB.width] &&
           LastResortWebKitFontWatchRunner.METRICS_COMPATIBLE_FONTS[
-            this.fontFamily_]) {
+            this.fontFamily_.getName()]) {
         this.finish_(this.activeCallback_);
       } else {
         this.finish_(this.inactiveCallback_);

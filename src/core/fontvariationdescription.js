@@ -6,7 +6,7 @@ goog.provide('webfont.FontVariationDescription');
  */
 webfont.FontVariationDescription = function (str) {
   this.style = 'n';
-  this.weight =  '4';
+  this.weight =  4;
 
   if (str) {
     str = str.replace(/\s*/g, '');

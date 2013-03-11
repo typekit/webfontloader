@@ -75,12 +75,12 @@ goog.scope(function () {
           eventDispatcher.dispatchLoading();
         }
       }
-      fontWatcher.watch([], {}, {}, fontWatchRunnerCtor, allModulesLoaded);
+      fontWatcher.watch([], {}, fontWatchRunnerCtor, allModulesLoaded);
       return;
     }
 
-    module.load(function (fontFamilies, fontVariations) {
-      that.onModuleReady_(eventDispatcher, fontWatcher, fontWatchRunnerCtor, fontFamilies, fontVariations);
+    module.load(function (fontFamilies) {
+      that.onModuleReady_(eventDispatcher, fontWatcher, fontWatchRunnerCtor, fontFamilies);
     });
   };
 
@@ -88,21 +88,19 @@ goog.scope(function () {
    * @param {webfont.EventDispatcher} eventDispatcher
    * @param {webfont.FontWatcher} fontWatcher
    * @param {function(new:webfont.FontWatchRunner,
-   *                  function(string, string),
-   *                  function(string, string),
+   *                  function(webfont.FontFamily),
+   *                  function(webfont.FontFamily),
    *                  webfont.DomHelper,
-   *                  string,
-   *                  string,
+   *                  webfont.FontFamily,
    *                  webfont.BrowserInfo,
    *                  number=,
    *                  Object.<string, boolean>=,
    *                  string=)} fontWatchRunnerCtor
    * @param {webfont.FontFamilies} fontFamilies
-   * @param {webfont.FontVariations=} opt_fontVariations
    * @param {webfont.FontTestStrings=} opt_fontTestStrings
    */
   WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher,
-      fontWatchRunnerCtor, fontFamilies, opt_fontVariations, opt_fontTestStrings) {
+      fontWatchRunnerCtor, fontFamilies, opt_fontTestStrings) {
     var allModulesLoaded = --this.moduleLoading_ == 0;
 
     if (allModulesLoaded) {
@@ -110,7 +108,7 @@ goog.scope(function () {
     }
 
     setTimeout(function () {
-      fontWatcher.watch(fontFamilies, opt_fontVariations || {}, opt_fontTestStrings || {}, fontWatchRunnerCtor, allModulesLoaded);
+      fontWatcher.watch(fontFamilies, opt_fontTestStrings || {}, fontWatchRunnerCtor, allModulesLoaded);
     }, 0);
   };
 

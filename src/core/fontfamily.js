@@ -1,13 +1,15 @@
 goog.provide('webfont.FontFamily');
 
+goog.require('webfont.FontVariationDescription');
+
 /**
  * @constructor
  * @param {string} name The font family name
- * @param {Array.<webfont.FontVariationDescription>} An array of fvds.
+ * @param {webfont.FontVariationDescription=} opt_variation A font variation..
  */
-webfont.FontFamily = function (name, fvds) {
+webfont.FontFamily = function (name, opt_variation) {
   this.name_ = name;
-  this.fvds_ = fvds;
+  this.variation_ = opt_variation || new webfont.FontVariationDescription('n4');
 };
 
 goog.scope(function () {
@@ -21,9 +23,9 @@ goog.scope(function () {
   };
 
   /**
-   * @return {Array.<webfont.FontVariationDescription>}
+   * @return {webfont.FontVariationDescription}
    */
-  FontFamily.prototype.getFvds = function () {
-    return this.fvds_;
+  FontFamily.prototype.getVariation = function () {
+    return this.variation_;
   };
 });

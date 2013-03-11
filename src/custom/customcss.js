@@ -1,5 +1,8 @@
 goog.provide('webfont.CustomCss');
 
+goog.require('webfont.FontFamily');
+goog.require('webfont.FontVariationDescription');
+
 /**
  *
  * WebFont.load({
@@ -19,7 +22,9 @@ webfont.CustomCss = function(domHelper, configuration) {
 webfont.CustomCss.NAME = 'custom';
 
 goog.scope(function () {
-  var CustomCss = webfont.CustomCss;
+  var CustomCss = webfont.CustomCss,
+      FontFamily = webfont.FontFamily,
+      FontVariationDescription = webfont.FontVariationDescription;
 
   CustomCss.prototype.load = function(onReady) {
     var i, len;
@@ -33,21 +38,22 @@ goog.scope(function () {
     }
 
     var families = [];
-    var variations = {};
+
     for (i = 0, len = familiesConfiguration.length; i < len; i++) {
       var components = familiesConfiguration[i].split(":");
-      var family = components[0];
-      var familyVariations = components[1];
 
-      families.push(family);
+      if (components[1]) {
+        var variations = components[1].split(",");
 
-      if (familyVariations) {
-        var newVariations = familyVariations.split(",");
-        variations[family] = (variations[family] || []).concat(newVariations);
+        for (var j = 0; j < variations.length; j += 1) {
+          families.push(new FontFamily(components[0], variations[j]));
+        }
+      } else {
+        families.push(new FontFamily(components[0]));
       }
     }
 
-    onReady(families, variations);
+    onReady(families);
   };
 
   CustomCss.prototype.supportUserAgent = function(userAgent, support) {
