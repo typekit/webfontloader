@@ -14,7 +14,7 @@ core:
   - core/fontruler.js
   - core/fontwatchrunner.js
   - core/fontwatcher.js
-  - core/font.js
+  - core/webfont.js
   - core/initialize.js
 
 ascender:
