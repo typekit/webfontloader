@@ -41,16 +41,7 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
 webfont.FontWatchRunner.LastResortFonts = {
   SERIF: 'serif',
   SANS_SERIF: 'sans-serif',
-  MONOSPACE: 'monospace',
-  // Apple Color Emoji is the last character fallback on iOS. Since
-  // all iOS installations that support web fonts have this font it
-  // effectively means that Apple Color Emoji is the last resort
-  // font on iOS. The caveat is that it only has characters in the
-  // Emoji code range, and falls back to the real last resort font,
-  // which is the default sans-serif font. It however affects the
-  // height of the span we are monitoring, so we'll have to include
-  // it in our list of last resort fonts.
-  EMOJI: 'Apple Color Emoji'
+  MONOSPACE: 'monospace'
 };
 
 /**
