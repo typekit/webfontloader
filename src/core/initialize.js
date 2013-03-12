@@ -5,16 +5,6 @@ goog.require('webfont.FontModuleLoader');
 goog.require('webfont.WebFont');
 
 /**
- * @typedef {Array.<string>}
- */
-webfont.FontFamilies;
-
-/**
- * @typedef {Object.<string, Array.<string>>}
- */
-webfont.FontVariations;
-
-/**
  * @typedef {Object.<string, Array.<string>>}
  */
 webfont.FontTestStrings;

@@ -4,21 +4,21 @@ goog.require('webfont.FontRuler');
 
 /**
  * @constructor
- * @param {function(webfont.FontFamily)} activeCallback
- * @param {function(webfont.FontFamily)} inactiveCallback
+ * @param {function(webfont.Font)} activeCallback
+ * @param {function(webfont.Font)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
- * @param {webfont.FontFamily} fontFamily
+ * @param {webfont.Font} font
  * @param {webfont.BrowserInfo} browserInfo
  * @param {number=} opt_timeout
  * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    fontFamily, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
+    font, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
-  this.fontFamily_ = fontFamily;
+  this.font_ = font;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
   this.browserInfo_ = browserInfo;
   this.lastResortSizes_ = {};
@@ -69,7 +69,7 @@ goog.scope(function () {
    */
   FontWatchRunner.prototype.setupLastResortSizes_ = function() {
     var fontRuler = new FontRuler(this.domHelper_, this.fontTestString_),
-        variation = this.fontFamily_.getVariation().toString();
+        variation = this.font_.getVariation().toString();
 
     fontRuler.insert();
 
@@ -90,8 +90,8 @@ goog.scope(function () {
 
     this.started_ = goog.now();
 
-    this.fontRulerA_.setFont(this.fontFamily_.getName() + ',' + FontWatchRunner.LastResortFonts.SERIF, this.fontFamily_.getVariation().toString());
-    this.fontRulerB_.setFont(this.fontFamily_.getName() + ',' + FontWatchRunner.LastResortFonts.SANS_SERIF, this.fontFamily_.getVariation().toString());
+    this.fontRulerA_.setFont(this.font_.getName() + ',' + FontWatchRunner.LastResortFonts.SERIF, this.font_.getVariation().toString());
+    this.fontRulerB_.setFont(this.font_.getName() + ',' + FontWatchRunner.LastResortFonts.SANS_SERIF, this.font_.getVariation().toString());
 
     this.check_();
   };
@@ -175,7 +175,7 @@ goog.scope(function () {
    * @return {boolean}
    */
   FontWatchRunner.prototype.isMetricCompatibleFont_ = function () {
-    return this.metricCompatibleFonts_ === null || this.metricCompatibleFonts_.hasOwnProperty(this.fontFamily_.getName());
+    return this.metricCompatibleFonts_ === null || this.metricCompatibleFonts_.hasOwnProperty(this.font_.getName());
   };
 
   /**
@@ -217,11 +217,11 @@ goog.scope(function () {
 
   /**
    * @private
-   * @param {function(webfont.FontFamily)} callback
+   * @param {function(webfont.Font)} callback
    */
   FontWatchRunner.prototype.finish_ = function(callback) {
     this.fontRulerA_.remove();
     this.fontRulerB_.remove();
-    callback(this.fontFamily_);
+    callback(this.font_);
   };
 });

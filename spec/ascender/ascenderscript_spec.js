@@ -1,6 +1,5 @@
 describe('AscenderScript', function () {
   var AscenderScript = webfont.AscenderScript,
-      FontFamily = webfont.FontFamily,
       FontVariationDescription = webfont.FontVariationDescription;
 
   var configuration = {

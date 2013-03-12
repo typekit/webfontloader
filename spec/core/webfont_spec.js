@@ -2,7 +2,7 @@ describe('WebFont', function () {
   var WebFont = webfont.WebFont,
       UserAgent = webfont.UserAgent,
       BrowserInfo = webfont.BrowserInfo,
-      FontFamily = webfont.FontFamily,
+      Font = webfont.Font,
       FontModuleLoader = webfont.FontModuleLoader,
       fontModuleLoader = null,
       userAgent = null;
@@ -114,18 +114,18 @@ describe('WebFont', function () {
   describe('module failed to provide families and descriptions because it did not initialize properly', function () {
     var font = null,
         testModule = null,
-        fontFamily = null,
+        font = null,
         inactive = jasmine.createSpy('inactive'),
         active = jasmine.createSpy('active');
 
     beforeEach(function () {
-      fontFamily = new FontFamily('Font1');
+      font = new Font('Font1');
       jasmine.Clock.useMock();
       font = new WebFont(window, fontModuleLoader, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false)));
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
-          this.families = [];
+          this.fonts = [];
         };
 
         testModule.getFontWatchRunnerCtor = function () {
@@ -136,9 +136,9 @@ describe('WebFont', function () {
 
           FakeFontWatchRunner.prototype.start = function () {
             if (conf.id) {
-              this.active(fontFamily);
+              this.active(font);
             } else {
-              this.inactive(fontFamily);
+              this.inactive(font);
             }
           };
 
@@ -149,12 +149,12 @@ describe('WebFont', function () {
           if (conf.id) {
             // The monotype module only initializes font
             // and description if there is a kit id.
-            this.families = [fontFamily];
+            this.fonts = [font];
           }
           support(true);
         };
         testModule.load = function (onReady) {
-          onReady(this.families);
+          onReady(this.fonts);
         };
 
         return testModule;

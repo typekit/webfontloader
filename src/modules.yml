@@ -6,7 +6,7 @@ core:
   - core/useragentparser.js
   - core/cssclassname.js
   - core/cssfontfamilyname.js
-  - core/fontfamily.js
+  - core/font.js
   - core/fontvariationdescription.js
   - core/eventdispatcher.js
   - core/fontmoduleloader.js

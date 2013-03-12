@@ -1,6 +1,6 @@
 goog.provide('webfont.CustomCss');
 
-goog.require('webfont.FontFamily');
+goog.require('webfont.Font');
 goog.require('webfont.FontVariationDescription');
 
 /**
@@ -23,7 +23,7 @@ webfont.CustomCss.NAME = 'custom';
 
 goog.scope(function () {
   var CustomCss = webfont.CustomCss,
-      FontFamily = webfont.FontFamily,
+      Font = webfont.Font,
       FontVariationDescription = webfont.FontVariationDescription;
 
   CustomCss.prototype.load = function(onReady) {
@@ -46,10 +46,10 @@ goog.scope(function () {
         var variations = components[1].split(",");
 
         for (var j = 0; j < variations.length; j += 1) {
-          families.push(new FontFamily(components[0], variations[j]));
+          families.push(new Font(components[0], variations[j]));
         }
       } else {
-        families.push(new FontFamily(components[0]));
+        families.push(new Font(components[0]));
       }
     }
 

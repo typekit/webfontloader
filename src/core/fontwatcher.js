@@ -25,23 +25,23 @@ goog.scope(function () {
 
   /**
    * Watches a set of font families.
-   * @param {Array.<webfont.FontFamily>} fontFamilies The font family names to watch.
+   * @param {Array.<webfont.Font>} fonts The fonts to watch.
    * @param {Object.<string, string>} fontTestStrings The font test strings for
    *     each family.
    * @param {function(new:webfont.FontWatchRunner,
-   *                  function(webfont.FontFamily),
-   *                  function(webfont.FontFamily),
+   *                  function(webfont.Font),
+   *                  function(webfont.Font),
    *                  webfont.DomHelper,
-   *                  webfont.FontFamily,
+   *                  webfont.Font,
    *                  webfont.BrowserInfo,
    *                  number=,
    *                  Object.<string, boolean>=,
    *                  string=)} fontWatchRunnerCtor The font watch runner constructor.
    * @param {boolean} last True if this is the last set of families to watch.
    */
-  FontWatcher.prototype.watch = function(fontFamilies,
+  FontWatcher.prototype.watch = function(fonts,
       fontTestStrings, fontWatchRunnerCtor, last) {
-    var length = fontFamilies.length;
+    var length = fonts.length;
 
     if (length === 0) {
       this.eventDispatcher_.dispatchInactive();
@@ -55,15 +55,15 @@ goog.scope(function () {
     }
 
     for (var i = 0; i < length; i++) {
-      var fontFamily = fontFamilies[i];
-      var fontTestString  = fontTestStrings[fontFamily.getName()];
+      var font = fonts[i];
+      var fontTestString  = fontTestStrings[font.getName()];
 
-      this.eventDispatcher_.dispatchFontLoading(fontFamily);
+      this.eventDispatcher_.dispatchFontLoading(font);
 
       var activeCallback = goog.bind(this.fontActive_, this);
       var inactiveCallback = goog.bind(this.fontInactive_, this);
       var fontWatchRunner = new fontWatchRunnerCtor(activeCallback,
-          inactiveCallback, this.domHelper_, fontFamily,
+          inactiveCallback, this.domHelper_, font,
           this.browserInfo_, this.timeout_, null, fontTestString);
 
       fontWatchRunner.start();
@@ -72,22 +72,22 @@ goog.scope(function () {
 
   /**
    * Called by a FontWatchRunner when a font has been detected as active.
-   * @param {webfont.FontFamily} fontFamily
+   * @param {webfont.Font} font
    * @private
    */
-  FontWatcher.prototype.fontActive_ = function(fontFamily) {
-    this.eventDispatcher_.dispatchFontActive(fontFamily);
+  FontWatcher.prototype.fontActive_ = function(font) {
+    this.eventDispatcher_.dispatchFontActive(font);
     this.success_ = true;
     this.decreaseCurrentlyWatched_();
   };
 
   /**
    * Called by a FontWatchRunner when a font has been detected as inactive.
-   * @param {webfont.FontFamily} fontFamily
+   * @param {webfont.Font} font
    * @private
    */
-  FontWatcher.prototype.fontInactive_ = function(fontFamily) {
-    this.eventDispatcher_.dispatchFontInactive(fontFamily);
+  FontWatcher.prototype.fontInactive_ = function(font) {
+    this.eventDispatcher_.dispatchFontInactive(font);
     this.decreaseCurrentlyWatched_();
   };
 

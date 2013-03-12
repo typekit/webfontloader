@@ -4,10 +4,10 @@ goog.require('webfont.FontRuler');
 
 /**
  * @constructor
- * @param {function(webfont.FontFamily)} activeCallback
- * @param {function(webfont.FontFamily)} inactiveCallback
+ * @param {function(webfont.Font)} activeCallback
+ * @param {function(webfont.Font)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
- * @param {webfont.FontFamily} fontFamily
+ * @param {webfont.Font} font
  * @param {webfont.BrowserInfo} browserInfo
  * @param {number=} opt_timeout
  * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
@@ -15,11 +15,11 @@ goog.require('webfont.FontRuler');
  * @extends webfont.FontWatchRunner
  */
 webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
-    inactiveCallback, domHelper, fontFamily,
+    inactiveCallback, domHelper, font,
     browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
 
   goog.base(this, activeCallback, inactiveCallback, domHelper,
-            fontFamily, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString);
+            font, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString);
 
   this.webKitLastResortFontSizes_ = this.setUpWebKitLastResortFontSizes_();
   this.webKitLastResortSizeChange_ = false;
@@ -51,7 +51,7 @@ goog.scope(function () {
       .setUpWebKitLastResortFontSizes_ = function() {
     var lastResortFonts = ['Times New Roman', 'Arial', 'Times', 'Sans', 'Serif'];
     var lastResortFontSizes = lastResortFonts.length;
-    var variation = this.fontFamily_.getVariation().toString();
+    var variation = this.font_.getVariation().toString();
     var webKitLastResortFontSizes = {};
     var fontRuler = new FontRuler(this.domHelper_, this.fontTestString_);
 
@@ -101,7 +101,7 @@ goog.scope(function () {
       if (this.webKitLastResortFontSizes_[sizeA.width]
           && this.webKitLastResortFontSizes_[sizeB.width] &&
           LastResortWebKitFontWatchRunner.METRICS_COMPATIBLE_FONTS[
-            this.fontFamily_.getName()]) {
+            this.font_.getName()]) {
         this.finish_(this.activeCallback_);
       } else {
         this.finish_(this.inactiveCallback_);

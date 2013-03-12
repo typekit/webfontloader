@@ -1,6 +1,6 @@
 goog.provide('webfont.MonotypeScript');
 
-goog.require('webfont.FontFamily');
+goog.require('webfont.Font');
 goog.require('webfont.FontVariationDescription');
 
 /**
@@ -43,7 +43,7 @@ webfont.MonotypeScript.SCRIPTID = '__MonotypeAPIScript__';
 
 goog.scope(function () {
   var MonotypeScript = webfont.MonotypeScript,
-      FontFamily = webfont.FontFamily,
+      Font = webfont.Font,
       FontVariationDescription = webfont.FontVariationDescription;
 
   MonotypeScript.prototype.supportUserAgent = function (userAgent, support) {
@@ -61,7 +61,7 @@ goog.scope(function () {
           var mti_fnts = loadWindow[webfont.MonotypeScript.HOOK + projectId]();
           if (mti_fnts) {
             for (var i = 0; i < mti_fnts.length; i++) {
-              self.fontFamilies_.push(new FontFamily(mti_fnts[i]["fontfamily"]));
+              self.fontFamilies_.push(new Font(mti_fnts[i]["fontfamily"]));
             }
           }
         }

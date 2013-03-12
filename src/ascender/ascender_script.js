@@ -1,6 +1,6 @@
 goog.provide('webfont.AscenderScript');
 
-goog.require('webfont.FontFamily');
+goog.require('webfont.Font');
 goog.require('webfont.FontVariationDescription');
 
 /**
@@ -35,7 +35,7 @@ webfont.AscenderScript.VARIATIONS = {
 
 goog.scope(function () {
   var AscenderScript = webfont.AscenderScript,
-      FontFamily = webfont.FontFamily,
+      Font = webfont.Font,
       FontVariationDescription = webfont.FontVariationDescription;
 
   AscenderScript.prototype.supportUserAgent = function(userAgent, support) {
@@ -53,7 +53,7 @@ goog.scope(function () {
 
   /**
    * @param {Array.<string>} providedFamilies
-   * @return {Array.<webfont.FontFamily>}
+   * @return {Array.<webfont.Font>}
    */
   AscenderScript.prototype.parseFamiliesAndVariations = function (providedFamilies) {
     var families = [];
@@ -66,7 +66,7 @@ goog.scope(function () {
 
   /**
    * @param {string} providedFamily
-   * @return {Array.<webfont.FontFamily>}
+   * @return {Array.<webfont.Font>}
    */
   AscenderScript.prototype.parseFamilyAndVariations = function (providedFamily){
     var parts = providedFamily.split(':'),
@@ -77,11 +77,11 @@ goog.scope(function () {
           result = [];
 
       for (var i = 0; i < variations.length; i += 1) {
-        result.push(new FontFamily(familyName, variations[i]));
+        result.push(new Font(familyName, variations[i]));
       }
       return result;
     }
-    return [new FontFamily(familyName)];
+    return [new Font(familyName)];
   };
 
   /**

@@ -1,6 +1,6 @@
 describe('MonotypeScript', function () {
   var MonotypeScript = webfont.MonotypeScript,
-      FontFamily = webfont.FontFamily,
+      Font = webfont.Font,
       FontVariationDescription = webfont.FontVariationDescription,
       BrowserInfo = webfont.BrowserInfo,
       UserAgent = webfont.UserAgent;
@@ -46,6 +46,6 @@ describe('MonotypeScript', function () {
     expect(support).toHaveBeenCalled();
     expect(fakeDomHelper.createElement).toHaveBeenCalledWith('script');
     expect(script.src).toEqual('http://fast.fonts.com/jsapidev/01e2ff27-25bf-4801-a23e-73d328e6c7cc.js');
-    expect(load).toHaveBeenCalledWith([new FontFamily('aachen bold'), new FontFamily('kid print regular')]);
+    expect(load).toHaveBeenCalledWith([new Font('aachen bold'), new Font('kid print regular')]);
   });
 });

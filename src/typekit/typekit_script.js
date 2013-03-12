@@ -1,7 +1,7 @@
 goog.provide('webfont.TypekitScript');
 
 goog.require('webfont.FontVariationDescription');
-goog.require('webfont.FontFamily');
+goog.require('webfont.Font');
 
 /**
  * @constructor
@@ -19,7 +19,7 @@ webfont.TypekitScript.HOOK = '__webfonttypekitmodule__';
 goog.scope(function () {
   var TypekitScript = webfont.TypekitScript,
       FontVariationDescription = webfont.FontVariationDescription,
-      FontFamily = webfont.FontFamily;
+      Font = webfont.Font;
 
   TypekitScript.prototype.getScriptSrc = function(kitId) {
     var protocol = this.domHelper_.getProtocol();
@@ -48,10 +48,10 @@ goog.scope(function () {
 
             if (variations) {
               for(var j = 0; j < variations.length; j += 1) {
-                self.fontFamilies_.push(new FontFamily(fontFamilies[i], new FontVariationDescription(variations[j])));
+                self.fontFamilies_.push(new Font(fontFamilies[i], new FontVariationDescription(variations[j])));
               }
             } else {
-              self.fontFamilies_.push(new FontFamily(fontFamilies[i]));
+              self.fontFamilies_.push(new Font(fontFamilies[i]));
             }
           }
           support(typekitSupports);

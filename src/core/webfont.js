@@ -88,19 +88,19 @@ goog.scope(function () {
    * @param {webfont.EventDispatcher} eventDispatcher
    * @param {webfont.FontWatcher} fontWatcher
    * @param {function(new:webfont.FontWatchRunner,
-   *                  function(webfont.FontFamily),
-   *                  function(webfont.FontFamily),
+   *                  function(webfont.Font),
+   *                  function(webfont.Font),
    *                  webfont.DomHelper,
-   *                  webfont.FontFamily,
+   *                  webfont.Font,
    *                  webfont.BrowserInfo,
    *                  number=,
    *                  Object.<string, boolean>=,
    *                  string=)} fontWatchRunnerCtor
-   * @param {webfont.FontFamilies} fontFamilies
+   * @param {Array.<webfont.Font>} fonts
    * @param {webfont.FontTestStrings=} opt_fontTestStrings
    */
   WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher,
-      fontWatchRunnerCtor, fontFamilies, opt_fontTestStrings) {
+      fontWatchRunnerCtor, fonts, opt_fontTestStrings) {
     var allModulesLoaded = --this.moduleLoading_ == 0;
 
     if (allModulesLoaded) {
@@ -108,7 +108,7 @@ goog.scope(function () {
     }
 
     setTimeout(function () {
-      fontWatcher.watch(fontFamilies, opt_fontTestStrings || {}, fontWatchRunnerCtor, allModulesLoaded);
+      fontWatcher.watch(fonts, opt_fontTestStrings || {}, fontWatchRunnerCtor, allModulesLoaded);
     }, 0);
   };
 

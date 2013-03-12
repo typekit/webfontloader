@@ -1,6 +1,6 @@
 describe('TypekitScript', function () {
   var TypekitScript = webfont.TypekitScript,
-      FontFamily = webfont.FontFamily,
+      Font = webfont.Font,
       FontVariationDescription = webfont.FontVariationDescription;
 
   var configuration = {
@@ -50,7 +50,7 @@ describe('TypekitScript', function () {
 
     typekit.load(load);
 
-    expect(load).toHaveBeenCalledWith([new FontFamily('Font1'), new FontFamily('Font2')]);
+    expect(load).toHaveBeenCalledWith([new Font('Font1'), new Font('Font2')]);
   });
 
   it('should load with variations', function () {
@@ -69,9 +69,9 @@ describe('TypekitScript', function () {
     typekit.load(load);
 
     expect(load).toHaveBeenCalledWith([
-      new FontFamily('Font1', new FontVariationDescription('n7')),
-      new FontFamily('Font1', new FontVariationDescription('i7')),
-      new FontFamily('Font2', new FontVariationDescription('n4'))
+      new Font('Font1', new FontVariationDescription('n7')),
+      new Font('Font1', new FontVariationDescription('i7')),
+      new Font('Font2', new FontVariationDescription('n4'))
     ]);
   });
 

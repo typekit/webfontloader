@@ -1,6 +1,6 @@
 describe('GoogleFontApi', function () {
   var GoogleFontApi = webfont.GoogleFontApi,
-      FontFamily = webfont.FontFamily,
+      Font = webfont.Font,
       UserAgent = webfont.UserAgent,
       userAgent = null,
       link = '',
@@ -43,8 +43,8 @@ describe('GoogleFontApi', function () {
     it('has the correct families', function () {
       expect(families).not.toBeNull();
       expect(families.length).toEqual(2);
-      expect(families[0]).toEqual(new FontFamily('Font1'));
-      expect(families[1]).toEqual(new FontFamily('Font2'));
+      expect(families[0]).toEqual(new Font('Font1'));
+      expect(families[1]).toEqual(new Font('Font2'));
     });
   });
 
