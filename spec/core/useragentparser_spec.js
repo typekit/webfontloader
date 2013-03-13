@@ -718,9 +718,28 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
           }
         });
+      });
+
+      it('should detect 2nd generation (Desktop mode)', function () {
+        expect(parse('Mozilla/5.0 (Linux; U; en-us; KFOT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Safari/535.19 Silk-Accelerated=false'))
+        .toMatchUserAgent({
+          name: 'BuiltinBrowser',
+          version: 'Unknown',
+          platform: 'Android',
+          platformVersion: 'Unknown',
+          engine: 'AppleWebKit',
+          engineVersion: '535.19',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
+          }
+        })
       });
 
       it('HD 7"', function () {
@@ -735,7 +754,26 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
+
+      it('HD 7" (Desktop mode)', function () {
+        expect(parse('Mozilla/5.0 (Linux; U; en-us; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Safari/535.19 Silk-Accelerated=false'))
+        .toMatchUserAgent({
+          name: 'BuiltinBrowser',
+          version: 'Unknown',
+          platform: 'Android',
+          platformVersion: 'Unknown',
+          engine: 'AppleWebKit',
+          engineVersion: '535.19',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -752,7 +790,26 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
+
+      it('HD 8.9" Wi-Fi (Desktop mode)', function () {
+        expect(parse('Mozilla/5.0 (Linux; U; en-us; KFJWI Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Safari/535.19 Silk-Accelerated=false'))
+        .toMatchUserAgent({
+          name: 'BuiltinBrowser',
+          version: 'Unknown',
+          platform: 'Android',
+          platformVersion: 'Unknown',
+          engine: 'AppleWebKit',
+          engineVersion: '535.19',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -769,7 +826,26 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
+
+      it('HD 8.9" WAN (Desktop mode)', function () {
+        expect(parse('Mozilla/5.0 (Linux; U; en-us; KFJWA Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Safari/535.19 Silk-Accelerated=false'))
+        .toMatchUserAgent({
+          name: 'BuiltinBrowser',
+          version: 'Unknown',
+          platform: 'Android',
+          platformVersion: 'Unknown',
+          engine: 'AppleWebKit',
+          engineVersion: '535.19',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
           }
         });
       });
@@ -786,10 +862,30 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
-            hasWebKitFallbackBug: true
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
           }
         });
       });
+
+      it('1st generation (Desktop mode)', function () {
+        expect(parse('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-us; Silk/1.0.22.79_10013310) AppleWebKit/533.16 (KHTML, like Gecko) Version/5.0 Safari/533.16 Silk-Accelerated=false'))
+        .toMatchUserAgent({
+          name: 'BuiltinBrowser',
+          version: 'Unknown',
+          platform: 'Android',
+          platformVersion: 'Unknown',
+          engine: 'AppleWebKit',
+          engineVersion: '533.16',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
+
     });
 
     describe('Opera', function () {
