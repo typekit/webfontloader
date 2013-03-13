@@ -1,5 +1,13 @@
+goog.provide('webfont.GoogleFontApi');
+
+goog.require('webfont.FontApiUrlBuilder');
+goog.require('webfont.FontApiParser');
+goog.require('webfont.FontWatchRunner');
+goog.require('webfont.LastResortWebKitFontWatchRunner');
+
 /**
  * @constructor
+ * @implements {webfont.FontModule}
  */
 webfont.GoogleFontApi = function(userAgent, domHelper, configuration) {
   this.userAgent_ = userAgent;
@@ -9,44 +17,52 @@ webfont.GoogleFontApi = function(userAgent, domHelper, configuration) {
 
 webfont.GoogleFontApi.NAME = 'google';
 
-webfont.GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) {
-  support(userAgent.getBrowserInfo().hasWebFontSupport());
-};
+goog.scope(function () {
+  var GoogleFontApi = webfont.GoogleFontApi,
+      FontWatchRunner = webfont.FontWatchRunner,
+      LastResortWebKitFontWatchRunner = webfont.LastResortWebKitFontWatchRunner,
+      FontApiUrlBuilder = webfont.FontApiUrlBuilder,
+      FontApiParser = webfont.FontApiParser;
 
-webfont.GoogleFontApi.prototype.getFontWatchRunnerCtor = function() {
-  if (this.userAgent_.getEngine() == "AppleWebKit") {
-    return webfont.LastResortWebKitFontWatchRunner;
-  }
-  return webfont.FontWatchRunner;
-};
+  GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) {
+    support(userAgent.getBrowserInfo().hasWebFontSupport());
+  };
 
-webfont.GoogleFontApi.prototype.load = function(onReady) {
-  var domHelper = this.domHelper_;
-  var nonBlockingIe = this.userAgent_.getName() == 'MSIE' &&
-      this.configuration_['blocking'] != true;
+  GoogleFontApi.prototype.getFontWatchRunnerCtor = function() {
+    if (this.userAgent_.getEngine() == "AppleWebKit") {
+      return LastResortWebKitFontWatchRunner;
+    }
+    return FontWatchRunner;
+  };
 
-  if (nonBlockingIe) {
-    domHelper.whenBodyExists(webfont.bind(this, this.insertLink_, onReady));
-  } else {
-    this.insertLink_(onReady);
-  }
-};
+  GoogleFontApi.prototype.load = function(onReady) {
+    var domHelper = this.domHelper_;
+    var nonBlockingIe = this.userAgent_.getName() == 'MSIE' &&
+        this.configuration_['blocking'] != true;
 
-webfont.GoogleFontApi.prototype.insertLink_ = function(onReady) {
-  var domHelper = this.domHelper_;
-  var fontApiUrlBuilder = new webfont.FontApiUrlBuilder(
-      this.configuration_['api'], domHelper.getProtocol(), this.configuration_['text']);
-  var fontFamilies = this.configuration_['families'];
-  fontApiUrlBuilder.setFontFamilies(fontFamilies);
+    if (nonBlockingIe) {
+      domHelper.whenBodyExists(goog.bind(this.insertLink_, this, onReady));
+    } else {
+      this.insertLink_(onReady);
+    }
+  };
 
-  var fontApiParser = new webfont.FontApiParser(fontFamilies);
-  fontApiParser.parse();
+  GoogleFontApi.prototype.insertLink_ = function(onReady) {
+    var domHelper = this.domHelper_;
+    var fontApiUrlBuilder = new FontApiUrlBuilder(
+        this.configuration_['api'], domHelper.getProtocol(), this.configuration_['text']);
+    var fontFamilies = this.configuration_['families'];
+    fontApiUrlBuilder.setFontFamilies(fontFamilies);
 
-  domHelper.insertInto('head', domHelper.createCssLink(
-      fontApiUrlBuilder.build()));
-  onReady(fontApiParser.getFontFamilies(), fontApiParser.getVariations(),
-      fontApiParser.getFontTestStrings());
-};
+    var fontApiParser = new FontApiParser(fontFamilies);
+    fontApiParser.parse();
+
+    domHelper.insertInto('head', domHelper.createCssLink(
+        fontApiUrlBuilder.build()));
+    onReady(fontApiParser.getFontFamilies(), fontApiParser.getVariations(),
+        fontApiParser.getFontTestStrings());
+  };
+});
 
 globalNamespaceObject.addModule(webfont.GoogleFontApi.NAME, function(configuration, domHelper) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);

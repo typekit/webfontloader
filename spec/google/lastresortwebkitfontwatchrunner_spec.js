@@ -1,80 +1,71 @@
 describe('LastResortWebKitFontWatchRunner', function () {
   var LastResortWebKitFontWatchRunner = webfont.LastResortWebKitFontWatchRunner,
+      BrowserInfo = webfont.BrowserInfo,
       Size = webfont.Size,
       DomHelper = webfont.DomHelper,
+      FontRuler = webfont.FontRuler,
       domHelper = new DomHelper(window),
       fontFamily = 'My Family',
       fontDescription = 'n4';
 
-  var timesToCheckSizeBeforeChange = 0,
-      TARGET_SIZE = new Size(3, 3),
+  var TARGET_SIZE = new Size(3, 3),
       FALLBACK_SIZE_A = new Size(1, 1),
       FALLBACK_SIZE_B = new Size(2, 2),
       LAST_RESORT_SIZE = new Size(4, 4),
 
+      browserInfo = new BrowserInfo(true, true, false),
       setupSizes = [FALLBACK_SIZE_A, FALLBACK_SIZE_B, LAST_RESORT_SIZE],
       actualSizes = [],
-      fakeGetSizeCount = 0,
-      setupFinished = false,
-      fakeFontSizer = {
-        getSize: function (el) {
-          var result = null;
-
-          if (setupFinished) {
-            // If you are getting an exception here your tests does not specify enough
-            // size data to run properly.
-            if (fakeGetSizeCount >= actualSizes.length) {
-              throw 'Invalid test data';
-            }
-            result = actualSizes[fakeGetSizeCount];
-            fakeGetSizeCount += 1;
-          } else {
-            result = setupSizes[Math.min(fakeGetSizeCount, setupSizes.length - 1)];
-            fakeGetSizeCount += 1;
-          }
-          return result;
-        }
-      },
       timesToGetTimeBeforeTimeout = 10,
-      fakeGetTime = function () {
-        if (timesToGetTimeBeforeTimeout <= 0) {
-          return 6000;
-        } else {
-          timesToGetTimeBeforeTimeout -= 1;
-          return 1;
-        }
-      },
-      asyncCount = 0,
-      fakeAsyncCall = function (func, timeout) {
-        asyncCount += 1;
-        func();
-      },
-      setupFinished = false,
-      originalStartMethod = null,
       activeCallback = null,
       inactiveCallback = null;
 
   beforeEach(function () {
-    actualSizes = [];
-    setupFinished = false;
-    fakeGetSizeCount = 0;
+    jasmine.Clock.useMock();
 
-    asyncCount = 0;
-    timesToGetTimeBeforeTimeout = 10;
+    actualSizes = [];
+
     activeCallback = jasmine.createSpy('activeCallback');
     inactiveCallback = jasmine.createSpy('inactiveCallback');
+    timesToGetTimeBeforeTimeout = 10;
 
-    originalStartMethod = LastResortWebKitFontWatchRunner.prototype.start;
+    var setupFinished = false,
+        fakeGetSizeCount = 0;
 
-    LastResortWebKitFontWatchRunner.prototype.start = function () {
+    spyOn(FontRuler.prototype, 'getSize').andCallFake(function () {
+      var result = null;
+
+      if (setupFinished) {
+        // If you are getting an exception here your tests does not specify enough
+        // size data to run properly.
+        if (fakeGetSizeCount >= actualSizes.length) {
+          throw 'Invalid test data';
+        }
+        result = actualSizes[fakeGetSizeCount];
+        fakeGetSizeCount += 1;
+      } else {
+        result = setupSizes[Math.min(fakeGetSizeCount, setupSizes.length - 1)];
+        fakeGetSizeCount += 1;
+      }
+      return result;
+    });
+
+    spyOn(goog, 'now').andCallFake(function () {
+      if (timesToGetTimeBeforeTimeout <= 0) {
+        return 6000;
+      } else {
+        timesToGetTimeBeforeTimeout -= 1;
+        return 1;
+      }
+    });
+
+    var originalStart = LastResortWebKitFontWatchRunner.prototype.start;
+
+    spyOn(LastResortWebKitFontWatchRunner.prototype, 'start').andCallFake(function () {
       setupFinished = true;
       fakeGetSizeCount = 0;
-      originalStartMethod.apply(this);
-    };
-  });
-
-  afterEach(function () {
-    LastResortWebKitFontWatchRunner.prototype.start = originalStartMethod;
+      originalStart.apply(this);
+    });
   });
 
   it('should ignore fallback size and call active', function () {
@@ -84,11 +75,11 @@ describe('LastResortWebKitFontWatchRunner', function () {
     ];
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true);
+        domHelper, fontFamily, fontDescription, browserInfo);
 
     fontWatchRunner.start();
 
-    expect(asyncCount).toEqual(1);
+    jasmine.Clock.tick(1 * 25);
     expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
   });
 
@@ -101,11 +92,11 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 2;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, 'Arimo', fontDescription, true);
+        domHelper, 'Arimo', fontDescription, browserInfo);
 
     fontWatchRunner.start();
 
-    expect(asyncCount).toEqual(1);
+    jasmine.Clock.tick(1 * 25);
     expect(activeCallback).toHaveBeenCalledWith('Arimo', 'n4');
   });
 
@@ -119,11 +110,11 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 3;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true);
+        domHelper, fontFamily, fontDescription, browserInfo);
 
     fontWatchRunner.start();
 
-    expect(asyncCount).toEqual(2);
+    jasmine.Clock.tick(2 * 25);
     expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
   });
 
@@ -136,10 +127,10 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 2;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fakeFontSizer, fakeAsyncCall, fakeGetTime, fontFamily, fontDescription, true);
+        domHelper, fontFamily, fontDescription, browserInfo);
 
     fontWatchRunner.start();
-    expect(asyncCount).toEqual(1);
+    jasmine.Clock.tick(1 * 25);
     expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
   });
 });

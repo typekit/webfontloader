@@ -31,7 +31,7 @@ describe('TypekitScript', function () {
     typekit.supportUserAgent('useragent', support);
 
     expect(fakeDomHelper.insertInto.calls[0].args[0]).toEqual('head');
-    expect(fakeDomHelper.createScriptSrc).toHaveBeenCalledWith('http://use.typekit.com/abc.js');
+    expect(fakeDomHelper.createScriptSrc).toHaveBeenCalledWith('http://use.typekit.net/abc.js');
     expect(support).not.toHaveBeenCalled();
 
     expect(global.__webfonttypekitmodule__).not.toBeNull();

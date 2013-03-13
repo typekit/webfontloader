@@ -92,6 +92,7 @@ file "target/webfont.js" => SourceJs + ["target"] do |t|
     ["-jar", JsCompilerJar],
     ["--compilation_level", "ADVANCED_OPTIMIZATIONS"],
     ["--js_output_file", t.name],
+    "--generate_exports",
     ["--output_wrapper", %("#{output_wrapper}")],
     ["--warning_level", "VERBOSE"],
     ["--summary_detail_level", "3"]
@@ -107,7 +108,7 @@ file "target/webfont.js" => SourceJs + ["target"] do |t|
   args.concat source.map { |f| ["--js", f] }
 
   output = `java #{args.flatten.join(' ')} 2>&1`
-  fail output unless output.empty?
+  $?.success? ? (puts output) : (fail output)
 end
 
 desc "Creates debug version into target/webfont.js"
