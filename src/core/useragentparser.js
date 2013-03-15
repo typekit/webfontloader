@@ -71,11 +71,14 @@ goog.scope(function () {
    */
   UserAgentParser.prototype.getPlatform_ = function() {
     var mobileOs = this.getMatchingGroup_(this.userAgent_,
-        /(iPod|iPad|iPhone|Android|Windows Phone|BB\d{2}|BlackBerry)/, 1);
+        /(iPod|iPad|iPhone|Android|Windows Phone|BB\d{2}|BlackBerry|Silk)/, 1);
 
     if (mobileOs != "") {
       if (/BB\d{2}/.test(mobileOs)) {
         mobileOs = "BlackBerry";
+      }
+      if (/Silk/.test(mobileOs)) {
+        mobileOs = "Android";
       }
       return mobileOs;
     }
@@ -95,6 +98,10 @@ goog.scope(function () {
    * @private
    */
   UserAgentParser.prototype.getPlatformVersion_ = function() {
+    if (/Silk/.test(this.userAgent_) && !/Android/.test(this.userAgent_)) {
+      return webfont.UserAgentParser.UNKNOWN;
+    }
+
     var genericVersion = this.getMatchingGroup_(this.userAgent_,
         /(OS X|Windows NT|Android|CrOS) ([^;)]+)/, 2);
     if (genericVersion) {
@@ -284,7 +291,7 @@ goog.scope(function () {
       supportWebFont = browserVersion.major > 2 || browserVersion.major == 2 && browserVersion.minor >= 5;
     } else if (platform == "BlackBerry") {
       supportWebFont = platformVersion.major >= 10;
-    } else if (platform == "Android") {
+    } else if (platform == "Android" && platformVersionString != UserAgentParser.UNKNOWN) {
       supportWebFont = platformVersion.major > 2 || (platformVersion.major == 2 && platformVersion.minor > 1);
     } else {
       supportWebFont = webKitVersion.major >= 526 || webKitVersion.major >= 525 && webKitVersion.minor >= 13;
