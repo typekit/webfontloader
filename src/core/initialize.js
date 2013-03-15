@@ -32,4 +32,3 @@ var globalNamespaceObject = window[globalName] = (function() {
 
 // Export the public API.
 globalNamespaceObject['load'] = globalNamespaceObject.load;
-globalNamespaceObject['addModule'] = globalNamespaceObject.addModule;
