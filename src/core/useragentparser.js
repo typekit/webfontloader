@@ -247,6 +247,8 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
 
   if (this.userAgent_.indexOf("Chrome") != -1 || this.userAgent_.indexOf("CrMo") != -1 || this.userAgent_.indexOf("CriOS") != -1) {
     name = "Chrome";
+  } else if (/Silk\/\d/.test(this.userAgent_)) {
+    name = 'Silk';
   } else if (platform == "BlackBerry" || platform == "Android") {
     name = webfont.UserAgentParser.BUILTIN_BROWSER;
   } else if (this.userAgent_.indexOf("Safari") != -1) {
@@ -258,6 +260,9 @@ webfont.UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
 
   if (name == webfont.UserAgentParser.BUILTIN_BROWSER) {
     version = webfont.UserAgentParser.UNKNOWN;
+  } else if (/Silk\/\d/.test(this.userAgent_)) {
+    version = this.getMatchingGroup_(this.userAgent_,
+        /Silk\/([\d\._]+)/, 1);
   } else if (this.userAgent_.indexOf("Version/") != -1) {
     version = this.getMatchingGroup_(this.userAgent_,
         /Version\/([\d\.\w]+)/, 1);
