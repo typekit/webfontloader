@@ -81,7 +81,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
     fontWatchRunner.start();
 
     jasmine.Clock.tick(1 * 25);
-    expect(activeCallback).toHaveBeenCalledWith(fontFamily);
+    expect(activeCallback).toHaveBeenCalledWith(font);
   });
 
   it('should consider last resort font as having identical metrics and call active', function () {
