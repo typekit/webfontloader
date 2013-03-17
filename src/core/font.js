@@ -23,6 +23,32 @@ goog.scope(function () {
   };
 
   /**
+   * @return {string}
+   */
+  Font.prototype.getCssName = function () {
+    return this.quote_(this.name_);
+  };
+
+  /**
+   * @private
+   * @param {string} name
+   * @return {string}
+   */
+  Font.prototype.quote_ = function (name) {
+    var quoted = [];
+    var split = name.split(/,\s*/);
+    for (var i = 0; i < split.length; i++) {
+      var part = split[i].replace(/['"]/g, '');
+      if (part.indexOf(' ') == -1) {
+        quoted.push(part);
+      } else {
+        quoted.push("'" + part + "'");
+      }
+    }
+    return quoted.join(',');
+  };
+
+  /**
    * @return {webfont.FontVariationDescription}
    */
   Font.prototype.getVariation = function () {

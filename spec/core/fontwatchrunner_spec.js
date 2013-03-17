@@ -312,15 +312,17 @@ describe('FontWatchRunner', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
           domHelper, sourceSansA, userAgent.getBrowserInfo(), 500),
           ruler = new FontRuler(domHelper, 'abcdef'),
+          monospace = new Font('monospace'),
+          sourceSansAFallback = new Font("'SourceSansA', monospace"),
           activeSize = null,
           originalSize = null,
           finalCheck = false;
 
       runs(function () {
         ruler.insert();
-        ruler.setFont('monospace');
+        ruler.setFont(monospace);
         originalSize = ruler.getSize();
-        ruler.setFont("'SourceSansA', monospace");
+        ruler.setFont(sourceSansAFallback);
         fontWatchRunner.start();
       });
 
@@ -369,15 +371,17 @@ describe('FontWatchRunner', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
           domHelper, sourceSansB, userAgent.getBrowserInfo(), 500),
           ruler = new FontRuler(domHelper, 'abcdef'),
+          monospace = new Font('monospace'),
+          sourceSansBFallback = new Font("'SourceSansB', monospace"),
           activeSize = null,
           originalSize = null,
           finalCheck = false;
 
       runs(function () {
         ruler.insert();
-        ruler.setFont('monospace');
+        ruler.setFont(monospace);
         originalSize = ruler.getSize();
-        ruler.setFont("'SourceSansB', monospace");
+        ruler.setFont(sourceSansBFallback);
         fontWatchRunner.start();
         var link = document.createElement('link');
 

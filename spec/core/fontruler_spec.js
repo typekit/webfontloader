@@ -1,10 +1,13 @@
 describe('FontRuler', function () {
-  var FontRuler = webfont.FontRuler,
+  var Font = webfont.Font,
+      FontRuler = webfont.FontRuler,
       DomHelper = webfont.DomHelper,
       Size = webfont.Size,
-      domHelper = null;
+      domHelper = null,
+      font = null;
 
   beforeEach(function () {
+    font = new Font('sans-serif');
     domHelper = new DomHelper(window);
   });
 
@@ -15,8 +18,8 @@ describe('FontRuler', function () {
     fontRulerA.insert();
     fontRulerB.insert();
 
-    fontRulerA.setFont('sans-serif');
-    fontRulerB.setFont('sans-serif');
+    fontRulerA.setFont(font);
+    fontRulerB.setFont(font);
 
     var sizeA = fontRulerA.getSize(),
         sizeB = fontRulerB.getSize();

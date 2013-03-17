@@ -1,5 +1,6 @@
 goog.provide('webfont.FontWatchRunner');
 
+goog.require('webfont.Font');
 goog.require('webfont.FontRuler');
 
 /**
@@ -62,20 +63,20 @@ webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESbswy';
 
 goog.scope(function () {
   var FontWatchRunner = webfont.FontWatchRunner,
+      Font = webfont.Font,
       FontRuler = webfont.FontRuler;
 
   /**
    * @private
    */
   FontWatchRunner.prototype.setupLastResortSizes_ = function() {
-    var fontRuler = new FontRuler(this.domHelper_, this.fontTestString_),
-        variation = this.font_.getVariation().toString();
+    var fontRuler = new FontRuler(this.domHelper_, this.fontTestString_);
 
     fontRuler.insert();
 
     for (var font in FontWatchRunner.LastResortFonts) {
       if (FontWatchRunner.LastResortFonts.hasOwnProperty(font)) {
-        fontRuler.setFont(FontWatchRunner.LastResortFonts[font], variation);
+        fontRuler.setFont(new Font(FontWatchRunner.LastResortFonts[font], this.font_.getVariation()));
         this.lastResortSizes_[FontWatchRunner.LastResortFonts[font]] = fontRuler.getSize();
       }
     }
@@ -90,8 +91,8 @@ goog.scope(function () {
 
     this.started_ = goog.now();
 
-    this.fontRulerA_.setFont(this.font_.getName() + ',' + FontWatchRunner.LastResortFonts.SERIF, this.font_.getVariation().toString());
-    this.fontRulerB_.setFont(this.font_.getName() + ',' + FontWatchRunner.LastResortFonts.SANS_SERIF, this.font_.getVariation().toString());
+    this.fontRulerA_.setFont(new Font(this.font_.getName() + ',' + FontWatchRunner.LastResortFonts.SERIF, this.font_.getVariation()));
+    this.fontRulerB_.setFont(new Font(this.font_.getName() + ',' + FontWatchRunner.LastResortFonts.SANS_SERIF, this.font_.getVariation()));
 
     this.check_();
   };

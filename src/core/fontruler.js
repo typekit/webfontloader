@@ -1,7 +1,5 @@
 goog.provide('webfont.FontRuler');
 
-goog.require('webfont.CssFontFamilyName');
-goog.require('webfont.FontVariationDescription');
 goog.require('webfont.Size');
 
 /**
@@ -11,25 +9,21 @@ goog.require('webfont.Size');
  * @param {webfont.DomHelper} domHelper
  * @param {string} fontTestString
  */
-webfont.FontRuler = function(domHelper, fontTestString) {
+webfont.FontRuler = function (domHelper, fontTestString) {
   this.domHelper_ = domHelper;
   this.fontTestString_ = fontTestString;
-  this.nameHelper_ = new webfont.CssFontFamilyName();
   this.el_ = this.domHelper_.createElement('span', {}, this.fontTestString_);
 };
 
 goog.scope(function () {
   var FontRuler = webfont.FontRuler,
-      FontVariationDescription = webfont.FontVariationDescription,
       Size = webfont.Size;
 
   /**
-   * @param {string} fontFamily
-   * @param {string=} opt_fontDescription
+   * @param {webfont.Font} font
    */
-  FontRuler.prototype.setFont = function(fontFamily, opt_fontDescription) {
-    var styleString = this.computeStyleString_(fontFamily, opt_fontDescription);
-    this.domHelper_.setStyle(this.el_, styleString);
+  FontRuler.prototype.setFont = function(font) {
+    this.domHelper_.setStyle(this.el_, this.computeStyleString_(font));
   };
 
   /**
@@ -41,17 +35,14 @@ goog.scope(function () {
 
   /**
    * @private
-   * @param {string} fontFamily
-   * @param {string=} opt_fontDescription
+   * @param {webfont.Font} font
    * @return {string}
    */
-  FontRuler.prototype.computeStyleString_ = function(fontFamily, opt_fontDescription) {
-    var fvd = new FontVariationDescription(opt_fontDescription),
-        styleString = "position:absolute;top:-999px;left:-999px;" +
-        "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
-        "padding:0;font-variant:normal;white-space:nowrap;font-family:" +
-        this.nameHelper_.quote(fontFamily) + ";" + fvd.toCss();
-    return styleString;
+  FontRuler.prototype.computeStyleString_ = function(font) {
+    return "position:absolute;top:-999px;left:-999px;" +
+           "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
+           "padding:0;font-variant:normal;white-space:nowrap;font-family:" +
+           font.getCssName() + ";" + font.getVariation().toCss();
   };
 
   /**
