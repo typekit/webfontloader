@@ -112,7 +112,7 @@ describe('WebFont', function () {
   });
 
   describe('module failed to provide families and descriptions because it did not initialize properly', function () {
-    var font = null,
+    var webfont = null,
         testModule = null,
         font = null,
         inactive = jasmine.createSpy('inactive'),
@@ -121,8 +121,8 @@ describe('WebFont', function () {
     beforeEach(function () {
       font = new Font('Font1');
       jasmine.Clock.useMock();
-      font = new WebFont(window, fontModuleLoader, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false)));
-      font.addModule('test', function (conf, domHelper) {
+      webfont = new WebFont(window, fontModuleLoader, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false)));
+      webfont.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
           this.fonts = [];
@@ -162,7 +162,7 @@ describe('WebFont', function () {
     });
 
     it('should load with a project id', function () {
-      font.load({
+      webfont.load({
         test: {
           id: 'hello world'
         },
@@ -177,7 +177,7 @@ describe('WebFont', function () {
     });
 
     it('should not load without a project id', function () {
-      font.load({
+      webfont.load({
         test: {
         },
         inactive: inactive,
