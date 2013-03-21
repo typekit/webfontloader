@@ -1,6 +1,5 @@
 goog.provide('webfont.TypekitScript');
 
-goog.require('webfont.FontVariationDescription');
 goog.require('webfont.Font');
 
 /**
@@ -18,7 +17,6 @@ webfont.TypekitScript.HOOK = '__webfonttypekitmodule__';
 
 goog.scope(function () {
   var TypekitScript = webfont.TypekitScript,
-      FontVariationDescription = webfont.FontVariationDescription,
       Font = webfont.Font;
 
   TypekitScript.prototype.getScriptSrc = function(kitId) {
@@ -48,7 +46,7 @@ goog.scope(function () {
 
             if (variations) {
               for(var j = 0; j < variations.length; j += 1) {
-                self.fontFamilies_.push(new Font(fontFamilies[i], new FontVariationDescription(variations[j])));
+                self.fontFamilies_.push(new Font(fontFamilies[i], variations[j]));
               }
             } else {
               self.fontFamilies_.push(new Font(fontFamilies[i]));

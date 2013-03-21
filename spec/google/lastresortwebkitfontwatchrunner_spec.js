@@ -5,9 +5,8 @@ describe('LastResortWebKitFontWatchRunner', function () {
       DomHelper = webfont.DomHelper,
       FontRuler = webfont.FontRuler,
       Font = webfont.Font,
-      FontVariationDescription = webfont.FontVariationDescription,
       domHelper = new DomHelper(window),
-      font = new Font('My Family', new FontVariationDescription('n4'));
+      font = new Font('My Family', 'n4');
 
   var TARGET_SIZE = new Size(3, 3),
       FALLBACK_SIZE_A = new Size(1, 1),

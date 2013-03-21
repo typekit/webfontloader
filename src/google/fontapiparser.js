@@ -1,7 +1,6 @@
 goog.provide('webfont.FontApiParser');
 
 goog.require('webfont.Font');
-goog.require('webfont.FontVariationDescription');
 
 /**
  * @constructor
@@ -61,8 +60,7 @@ webfont.FontApiParser.VARIATION_MATCH =
 
 goog.scope(function () {
   var FontApiParser = webfont.FontApiParser,
-      Font = webfont.Font,
-      FontVariationDescription = webfont.FontVariationDescription;
+      Font = webfont.Font;
 
   FontApiParser.prototype.parse = function() {
     var length = this.fontFamilies_.length;
@@ -70,7 +68,7 @@ goog.scope(function () {
     for (var i = 0; i < length; i++) {
       var elements = this.fontFamilies_[i].split(":");
       var fontFamily = elements[0].replace(/\+/g, " ");
-      var variations = [new FontVariationDescription('n4')];
+      var variations = ['n4'];
 
       if (elements.length >= 2) {
         var fvds = this.parseVariations_(elements[1]);
@@ -115,7 +113,7 @@ goog.scope(function () {
     }
     var styleMatch = this.normalizeStyle_(groups[2]);
     var weightMatch = this.normalizeWeight_(groups[1]);
-    return new FontVariationDescription([styleMatch, weightMatch].join(''));
+    return [styleMatch, weightMatch].join('');
   };
 
 

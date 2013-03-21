@@ -1,7 +1,6 @@
 goog.provide('webfont.CustomCss');
 
 goog.require('webfont.Font');
-goog.require('webfont.FontVariationDescription');
 
 /**
  *
@@ -23,8 +22,7 @@ webfont.CustomCss.NAME = 'custom';
 
 goog.scope(function () {
   var CustomCss = webfont.CustomCss,
-      Font = webfont.Font,
-      FontVariationDescription = webfont.FontVariationDescription;
+      Font = webfont.Font;
 
   CustomCss.prototype.load = function(onReady) {
     var i, len;

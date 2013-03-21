@@ -1,15 +1,22 @@
 goog.provide('webfont.Font');
 
-goog.require('webfont.FontVariationDescription');
-
 /**
  * @constructor
  * @param {string} name The font family name
- * @param {webfont.FontVariationDescription=} opt_variation A font variation..
+ * @param {string=} opt_variation A font variation description
  */
 webfont.Font = function (name, opt_variation) {
   this.name_ = name;
-  this.variation_ = opt_variation || new webfont.FontVariationDescription('n4');
+  this.weight_ = 4;
+  this.style_ = 'n'
+
+  var variation = opt_variation || 'n4',
+      match = variation.match(/^([nio])([1-9])$/i);
+
+  if (match) {
+    this.style_ = match[1];
+    this.weight_ = parseInt(match[2], 10);
+  }
 };
 
 goog.scope(function () {
@@ -49,9 +56,25 @@ goog.scope(function () {
   };
 
   /**
-   * @return {webfont.FontVariationDescription}
+   * @return {string}
    */
   Font.prototype.getVariation = function () {
-    return this.variation_;
+    return this.style_ + this.weight_;
+  };
+
+  /**
+   * @return {string}
+   */
+  Font.prototype.getCssVariation = function () {
+    var style = 'normal',
+        weight = this.weight_ + '00';
+
+    if (this.style_ === 'o') {
+      style = 'oblique';
+    } else if (this.style_ === 'i') {
+      style = 'italic';
+    }
+
+    return 'font-style:' + style + ';font-weight:' + weight + ';';
   };
 });

@@ -1,7 +1,6 @@
 describe('TypekitScript', function () {
   var TypekitScript = webfont.TypekitScript,
-      Font = webfont.Font,
-      FontVariationDescription = webfont.FontVariationDescription;
+      Font = webfont.Font;
 
   var configuration = {
     id: 'abc'
@@ -69,9 +68,9 @@ describe('TypekitScript', function () {
     typekit.load(load);
 
     expect(load).toHaveBeenCalledWith([
-      new Font('Font1', new FontVariationDescription('n7')),
-      new Font('Font1', new FontVariationDescription('i7')),
-      new Font('Font2', new FontVariationDescription('n4'))
+      new Font('Font1', 'n7'),
+      new Font('Font1', 'i7'),
+      new Font('Font2', 'n4')
     ]);
   });
 

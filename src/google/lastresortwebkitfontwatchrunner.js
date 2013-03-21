@@ -2,7 +2,6 @@ goog.provide('webfont.LastResortWebKitFontWatchRunner');
 
 goog.require('webfont.Font');
 goog.require('webfont.FontRuler');
-goog.require('webfont.FontVariationDescription');
 
 /**
  * @constructor
@@ -40,8 +39,7 @@ webfont.LastResortWebKitFontWatchRunner.METRICS_COMPATIBLE_FONTS = {
 goog.scope(function () {
   var LastResortWebKitFontWatchRunner = webfont.LastResortWebKitFontWatchRunner,
       Font = webfont.Font,
-      FontRuler = webfont.FontRuler,
-      FontVariationDescription = webfont.FontVariationDescription;
+      FontRuler = webfont.FontRuler;
 
   /**
    * While loading a web font webkit applies a last resort fallback font to the
@@ -71,7 +69,7 @@ goog.scope(function () {
       // Another WebKit quirk if the normal weight/style is loaded first,
       // the size of the normal weight is returned when loading another weight.
       if (variation.toString().charAt(1) != '4') {
-        fontRuler.setFont(new Font(font, new FontVariationDescription(variation.toString().charAt(0) + '4')));
+        fontRuler.setFont(new Font(font, variation.charAt(0) + '4'));
         webKitLastResortFontSizes[fontRuler.getSize().width] = true;
       }
     }

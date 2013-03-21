@@ -42,7 +42,7 @@ goog.scope(function () {
     return "position:absolute;top:-999px;left:-999px;" +
            "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
            "padding:0;font-variant:normal;white-space:nowrap;font-family:" +
-           font.getCssName() + ";" + font.getVariation().toCss();
+           font.getCssName() + ";" + font.getCssVariation();
   };
 
   /**

@@ -1,7 +1,6 @@
 goog.provide('webfont.MonotypeScript');
 
 goog.require('webfont.Font');
-goog.require('webfont.FontVariationDescription');
 
 /**
 webfont.load({
@@ -43,8 +42,7 @@ webfont.MonotypeScript.SCRIPTID = '__MonotypeAPIScript__';
 
 goog.scope(function () {
   var MonotypeScript = webfont.MonotypeScript,
-      Font = webfont.Font,
-      FontVariationDescription = webfont.FontVariationDescription;
+      Font = webfont.Font;
 
   MonotypeScript.prototype.supportUserAgent = function (userAgent, support) {
     var self = this;

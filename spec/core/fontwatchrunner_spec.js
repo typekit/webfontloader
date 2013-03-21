@@ -1,7 +1,6 @@
 describe('FontWatchRunner', function () {
   var FontWatchRunner = webfont.FontWatchRunner,
       Font = webfont.Font,
-      FontVariationDescription = webfont.FontVariationDescription,
       BrowserInfo = webfont.BrowserInfo,
       UserAgentParser = webfont.UserAgentParser,
       Size = webfont.Size,
@@ -20,7 +19,7 @@ describe('FontWatchRunner', function () {
   });
 
   describe('Fake browser', function () {
-    var font =  new Font('My Family', new FontVariationDescription('n4')),
+    var font =  new Font('My Family', 'n4'),
         TARGET_SIZE = new Size(3, 3),
         FALLBACK_SIZE_A = new Size(1, 1),
         FALLBACK_SIZE_B = new Size(2, 2),

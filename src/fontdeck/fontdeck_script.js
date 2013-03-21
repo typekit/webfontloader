@@ -1,7 +1,6 @@
 goog.provide('webfont.FontdeckScript');
 
 goog.require('webfont.Font');
-goog.require('webfont.FontVariationDescription');
 
 /**
  * @constructor
@@ -47,11 +46,9 @@ goog.scope(function () {
       // and what fonts are provided.
       loadWindow[webfont.FontdeckScript.HOOK][projectId] = function(fontdeckSupports, data) {
         for (var i = 0, j = data['fonts'].length; i<j; ++i) {
-          var font = data['fonts'][i],
-              family = font['name'],
-              fvd = new FontVariationDescription('font-weight:' + font['weight'] + ';font-style:' + font['style']);
+          var font = data['fonts'][i];
 
-          self.fontFamilies_.push(new Font(family, fvd));
+          self.fontFamilies_.push(new Font(font['name'], font['weight'] + font['style']));
         }
         support(fontdeckSupports);
       };

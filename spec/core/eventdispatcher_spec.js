@@ -2,7 +2,6 @@ describe('EventDispatcher', function () {
   var EventDispatcher = webfont.EventDispatcher,
       DomHelper = webfont.DomHelper,
       Font = webfont.Font,
-      FontVariationDescription = webfont.FontVariationDescription,
       domHelper = new DomHelper(window),
       element = null
       eventDispatcher = null,
@@ -22,7 +21,7 @@ describe('EventDispatcher', function () {
     element = domHelper.createElement();
     eventDispatcher = new EventDispatcher(domHelper, element, callbacks, namespace);
 
-    font = new Font('My Family', new FontVariationDescription('n4'));
+    font = new Font('My Family', 'n4');
 
     spyOn(callbacks, 'loading');
     spyOn(callbacks, 'active');

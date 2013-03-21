@@ -1,7 +1,6 @@
 goog.provide('webfont.AscenderScript');
 
 goog.require('webfont.Font');
-goog.require('webfont.FontVariationDescription');
 
 /**
  *
@@ -35,8 +34,7 @@ webfont.AscenderScript.VARIATIONS = {
 
 goog.scope(function () {
   var AscenderScript = webfont.AscenderScript,
-      Font = webfont.Font,
-      FontVariationDescription = webfont.FontVariationDescription;
+      Font = webfont.Font;
 
   AscenderScript.prototype.supportUserAgent = function(userAgent, support) {
     return support(userAgent.getBrowserInfo().hasWebFontSupport());
@@ -86,7 +84,7 @@ goog.scope(function () {
 
   /**
    * @param {string} source
-   * @return {Array.<webfont.FontVariationDescription>}
+   * @return {Array.<string>}
    */
   AscenderScript.prototype.parseVariations = function (source) {
     var providedVariations = source.split(','),
@@ -97,7 +95,7 @@ goog.scope(function () {
 
       if (pv) {
         var v = AscenderScript.VARIATIONS[pv];
-        variations.push(new FontVariationDescription(v ? v : pv));
+        variations.push(v ? v : pv);
       }
     }
     return variations;

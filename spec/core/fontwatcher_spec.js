@@ -1,7 +1,6 @@
 describe('FontWatcher', function () {
   var FontWatcher = webfont.FontWatcher,
       Font = webfont.Font,
-      FontVariationDescription = webfont.FontVariationDescription,
       UserAgent = webfont.UserAgent,
       BrowserInfo = webfont.BrowserInfo,
       DomHelper = webfont.DomHelper,
@@ -164,11 +163,11 @@ describe('FontWatcher', function () {
 
   describe('watch multiple fonts with descriptions', function () {
     it('should call the correct callbacks', function () {
-      var font5 = new Font('font4', new FontVariationDescription('i7')),
+      var font5 = new Font('font4', 'i7'),
           font6 = new Font('font5'),
           font7 = new Font('font6'),
-          font8 = new Font('font7', new FontVariationDescription('i4')),
-          font9 = new Font('font8', new FontVariationDescription('n7'));
+          font8 = new Font('font7', 'i4'),
+          font9 = new Font('font8', 'n7');
 
       activeFonts = [font5, font6];
       var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
