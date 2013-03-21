@@ -63,7 +63,7 @@
               color: true
             });
 
-    //    env.addReporter(terminalReporter);
+        env.addReporter(terminalReporter);
         env.addReporter(htmlReporter);
         env.specFilter = function (spec) {
           return htmlReporter.specFilter(spec);
