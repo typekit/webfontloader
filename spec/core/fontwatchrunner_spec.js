@@ -400,5 +400,44 @@ describe('FontWatchRunner', function () {
         expect(ruler.getSize()).toEqual(activeSize);
       });
     });
+
+    it('should load one weight after another', function () {
+       var fontWatchRunnerRegular = new FontWatchRunner(activeCallback, inactiveCallback,
+           domHelper, 'SourceSansC', 'n4', userAgent.getBrowserInfo(), 500),
+           fontWatchRunnerBold = new FontWatchRunner(activeCallback, inactiveCallback,
+           domHelper, 'SourceSansC', 'n7', userAgent.getBrowserInfo(), 500),
+           fontRulerA = new FontRuler(domHelper, 'abcdef'),
+           fontRulerB = new FontRuler(domHelper, 'abcdef');
+
+      runs(function () {
+        fontRulerA.insert();
+        fontRulerA.setFont('SourceSansC', 'n4');
+        fontWatchRunnerRegular.start();
+      });
+
+      waitsFor(function () {
+        return activeCallback.wasCalled || inactiveCallback.wasCalled;
+      });
+
+      runs(function () {
+        expect(activeCallback).toHaveBeenCalledWith('SourceSansC', 'n4');
+
+        activeCallback.reset();
+        inactiveCallback.reset();
+
+        fontRulerB.insert();
+        fontRulerB.setFont('SourceSansC', 'n7');
+        fontWatchRunnerBold.start();
+      });
+
+      waitsFor(function () {
+        return activeCallback.wasCalled || inactiveCallback.wasCalled;
+      });
+
+      runs(function () {
+        expect(activeCallback).toHaveBeenCalledWith('SourceSansC', 'n7');
+        expect(fontRulerA.getSize()).not.toEqual(fontRulerB.getSize());
+      });
+    });
   });
 });
