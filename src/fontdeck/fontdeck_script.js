@@ -46,9 +46,28 @@ goog.scope(function () {
       // and what fonts are provided.
       loadWindow[webfont.FontdeckScript.HOOK][projectId] = function(fontdeckSupports, data) {
         for (var i = 0, j = data['fonts'].length; i<j; ++i) {
-          var font = data['fonts'][i];
+          var font = data['fonts'][i],
+              m = null,
+              weight = '4',
+              style = 'n';
 
-          self.fontFamilies_.push(new Font(font['name'], font['weight'] + font['style']));
+          m = font['style'].match(/(normal|oblique|italic)/i);
+
+          if (m && m[1]) {
+            style = m[1].substr(0, 1).toLowerCase();
+          }
+
+          m = font['weight'].match(/([1-9]00|normal|bold)/i);
+
+          if (m && m[1]) {
+            if (/bold/i.test(m[1])) {
+              weight = 7;
+            } else if (/[1-9]00/.test(weight[1])) {
+              weight = parseInt(m[1].substr(0, 1), 10);
+            }
+          }
+
+          self.fontFamilies_.push(new Font(font['name'], style + weight));
         }
         support(fontdeckSupports);
       };
