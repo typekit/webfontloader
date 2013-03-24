@@ -82,4 +82,36 @@ goog.scope(function () {
 
     return 'font-style:' + style + ';font-weight:' + weight + ';';
   };
+
+  /**
+   * Parses a CSS font declaration and returns a font
+   * variation description.
+   *
+   * @param {string} css
+   * @return {string}
+   */
+  Font.parseCssVariation = function (css) {
+    var weight = 4,
+        style = 'n',
+        m = null;
+
+    if (css) {
+      m = css.match(/(normal|oblique|italic)/i);
+
+      if (m && m[1]) {
+        style = m[1].substr(0, 1).toLowerCase();
+      }
+
+      m = css.match(/([1-9]00|normal|bold)/i);
+
+      if (m && m[1]) {
+        if (/bold/i.test(m[1])) {
+          weight = 7;
+        } else if (/[1-9]00/.test(m[1])) {
+          weight = parseInt(m[1].substr(0, 1), 10);
+        }
+      }
+    }
+    return style + weight;
+  }
 });
