@@ -1,6 +1,11 @@
 goog.provide('webfont.Font');
 
 /**
+ * This class is an abstraction for a single font or typeface.
+ * It contains the font name and the variation (i.e. style
+ * and weight.) A collection Font instances can represent a
+ * font family.
+ *
  * @constructor
  * @param {string} name The font family name
  * @param {string=} opt_variation A font variation description
