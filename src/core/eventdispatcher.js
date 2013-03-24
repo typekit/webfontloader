@@ -157,11 +157,15 @@ goog.scope(function () {
 
   /**
    * @param {string} event
-   * @param {webfont.Font=} opt_arg1
+   * @param {webfont.Font=} opt_font
    */
-  EventDispatcher.prototype.dispatch_ = function(event, opt_arg1) {
+  EventDispatcher.prototype.dispatch_ = function(event, opt_font) {
     if (this.callbacks_[event]) {
-      this.callbacks_[event](opt_arg1);
+      if (opt_font) {
+        this.callbacks_[event](opt_font.getName(), opt_font.getVariation());
+      } else {
+        this.callbacks_[event]();
+      }
     }
   };
 });

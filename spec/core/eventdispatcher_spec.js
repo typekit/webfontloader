@@ -51,7 +51,7 @@ describe('EventDispatcher', function () {
     });
 
     it('should call the correct callback', function () {
-      expect(callbacks.fontloading).toHaveBeenCalledWith(font);
+      expect(callbacks.fontloading).toHaveBeenCalledWith('My Family', 'n4');
     });
 
     it('should set the correct class name', function () {
@@ -65,7 +65,7 @@ describe('EventDispatcher', function () {
     });
 
     it('should call the correct callback', function () {
-      expect(callbacks.fontinactive).toHaveBeenCalledWith(font);
+      expect(callbacks.fontinactive).toHaveBeenCalledWith('My Family', 'n4');
     });
 
     it('should set the correct class name', function () {
@@ -95,7 +95,7 @@ describe('EventDispatcher', function () {
     });
 
     it('should still call the correct callback', function () {
-      expect(callbacks.fontinactive).toHaveBeenCalledWith(font);
+      expect(callbacks.fontinactive).toHaveBeenCalledWith('My Family', 'n4');
     });
   });
 
@@ -105,7 +105,7 @@ describe('EventDispatcher', function () {
     });
 
     it('should call the correct callback', function () {
-      expect(callbacks.fontactive).toHaveBeenCalledWith(font);
+      expect(callbacks.fontactive).toHaveBeenCalledWith('My Family', 'n4');
     });
 
     it('should set the correct class name', function () {
