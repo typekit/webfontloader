@@ -1,3 +1,8 @@
+v1.3.1 (March 14, 2013)
+* Change code to use explicit dependencies
+* Fix unit tests in older browsers
+* Fix google/FontApiParser.js to work in IE <= 8
+
 v1.3.0 (February 28, 2013)
 * New optional configuration parameter `timeout` which lets you customize the default timeout.
 * Change the Typekit module to use `use.typekit.net` instead of `use.typekit.com`.

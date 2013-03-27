@@ -16,7 +16,7 @@ describe('WebFont', function () {
         testModule = null;
 
     beforeEach(function () {
-      font = new WebFont(window, fontModuleLoader, function (func, timeout) { func(); }, userAgent);
+      font = new WebFont(window, fontModuleLoader, userAgent);
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
@@ -80,7 +80,7 @@ describe('WebFont', function () {
         fakeMainWindow = {};
 
     beforeEach(function () {
-      font = new WebFont(fakeMainWindow, fontModuleLoader, function (func, timeout) { func(); }, userAgent);
+      font = new WebFont(fakeMainWindow, fontModuleLoader, userAgent);
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.domHelper = domHelper;
@@ -117,7 +117,8 @@ describe('WebFont', function () {
         active = jasmine.createSpy('active');
 
     beforeEach(function () {
-      font = new WebFont(window, fontModuleLoader, function (func, timeout) { func(); }, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false)));
+      jasmine.Clock.useMock();
+      font = new WebFont(window, fontModuleLoader, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false)));
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
@@ -168,6 +169,8 @@ describe('WebFont', function () {
         active: active
       });
 
+      jasmine.Clock.tick(1);
+
       expect(testModule).not.toBeNull();
       expect(active).toHaveBeenCalled();
     });
@@ -180,6 +183,8 @@ describe('WebFont', function () {
         active: active
       });
 
+      jasmine.Clock.tick(1);
+
       expect(testModule).not.toBeNull();
       expect(inactive).toHaveBeenCalled();
     });
@@ -190,7 +195,7 @@ describe('WebFont', function () {
         testModule = null;
 
     beforeEach(function () {
-      font = new WebFont(window, fontModuleLoader, function (func, timeout) { func(); }, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(false, false, false)));
+      font = new WebFont(window, fontModuleLoader, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(false, false, false)));
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
