@@ -7,14 +7,13 @@ goog.addDependency("../../src/core/cssclassname.js", ["webfont.CssClassName"], [
 goog.addDependency("../../src/core/cssfontfamilyname.js", ["webfont.CssFontFamilyName"], []);
 goog.addDependency("../../src/core/domhelper.js", ["webfont.DomHelper"], []);
 goog.addDependency("../../src/core/eventdispatcher.js", ["webfont.EventDispatcher"], ["webfont.CssClassName"]);
-goog.addDependency("../../src/core/font.js", ["webfont.WebFont"], ["webfont.DomHelper","webfont.EventDispatcher","webfont.FontWatcher","webfont.Size"]);
+goog.addDependency("../../src/core/font.js", ["webfont.WebFont"], ["webfont.DomHelper","webfont.EventDispatcher","webfont.FontWatcher"]);
 goog.addDependency("../../src/core/fontmoduleloader.js", ["webfont.FontModuleLoader"], []);
-goog.addDependency("../../src/core/fontruler.js", ["webfont.FontRuler"], ["webfont.CssFontFamilyName","webfont.FontVariationDescription","webfont.Size"]);
+goog.addDependency("../../src/core/fontruler.js", ["webfont.FontRuler"], ["webfont.CssFontFamilyName","webfont.FontVariationDescription"]);
 goog.addDependency("../../src/core/fontvariationdescription.js", ["webfont.FontVariationDescription"], []);
 goog.addDependency("../../src/core/fontwatcher.js", ["webfont.FontWatcher"], ["webfont.FontWatchRunner"]);
 goog.addDependency("../../src/core/fontwatchrunner.js", ["webfont.FontWatchRunner"], ["webfont.FontRuler"]);
 goog.addDependency("../../src/core/initialize.js", ["webfont"], ["webfont.UserAgentParser","webfont.FontModuleLoader","webfont.WebFont"]);
-goog.addDependency("../../src/core/size.js", ["webfont.Size"], []);
 goog.addDependency("../../src/core/useragent.js", ["webfont.UserAgent"], []);
 goog.addDependency("../../src/core/useragentparser.js", ["webfont.UserAgentParser"], ["webfont.BrowserInfo","webfont.UserAgent"]);
 goog.addDependency("../../src/custom/customcss.js", ["webfont.CustomCss"], []);
