@@ -1,21 +1,20 @@
 describe('LastResortWebKitFontWatchRunner', function () {
   var LastResortWebKitFontWatchRunner = webfont.LastResortWebKitFontWatchRunner,
       BrowserInfo = webfont.BrowserInfo,
-      Size = webfont.Size,
       DomHelper = webfont.DomHelper,
       FontRuler = webfont.FontRuler,
       Font = webfont.Font,
       domHelper = new DomHelper(window),
       font = new Font('My Family', 'n4');
 
-  var TARGET_SIZE = new Size(3, 3),
-      FALLBACK_SIZE_A = new Size(1, 1),
-      FALLBACK_SIZE_B = new Size(2, 2),
-      LAST_RESORT_SIZE = new Size(4, 4),
+  var TARGET_SIZE = 3,
+      FALLBACK_SIZE_A = 1,
+      FALLBACK_SIZE_B = 2,
+      LAST_RESORT_SIZE = 4,
 
       browserInfo = new BrowserInfo(true, true, false),
-      setupSizes = [FALLBACK_SIZE_A, FALLBACK_SIZE_B, LAST_RESORT_SIZE],
-      actualSizes = [],
+      setupWidths = [FALLBACK_SIZE_A, FALLBACK_SIZE_B, LAST_RESORT_SIZE],
+      actualWidths = [],
       timesToGetTimeBeforeTimeout = 10,
       activeCallback = null,
       inactiveCallback = null;
@@ -23,29 +22,29 @@ describe('LastResortWebKitFontWatchRunner', function () {
   beforeEach(function () {
     jasmine.Clock.useMock();
 
-    actualSizes = [];
+    actualWidths = [];
 
     activeCallback = jasmine.createSpy('activeCallback');
     inactiveCallback = jasmine.createSpy('inactiveCallback');
     timesToGetTimeBeforeTimeout = 10;
 
     var setupFinished = false,
-        fakeGetSizeCount = 0;
+        fakeGetWidthCount = 0;
 
-    spyOn(FontRuler.prototype, 'getSize').andCallFake(function () {
+    spyOn(FontRuler.prototype, 'getWidth').andCallFake(function () {
       var result = null;
 
       if (setupFinished) {
         // If you are getting an exception here your tests does not specify enough
         // size data to run properly.
-        if (fakeGetSizeCount >= actualSizes.length) {
+        if (fakeGetWidthCount >= actualWidths.length) {
           throw 'Invalid test data';
         }
-        result = actualSizes[fakeGetSizeCount];
-        fakeGetSizeCount += 1;
+        result = actualWidths[fakeGetWidthCount];
+        fakeGetWidthCount += 1;
       } else {
-        result = setupSizes[Math.min(fakeGetSizeCount, setupSizes.length - 1)];
-        fakeGetSizeCount += 1;
+        result = setupWidths[Math.min(fakeGetWidthCount, setupWidths.length - 1)];
+        fakeGetWidthCount += 1;
       }
       return result;
     });
@@ -63,13 +62,13 @@ describe('LastResortWebKitFontWatchRunner', function () {
 
     spyOn(LastResortWebKitFontWatchRunner.prototype, 'start').andCallFake(function () {
       setupFinished = true;
-      fakeGetSizeCount = 0;
+      fakeGetWidthCount = 0;
       originalStart.apply(this);
     });
   });
 
   it('should ignore fallback size and call active', function () {
-    actualSizes = [
+    actualWidths = [
       LAST_RESORT_SIZE, LAST_RESORT_SIZE,
       TARGET_SIZE, TARGET_SIZE
     ];
@@ -84,7 +83,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
   });
 
   it('should consider last resort font as having identical metrics and call active', function () {
-    actualSizes = [
+    actualWidths = [
       LAST_RESORT_SIZE, LAST_RESORT_SIZE,
       LAST_RESORT_SIZE, LAST_RESORT_SIZE
     ];
@@ -103,7 +102,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
   });
 
   it('should fail to load font and call inactive', function () {
-    actualSizes = [
+    actualWidths = [
       LAST_RESORT_SIZE, LAST_RESORT_SIZE,
       LAST_RESORT_SIZE, LAST_RESORT_SIZE,
       FALLBACK_SIZE_A, FALLBACK_SIZE_B
@@ -121,7 +120,7 @@ describe('LastResortWebKitFontWatchRunner', function () {
   });
 
   it('should call inactive when we are loading a metric incompatible font', function () {
-    actualSizes = [
+    actualWidths = [
       LAST_RESORT_SIZE, LAST_RESORT_SIZE,
       LAST_RESORT_SIZE, LAST_RESORT_SIZE
     ];

@@ -3,7 +3,6 @@ describe('FontWatchRunner', function () {
       Font = webfont.Font,
       BrowserInfo = webfont.BrowserInfo,
       UserAgentParser = webfont.UserAgentParser,
-      Size = webfont.Size,
       DomHelper = webfont.DomHelper,
       FontRuler = webfont.FontRuler;
 
@@ -20,40 +19,40 @@ describe('FontWatchRunner', function () {
 
   describe('Fake browser', function () {
     var font =  new Font('My Family', 'n4'),
-        TARGET_SIZE = new Size(3, 3),
-        FALLBACK_SIZE_A = new Size(1, 1),
-        FALLBACK_SIZE_B = new Size(2, 2),
-        LAST_RESORT_SIZE = new Size(4, 4),
+        TARGET_SIZE = 3,
+        FALLBACK_SIZE_A = 1,
+        FALLBACK_SIZE_B = 2,
+        LAST_RESORT_SIZE = 4,
 
         browserInfo = new BrowserInfo(true, false, false),
         fallbackBugBrowserInfo = new BrowserInfo(true, true, false),
-        setupSizes = [],
-        actualSizes = [],
+        setupWidths = [],
+        actualWidths = [],
         timesToGetTimeBeforeTimeout = 10;
 
     beforeEach(function () {
       jasmine.Clock.useMock();
 
-      setupSizes = [FALLBACK_SIZE_A, FALLBACK_SIZE_B, LAST_RESORT_SIZE];
+      setupWidths = [FALLBACK_SIZE_A, FALLBACK_SIZE_B, LAST_RESORT_SIZE];
 
-      actualSizes = [];
+      actualWidths = [];
 
       var setupFinished = false,
-          fakeGetSizeCount = 0;
+          fakeGetWidthCount = 0;
 
-      spyOn(FontRuler.prototype, 'getSize').andCallFake(function () {
+      spyOn(FontRuler.prototype, 'getWidth').andCallFake(function () {
         var result = null;
         if (setupFinished) {
           // If you are getting an exception here your tests does not specify enough
           // size data to run properly.
-          if (fakeGetSizeCount >= actualSizes.length) {
+          if (fakeGetWidthCount >= actualWidths.length) {
             throw 'Invalid test data';
           }
-          result = actualSizes[fakeGetSizeCount];
-          fakeGetSizeCount += 1;
+          result = actualWidths[fakeGetWidthCount];
+          fakeGetWidthCount += 1;
         } else {
-          result = setupSizes[Math.min(fakeGetSizeCount, setupSizes.length - 1)];
-          fakeGetSizeCount += 1;
+          result = setupWidths[Math.min(fakeGetWidthCount, setupWidths.length - 1)];
+          fakeGetWidthCount += 1;
         }
         return result;
       });
@@ -73,14 +72,14 @@ describe('FontWatchRunner', function () {
 
       spyOn(FontWatchRunner.prototype, 'start').andCallFake(function () {
         setupFinished = true;
-        fakeGetSizeCount = 0;
+        fakeGetWidthCount = 0;
 
         originalStart.apply(this);
       });
     });
 
     it('should call active if fonts are already loaded', function () {
-      actualSizes = [
+      actualWidths = [
         TARGET_SIZE, TARGET_SIZE
       ];
 
@@ -94,7 +93,7 @@ describe('FontWatchRunner', function () {
     });
 
     it('should wait for font load and call active', function () {
-      actualSizes = [
+      actualWidths = [
         FALLBACK_SIZE_A, FALLBACK_SIZE_B,
         FALLBACK_SIZE_A, FALLBACK_SIZE_B,
         FALLBACK_SIZE_A, FALLBACK_SIZE_B,
@@ -113,7 +112,7 @@ describe('FontWatchRunner', function () {
     it('should wait for font inactive and call inactive', function () {
       timesToGetTimeBeforeTimeout = 5;
 
-      actualSizes = [
+      actualWidths = [
         FALLBACK_SIZE_A, FALLBACK_SIZE_B,
         FALLBACK_SIZE_A, FALLBACK_SIZE_B,
         FALLBACK_SIZE_A, FALLBACK_SIZE_B,
@@ -132,7 +131,7 @@ describe('FontWatchRunner', function () {
 
     describe('WebKit fallback bug', function () {
       it('should ignore fallback size and call active', function () {
-        actualSizes = [
+        actualWidths = [
           LAST_RESORT_SIZE, LAST_RESORT_SIZE,
           TARGET_SIZE, TARGET_SIZE
         ];
@@ -147,7 +146,7 @@ describe('FontWatchRunner', function () {
       });
 
       it('should consider last resort font as having identical metrics and call active', function () {
-        actualSizes = [
+        actualWidths = [
           LAST_RESORT_SIZE, LAST_RESORT_SIZE,
           LAST_RESORT_SIZE, LAST_RESORT_SIZE
         ];
@@ -164,7 +163,7 @@ describe('FontWatchRunner', function () {
       });
 
       it('should fail to load font and call inactive', function () {
-        actualSizes = [
+        actualWidths = [
           LAST_RESORT_SIZE, LAST_RESORT_SIZE,
           LAST_RESORT_SIZE, LAST_RESORT_SIZE,
           FALLBACK_SIZE_A, FALLBACK_SIZE_B
@@ -182,7 +181,7 @@ describe('FontWatchRunner', function () {
       });
 
       it('should call inactive when we are loading a metric incompatible font', function () {
-        actualSizes = [
+        actualWidths = [
           LAST_RESORT_SIZE, LAST_RESORT_SIZE,
           LAST_RESORT_SIZE, LAST_RESORT_SIZE
         ];
@@ -200,7 +199,7 @@ describe('FontWatchRunner', function () {
       });
 
       it('should call active when we are loading a metric compatible font', function () {
-        actualSizes = [
+        actualWidths = [
           LAST_RESORT_SIZE, LAST_RESORT_SIZE,
           LAST_RESORT_SIZE, LAST_RESORT_SIZE
         ];
@@ -218,24 +217,6 @@ describe('FontWatchRunner', function () {
       });
     });
 
-    describe('webkit metrics bug', function () {
-      it('should correctly call active even though the height is different', function () {
-        actualSizes = [
-          FALLBACK_SIZE_A, FALLBACK_SIZE_B,
-          new Size(1, 2), new Size(2, 3), // Same as FALLBACK_SIZE_A and FALLBACK_SIZE_B except that the height is different.
-          TARGET_SIZE, TARGET_SIZE
-        ];
-
-        var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, font, new BrowserInfo(true, false, true));
-
-        fontWatchRunner.start();
-
-        jasmine.Clock.tick(2 * 25);
-        expect(activeCallback).toHaveBeenCalledWith(font);
-      });
-    });
-
     describe('test string', function () {
       var fontWatchRunner = null;
 
@@ -244,7 +225,7 @@ describe('FontWatchRunner', function () {
       });
 
       it('should be the default', function () {
-        actualSizes = [
+        actualWidths = [
           TARGET_SIZE, TARGET_SIZE
         ];
         fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
@@ -257,7 +238,7 @@ describe('FontWatchRunner', function () {
       });
 
       it('should be a custom string', function () {
-        actualSizes = [
+        actualWidths = [
           TARGET_SIZE, TARGET_SIZE
         ];
 
@@ -313,14 +294,14 @@ describe('FontWatchRunner', function () {
           ruler = new FontRuler(domHelper, 'abcdef'),
           monospace = new Font('monospace'),
           sourceSansAFallback = new Font("'SourceSansA', monospace"),
-          activeSize = null,
-          originalSize = null,
+          activeWidth = null,
+          originalWidth = null,
           finalCheck = false;
 
       runs(function () {
         ruler.insert();
         ruler.setFont(monospace);
-        originalSize = ruler.getSize();
+        originalWidth = ruler.getWidth();
         ruler.setFont(sourceSansAFallback);
         fontWatchRunner.start();
       });
@@ -331,8 +312,8 @@ describe('FontWatchRunner', function () {
 
       runs(function () {
         expect(activeCallback).toHaveBeenCalledWith(sourceSansA);
-        activeSize = ruler.getSize();
-        expect(activeSize).not.toEqual(originalSize);
+        activeWidth = ruler.getWidth();
+        expect(activeWidth).not.toEqual(originalWidth);
 
         window.setTimeout(function () {
           finalCheck = true;
@@ -344,8 +325,8 @@ describe('FontWatchRunner', function () {
       });
 
       runs(function () {
-        expect(ruler.getSize()).not.toEqual(originalSize);
-        expect(ruler.getSize()).toEqual(activeSize);
+        expect(ruler.getWidth()).not.toEqual(originalWidth);
+        expect(ruler.getWidth()).toEqual(activeWidth);
       });
     });
 
@@ -372,14 +353,14 @@ describe('FontWatchRunner', function () {
           ruler = new FontRuler(domHelper, 'abcdef'),
           monospace = new Font('monospace'),
           sourceSansBFallback = new Font("'SourceSansB', monospace"),
-          activeSize = null,
-          originalSize = null,
+          activeWidth = null,
+          originalWidth = null,
           finalCheck = false;
 
       runs(function () {
         ruler.insert();
         ruler.setFont(monospace);
-        originalSize = ruler.getSize();
+        originalWidth = ruler.getWidth();
         ruler.setFont(sourceSansBFallback);
         fontWatchRunner.start();
         var link = document.createElement('link');
@@ -396,8 +377,8 @@ describe('FontWatchRunner', function () {
 
       runs(function () {
         expect(activeCallback).toHaveBeenCalledWith(sourceSansB);
-        activeSize = ruler.getSize();
-        expect(activeSize).not.toEqual(originalSize);
+        activeWidth = ruler.getWidth();
+        expect(activeWidth).not.toEqual(originalWidth);
 
         window.setTimeout(function () {
           finalCheck = true;
@@ -409,8 +390,8 @@ describe('FontWatchRunner', function () {
       });
 
       runs(function () {
-        expect(ruler.getSize()).not.toEqual(originalSize);
-        expect(ruler.getSize()).toEqual(activeSize);
+        expect(ruler.getWidth()).not.toEqual(originalWidth);
+        expect(ruler.getWidth()).toEqual(activeWidth);
       });
     });
   });

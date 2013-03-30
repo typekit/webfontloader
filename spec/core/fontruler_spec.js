@@ -13,7 +13,7 @@ describe('FontRuler', function () {
 
   it('should prevent a long test string from word wrapping', function () {
     var fontRulerA = new FontRuler(domHelper, 'abc'),
-        fontRulerB = new FontRuler(domHelper, 'Hello World, this should wrap!');
+        fontRulerB = new FontRuler(domHelper, 'abc HelloWorld,thisshouldwrap!!!!');
 
     fontRulerA.insert();
     fontRulerB.insert();
@@ -21,9 +21,9 @@ describe('FontRuler', function () {
     fontRulerA.setFont(font);
     fontRulerB.setFont(font);
 
-    var sizeA = fontRulerA.getSize(),
-        sizeB = fontRulerB.getSize();
+    var widthA = fontRulerA.getWidth(),
+        widthB = fontRulerB.getWidth();
 
-    expect(sizeA.height).toEqual(sizeB.height);
+    expect(widthA).not.toEqual(widthB);
   });
 });

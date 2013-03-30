@@ -1,7 +1,5 @@
 goog.provide('webfont.FontRuler');
 
-goog.require('webfont.Size');
-
 /**
  * An element that can be used to measure the metrics
  * of a given font and string.
@@ -16,8 +14,7 @@ webfont.FontRuler = function (domHelper, fontTestString) {
 };
 
 goog.scope(function () {
-  var FontRuler = webfont.FontRuler,
-      Size = webfont.Size;
+  var FontRuler = webfont.FontRuler;
 
   /**
    * @param {webfont.Font} font
@@ -46,10 +43,10 @@ goog.scope(function () {
   };
 
   /**
-   * @return {webfont.Size}
+   * @return {number}
    */
-  FontRuler.prototype.getSize = function() {
-    return new Size(this.el_.offsetWidth, this.el_.offsetHeight);
+  FontRuler.prototype.getWidth = function() {
+    return this.el_.offsetWidth;
   };
 
   /**

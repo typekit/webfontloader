@@ -8,7 +8,6 @@ core:
   - core/font.js
   - core/eventdispatcher.js
   - core/fontmoduleloader.js
-  - core/size.js
   - core/fontruler.js
   - core/fontwatchrunner.js
   - core/fontwatcher.js

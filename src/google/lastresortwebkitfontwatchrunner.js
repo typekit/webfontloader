@@ -22,10 +22,10 @@ webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
   goog.base(this, activeCallback, inactiveCallback, domHelper,
             font, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString);
 
-  this.webKitLastResortFontSizes_ = this.setUpWebKitLastResortFontSizes_();
-  this.webKitLastResortSizeChange_ = false;
-  this.lastObservedSizeA_ = this.lastResortSizes_[webfont.FontWatchRunner.LastResortFonts.SERIF];
-  this.lastObservedSizeB_ = this.lastResortSizes_[webfont.FontWatchRunner.LastResortFonts.SANS_SERIF];;
+  this.webKitLastResortFontWidths_ = this.setUpWebKitLastResortFontWidths_();
+  this.webKitLastResortWidthChange_ = false;
+  this.lastObservedWidthA_ = this.lastResortWidths_[webfont.FontWatchRunner.LastResortFonts.SERIF];
+  this.lastObservedWidthB_ = this.lastResortWidths_[webfont.FontWatchRunner.LastResortFonts.SANS_SERIF];;
 };
 
 goog.inherits(webfont.LastResortWebKitFontWatchRunner, webfont.FontWatchRunner)
@@ -50,58 +50,58 @@ goog.scope(function () {
    * OS/browsers values.
    */
   LastResortWebKitFontWatchRunner.prototype
-      .setUpWebKitLastResortFontSizes_ = function() {
+      .setUpWebKitLastResortFontWidths_ = function() {
     var lastResortFonts = ['Times New Roman', 'Arial', 'Times', 'Sans', 'Serif'];
-    var lastResortFontSizes = lastResortFonts.length;
     var variation = this.font_.getVariation();
-    var webKitLastResortFontSizes = {};
+    var lastResortFontWidths = lastResortFonts.length;
+    var webKitLastResortFontWidths = {};
     var fontRuler = new FontRuler(this.domHelper_, this.fontTestString_);
 
     fontRuler.insert();
     fontRuler.setFont(new Font(lastResortFonts[0], variation));
 
-    webKitLastResortFontSizes[fontRuler.getSize().width] = true;
-    for (var i = 1; i < lastResortFontSizes; i++) {
+    webKitLastResortFontWidths[fontRuler.getWidth()] = true;
+    for (var i = 1; i < lastResortFontWidths; i++) {
       var font = lastResortFonts[i];
       fontRuler.setFont(new Font(font, variation));
-      webKitLastResortFontSizes[fontRuler.getSize().width] = true;
+      webKitLastResortFontWidths[fontRuler.getWidth()] = true;
 
       // Another WebKit quirk if the normal weight/style is loaded first,
       // the size of the normal weight is returned when loading another weight.
       if (variation.toString().charAt(1) != '4') {
         fontRuler.setFont(new Font(font, variation.charAt(0) + '4'));
-        webKitLastResortFontSizes[fontRuler.getSize().width] = true;
+        webKitLastResortFontWidths[fontRuler.getWidth()] = true;
       }
     }
     fontRuler.remove();
-    return webKitLastResortFontSizes;
+    return webKitLastResortFontWidths;
   };
 
   /**
    * @override
    */
   LastResortWebKitFontWatchRunner.prototype.check_ = function() {
-    var sizeA = this.fontRulerA_.getSize();
-    var sizeB = this.fontRulerB_.getSize();
+    var widthA = this.fontRulerA_.getWidth();
+    var widthB = this.fontRulerB_.getWidth();
 
-    if (!this.webKitLastResortSizeChange_ && sizeA.width == sizeB.width &&
-        this.webKitLastResortFontSizes_[sizeA.width]) {
-      this.webKitLastResortFontSizes_ = {};
-      this.webKitLastResortFontSizes_[sizeA.width] = true;
-      this.webKitLastResortSizeChange_ = true;
+    if (!this.webKitLastResortWidthChange_ && widthA == widthB &&
+        this.webKitLastResortFontWidths_[widthA]) {
+      this.webKitLastResortFontWidths_ = {};
+      this.webKitLastResortFontWidths_[widthA] = true;
+      this.webKitLastResortWidthChange_ = true;
     }
-    if ((this.lastObservedSizeA_.width != sizeA.width || this.lastObservedSizeB_.width != sizeB.width) &&
-        (!this.webKitLastResortFontSizes_[sizeA.width] &&
-         !this.webKitLastResortFontSizes_[sizeB.width])) {
+    if ((this.lastObservedWidthA_ != widthA || this.lastObservedWidthB_ != widthB) &&
+        (!this.webKitLastResortFontWidths_[widthA] &&
+         !this.webKitLastResortFontWidths_[widthB])) {
       this.finish_(this.activeCallback_);
     } else if (goog.now() - this.started_ >= 5000) {
 
       // In order to handle the fact that a font could be the same size as the
       // default browser font on a webkit browser, mark the font as active
-      // after 5 seconds if the latest 2 sizes are in webKitLastResortFontSizes_
+      // after 5 seconds if the latest 2 widths are in webKitLastResortFontWidths_
       // and the font name is known to be metrics compatible.
-      if (this.webKitLastResortFontSizes_[sizeA.width]
-          && this.webKitLastResortFontSizes_[sizeB.width] &&
+      if (this.webKitLastResortFontWidths_[widthA]
+          && this.webKitLastResortFontWidths_[widthB] &&
           LastResortWebKitFontWatchRunner.METRICS_COMPATIBLE_FONTS[
             this.font_.getName()]) {
         this.finish_(this.activeCallback_);

@@ -1,7 +1,6 @@
 goog.provide('webfont.BrowserInfo');
 
 /**
- * @export
  * @constructor
  * @param {boolean} webfontSupport
  * @param {boolean} webKitFallbackBug

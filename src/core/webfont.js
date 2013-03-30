@@ -3,7 +3,6 @@ goog.provide('webfont.WebFont');
 goog.require('webfont.DomHelper');
 goog.require('webfont.EventDispatcher');
 goog.require('webfont.FontWatcher');
-goog.require('webfont.Size');
 
 /**
  * @param {Window} mainWindow The main application window containing
@@ -24,8 +23,7 @@ goog.scope(function () {
   var WebFont = webfont.WebFont,
       DomHelper = webfont.DomHelper,
       EventDispatcher = webfont.EventDispatcher,
-      FontWatcher = webfont.FontWatcher,
-      Size = webfont.Size;
+      FontWatcher = webfont.FontWatcher;
 
   /**
    * @param {string} name

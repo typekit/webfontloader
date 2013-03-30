@@ -1,3 +1,15 @@
+v1.4.0 (March 28, 2013)
+* Stop exporting the `addModule` API to dynamically add modules (it didn't work anyway.)
+* Stop checking the height when monitoring for font load. This turned out to be inconsistent across platforms.
+
+v1.3.2 (March 27, 2013)
+* Add support for the Amazon 1 and 2+ browsers.
+
+v1.3.1 (March 14, 2013)
+* Change code to use explicit dependencies
+* Fix unit tests in older browsers
+* Fix google/FontApiParser.js to work in IE <= 8
+
 v1.3.0 (February 28, 2013)
 * New optional configuration parameter `timeout` which lets you customize the default timeout.
 * Change the Typekit module to use `use.typekit.net` instead of `use.typekit.com`.
