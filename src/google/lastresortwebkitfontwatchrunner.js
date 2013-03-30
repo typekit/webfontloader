@@ -92,7 +92,7 @@ goog.scope(function () {
         (!this.webKitLastResortFontWidths_[widthA] &&
          !this.webKitLastResortFontWidths_[widthB])) {
       this.finish_(this.activeCallback_);
-    } else if (goog.now() - this.started_ >= 5000) {
+    } else if (this.hasTimedOut_()) {
 
       // In order to handle the fact that a font could be the same size as the
       // default browser font on a webkit browser, mark the font as active
