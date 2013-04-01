@@ -68,6 +68,14 @@ describe('FontWatcher', function () {
       fontWatcher.watch([], {}, FakeFontWatchRunner, true);
       expect(eventDispatcher.dispatchInactive).toHaveBeenCalled();
     });
+
+    it('should not call inactive when there are no fonts to load, but this is not the last set', function () {
+      activeFonts = [];
+      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
+
+      fontWatcher.watch([], {}, FakeFontWatchRunner, false);
+      expect(eventDispatcher.dispatchInactive).not.toHaveBeenCalled();
+    });
   });
 
   describe('watch one font not last', function () {

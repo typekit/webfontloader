@@ -37,13 +37,13 @@ goog.scope(function () {
    *                  number=,
    *                  Object.<string, boolean>=,
    *                  string=)} fontWatchRunnerCtor The font watch runner constructor.
-   * @param {boolean} last True if this is the last set of families to watch.
+   * @param {boolean} last True if this is the last set of fonts to watch.
    */
   FontWatcher.prototype.watch = function(fonts,
       fontTestStrings, fontWatchRunnerCtor, last) {
     var length = fonts.length;
 
-    if (length === 0) {
+    if (length === 0 && last) {
       this.eventDispatcher_.dispatchInactive();
       return;
     }
