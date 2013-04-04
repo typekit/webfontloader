@@ -7,7 +7,7 @@ goog.require('webfont.Font');
  */
 webfont.FontApiParser = function(fontFamilies) {
   this.fontFamilies_ = fontFamilies;
-  this.parsedFontFamilies_ = [];
+  this.parsedFonts_ = [];
   this.fontTestStrings_ = {};
 };
 
@@ -97,7 +97,7 @@ goog.scope(function () {
       }
 
       for (var j = 0; j < variations.length; j += 1) {
-        this.parsedFontFamilies_.push(new Font(fontFamily, variations[j]));
+        this.parsedFonts_.push(new Font(fontFamily, variations[j]));
       }
     }
   };
@@ -171,8 +171,8 @@ goog.scope(function () {
   };
 
 
-  FontApiParser.prototype.getFontFamilies = function() {
-    return this.parsedFontFamilies_;
+  FontApiParser.prototype.getFonts = function() {
+    return this.parsedFonts_;
   };
 
   FontApiParser.prototype.getFontTestStrings = function() {

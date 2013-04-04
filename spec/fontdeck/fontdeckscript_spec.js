@@ -84,7 +84,7 @@ describe('FontdeckScript', function () {
     it('should load correctly after calling the callback', function () {
       global.__webfontfontdeckmodule__['2282'](true, apiResponse);
 
-      expect(fontdeck.fontFamilies_).toEqual([new Font(apiResponse.fonts[0].name), new Font(apiResponse.fonts[1].name, 'i7')]);
+      expect(fontdeck.fonts_).toEqual([new Font(apiResponse.fonts[0].name), new Font(apiResponse.fonts[1].name, 'i7')]);
 
       expect(support).toHaveBeenCalled();
     });
@@ -102,8 +102,7 @@ describe('FontdeckScript', function () {
     });
 
     it('should not have loaded any fonts', function () {
-      expect(fontdeck.fontFamilies_).toEqual([]);
-      expect(fontdeck.fontVariations_).toEqual([]);
+      expect(fontdeck.fonts_).toEqual([]);
       expect(support).toHaveBeenCalled();
     });
   });

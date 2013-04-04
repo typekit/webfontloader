@@ -18,7 +18,7 @@ webfont.MonotypeScript = function (userAgent, domHelper, configuration) {
   this.userAgent_ = userAgent;
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
-  this.fontFamilies_ = [];
+  this.fonts_ = [];
 };
 
 /**
@@ -59,7 +59,7 @@ goog.scope(function () {
           var mti_fnts = loadWindow[webfont.MonotypeScript.HOOK + projectId]();
           if (mti_fnts) {
             for (var i = 0; i < mti_fnts.length; i++) {
-              self.fontFamilies_.push(new Font(mti_fnts[i]["fontfamily"]));
+              self.fonts_.push(new Font(mti_fnts[i]["fontfamily"]));
             }
           }
         }
@@ -91,7 +91,7 @@ goog.scope(function () {
   };
 
   MonotypeScript.prototype.load = function (onReady) {
-    onReady(this.fontFamilies_);
+    onReady(this.fonts_);
   };
 });
 

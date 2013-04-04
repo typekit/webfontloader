@@ -59,7 +59,7 @@ goog.scope(function () {
 
     domHelper.insertInto('head', domHelper.createCssLink(
         fontApiUrlBuilder.build()));
-    onReady(fontApiParser.getFontFamilies(), fontApiParser.getFontTestStrings());
+    onReady(fontApiParser.getFonts(), fontApiParser.getFontTestStrings());
   };
 });
 

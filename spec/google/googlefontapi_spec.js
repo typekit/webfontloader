@@ -26,12 +26,12 @@ describe('GoogleFontApi', function () {
 
   describe('call onReady with font family loading', function () {
     var googleFontApi = null,
-        families = null;
+        fonts = null;
 
     beforeEach(function () {
       googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, { families: ['Font1', 'Font2'] });
-      googleFontApi.load(function (fontFamilies) {
-        families = fontFamilies;
+      googleFontApi.load(function (f) {
+        fonts = f;
       });
     });
 
@@ -41,25 +41,22 @@ describe('GoogleFontApi', function () {
     });
 
     it('has the correct families', function () {
-      expect(families).not.toBeNull();
-      expect(families.length).toEqual(2);
-      expect(families[0]).toEqual(new Font('Font1'));
-      expect(families[1]).toEqual(new Font('Font2'));
+      expect(fonts).not.toBeNull();
+      expect(fonts.length).toEqual(2);
+      expect(fonts[0]).toEqual(new Font('Font1'));
+      expect(fonts[1]).toEqual(new Font('Font2'));
     });
   });
 
   describe('call onReady with font family loading and custom API url', function () {
-    var googleFontApi = null,
-        families = null;
+    var googleFontApi = null;
 
     beforeEach(function () {
       googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, {
         api: 'http://moo',
         families: ['Font1', 'Font2']
       });
-      googleFontApi.load(function (fontFamilies) {
-        families = fontFamilies;
-      });
+      googleFontApi.load(function () {});
     });
 
     it('has inserted the link element correctly', function () {
@@ -69,14 +66,11 @@ describe('GoogleFontApi', function () {
   });
 
   describe('spaces replaced by plus', function () {
-    var googleFontApi = null,
-        families = null;
+    var googleFontApi = null;
 
     beforeEach(function () {
       googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, { families: ['Font1 WithSpace', 'Font2 WithSpaceToo'] });
-      googleFontApi.load(function (fontFamilies) {
-        families = fontFamilies;
-      });
+      googleFontApi.load(function () {});
     });
 
     it('has inserted the link element correctly', function () {
@@ -86,14 +80,11 @@ describe('GoogleFontApi', function () {
  });
 
   describe('load with variations', function () {
-    var googleFontApi = null,
-        families = null;
+    var googleFontApi = null;
 
     beforeEach(function () {
       googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, { families: ['Font1 WithSpace:bi', 'Font2 WithSpaceToo:b,r'] });
-      googleFontApi.load(function (fontFamilies) {
-        families = fontFamilies;
-      });
+      googleFontApi.load(function () {});
     });
 
     it('has inserted the link element correctly', function () {

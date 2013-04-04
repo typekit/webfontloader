@@ -10,11 +10,11 @@ describe('FontApiParser', function () {
       parser.parse();
     });
 
-    it('should parse families correctly', function () {
-      var fontFamilies = parser.getFontFamilies();
+    it('should parse fonts correctly', function () {
+      var fonts = parser.getFonts();
 
-      expect(fontFamilies.length).toEqual(10);
-      expect(fontFamilies).toEqual([
+      expect(fonts.length).toEqual(10);
+      expect(fonts).toEqual([
         new Font('Tangerine', 'n4'),
         new Font('Droid Serif', 'i7'),
         new Font('Yanone Kaffeesatz', 'n2'),
@@ -38,10 +38,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse fonts correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(4);
-      expect(families).toEqual([
+      expect(fonts.length).toEqual(4);
+      expect(fonts).toEqual([
         new Font('Nobile', 'i7'),
         new Font('Nobile', 'n7'),
         new Font('Nobile', 'i2'),
@@ -59,10 +59,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual(new Font('Nobile', 'n4'));
+      expect(fonts.length).toEqual(1);
+      expect(fonts[0]).toEqual(new Font('Nobile', 'n4'));
     });
   });
 
@@ -75,10 +75,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual(new Font('Nobile', 'n4'));
+      expect(fonts.length).toEqual(1);
+      expect(fonts[0]).toEqual(new Font('Nobile', 'n4'));
     });
   });
 
@@ -91,10 +91,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual(new Font('Cantarell', 'n4'));
+      expect(fonts.length).toEqual(1);
+      expect(fonts[0]).toEqual(new Font('Cantarell', 'n4'));
     });
 
     it('should parse pick test strings correctly', function () {
@@ -115,10 +115,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual(new Font('Cantarell', 'n4'));
+      expect(fonts.length).toEqual(1);
+      expect(fonts[0]).toEqual(new Font('Cantarell', 'n4'));
     });
 
     it('should parse pick test strings correctly', function () {
@@ -139,10 +139,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(2);
-      expect(families).toEqual([
+      expect(fonts.length).toEqual(2);
+      expect(fonts).toEqual([
         new Font('Cantarell', 'n4'),
         new Font('Cantarell', 'n7')
       ]);
@@ -166,10 +166,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual(new Font('Hanuman', 'n4'));
+      expect(fonts.length).toEqual(1);
+      expect(fonts[0]).toEqual(new Font('Hanuman', 'n4'));
     });
 
     it('should parse pick test strings correctly', function () {
@@ -190,10 +190,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual(new Font('Hanuman', 'n4'));
+      expect(fonts.length).toEqual(1);
+      expect(fonts[0]).toEqual(new Font('Hanuman', 'n4'));
     });
 
     it('should parse pick test strings correctly', function () {
@@ -214,10 +214,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var fontFamilies = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(fontFamilies.length).toEqual(4);
-      expect(fontFamilies).toEqual([
+      expect(fonts.length).toEqual(4);
+      expect(fonts).toEqual([
         new Font('Erica One', 'n4'),
         new Font('Droid Serif', 'n4'),
         new Font('Yanone Kaffeesatz', 'n4'),
