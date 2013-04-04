@@ -77,8 +77,8 @@ goog.scope(function () {
       return;
     }
 
-    module.load(function (fontFamilies) {
-      that.onModuleReady_(eventDispatcher, fontWatcher, fontWatchRunnerCtor, fontFamilies);
+    module.load(function (fonts) {
+      that.onModuleReady_(eventDispatcher, fontWatcher, fontWatchRunnerCtor, fonts);
     });
   };
 
