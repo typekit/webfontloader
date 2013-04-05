@@ -37,6 +37,17 @@ goog.scope(function () {
   );
 
   /**
+   * Returns true if the version is valid. A
+   * version is considered valid if it has at
+   * least a major version number.
+   *
+   * @return {boolean}
+   */
+  Version.prototype.isValid = function () {
+    return !goog.isNull(this.major);
+  };
+
+  /**
    * @param {string} str
    * @return {!webfont.Version}
    */

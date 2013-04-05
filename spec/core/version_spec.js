@@ -53,4 +53,16 @@ describe('Version', function () {
       expect(Version.parse('0.10.1')).toEqual(new Version(0, 10, 1));
     });
   });
+
+  describe('#isValid', function () {
+    it('should return true when the version is valid', function () {
+      expect(new Version(1).isValid()).toBe(true);
+      expect(new Version(1, 2).isValid()).toBe(true);
+    });
+
+    it('should return false when the version is not valid', function () {
+      expect(new Version().isValid()).toBe(false);
+      expect(new Version(null, 1).isValid()).toBe(false);
+    });
+  });
 });
