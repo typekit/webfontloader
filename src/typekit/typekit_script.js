@@ -1,5 +1,7 @@
 goog.provide('webfont.TypekitScript');
 
+goog.require('webfont.Font');
+
 /**
  * @constructor
  * @implements {webfont.FontModule}
@@ -7,15 +9,15 @@ goog.provide('webfont.TypekitScript');
 webfont.TypekitScript = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
-  this.fontFamilies_ = [];
-  this.fontVariations_ = {};
+  this.fonts_ = [];
 };
 
 webfont.TypekitScript.NAME = 'typekit';
 webfont.TypekitScript.HOOK = '__webfonttypekitmodule__';
 
 goog.scope(function () {
-  var TypekitScript = webfont.TypekitScript;
+  var TypekitScript = webfont.TypekitScript,
+      Font = webfont.Font;
 
   TypekitScript.prototype.getScriptSrc = function(kitId) {
     var protocol = this.domHelper_.getProtocol();
@@ -39,8 +41,17 @@ goog.scope(function () {
       // and what fonts will be provided.
       loadWindow[webfont.TypekitScript.HOOK][kitId] = function(callback) {
         var init = function(typekitSupports, fontFamilies, fontVariations) {
-          self.fontFamilies_ = fontFamilies;
-          self.fontVariations_ = fontVariations;
+          for (var i = 0; i < fontFamilies.length; i += 1) {
+            var variations = fontVariations[fontFamilies[i]];
+
+            if (variations) {
+              for(var j = 0; j < variations.length; j += 1) {
+                self.fonts_.push(new Font(fontFamilies[i], variations[j]));
+              }
+            } else {
+              self.fonts_.push(new Font(fontFamilies[i]));
+            }
+          }
           support(typekitSupports);
         };
         callback(userAgent, configuration, init);
@@ -49,14 +60,13 @@ goog.scope(function () {
       // Load the Typekit script.
       var script = this.domHelper_.createScriptSrc(this.getScriptSrc(kitId))
       this.domHelper_.insertInto('head', script);
-
     } else {
       support(true);
     }
   };
 
   TypekitScript.prototype.load = function(onReady) {
-    onReady(this.fontFamilies_, this.fontVariations_);
+    onReady(this.fonts_);
   };
 });
 

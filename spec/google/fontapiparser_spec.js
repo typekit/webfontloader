@@ -1,5 +1,6 @@
 describe('FontApiParser', function () {
-  var FontApiParser = webfont.FontApiParser;
+  var FontApiParser = webfont.FontApiParser,
+      Font = webfont.Font;
 
   describe('parsed values are coherent', function () {
     var parser = null;
@@ -9,56 +10,22 @@ describe('FontApiParser', function () {
       parser.parse();
     });
 
-    it('should parse families correctly', function () {
-      var fontFamilies = parser.getFontFamilies();
+    it('should parse fonts correctly', function () {
+      var fonts = parser.getFonts();
 
-      expect(fontFamilies.length).toEqual(6);
-      expect(fontFamilies).toEqual([
-        'Tangerine',
-        'Droid Serif',
-        'Yanone Kaffeesatz',
-        'Cantarell',
-        'Exo',
-        'Lobster'
+      expect(fonts.length).toEqual(10);
+      expect(fonts).toEqual([
+        new Font('Tangerine', 'n4'),
+        new Font('Droid Serif', 'i7'),
+        new Font('Yanone Kaffeesatz', 'n2'),
+        new Font('Yanone Kaffeesatz', 'n3'),
+        new Font('Yanone Kaffeesatz', 'n4'),
+        new Font('Yanone Kaffeesatz', 'n7'),
+        new Font('Cantarell', 'i4'),
+        new Font('Cantarell', 'n7'),
+        new Font('Exo', 'i1'),
+        new Font('Lobster', 'n2')
       ]);
-    });
-
-    it('should parse variations correctly', function () {
-      var variations = parser.getVariations();
-
-      var tangerine = variations['Tangerine'];
-      expect(tangerine).not.toBeNull();
-      expect(tangerine.length).toEqual(1);
-      expect(tangerine[0]).toEqual('n4');
-
-      var droidSerif = variations['Droid Serif'];
-      expect(droidSerif).not.toBeNull();
-      expect(droidSerif.length).toEqual(1);
-      expect(droidSerif[0]).toEqual('i7');
-
-      var yanoneKaffeesatz = variations['Yanone Kaffeesatz'];
-      expect(yanoneKaffeesatz).not.toBeNull();
-      expect(yanoneKaffeesatz.length).toEqual(4);
-      expect(yanoneKaffeesatz[0]).toEqual('n2');
-      expect(yanoneKaffeesatz[1]).toEqual('n3');
-      expect(yanoneKaffeesatz[2]).toEqual('n4');
-      expect(yanoneKaffeesatz[3]).toEqual('n7');
-
-      var cantarell = variations['Cantarell'];
-      expect(cantarell).not.toBeNull();
-      expect(cantarell.length).toEqual(2);
-      expect(cantarell[0]).toEqual('i4');
-      expect(cantarell[1]).toEqual('n7');
-
-      var exo = variations['Exo'];
-      expect(exo).not.toBeNull();
-      expect(exo.length).toEqual(1);
-      expect(exo[0]).toEqual('i1');
-
-      var lobster = variations['Lobster'];
-      expect(lobster).not.toBeNull();
-      expect(lobster.length).toEqual(1);
-      expect(lobster[0]).toEqual('n2');
     });
   });
 
@@ -70,23 +37,16 @@ describe('FontApiParser', function () {
       parser.parse();
     });
 
-    it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+    it('should parse fonts correctly', function () {
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual('Nobile');
-    });
-
-    it('should parse variations correctly', function () {
-      var variations = parser.getVariations(),
-          nobile = variations['Nobile'];
-
-      expect(nobile).not.toBeNull();
-      expect(nobile.length).toEqual(4);
-      expect(nobile[0]).toEqual('i7');
-      expect(nobile[1]).toEqual('n7');
-      expect(nobile[2]).toEqual('i2');
-      expect(nobile[3]).toEqual('n4');
+      expect(fonts.length).toEqual(4);
+      expect(fonts).toEqual([
+        new Font('Nobile', 'i7'),
+        new Font('Nobile', 'n7'),
+        new Font('Nobile', 'i2'),
+        new Font('Nobile', 'n4')
+      ]);
     });
   });
 
@@ -99,19 +59,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual('Nobile');
-    });
-
-    it('should parse variations correctly', function () {
-      var variations = parser.getVariations(),
-          nobile = variations['Nobile'];
-
-      expect(nobile).not.toBeNull();
-      expect(nobile.length).toEqual(1);
-      expect(nobile[0]).toEqual('n4');
+      expect(fonts.length).toEqual(1);
+      expect(fonts[0]).toEqual(new Font('Nobile', 'n4'));
     });
   });
 
@@ -124,19 +75,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual('Nobile');
-    });
-
-    it('should parse variations correctly', function () {
-      var variations = parser.getVariations(),
-          nobile = variations['Nobile'];
-
-      expect(nobile).not.toBeNull();
-      expect(nobile.length).toEqual(1);
-      expect(nobile[0]).toEqual('n4');
+      expect(fonts.length).toEqual(1);
+      expect(fonts[0]).toEqual(new Font('Nobile', 'n4'));
     });
   });
 
@@ -149,19 +91,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual('Cantarell');
-    });
-
-    it('should parse variations correctly', function () {
-      var variations = parser.getVariations(),
-          cantarell = variations['Cantarell'];
-
-      expect(cantarell).not.toBeNull();
-      expect(cantarell.length).toEqual(1);
-      expect(cantarell[0]).toEqual('n4');
+      expect(fonts.length).toEqual(1);
+      expect(fonts[0]).toEqual(new Font('Cantarell', 'n4'));
     });
 
     it('should parse pick test strings correctly', function () {
@@ -182,19 +115,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual('Cantarell');
-    });
-
-    it('should parse variations correctly', function () {
-      var variations = parser.getVariations(),
-          cantarell = variations['Cantarell'];
-
-      expect(cantarell).not.toBeNull();
-      expect(cantarell.length).toEqual(1);
-      expect(cantarell[0]).toEqual('n4');
+      expect(fonts.length).toEqual(1);
+      expect(fonts[0]).toEqual(new Font('Cantarell', 'n4'));
     });
 
     it('should parse pick test strings correctly', function () {
@@ -215,20 +139,13 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual('Cantarell');
-    });
-
-    it('should parse variations correctly', function () {
-      var variations = parser.getVariations(),
-          cantarell = variations['Cantarell'];
-
-      expect(cantarell).not.toBeNull();
-      expect(cantarell.length).toEqual(2);
-      expect(cantarell[0]).toEqual('n4');
-      expect(cantarell[1]).toEqual('n7');
+      expect(fonts.length).toEqual(2);
+      expect(fonts).toEqual([
+        new Font('Cantarell', 'n4'),
+        new Font('Cantarell', 'n7')
+      ]);
     });
 
     it('should parse pick test strings correctly', function () {
@@ -249,19 +166,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual('Hanuman');
-    });
-
-    it('should parse variations correctly', function () {
-      var variations = parser.getVariations(),
-          hanuman = variations['Hanuman'];
-
-      expect(hanuman).not.toBeNull();
-      expect(hanuman.length).toEqual(1);
-      expect(hanuman[0]).toEqual('n4');
+      expect(fonts.length).toEqual(1);
+      expect(fonts[0]).toEqual(new Font('Hanuman', 'n4'));
     });
 
     it('should parse pick test strings correctly', function () {
@@ -282,19 +190,10 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var families = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(families.length).toEqual(1);
-      expect(families[0]).toEqual('Hanuman');
-    });
-
-    it('should parse variations correctly', function () {
-      var variations = parser.getVariations(),
-          hanuman = variations['Hanuman'];
-
-      expect(hanuman).not.toBeNull();
-      expect(hanuman.length).toEqual(1);
-      expect(hanuman[0]).toEqual('n4');
+      expect(fonts.length).toEqual(1);
+      expect(fonts[0]).toEqual(new Font('Hanuman', 'n4'));
     });
 
     it('should parse pick test strings correctly', function () {
@@ -315,34 +214,15 @@ describe('FontApiParser', function () {
     });
 
     it('should parse families correctly', function () {
-      var fontFamilies = parser.getFontFamilies();
+      var fonts = parser.getFonts();
 
-      expect(fontFamilies.length).toEqual(3);
-      expect(fontFamilies).toEqual([
-        'Erica One',
-        'Droid Serif',
-        'Yanone Kaffeesatz'
+      expect(fonts.length).toEqual(4);
+      expect(fonts).toEqual([
+        new Font('Erica One', 'n4'),
+        new Font('Droid Serif', 'n4'),
+        new Font('Yanone Kaffeesatz', 'n4'),
+        new Font('Yanone Kaffeesatz', 'n7')
       ]);
-    });
-
-    it('should parse variations correctly', function () {
-      var variations = parser.getVariations();
-
-      var ericaOne = variations['Erica One'];
-      expect(ericaOne).not.toBeNull();
-      expect(ericaOne.length).toEqual(1);
-      expect(ericaOne[0]).toEqual('n4');
-
-      var droidSerif = variations['Droid Serif'];
-      expect(droidSerif).not.toBeNull();
-      expect(droidSerif.length).toEqual(1);
-      expect(droidSerif[0]).toEqual('n4');
-
-      var yanoneKaffeesatz = variations['Yanone Kaffeesatz'];
-      expect(yanoneKaffeesatz).not.toBeNull();
-      expect(yanoneKaffeesatz.length).toEqual(2);
-      expect(yanoneKaffeesatz[0]).toEqual('n4');
-      expect(yanoneKaffeesatz[1]).toEqual('n7');
     });
   });
 });

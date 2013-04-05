@@ -1,136 +1,117 @@
-goog.provide('webfont.WebFont');
-
-goog.require('webfont.DomHelper');
-goog.require('webfont.EventDispatcher');
-goog.require('webfont.FontWatcher');
+goog.provide('webfont.Font');
 
 /**
- * @param {Window} mainWindow The main application window containing
- *   webfontloader.js.
- * @param {webfont.FontModuleLoader} fontModuleLoader A loader instance to use.
- * @param {webfont.UserAgent} userAgent The detected user agent to load for.
+ * This class is an abstraction for a single font or typeface.
+ * It contains the font name and the variation (i.e. style
+ * and weight.) A collection Font instances can represent a
+ * font family.
+ *
  * @constructor
+ * @param {string} name The font family name
+ * @param {string=} opt_variation A font variation description
  */
-webfont.WebFont = function(mainWindow, fontModuleLoader, userAgent) {
-  this.mainWindow_ = mainWindow;
-  this.fontModuleLoader_ = fontModuleLoader;
-  this.userAgent_ = userAgent;
-  this.moduleLoading_ = 0;
-  this.moduleFailedLoading_ = 0;
+webfont.Font = function (name, opt_variation) {
+  this.name_ = name;
+  this.weight_ = 4;
+  this.style_ = 'n'
+
+  var variation = opt_variation || 'n4',
+      match = variation.match(/^([nio])([1-9])$/i);
+
+  if (match) {
+    this.style_ = match[1];
+    this.weight_ = parseInt(match[2], 10);
+  }
 };
 
 goog.scope(function () {
-  var WebFont = webfont.WebFont,
-      DomHelper = webfont.DomHelper,
-      EventDispatcher = webfont.EventDispatcher,
-      FontWatcher = webfont.FontWatcher;
+  var Font = webfont.Font;
 
   /**
+   * @return {string}
+   */
+  Font.prototype.getName = function () {
+    return this.name_;
+  };
+
+  /**
+   * @return {string}
+   */
+  Font.prototype.getCssName = function () {
+    return this.quote_(this.name_);
+  };
+
+  /**
+   * @private
    * @param {string} name
-   * @param {webfont.FontModuleFactory} factory
+   * @return {string}
    */
-  WebFont.prototype.addModule = function(name, factory) {
-    this.fontModuleLoader_.addModuleFactory(name, factory);
-  };
-
-  /**
-   * @param {Object} configuration
-   */
-  WebFont.prototype.load = function(configuration) {
-    var context = configuration['context'] || this.mainWindow_;
-    this.domHelper_ = new DomHelper(this.mainWindow_, context);
-
-    var eventDispatcher = new EventDispatcher(
-        this.domHelper_, context.document.documentElement, configuration);
-
-    if (this.userAgent_.getBrowserInfo().hasWebFontSupport()) {
-      this.load_(eventDispatcher, configuration);
-    } else {
-      eventDispatcher.dispatchInactive();
+  Font.prototype.quote_ = function (name) {
+    var quoted = [];
+    var split = name.split(/,\s*/);
+    for (var i = 0; i < split.length; i++) {
+      var part = split[i].replace(/['"]/g, '');
+      if (part.indexOf(' ') == -1) {
+        quoted.push(part);
+      } else {
+        quoted.push("'" + part + "'");
+      }
     }
+    return quoted.join(',');
   };
 
   /**
-   * @param {webfont.FontModule} module
-   * @param {webfont.EventDispatcher} eventDispatcher
-   * @param {webfont.FontWatcher} fontWatcher
-   * @param {boolean} support
+   * @return {string}
    */
-  WebFont.prototype.isModuleSupportingUserAgent_ = function(module, eventDispatcher,
-      fontWatcher, support) {
-    var fontWatchRunnerCtor = module.getFontWatchRunnerCtor ?
-        module.getFontWatchRunnerCtor() : webfont.FontWatchRunner,
-        that = this;
+  Font.prototype.getVariation = function () {
+    return this.style_ + this.weight_;
+  };
 
-    if (!support) {
-      var allModulesLoaded = --this.moduleLoading_ == 0;
+  /**
+   * @return {string}
+   */
+  Font.prototype.getCssVariation = function () {
+    var style = 'normal',
+        weight = this.weight_ + '00';
 
-      this.moduleFailedLoading_--;
-      if (allModulesLoaded) {
-        if (this.moduleFailedLoading_ == 0) {
-          eventDispatcher.dispatchInactive();
-        } else {
-          eventDispatcher.dispatchLoading();
+    if (this.style_ === 'o') {
+      style = 'oblique';
+    } else if (this.style_ === 'i') {
+      style = 'italic';
+    }
+
+    return 'font-style:' + style + ';font-weight:' + weight + ';';
+  };
+
+  /**
+   * Parses a CSS font declaration and returns a font
+   * variation description.
+   *
+   * @param {string} css
+   * @return {string}
+   */
+  Font.parseCssVariation = function (css) {
+    var weight = 4,
+        style = 'n',
+        m = null;
+
+    if (css) {
+      m = css.match(/(normal|oblique|italic)/i);
+
+      if (m && m[1]) {
+        style = m[1].substr(0, 1).toLowerCase();
+      }
+
+      m = css.match(/([1-9]00|normal|bold)/i);
+
+      if (m && m[1]) {
+        if (/bold/i.test(m[1])) {
+          weight = 7;
+        } else if (/[1-9]00/.test(m[1])) {
+          weight = parseInt(m[1].substr(0, 1), 10);
         }
       }
-      fontWatcher.watch([], {}, {}, fontWatchRunnerCtor, allModulesLoaded);
-      return;
     }
-
-    module.load(function (fontFamilies, fontVariations) {
-      that.onModuleReady_(eventDispatcher, fontWatcher, fontWatchRunnerCtor, fontFamilies, fontVariations);
-    });
-  };
-
-  /**
-   * @param {webfont.EventDispatcher} eventDispatcher
-   * @param {webfont.FontWatcher} fontWatcher
-   * @param {function(new:webfont.FontWatchRunner,
-   *                  function(string, string),
-   *                  function(string, string),
-   *                  webfont.DomHelper,
-   *                  string,
-   *                  string,
-   *                  webfont.BrowserInfo,
-   *                  number=,
-   *                  Object.<string, boolean>=,
-   *                  string=)} fontWatchRunnerCtor
-   * @param {webfont.FontFamilies} fontFamilies
-   * @param {webfont.FontVariations=} opt_fontVariations
-   * @param {webfont.FontTestStrings=} opt_fontTestStrings
-   */
-  WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher,
-      fontWatchRunnerCtor, fontFamilies, opt_fontVariations, opt_fontTestStrings) {
-    var allModulesLoaded = --this.moduleLoading_ == 0;
-
-    if (allModulesLoaded) {
-      eventDispatcher.dispatchLoading();
-    }
-
-    setTimeout(function () {
-      fontWatcher.watch(fontFamilies, opt_fontVariations || {}, opt_fontTestStrings || {}, fontWatchRunnerCtor, allModulesLoaded);
-    }, 0);
-  };
-
-  /**
-   * @param {webfont.EventDispatcher} eventDispatcher
-   * @param {Object} configuration
-   */
-  WebFont.prototype.load_ = function(eventDispatcher, configuration) {
-    var modules = this.fontModuleLoader_.getModules(configuration, this.domHelper_),
-        timeout = configuration['timeout'],
-        self = this;
-
-    this.moduleFailedLoading_ = this.moduleLoading_ = modules.length;
-
-    var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.domHelper_, eventDispatcher, timeout);
-
-    for (var i = 0, len = modules.length; i < len; i++) {
-      var module = modules[i];
-
-      module.supportUserAgent(this.userAgent_,
-          goog.bind(this.isModuleSupportingUserAgent_, this, module,
-          eventDispatcher, fontWatcher));
-    }
-  };
+    return style + weight;
+  }
 });

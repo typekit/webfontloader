@@ -1,5 +1,6 @@
 describe('CustomCss', function () {
-  var CustomCss = webfont.CustomCss;
+  var CustomCss = webfont.CustomCss,
+      FontFamily = webfont.FontFamily;
 
   describe('insert links correctly', function () {
     var fakeDomHelper = null,
@@ -30,7 +31,9 @@ describe('CustomCss', function () {
     it('should have loaded the families correctly', function () {
       expect(load.callCount).toEqual(1);
       expect(load.calls[0].args[0].length).toEqual(3);
-      expect(load.calls[0].args[0]).toEqual(['Font1', 'Font2', 'Font3']);
+      expect(load.calls[0].args[0][0].getName()).toEqual('Font1');
+      expect(load.calls[0].args[0][1].getName()).toEqual('Font2');
+      expect(load.calls[0].args[0][2].getName()).toEqual('Font3');
     });
   });
 });

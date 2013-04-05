@@ -1,5 +1,7 @@
 goog.provide('webfont.AscenderScript');
 
+goog.require('webfont.Font');
+
 /**
  *
  * WebFont.load({
@@ -31,7 +33,8 @@ webfont.AscenderScript.VARIATIONS = {
 };
 
 goog.scope(function () {
-  var AscenderScript = webfont.AscenderScript;
+  var AscenderScript = webfont.AscenderScript,
+      Font = webfont.Font;
 
   AscenderScript.prototype.supportUserAgent = function(userAgent, support) {
     return support(userAgent.getBrowserInfo().hasWebFontSupport());
@@ -43,40 +46,54 @@ goog.scope(function () {
     var url = protocol + '//webfonts.fontslive.com/css/' + key + '.css';
     this.domHelper_.insertInto('head', this.domHelper_.createCssLink(url));
     var fv = this.parseFamiliesAndVariations(this.configuration_['families']);
-    onReady(fv.families, fv.variations);
+    onReady(fv);
   };
 
-  AscenderScript.prototype.parseFamiliesAndVariations = function(providedFamilies){
-    var families, variations, fv;
-    families = [];
-    variations = {};
-    for(var i = 0, len = providedFamilies.length; i < len; i++){
-      fv = this.parseFamilyAndVariations(providedFamilies[i]);
-      families.push(fv.family);
-      variations[fv.family] = fv.variations;
+  /**
+   * @param {Array.<string>} providedFamilies
+   * @return {Array.<webfont.Font>}
+   */
+  AscenderScript.prototype.parseFamiliesAndVariations = function (providedFamilies) {
+    var fonts = [];
+
+    for (var i = 0, len = providedFamilies.length; i < len; i++) {
+      fonts.push.apply(fonts, this.parseFamilyAndVariations(providedFamilies[i]));
     }
-    return { families:families, variations:variations };
+    return fonts;
   };
 
-  AscenderScript.prototype.parseFamilyAndVariations = function(providedFamily){
-    var family, variations, parts;
-    parts = providedFamily.split(':');
-    family = parts[0];
-    variations = [];
-    if(parts[1]){
-      variations = this.parseVariations(parts[1]);
-    }else{
-      variations = ['n4'];
+  /**
+   * @param {string} providedFamily
+   * @return {Array.<webfont.Font>}
+   */
+  AscenderScript.prototype.parseFamilyAndVariations = function (providedFamily){
+    var parts = providedFamily.split(':'),
+        familyName = parts[0];
+
+    if (parts[1]) {
+      var variations = this.parseVariations(parts[1]),
+          result = [];
+
+      for (var i = 0; i < variations.length; i += 1) {
+        result.push(new Font(familyName, variations[i]));
+      }
+      return result;
     }
-    return { family:family, variations:variations };
+    return [new Font(familyName)];
   };
 
-  AscenderScript.prototype.parseVariations = function(source){
-    var providedVariations = source.split(',');
-    var variations = [];
-    for(var i = 0, len = providedVariations.length; i < len; i++){
+  /**
+   * @param {string} source
+   * @return {Array.<string>}
+   */
+  AscenderScript.prototype.parseVariations = function (source) {
+    var providedVariations = source.split(','),
+        variations = [];
+
+    for (var i = 0, len = providedVariations.length; i < len; i++){
       var pv = providedVariations[i];
-      if(pv){
+
+      if (pv) {
         var v = AscenderScript.VARIATIONS[pv];
         variations.push(v ? v : pv);
       }

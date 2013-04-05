@@ -68,58 +68,55 @@ goog.scope(function () {
 
   /**
    * Dispatch the font loading event and append the font loading class name.
-   * @param {string} fontFamily
-   * @param {string} fontDescription
+   * @param {webfont.Font} font
    */
-  EventDispatcher.prototype.dispatchFontLoading = function(fontFamily, fontDescription) {
+  EventDispatcher.prototype.dispatchFontLoading = function(font) {
     this.domHelper_.appendClassName(this.htmlElement_,
         this.cssClassName_.build(
-            this.namespace_, fontFamily, fontDescription, webfont.EventDispatcher.LOADING));
+            this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.LOADING));
     this.dispatch_(
-        webfont.EventDispatcher.FONT + webfont.EventDispatcher.LOADING, fontFamily, fontDescription);
+        webfont.EventDispatcher.FONT + webfont.EventDispatcher.LOADING, font);
   };
 
   /**
    * Dispatch the font active event, remove the font loading class name, remove
    * the font inactive class name, and append the font active class name.
-   * @param {string} fontFamily
-   * @param {string} fontDescription
+   * @param {webfont.Font} font
    */
-  EventDispatcher.prototype.dispatchFontActive = function(fontFamily, fontDescription) {
+  EventDispatcher.prototype.dispatchFontActive = function(font) {
     this.domHelper_.removeClassName(this.htmlElement_,
         this.cssClassName_.build(
-            this.namespace_, fontFamily, fontDescription, webfont.EventDispatcher.LOADING));
+            this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.LOADING));
     this.domHelper_.removeClassName(this.htmlElement_,
         this.cssClassName_.build(
-            this.namespace_, fontFamily, fontDescription, webfont.EventDispatcher.INACTIVE));
+            this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.INACTIVE));
     this.domHelper_.appendClassName(this.htmlElement_,
         this.cssClassName_.build(
-            this.namespace_, fontFamily, fontDescription, webfont.EventDispatcher.ACTIVE));
+            this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.ACTIVE));
     this.dispatch_(
-        webfont.EventDispatcher.FONT + webfont.EventDispatcher.ACTIVE, fontFamily, fontDescription);
+        webfont.EventDispatcher.FONT + webfont.EventDispatcher.ACTIVE, font);
   };
 
   /**
    * Dispatch the font inactive event, remove the font loading class name, and
    * append the font inactive class name (unless the font active class name is
    * already present).
-   * @param {string} fontFamily
-   * @param {string} fontDescription
+   * @param {webfont.Font} font
    */
-  EventDispatcher.prototype.dispatchFontInactive = function(fontFamily, fontDescription) {
+  EventDispatcher.prototype.dispatchFontInactive = function(font) {
     this.domHelper_.removeClassName(this.htmlElement_,
         this.cssClassName_.build(
-            this.namespace_, fontFamily, fontDescription, webfont.EventDispatcher.LOADING));
+            this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.LOADING));
     var hasFontActive = this.domHelper_.hasClassName(this.htmlElement_,
         this.cssClassName_.build(
-            this.namespace_, fontFamily, fontDescription, webfont.EventDispatcher.ACTIVE));
+            this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.ACTIVE));
     if (!hasFontActive) {
       this.domHelper_.appendClassName(this.htmlElement_,
           this.cssClassName_.build(
-              this.namespace_, fontFamily, fontDescription, webfont.EventDispatcher.INACTIVE));
+              this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.INACTIVE));
     }
     this.dispatch_(
-        webfont.EventDispatcher.FONT + webfont.EventDispatcher.INACTIVE, fontFamily, fontDescription);
+        webfont.EventDispatcher.FONT + webfont.EventDispatcher.INACTIVE, font);
   };
 
   /**
@@ -160,12 +157,15 @@ goog.scope(function () {
 
   /**
    * @param {string} event
-   * @param {string=} opt_arg1
-   * @param {string=} opt_arg2
+   * @param {webfont.Font=} opt_font
    */
-  EventDispatcher.prototype.dispatch_ = function(event, opt_arg1, opt_arg2) {
+  EventDispatcher.prototype.dispatch_ = function(event, opt_font) {
     if (this.callbacks_[event]) {
-      this.callbacks_[event](opt_arg1, opt_arg2);
+      if (opt_font) {
+        this.callbacks_[event](opt_font.getName(), opt_font.getVariation());
+      } else {
+        this.callbacks_[event]();
+      }
     }
   };
 });

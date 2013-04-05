@@ -1,26 +1,25 @@
 goog.provide('webfont.FontWatchRunner');
 
+goog.require('webfont.Font');
 goog.require('webfont.FontRuler');
 
 /**
  * @constructor
- * @param {function(string, string)} activeCallback
- * @param {function(string, string)} inactiveCallback
+ * @param {function(webfont.Font)} activeCallback
+ * @param {function(webfont.Font)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
- * @param {string} fontFamily
- * @param {string} fontDescription
+ * @param {webfont.Font} font
  * @param {webfont.BrowserInfo} browserInfo
  * @param {number=} opt_timeout
  * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    fontFamily, fontDescription, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
+    font, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
-  this.fontFamily_ = fontFamily;
-  this.fontDescription_ = fontDescription;
+  this.font_ = font;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
   this.browserInfo_ = browserInfo;
   this.lastResortWidths_ = {};
@@ -55,6 +54,7 @@ webfont.FontWatchRunner.DEFAULT_TEST_STRING = 'BESbswy';
 
 goog.scope(function () {
   var FontWatchRunner = webfont.FontWatchRunner,
+      Font = webfont.Font,
       FontRuler = webfont.FontRuler;
 
   /**
@@ -67,7 +67,7 @@ goog.scope(function () {
 
     for (var font in FontWatchRunner.LastResortFonts) {
       if (FontWatchRunner.LastResortFonts.hasOwnProperty(font)) {
-        fontRuler.setFont(FontWatchRunner.LastResortFonts[font], this.fontDescription_);
+        fontRuler.setFont(new Font(FontWatchRunner.LastResortFonts[font], this.font_.getVariation()));
         this.lastResortWidths_[FontWatchRunner.LastResortFonts[font]] = fontRuler.getWidth();
       }
     }
@@ -82,8 +82,8 @@ goog.scope(function () {
 
     this.started_ = goog.now();
 
-    this.fontRulerA_.setFont(this.fontFamily_ + ',' + FontWatchRunner.LastResortFonts.SERIF, this.fontDescription_);
-    this.fontRulerB_.setFont(this.fontFamily_ + ',' + FontWatchRunner.LastResortFonts.SANS_SERIF, this.fontDescription_);
+    this.fontRulerA_.setFont(new Font(this.font_.getName() + ',' + FontWatchRunner.LastResortFonts.SERIF, this.font_.getVariation()));
+    this.fontRulerB_.setFont(new Font(this.font_.getName() + ',' + FontWatchRunner.LastResortFonts.SANS_SERIF, this.font_.getVariation()));
 
     this.check_();
   };
@@ -163,7 +163,7 @@ goog.scope(function () {
    * @return {boolean}
    */
   FontWatchRunner.prototype.isMetricCompatibleFont_ = function () {
-    return this.metricCompatibleFonts_ === null || this.metricCompatibleFonts_.hasOwnProperty(this.fontFamily_);
+    return this.metricCompatibleFonts_ === null || this.metricCompatibleFonts_.hasOwnProperty(this.font_.getName());
   };
 
   /**
@@ -205,11 +205,11 @@ goog.scope(function () {
 
   /**
    * @private
-   * @param {function(string, string)} callback
+   * @param {function(webfont.Font)} callback
    */
   FontWatchRunner.prototype.finish_ = function(callback) {
     this.fontRulerA_.remove();
     this.fontRulerB_.remove();
-    callback(this.fontFamily_, this.fontDescription_);
+    callback(this.font_);
   };
 });
