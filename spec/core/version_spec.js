@@ -54,6 +54,82 @@ describe('Version', function () {
     });
   });
 
+  describe('#compare', function () {
+    it('should return zero when two versions are equal', function () {
+      expect(new Version(1, 2, 3).compare(new Version(1, 2, 3))).toEqual(0);
+    });
+
+    it('should return one when one version is greater', function () {
+      expect(new Version(1, 2, 3).compare(new Version(0, 1, 3))).toEqual(1);
+      expect(new Version(1, 2, 3).compare(new Version(1, 2, 2))).toEqual(1);
+      expect(new Version(1, 2, 3).compare(new Version(1, 1, 3))).toEqual(1);
+    });
+
+    it('should return minus one when one version is smaller', function () {
+      expect(new Version(1, 2, 3).compare(new Version(1, 2, 4))).toEqual(-1);
+      expect(new Version(1, 2, 3).compare(new Version(1, 3, 3))).toEqual(-1);
+      expect(new Version(1, 2, 3).compare(new Version(2, 2, 3))).toEqual(-1);
+    });
+  });
+
+  describe('#eq', function () {
+    it('should return true when two versions are equal', function () {
+      expect(new Version(1, 2, 3).eq(new Version(1, 2, 3))).toBe(true);
+    });
+
+    it('should return false when two versions are unequal', function () {
+      expect(new Version(3, 2, 1).eq(new Version(1, 2, 3))).toBe(false);
+    });
+  });
+
+  describe('#gt', function () {
+    it('should return true when one version is greater than another', function () {
+      expect(new Version(3, 2, 1).gt(new Version(1, 2, 3))).toBe(true);
+    });
+
+    it('should return false when one version is not greater than another', function () {
+      expect(new Version(1, 2, 3).gt(new Version(3, 2, 1))).toBe(false)
+    });
+  });
+
+  describe('#ge', function () {
+    it('should return true when one version is greater than another', function () {
+      expect(new Version(3, 2, 1).ge(new Version(1, 2, 3))).toBe(true);
+    });
+
+    it('should return false when one version is not greater than another', function () {
+      expect(new Version(1, 2, 3).ge(new Version(3, 2, 1))).toBe(false)
+    });
+
+    it('should return true when one version is equal to another', function () {
+      expect(new Version(1, 2, 3).ge(new Version(1, 2, 3))).toBe(true);
+    });
+  });
+
+  describe('#lt', function () {
+    it('should return true when one version is less than another', function () {
+      expect(new Version(1, 2, 3).lt(new Version(3, 2, 1))).toBe(true);
+    });
+
+    it('should return false when one version is not less than another', function () {
+      expect(new Version(3, 2, 1).lt(new Version(1, 2, 3))).toBe(false)
+    });
+  });
+
+  describe('#le', function () {
+    it('should return true when one version is less than another', function () {
+      expect(new Version(1, 2, 3).le(new Version(3, 2, 1))).toBe(true);
+    });
+
+    it('should return false when one version is not less than another', function () {
+      expect(new Version(3, 2, 1).le(new Version(1, 2, 3))).toBe(false)
+    });
+
+    it('should return true when one version is equal to another', function () {
+      expect(new Version(1, 2, 3).le(new Version(1, 2, 3))).toBe(true);
+    });
+  });
+
   describe('#isValid', function () {
     it('should return true when the version is valid', function () {
       expect(new Version(1).isValid()).toBe(true);
