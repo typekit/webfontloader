@@ -54,12 +54,12 @@ goog.scope(function () {
    * @return {Array.<webfont.Font>}
    */
   AscenderScript.prototype.parseFamiliesAndVariations = function (providedFamilies) {
-    var families = [];
+    var fonts = [];
 
     for (var i = 0, len = providedFamilies.length; i < len; i++) {
-      families.push.apply(families, this.parseFamilyAndVariations(providedFamilies[i]));
+      fonts.push.apply(fonts, this.parseFamilyAndVariations(providedFamilies[i]));
     }
-    return families;
+    return fonts;
   };
 
   /**

@@ -35,7 +35,7 @@ goog.scope(function () {
       this.domHelper_.insertInto('head', this.domHelper_.createCssLink(url));
     }
 
-    var families = [];
+    var fonts = [];
 
     for (i = 0, len = familiesConfiguration.length; i < len; i++) {
       var components = familiesConfiguration[i].split(":");
@@ -44,14 +44,14 @@ goog.scope(function () {
         var variations = components[1].split(",");
 
         for (var j = 0; j < variations.length; j += 1) {
-          families.push(new Font(components[0], variations[j]));
+          fonts.push(new Font(components[0], variations[j]));
         }
       } else {
-        families.push(new Font(components[0]));
+        fonts.push(new Font(components[0]));
       }
     }
 
-    onReady(families);
+    onReady(fonts);
   };
 
   CustomCss.prototype.supportUserAgent = function(userAgent, support) {

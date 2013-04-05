@@ -9,7 +9,7 @@ goog.require('webfont.Font');
 webfont.TypekitScript = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
-  this.fontFamilies_ = [];
+  this.fonts_ = [];
 };
 
 webfont.TypekitScript.NAME = 'typekit';
@@ -46,10 +46,10 @@ goog.scope(function () {
 
             if (variations) {
               for(var j = 0; j < variations.length; j += 1) {
-                self.fontFamilies_.push(new Font(fontFamilies[i], variations[j]));
+                self.fonts_.push(new Font(fontFamilies[i], variations[j]));
               }
             } else {
-              self.fontFamilies_.push(new Font(fontFamilies[i]));
+              self.fonts_.push(new Font(fontFamilies[i]));
             }
           }
           support(typekitSupports);
@@ -66,7 +66,7 @@ goog.scope(function () {
   };
 
   TypekitScript.prototype.load = function(onReady) {
-    onReady(this.fontFamilies_);
+    onReady(this.fonts_);
   };
 });
 
