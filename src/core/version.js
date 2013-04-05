@@ -1,6 +1,11 @@
 goog.provide('webfont.Version');
 
 /**
+ * Represents a version as used in user agent strings. Note
+ * that this does not represent any sort of reliable versioning
+ * scheme (like Semantic Versioning) but merely a best effort
+ * at parsing a large amount of wildly different version strings.
+ *
  * @constructor
  * @param {number=} opt_major
  * @param {number=} opt_minor
