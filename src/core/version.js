@@ -7,15 +7,30 @@ goog.provide('webfont.Version');
  * at parsing a large amount of wildly different version strings.
  *
  * @constructor
- * @param {number=} opt_major
- * @param {number=} opt_minor
- * @param {number=} opt_patch
- * @param {string=} opt_build
+ * @param {?number=} opt_major
+ * @param {?number=} opt_minor
+ * @param {?number=} opt_patch
+ * @param {?(number|string)=} opt_build
  */
 webfont.Version = function(opt_major, opt_minor, opt_patch, opt_build) {
+  /**
+   * @type {?number}
+   */
   this.major = goog.isDefAndNotNull(opt_major) ? opt_major : null;
+
+  /**
+   * @type {?number}
+   */
   this.minor = goog.isDefAndNotNull(opt_minor) ? opt_minor : null;
+
+  /**
+   * @type {?number}
+   */
   this.patch = goog.isDefAndNotNull(opt_patch) ? opt_patch : null;
+
+  /**
+   * @type {?(number|string)}
+   */
   this.build = goog.isDefAndNotNull(opt_build) ? opt_build : null;
 }
 
@@ -52,6 +67,9 @@ goog.scope(function () {
    * is smaller than version. Returns 1 if this
    * is greater than version. Returns 0 if this
    * equals version.
+   *
+   * Build strings or numbers are ignored when
+   * comparing versions.
    *
    * @param {webfont.Version} version
    * @return {number}
@@ -110,6 +128,21 @@ goog.scope(function () {
   };
 
   /**
+   * @param {webfont.Version} version
+   * @return {boolean}
+   */
+  Version.prototype.ne = function (version) {
+    return this.compare(version) !== 0;
+  };
+
+  /**
+   * @return {string}
+   */
+  Version.prototype.toString = function () {
+    return [this.major, this.minor || '', this.patch || '', this.build || ''].join('');
+  };
+
+  /**
    * @param {string} str
    * @return {!webfont.Version}
    */
@@ -134,7 +167,11 @@ goog.scope(function () {
       }
 
       if (!goog.isNull(match[4]) && !!match[4]) {
-        build = match[4];
+        if (/^[0-9]+$/.test(match[4])) {
+          build = parseInt(match[4], 10);
+        } else {
+          build = match[4];
+        }
       }
     }
 

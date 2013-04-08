@@ -36,14 +36,14 @@ describe('Version', function () {
     it('should parse real version strings', function () {
       expect(Version.parse('5.0')).toEqual(new Version(5, 0));
       expect(Version.parse('531.9')).toEqual(new Version(531, 9));
-      expect(Version.parse('1.9.2.3')).toEqual(new Version(1, 9, 2, '3'));
+      expect(Version.parse('1.9.2.3')).toEqual(new Version(1, 9, 2, 3));
       expect(Version.parse('3.6.3')).toEqual(new Version(3, 6, 3));
       expect(Version.parse('1.9.2a1pre')).toEqual(new Version(1, 9, 2, 'a1pre'));
       expect(Version.parse('3.6a1pre')).toEqual(new Version(3, 6, null, 'a1pre'));
       expect(Version.parse('2.0b1')).toEqual(new Version(2, 0, null, 'b1'));
-      expect(Version.parse('5.0.342.9')).toEqual(new Version(5, 0, 342, '9'));
+      expect(Version.parse('5.0.342.9')).toEqual(new Version(5, 0, 342, 9));
       expect(Version.parse('10_5_8')).toEqual(new Version(10, 5, 8));
-      expect(Version.parse('18.0.1025.46')).toEqual(new Version(18, 0, 1025, '46'));
+      expect(Version.parse('18.0.1025.46')).toEqual(new Version(18, 0, 1025, 46));
       expect(Version.parse('i868 1660.57.0')).toEqual(new Version()); // FIXME: ???
       expect(Version.parse('4.0dp1')).toEqual(new Version(4, 0, null, 'dp1'));
       expect(Version.parse('528.4+')).toEqual(new Version(528, 4));

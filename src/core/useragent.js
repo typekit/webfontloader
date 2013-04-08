@@ -2,11 +2,11 @@ goog.provide('webfont.UserAgent');
 
 /**
  * @param {string} name
- * @param {string} version
+ * @param {webfont.Version} version
  * @param {string} engine
- * @param {string} engineVersion
+ * @param {webfont.Version} engineVersion
  * @param {string} platform
- * @param {string} platformVersion
+ * @param {webfont.Version} platformVersion
  * @param {number|undefined} documentMode
  * @param {!webfont.BrowserInfo} browserInfo
  * @constructor
@@ -34,7 +34,7 @@ goog.scope(function () {
   };
 
   /**
-   * @return {string}
+   * @return {webfont.Version}
    */
   UserAgent.prototype.getVersion = function() {
     return this.version_;
@@ -48,7 +48,7 @@ goog.scope(function () {
   };
 
   /**
-   * @return {string}
+   * @return {webfont.Version}
    */
   UserAgent.prototype.getEngineVersion = function() {
     return this.engineVersion_;
@@ -62,7 +62,7 @@ goog.scope(function () {
   };
 
   /**
-   * @return {string}
+   * @return {webfont.Version}
    */
   UserAgent.prototype.getPlatformVersion = function() {
     return this.platformVersion_;
