@@ -1,223 +1,114 @@
-describe('WebFont', function () {
-  var WebFont = webfont.WebFont,
-      UserAgent = webfont.UserAgent,
-      BrowserInfo = webfont.BrowserInfo,
-      FontModuleLoader = webfont.FontModuleLoader,
-      fontModuleLoader = null,
-      userAgent = null;
+describe('Font', function () {
+  var Font = webfont.Font;
 
-  beforeEach(function () {
-    userAgent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false, false));
-    fontModuleLoader = new FontModuleLoader();
-  });
+  describe('#quote', function () {
+    var quote = function (font) {
+      return new Font(font).getCssName();
+    };
 
-  describe('font load', function () {
-    var font = null,
-        testModule = null;
-
-    beforeEach(function () {
-      font = new WebFont(window, fontModuleLoader, userAgent);
-      font.addModule('test', function (conf, domHelper) {
-        testModule = new function () {
-          this.conf = conf;
-          this.domHelper = domHelper;
-          this.loadCalled = true;
-          this.supportUserAgentCalled = false;
-        };
-
-        testModule.load = function (onReady) {
-          this.loadCalled = true;
-          onReady([]);
-        };
-
-        testModule.supportUserAgent = function (ua, support) {
-          this.supportUserAgentCalled = true;
-          support(true);
-        };
-
-        return testModule;
-      });
+    it('should quote names with spaces', function () {
+      expect(quote('My Family')).toEqual("'My Family'");
     });
 
-    it('should not start loading', function () {
-      expect(font.moduleFailedLoading_).toEqual(0);
-      expect(font.moduleLoading_).toEqual(0);
+    it('should quote names with spaces and double quotes', function () {
+      expect(quote('"My Family"')).toEqual("'My Family'");
     });
 
-    it('should fail to load a module', function () {
-      var loading = jasmine.createSpy('loading');
+    it('should quote names with spaces and single quotes', function () {
+      expect(quote("'My Family'")).toEqual("'My Family'");
+    });
 
-      font.load({
-        test: {
-          somedata: 'in french a cow says meuh'
-        },
-        loading: loading
-      });
+    it('should quote multiple single quoted names separated with a comma', function () {
+      expect(quote("'family 1','family 2'")).toEqual("'family 1','family 2'");
+    });
 
-      expect(font.moduleFailedLoading_).toEqual(1);
-      expect(font.moduleLoading_).toEqual(0);
-      expect(testModule).not.toBeNull();
+    it('should quote multiple single quoted names separated with a comma and space', function () {
+      expect(quote("'family 1', 'family 2'")).toEqual("'family 1','family 2'");
+    });
 
-      expect(testModule.conf).not.toBeUndefined();
-      expect(testModule.conf).not.toBeNull();
+    it('should not quote when there is no space', function () {
+      expect(quote('MyFamily')).toEqual('MyFamily');
+    });
 
-      expect(testModule.domHelper).not.toBeNull();
-      expect(testModule.domHelper).not.toBeUndefined();
+    it('should remove quotes when they are unnecesssary', function () {
+      expect(quote('"MyFamily"')).toEqual('MyFamily');
+    });
 
-      expect(testModule.domHelper.getMainWindow()).toEqual(window);
-      expect(testModule.domHelper.getLoadWindow()).toEqual(window);
-
-      expect(testModule.conf.somedata).toEqual('in french a cow says meuh');
-      expect(testModule.loadCalled).toBe(true);
-      expect(testModule.supportUserAgentCalled).toBe(true);
-      expect(loading).toHaveBeenCalled();
+    it('should not quote multiple names when there is no space', function () {
+      expect(quote("'family-1', 'family-2'")).toEqual('family-1,family-2');
     });
   });
 
-  describe('font load with context', function () {
-    var font = null,
-        testModule = null,
-        fakeMainWindow = {};
+  describe('#getCssVariation', function () {
+    function toCss(fvd) {
+      return new Font('My Family', fvd).getCssVariation();
+    }
 
-    beforeEach(function () {
-      font = new WebFont(fakeMainWindow, fontModuleLoader, userAgent);
-      font.addModule('test', function (conf, domHelper) {
-        testModule = new function () {
-          this.domHelper = domHelper;
-        };
-        testModule.load = function () {};
-        testModule.supportUserAgent = function (ua, support) {
-          support(true);
-        };
-
-        return testModule;
-      });
+    it('should expand font-style', function () {
+      expect(toCss('n4')).toEqual('font-style:normal;font-weight:400;');
+      expect(toCss('i4')).toEqual('font-style:italic;font-weight:400;');
+      expect(toCss('o4')).toEqual('font-style:oblique;font-weight:400;');
     });
 
-    it('should load with the correct context', function () {
-      font.load({
-        test: {
-          somedata: 'in french a cow says meuh'
-        },
-        context: window
-      });
+    it('should expand weights correctly', function () {
+      for (var i = 1; i < 10; i += 1) {
+        expect(toCss('n' + i)).toEqual('font-style:normal;font-weight:' + (i * 100) + ';');
+      }
+    });
 
-      expect(testModule.domHelper).not.toBeNull();
-      expect(testModule.domHelper).not.toBeUndefined();
-
-      expect(testModule.domHelper.getMainWindow()).toEqual(fakeMainWindow);
-      expect(testModule.domHelper.getLoadWindow()).toEqual(window);
+    it('should not expand incorrect input', function () {
+      expect(toCss('')).toEqual('font-style:normal;font-weight:400;');
+      expect(toCss('n')).toEqual('font-style:normal;font-weight:400;');
+      expect(toCss('1')).toEqual('font-style:normal;font-weight:400;');
+      expect(toCss('n1x')).toEqual('font-style:normal;font-weight:400;');
     });
   });
 
-  describe('module failed to provide families and descriptions because it did not initialize properly', function () {
-    var font = null,
-        testModule = null,
-        inactive = jasmine.createSpy('inactive'),
-        active = jasmine.createSpy('active');
+  describe('parseCssVariation', function () {
+    function toFvd(css) {
+      return Font.parseCssVariation(css);
+    }
 
-    beforeEach(function () {
-      jasmine.Clock.useMock();
-      font = new WebFont(window, fontModuleLoader, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false)));
-      font.addModule('test', function (conf, domHelper) {
-        testModule = new function () {
-          this.conf = conf;
-          this.families = [];
-          this.descriptions = {};
-        };
-
-        testModule.getFontWatchRunnerCtor = function () {
-          function FakeFontWatchRunner(activeCallback, inactiveCallback) {
-            this.inactive = inactiveCallback;
-            this.active = activeCallback;
-          };
-
-          FakeFontWatchRunner.prototype.start = function () {
-            if (conf.id) {
-              this.active('Font1', 'n4');
-            } else {
-              this.inactive('Font1', 'n4');
-            }
-          };
-
-          return FakeFontWatchRunner;
-        };
-
-        testModule.supportUserAgent = function (userAgent, support) {
-          if (conf.id) {
-            // The monotype module only initializes font
-            // and description if there is a kit id.
-            this.families = ['Font1'];
-            this.description = { 'Font1': ['n4'] };
-          }
-          support(true);
-        };
-        testModule.load = function (onReady) {
-          onReady(this.families, this.description);
-        };
-
-        return testModule;
-      });
+    it('should default to n4 when there is no description', function () {
+      expect(toFvd('')).toEqual('n4');
+      expect(toFvd(null)).toEqual('n4');
+      expect(toFvd(undefined)).toEqual('n4');
     });
 
-    it('should load with a project id', function () {
-      font.load({
-        test: {
-          id: 'hello world'
-        },
-        inactive: inactive,
-        active: active
-      });
-
-      jasmine.Clock.tick(1);
-
-      expect(testModule).not.toBeNull();
-      expect(active).toHaveBeenCalled();
+    it('should compact font style', function () {
+      expect(toFvd('font-style: normal;')).toEqual('n4');
+      expect(toFvd('font-style: italic;')).toEqual('i4');
+      expect(toFvd('font-style: oblique;')).toEqual('o4');
     });
 
-    it('should not load without a project id', function () {
-      font.load({
-        test: {
-        },
-        inactive: inactive,
-        active: active
-      });
-
-      jasmine.Clock.tick(1);
-
-      expect(testModule).not.toBeNull();
-      expect(inactive).toHaveBeenCalled();
-    });
-  });
-
-  describe('font inactive', function () {
-    var font = null,
-        testModule = null;
-
-    beforeEach(function () {
-      font = new WebFont(window, fontModuleLoader, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(false, false, false)));
-      font.addModule('test', function (conf, domHelper) {
-        testModule = new function () {
-          this.conf = conf;
-          this.loadCalled = false;
-        };
-        testModule.load = function () {};
-        return testModule;
-      });
+    it('should return the default value when font-style is incorrect', function () {
+      expect(toFvd('font-style: other;')).toEqual('n4');
     });
 
-    it('should load with the correct context', function () {
-      var inactive = jasmine.createSpy('inactive');
+    it('should compact font weight', function () {
+      expect(toFvd('font-weight: normal;')).toEqual('n4');
+      expect(toFvd('font-weight: bold;')).toEqual('n7');
+      for (var i = 1; i < 10; i += 1) {
+        expect(toFvd('font-weight: ' + (i * 100) + ';')).toEqual('n' + i);
+      }
+    });
 
-      font.load({
-        test: {
-          somedata: 'in french a cow says meuh'
-        },
-        inactive: inactive
-      });
+    it('should return the default value when font-weight is incorrect', function () {
+      expect(toFvd('font-weight: 140;')).toEqual('n4');
+      expect(toFvd('font-weight: other;')).toEqual('n4');
+    });
 
-      expect(testModule).toBeNull()
-      expect(inactive).toHaveBeenCalled();
+    it('should compact multiple properties', function () {
+      expect(toFvd('font-weight: bold; font-style: italic;')).toEqual('i7');
+      expect(toFvd('; font-weight: bold; font-style: italic;')).toEqual('i7');
+      expect(toFvd('font-style:italic;font-weight:bold;')).toEqual('i7');
+      expect(toFvd('   font-style:   italic    ;\n\nfont-weight:   bold;  ')).toEqual('i7');
+    });
+
+    it('should return default values for incorrect individual properties', function () {
+      expect(toFvd('src: url(/font.otf)')).toEqual('n4');
+      expect(toFvd('font-weight: 900; src: url(/font.otf);')).toEqual('n9');
+      expect(toFvd('font-weight: 800; font-stretch:condensed;')).toEqual('n8');
     });
   });
 });

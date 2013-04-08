@@ -1,14 +1,14 @@
 goog.provide('webfont.LastResortWebKitFontWatchRunner');
 
+goog.require('webfont.Font');
 goog.require('webfont.FontRuler');
 
 /**
  * @constructor
- * @param {function(string, string)} activeCallback
- * @param {function(string, string)} inactiveCallback
+ * @param {function(webfont.Font)} activeCallback
+ * @param {function(webfont.Font)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
- * @param {string} fontFamily
- * @param {string} fontDescription
+ * @param {webfont.Font} font
  * @param {webfont.BrowserInfo} browserInfo
  * @param {number=} opt_timeout
  * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
@@ -16,11 +16,11 @@ goog.require('webfont.FontRuler');
  * @extends webfont.FontWatchRunner
  */
 webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
-    inactiveCallback, domHelper, fontFamily,
-    fontDescription, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
+    inactiveCallback, domHelper, font,
+    browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
 
   goog.base(this, activeCallback, inactiveCallback, domHelper,
-            fontFamily, fontDescription, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString);
+            font, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString);
 
   this.webKitLastResortFontWidths_ = this.setUpWebKitLastResortFontWidths_();
   this.webKitLastResortWidthChange_ = false;
@@ -38,6 +38,7 @@ webfont.LastResortWebKitFontWatchRunner.METRICS_COMPATIBLE_FONTS = {
 
 goog.scope(function () {
   var LastResortWebKitFontWatchRunner = webfont.LastResortWebKitFontWatchRunner,
+      Font = webfont.Font,
       FontRuler = webfont.FontRuler;
 
   /**
@@ -51,23 +52,24 @@ goog.scope(function () {
   LastResortWebKitFontWatchRunner.prototype
       .setUpWebKitLastResortFontWidths_ = function() {
     var lastResortFonts = ['Times New Roman', 'Arial', 'Times', 'Sans', 'Serif'];
+    var variation = this.font_.getVariation();
     var lastResortFontWidths = lastResortFonts.length;
     var webKitLastResortFontWidths = {};
     var fontRuler = new FontRuler(this.domHelper_, this.fontTestString_);
 
     fontRuler.insert();
-    fontRuler.setFont(lastResortFonts[0], this.fontDescription_);
+    fontRuler.setFont(new Font(lastResortFonts[0], variation));
 
     webKitLastResortFontWidths[fontRuler.getWidth()] = true;
     for (var i = 1; i < lastResortFontWidths; i++) {
       var font = lastResortFonts[i];
-      fontRuler.setFont(font, this.fontDescription_);
+      fontRuler.setFont(new Font(font, variation));
       webKitLastResortFontWidths[fontRuler.getWidth()] = true;
 
       // Another WebKit quirk if the normal weight/style is loaded first,
       // the size of the normal weight is returned when loading another weight.
-      if (this.fontDescription_[1] != '4') {
-        fontRuler.setFont(font, this.fontDescription_[0] + '4');
+      if (variation.toString().charAt(1) != '4') {
+        fontRuler.setFont(new Font(font, variation.charAt(0) + '4'));
         webKitLastResortFontWidths[fontRuler.getWidth()] = true;
       }
     }
@@ -101,7 +103,7 @@ goog.scope(function () {
       if (this.webKitLastResortFontWidths_[widthA]
           && this.webKitLastResortFontWidths_[widthB] &&
           LastResortWebKitFontWatchRunner.METRICS_COMPATIBLE_FONTS[
-            this.fontFamily_]) {
+            this.font_.getName()]) {
         this.finish_(this.activeCallback_);
       } else {
         this.finish_(this.inactiveCallback_);

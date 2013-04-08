@@ -1,10 +1,12 @@
 describe('EventDispatcher', function () {
   var EventDispatcher = webfont.EventDispatcher,
       DomHelper = webfont.DomHelper,
+      Font = webfont.Font,
       domHelper = new DomHelper(window),
       element = null
       eventDispatcher = null,
       namespace = 'ns',
+      font = null,
       nullFn = function () {},
       callbacks = {
         loading: nullFn,
@@ -18,6 +20,8 @@ describe('EventDispatcher', function () {
   beforeEach(function () {
     element = domHelper.createElement();
     eventDispatcher = new EventDispatcher(domHelper, element, callbacks, namespace);
+
+    font = new Font('My Family', 'n4');
 
     spyOn(callbacks, 'loading');
     spyOn(callbacks, 'active');
@@ -43,7 +47,7 @@ describe('EventDispatcher', function () {
 
   describe('#dispatchFontLoading', function () {
     beforeEach(function () {
-      eventDispatcher.dispatchFontLoading('My Family', 'n4');
+      eventDispatcher.dispatchFontLoading(font);
     });
 
     it('should call the correct callback', function () {
@@ -57,7 +61,7 @@ describe('EventDispatcher', function () {
 
   describe('#dispatchFontInactive', function () {
     beforeEach(function () {
-      eventDispatcher.dispatchFontInactive('My Family', 'n4');
+      eventDispatcher.dispatchFontInactive(font);
     });
 
     it('should call the correct callback', function () {
@@ -71,8 +75,8 @@ describe('EventDispatcher', function () {
 
   describe('#dispatchFontInactive - with loading class', function () {
     beforeEach(function () {
-      eventDispatcher.dispatchFontLoading('My Family', 'n4');
-      eventDispatcher.dispatchFontInactive('My Family', 'n4');
+      eventDispatcher.dispatchFontLoading(font);
+      eventDispatcher.dispatchFontInactive(font);
     });
 
     it('should set the correct class name', function () {
@@ -82,8 +86,8 @@ describe('EventDispatcher', function () {
 
   describe('#dispatchFontInactive - with active class', function () {
     beforeEach(function () {
-      eventDispatcher.dispatchFontActive('My Family', 'n4');
-      eventDispatcher.dispatchFontInactive('My Family', 'n4');
+      eventDispatcher.dispatchFontActive(font);
+      eventDispatcher.dispatchFontInactive(font);
     });
 
     it('should not append the inactive class name', function () {
@@ -97,7 +101,7 @@ describe('EventDispatcher', function () {
 
   describe('#dispatchFontActive', function () {
     beforeEach(function () {
-      eventDispatcher.dispatchFontActive('My Family', 'n4');
+      eventDispatcher.dispatchFontActive(font);
     });
 
     it('should call the correct callback', function () {
@@ -111,8 +115,8 @@ describe('EventDispatcher', function () {
 
   describe('#dispatchFontActive - with loading class', function () {
     beforeEach(function () {
-      eventDispatcher.dispatchFontLoading('My Family', 'n4');
-      eventDispatcher.dispatchFontActive('My Family', 'n4');
+      eventDispatcher.dispatchFontLoading(font);
+      eventDispatcher.dispatchFontActive(font);
     });
 
     it('should set the correct class name', function () {
@@ -122,8 +126,8 @@ describe('EventDispatcher', function () {
 
   describe('#dispatchFontActive - with inactive class', function () {
     beforeEach(function () {
-      eventDispatcher.dispatchFontInactive('My Family', 'n4');
-      eventDispatcher.dispatchFontActive('My Family', 'n4');
+      eventDispatcher.dispatchFontInactive(font);
+      eventDispatcher.dispatchFontActive(font);
     });
 
     it('should set the correct class', function () {

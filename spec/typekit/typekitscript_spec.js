@@ -1,5 +1,6 @@
 describe('TypekitScript', function () {
-  var TypekitScript = webfont.TypekitScript;
+  var TypekitScript = webfont.TypekitScript,
+      Font = webfont.Font;
 
   var configuration = {
     id: 'abc'
@@ -48,7 +49,7 @@ describe('TypekitScript', function () {
 
     typekit.load(load);
 
-    expect(load).toHaveBeenCalledWith(['Font1', 'Font2'], { 'Font1': undefined, 'Font2': undefined });
+    expect(load).toHaveBeenCalledWith([new Font('Font1'), new Font('Font2')]);
   });
 
   it('should load with variations', function () {
@@ -66,7 +67,11 @@ describe('TypekitScript', function () {
 
     typekit.load(load);
 
-    expect(load).toHaveBeenCalledWith(['Font1', 'Font2'], { 'Font1': ['n7', 'i7'], 'Font2': undefined });
+    expect(load).toHaveBeenCalledWith([
+      new Font('Font1', 'n7'),
+      new Font('Font1', 'i7'),
+      new Font('Font2', 'n4')
+    ]);
   });
 
   it('should load through the alternative API', function () {
@@ -88,6 +93,6 @@ describe('TypekitScript', function () {
 
     typekit.load(load);
 
-    expect(load).toHaveBeenCalledWith([], {});
+    expect(load).toHaveBeenCalledWith([]);
   });
 });

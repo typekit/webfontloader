@@ -3,9 +3,9 @@ describe('LastResortWebKitFontWatchRunner', function () {
       BrowserInfo = webfont.BrowserInfo,
       DomHelper = webfont.DomHelper,
       FontRuler = webfont.FontRuler,
+      Font = webfont.Font,
       domHelper = new DomHelper(window),
-      fontFamily = 'My Family',
-      fontDescription = 'n4';
+      font = new Font('My Family', 'n4');
 
   var TARGET_SIZE = 3,
       FALLBACK_SIZE_A = 1,
@@ -74,12 +74,12 @@ describe('LastResortWebKitFontWatchRunner', function () {
     ];
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fontFamily, fontDescription, browserInfo);
+        domHelper, font, browserInfo);
 
     fontWatchRunner.start();
 
     jasmine.Clock.tick(1 * 25);
-    expect(activeCallback).toHaveBeenCalledWith('My Family', 'n4');
+    expect(activeCallback).toHaveBeenCalledWith(font);
   });
 
   it('should consider last resort font as having identical metrics and call active', function () {
@@ -90,13 +90,15 @@ describe('LastResortWebKitFontWatchRunner', function () {
 
     timesToGetTimeBeforeTimeout = 2;
 
+    var arimo = new Font('Arimo');
+
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, 'Arimo', fontDescription, browserInfo);
+        domHelper, arimo, browserInfo);
 
     fontWatchRunner.start();
 
     jasmine.Clock.tick(1 * 25);
-    expect(activeCallback).toHaveBeenCalledWith('Arimo', 'n4');
+    expect(activeCallback).toHaveBeenCalledWith(arimo);
   });
 
   it('should fail to load font and call inactive', function () {
@@ -109,12 +111,12 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 3;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fontFamily, fontDescription, browserInfo);
+        domHelper, font, browserInfo);
 
     fontWatchRunner.start();
 
     jasmine.Clock.tick(2 * 25);
-    expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
+    expect(inactiveCallback).toHaveBeenCalledWith(font);
   });
 
   it('should call inactive when we are loading a metric incompatible font', function () {
@@ -126,10 +128,10 @@ describe('LastResortWebKitFontWatchRunner', function () {
     timesToGetTimeBeforeTimeout = 2;
 
     var fontWatchRunner = new LastResortWebKitFontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, fontFamily, fontDescription, browserInfo);
+        domHelper, font, browserInfo);
 
     fontWatchRunner.start();
     jasmine.Clock.tick(1 * 25);
-    expect(inactiveCallback).toHaveBeenCalledWith('My Family', 'n4');
+    expect(inactiveCallback).toHaveBeenCalledWith(font);
   });
 });

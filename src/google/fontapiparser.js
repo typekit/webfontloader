@@ -1,16 +1,14 @@
 goog.provide('webfont.FontApiParser');
 
-goog.require('webfont.FontVariationDescription');
+goog.require('webfont.Font');
 
 /**
  * @constructor
  */
 webfont.FontApiParser = function(fontFamilies) {
   this.fontFamilies_ = fontFamilies;
-  this.parsedFontFamilies_ = [];
-  this.variations_ = {};
+  this.parsedFonts_ = [];
   this.fontTestStrings_ = {};
-  this.fvd_ = new webfont.FontVariationDescription();
 };
 
 
@@ -61,7 +59,8 @@ webfont.FontApiParser.VARIATION_MATCH =
         "|normal|italic)?$");
 
 goog.scope(function () {
-  var FontApiParser = webfont.FontApiParser;
+  var FontApiParser = webfont.FontApiParser,
+      Font = webfont.Font;
 
   FontApiParser.prototype.parse = function() {
     var length = this.fontFamilies_.length;
@@ -96,8 +95,10 @@ goog.scope(function () {
           this.fontTestStrings_[fontFamily] = hanumanTestString;
         }
       }
-      this.parsedFontFamilies_.push(fontFamily);
-      this.variations_[fontFamily] = variations;
+
+      for (var j = 0; j < variations.length; j += 1) {
+        this.parsedFonts_.push(new Font(fontFamily, variations[j]));
+      }
     }
   };
 
@@ -112,8 +113,7 @@ goog.scope(function () {
     }
     var styleMatch = this.normalizeStyle_(groups[2]);
     var weightMatch = this.normalizeWeight_(groups[1]);
-    var css = this.fvd_.expand([styleMatch, weightMatch].join(''));
-    return css ? this.fvd_.compact(css) : null;
+    return [styleMatch, weightMatch].join('');
   };
 
 
@@ -171,12 +171,8 @@ goog.scope(function () {
   };
 
 
-  FontApiParser.prototype.getFontFamilies = function() {
-    return this.parsedFontFamilies_;
-  };
-
-  FontApiParser.prototype.getVariations = function() {
-    return this.variations_;
+  FontApiParser.prototype.getFonts = function() {
+    return this.parsedFonts_;
   };
 
   FontApiParser.prototype.getFontTestStrings = function() {

@@ -1,6 +1,6 @@
 goog.provide('webfont.FontdeckScript');
 
-goog.require('webfont.FontVariationDescription');
+goog.require('webfont.Font');
 
 /**
  * @constructor
@@ -9,9 +9,7 @@ goog.require('webfont.FontVariationDescription');
 webfont.FontdeckScript = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
-  this.fontFamilies_ = [];
-  this.fontVariations_ = {};
-  this.fvd_ = new webfont.FontVariationDescription();
+  this.fonts_ = [];
 };
 
 webfont.FontdeckScript.NAME = 'fontdeck';
@@ -19,7 +17,9 @@ webfont.FontdeckScript.HOOK = '__webfontfontdeckmodule__';
 webfont.FontdeckScript.API = '//f.fontdeck.com/s/css/js/';
 
 goog.scope(function () {
-  var FontdeckScript = webfont.FontdeckScript;
+  var FontdeckScript = webfont.FontdeckScript,
+      Font = webfont.Font,
+      FontVariationDescription = webfont.FontVariationDescription;
 
   FontdeckScript.prototype.getScriptSrc = function(projectId) {
     var protocol = this.domHelper_.getProtocol();
@@ -46,9 +46,7 @@ goog.scope(function () {
       loadWindow[webfont.FontdeckScript.HOOK][projectId] = function(fontdeckSupports, data) {
         for (var i = 0, j = data['fonts'].length; i<j; ++i) {
           var font = data['fonts'][i];
-          // Add the FVDs
-          self.fontFamilies_.push(font['name']);
-          self.fontVariations_[font['name']] = [self.fvd_.compact("font-weight:" + font['weight'] + ";font-style:" + font['style'])];
+          self.fonts_.push(new Font(font['name'], Font.parseCssVariation('font-weight:' + font['weight'] + ';font-style:' + font['style'])));
         }
         support(fontdeckSupports);
       };
@@ -63,7 +61,7 @@ goog.scope(function () {
   };
 
   FontdeckScript.prototype.load = function(onReady) {
-    onReady(this.fontFamilies_, this.fontVariations_);
+    onReady(this.fonts_);
   };
 });
 
