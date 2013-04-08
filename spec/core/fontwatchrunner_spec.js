@@ -258,6 +258,8 @@ describe('FontWatchRunner', function () {
         nullFont = null,
         sourceSansA = null,
         sourceSansB = null,
+        sourceSansC = null,
+        sourceSansCBold = null,
         elena = null;
 
     beforeEach(function () {
@@ -266,6 +268,8 @@ describe('FontWatchRunner', function () {
       nullFont = new Font('__webfontloader_test__');
       sourceSansA = new Font('SourceSansA');
       sourceSansB = new Font('SourceSansB');
+      sourceSansC = new Font('SourceSansC');
+      sourceSansCBold = new Font('SourceSansC', 'n7');
       elena = new Font('Elena');
 
       userAgent = userAgentParser.parse();
@@ -397,15 +401,15 @@ describe('FontWatchRunner', function () {
 
     it('should load one weight after another', function () {
        var fontWatchRunnerRegular = new FontWatchRunner(activeCallback, inactiveCallback,
-           domHelper, 'SourceSansC', 'n4', userAgent.getBrowserInfo(), 500),
+           domHelper, sourceSansC, userAgent.getBrowserInfo(), 500),
            fontWatchRunnerBold = new FontWatchRunner(activeCallback, inactiveCallback,
-           domHelper, 'SourceSansC', 'n7', userAgent.getBrowserInfo(), 500),
+           domHelper, sourceSansCBold, userAgent.getBrowserInfo(), 500),
            fontRulerA = new FontRuler(domHelper, 'abcdef'),
            fontRulerB = new FontRuler(domHelper, 'abcdef');
 
       runs(function () {
         fontRulerA.insert();
-        fontRulerA.setFont('SourceSansC', 'n4');
+        fontRulerA.setFont(sourceSansC);
         fontWatchRunnerRegular.start();
       });
 
@@ -414,13 +418,13 @@ describe('FontWatchRunner', function () {
       });
 
       runs(function () {
-        expect(activeCallback).toHaveBeenCalledWith('SourceSansC', 'n4');
+        expect(activeCallback).toHaveBeenCalledWith(sourceSansC);
 
         activeCallback.reset();
         inactiveCallback.reset();
 
         fontRulerB.insert();
-        fontRulerB.setFont('SourceSansC', 'n7');
+        fontRulerB.setFont(sourceSansCBold);
         fontWatchRunnerBold.start();
       });
 
@@ -429,8 +433,8 @@ describe('FontWatchRunner', function () {
       });
 
       runs(function () {
-        expect(activeCallback).toHaveBeenCalledWith('SourceSansC', 'n7');
-        expect(fontRulerA.getSize()).not.toEqual(fontRulerB.getSize());
+        expect(activeCallback).toHaveBeenCalledWith(sourceSansCBold);
+        expect(fontRulerA.getWidth()).not.toEqual(fontRulerB.getWidth());
       });
     });
   });
