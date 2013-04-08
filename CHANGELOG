@@ -1,3 +1,7 @@
+v1.4.1 (April 8, 2013)
+* Internal rewrite of font and variations
+* Fix for the configurable timeout on the Google module
+
 v1.4.0 (March 28, 2013)
 * Stop exporting the `addModule` API to dynamically add modules (it didn't work anyway.)
 * Stop checking the height when monitoring for font load. This turned out to be inconsistent across platforms.
