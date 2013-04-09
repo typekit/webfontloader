@@ -138,19 +138,15 @@ goog.scope(function () {
    * @private
    */
   UserAgentParser.prototype.parseIeUserAgentString_ = function() {
-    // For IE we give MSIE as the engine name and the version of IE
-    // instead of the specific Trident engine name and version
     var platform = this.getPlatform_(),
         platformVersion = Version.parse(this.getPlatformVersionString_()),
         browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /MSIE ([\d\w\.]+)/, 1)),
         documentMode = this.getDocumentMode_(this.doc_),
-        supportWebFont = false;
+        supportWebFont = (platform == "Windows" && browserVersion.major >= 6) ||
+                         (platform == "Windows Phone" && platformVersion.major >= 8);
 
-    if (browserVersion.isValid()) {
-      supportWebFont = (platform == "Windows" && browserVersion.major >= 6) ||
-          (platform == "Windows Phone" && platformVersion.major >= 8);
-    }
-
+    // For IE we give MSIE as the engine name and the version of IE
+    // instead of the specific Trident engine name and version
     return new UserAgent("MSIE", browserVersion, "MSIE", browserVersion,
           platform, platformVersion, documentMode, new BrowserInfo(supportWebFont, false, false));
   };
