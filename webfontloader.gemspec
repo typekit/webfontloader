@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.4.0'
-  s.date              = '2013-03-28'
+  s.version           = '1.4.1'
+  s.date              = '2013-04-08'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -110,17 +110,16 @@ DESC
     lib/webfontloader/modules.rb
     spec/ascender/ascenderscript_spec.js
     spec/core/cssclassname_spec.js
-    spec/core/cssfontfamilyname_spec.js
     spec/core/domhelper_spec.js
     spec/core/eventdispatcher_spec.js
     spec/core/font_spec.js
     spec/core/fontmoduleloader_spec.js
     spec/core/fontruler_spec.js
-    spec/core/fontvariationdescription_spec.js
     spec/core/fontwatcher_spec.js
     spec/core/fontwatchrunner_spec.js
     spec/core/size_spec.js
     spec/core/useragentparser_spec.js
+    spec/core/webfont_spec.js
     spec/custom/customcss_spec.js
     spec/deps.js
     spec/fontdeck/fontdeckscript_spec.js
@@ -136,6 +135,9 @@ DESC
     spec/fonts/sourcesans.woff
     spec/fonts/sourcesansa.css
     spec/fonts/sourcesansb.css
+    spec/fonts/sourcesansc.css
+    spec/fonts/sourcesanscbold.css
+    spec/fonts/sourcesanscbold.otf
     spec/google/fontapiparser_spec.js
     spec/google/fontapiurlbuilder_spec.js
     spec/google/googlefontapi_spec.js
@@ -148,19 +150,18 @@ DESC
     src/closure.js
     src/core/browserinfo.js
     src/core/cssclassname.js
-    src/core/cssfontfamilyname.js
     src/core/domhelper.js
     src/core/eventdispatcher.js
     src/core/font.js
     src/core/fontmoduleloader.js
     src/core/fontruler.js
-    src/core/fontvariationdescription.js
     src/core/fontwatcher.js
     src/core/fontwatchrunner.js
     src/core/initialize.js
     src/core/namespace.js
     src/core/useragent.js
     src/core/useragentparser.js
+    src/core/webfont.js
     src/custom/customcss.js
     src/fontdeck/fontdeck_script.js
     src/google/fontapiparser.js
