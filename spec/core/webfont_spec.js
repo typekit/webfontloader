@@ -191,6 +191,38 @@ describe('WebFont', function () {
     });
   });
 
+  describe('should pass both fonts and test strings to onready', function () {
+    var font = null,
+        fontTestStrings = null,
+        testModule = null;
+
+    beforeEach(function () {
+      font = new WebFont(window, fontModuleLoader, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false, false)));
+
+      font.addModule('test', function (conf, domHelper) {
+        testModule = new function () {};
+        testModule.supportUserAgent = function (ua, support) { support(true); };
+        testModule.load = function (onReady) {
+          onReady([new Font('Elena')], { 'Elena': '1234567' });
+        };
+
+        return testModule;
+      });
+
+      spyOn(font, 'onModuleReady_');
+    });
+
+    it('should have called onModuleReady with the correct font and test string', function () {
+      font.load({
+        'test': {}
+      });
+
+      expect(font.onModuleReady_).toHaveBeenCalled();
+      expect(font.onModuleReady_.calls[0].args[3]).toEqual([new Font('Elena')]);
+      expect(font.onModuleReady_.calls[0].args[4]).toEqual({ 'Elena': '1234567' });
+    });
+  });
+
   describe('font inactive', function () {
     var font = null,
         testModule = null;

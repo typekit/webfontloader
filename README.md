@@ -171,6 +171,6 @@ WebFont Loader is released under the [Apache 2.0][lic] license.
 [evt]: http://github.com/typekit/webfontloader/blob/master/docs/EVENTS.md
 [lic]: http://github.com/typekit/webfontloader/blob/master/LICENSE
 [demos]: http://github.com/typekit/webfontloader/blob/master/lib/webfontloader/demo/public
-[gfontapi]: https://code.google.com/apis/webfonts/
-[gajax]: http://code.google.com/apis/ajaxlibs/
+[gfontapi]: https://developers.google.com/fonts/
+[gajax]: https://developers.google.com/speed/libraries/
 [issues]: https://github.com/typekit/webfontloader/issues

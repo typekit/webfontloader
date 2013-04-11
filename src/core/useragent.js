@@ -1,6 +1,7 @@
 goog.provide('webfont.UserAgent');
 
 /**
+ * @export
  * @param {string} name
  * @param {webfont.Version} version
  * @param {string} engine
@@ -27,6 +28,7 @@ goog.scope(function () {
   var UserAgent = webfont.UserAgent;
 
   /**
+   * @export
    * @return {string}
    */
   UserAgent.prototype.getName = function() {
@@ -34,6 +36,7 @@ goog.scope(function () {
   };
 
   /**
+   * @export
    * @return {webfont.Version}
    */
   UserAgent.prototype.getVersion = function() {
@@ -41,6 +44,7 @@ goog.scope(function () {
   };
 
   /**
+   * @export
    * @return {string}
    */
   UserAgent.prototype.getEngine = function() {
@@ -48,6 +52,7 @@ goog.scope(function () {
   };
 
   /**
+   * @export
    * @return {webfont.Version}
    */
   UserAgent.prototype.getEngineVersion = function() {
@@ -55,6 +60,7 @@ goog.scope(function () {
   };
 
   /**
+   * @export
    * @return {string}
    */
   UserAgent.prototype.getPlatform = function() {
@@ -62,6 +68,7 @@ goog.scope(function () {
   };
 
   /**
+   * @export
    * @return {webfont.Version}
    */
   UserAgent.prototype.getPlatformVersion = function() {
@@ -69,6 +76,7 @@ goog.scope(function () {
   };
 
   /**
+   * @export
    * @return {number|undefined}
    */
   UserAgent.prototype.getDocumentMode = function() {
@@ -76,6 +84,7 @@ goog.scope(function () {
   };
 
   /**
+   * @export
    * @return {webfont.BrowserInfo}
    */
   UserAgent.prototype.getBrowserInfo = function() {

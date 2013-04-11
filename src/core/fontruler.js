@@ -10,7 +10,9 @@ goog.provide('webfont.FontRuler');
 webfont.FontRuler = function (domHelper, fontTestString) {
   this.domHelper_ = domHelper;
   this.fontTestString_ = fontTestString;
-  this.el_ = this.domHelper_.createElement('span', {}, this.fontTestString_);
+  this.el_ = this.domHelper_.createElement('span', {
+    "aria-hidden": "true"
+  }, this.fontTestString_);
 };
 
 goog.scope(function () {
