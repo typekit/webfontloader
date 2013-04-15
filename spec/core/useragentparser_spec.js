@@ -596,6 +596,24 @@ describe('UserAgentParser', function () {
         });
       });
 
+      it('should detect Samsung Galaxy S4 builtin browser', function () {
+        expect(parse('Mozilla/5.0 (Linux; Android 4.2.2; sl-si; SAMSUNG GT-I9505 Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Version/1.0 Chrome/18.0.1025.308 Mobile Safari/535.19'))
+        .toMatchUserAgent({
+          name: 'BuiltinBrowser',
+          version: 'Unknown',
+          platform: 'Android',
+          platformVersion: '4.2.2',
+          engine: 'AppleWebKit',
+          engineVersion: '535.19',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
+
       it('should detect Android builtin browser in Desktop mode (Nexus 7)', function () {
         expect(parse('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.34 Safari/534.24'))
         .toMatchUserAgent({
