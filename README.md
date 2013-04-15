@@ -1,16 +1,18 @@
 # WebFont Loader
 
-WebFont Loader gives you added control when using linked fonts via
-`@font-face`. It provides a common interface to loading fonts regardless of
-the source, then adds a standard set of events you may use to control the
-loading experience.
+WebFont Loader gives you added control when using linked fonts via `@font-face`. It provides a common interface to loading fonts regardless of the source, then adds a standard set of events you may use to control the loading experience.
+
+* [Get started](#getstarted)
+* [Events](#events)
+* [Modules](#events)
+* [Configuration](#configuration)
+* [Browser support](#browsersupport)
+* [Contributing](#contributing)
+* [License](#license)
 
 ## Get Started
 
-(These samples use WebFont Loader hosted on [Google's AJAX Libraries][gajax].)
-
-Link to the WebFont Loader library, then tell it which fonts to load. Here we'll
-load fonts from [Google's Font API][gfontapi].
+Link to the WebFont Loader library, then tell it which fonts to load. Here we'll load fonts from [Google Fonts](http://www.google.com/fonts/) using the WebFont Loader hosted on [Google's AJAX Libraries](https://developers.google.com/speed/libraries/).
 
     <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
     <script>
@@ -21,7 +23,7 @@ load fonts from [Google's Font API][gfontapi].
       });
     </script>
 
-Alternatively, load fonts from Typekit. Just specify your Kit ID.
+Alternatively, load fonts from [Typekit](http://www.typekit.com). Just specify your Kit ID.
 
     <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
     <script>
@@ -32,73 +34,120 @@ Alternatively, load fonts from Typekit. Just specify your Kit ID.
       });
     </script>
 
-Learn more about the
-[modules][mod].
+Learn more about the [modules](#modules).
 
-## Do More
+# Events
 
-WebFont Loader gives you control over how fonts are loaded. If you're
-frustrated by the "flash of unstyled text" typically seen in FireFox, try
-this.
+WebFont Loader provides an event system that developers can hook into. It gives you notifications of the font loading sequence in both CSS and JavaScript.
 
-    <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
-    <script>
-      WebFont.load({
-        google: {
-          families: ['Droid Sans']
-        }
-      });
-    </script>
-    <style>
-      h1 {
-        font-family: 'Droid Sans';
-        visibility: hidden;
+  * `loading` - This event is triggered when all fonts have been requested.
+  * `active` - This event is triggered when all of the fonts have rendered.
+  * `inactive` - This event is triggered when the browser does not support linked fonts *or* if none of the fonts could be loaded.
+  * `fontloading` - This event is triggered once for each font that's loaded.
+  * `fontactive` - This event is triggered once for each font that renders.
+  * `fontinactive` - This event is triggered if the font can't be loaded.
+
+### CSS
+
+CSS events are implemented as classes on the `html` element. The following classes can be set on the `html` element:
+
+    .wf-loading
+    .wf-active
+    .wf-inactive
+    .wf-familyname-fvd-loading
+    .wf-familyname-fvd-active
+    .wf-familyname-fvd-inactive
+
+`familyname` is a sanitized version of the name of each font family. Spaces and underscores are removed from the name, and all characters are converted to
+lower case. For example, `Droid Sans` becomes `droidsans`. `fvd` is a *Font Variation Description*. Put simply, it's a shorthand for describing the style and weight of a particular font. Here are a few examples:
+
+    @font-face {
+      font-style: normal;
+      font-weight: normal;
+    }
+    => n4
+
+    @font-face {
+      font-style: italic;
+      font-weight: bold;
+    }
+    => i7
+
+If no style/weight is specified, the default "n4" (font-style: normal; font-weight: normal;) will be used.
+
+If fonts are loaded multiple times on a single page, the CSS classes continue to update to reflect the current state of the page. The global `wf-loading` class is applied whenever fonts are being requested (even if other fonts are already active or inactive). The `wf-inactive` class is applied only if none of the fonts on the page have rendered. Otherwise, the `wf-active` class is applied instead (even if some fonts are inactive).
+
+### JavaScript
+
+JavaScript events are implemented as callback functions on the `WebFont.load` function.
+
+    WebFont.load({
+      loading: function() {
+      },
+      active: function() {
+      },
+      inactive: function() {
+      },
+      fontloading: function(familyName, fvd) {
+      },
+      fontactive: function(familyName, fvd) {
+      },
+      fontinactive: function(familyName, fvd) {
       }
-      .wf-active h1 {
-        visibility: visible;
-      }
-    </style>
+    })
 
-    <body>
-      <h1>This headline will be hidden until Droid Sans is completely loaded.</h1>
-    </body>
+# Configuration
 
-Learn more about [events][evt].
+## Timeouts
 
-## Manage loading everywhere
+Since the Internet is not 100% reliable, it's possible that a font fails to load. The `fontinactive` event will be triggered after 5 seconds if the font fails to render. If *at least* one font succesfully renders, the `active` event will be triggered, else the `inactive` even will be triggered.
 
-Usually, it's easiest to include a copy of webfontloader in every window where
-fonts are needed, so that each window manages its own fonts. However, if you
-need to have a single window manage fonts for multiple same-origin child windows
-or iframes that are built up using JavaScript, webfontloader supports that as
-well. Just use the optional `context` configuration option and give it a
-reference to the target window for loading:
+You can change the default timeout by using the `timeout` configuration on the `WebFont.load` function.
 
-    <script>
-      WebFont.load({
-        google: {
-          families: ['Droid Sans']
-        },
-        context: frames['my-child']
-      });
-    </script>
+    WebFont.load({
+      google: {
+        families: ['Droid Sans']
+      },
+      timeout: 2000 // Set the timeout to two seconds
+    });
 
-## A common ground
+The timeout value should be in milliseconds, and defaults to 5 seconds if not supplied.
 
-WebFont Loader aims to provide a common interface for font loading. Today it
-works with Google, Typekit, Ascender, Fontdeck, Fonts.com Web fonts and your own
-CSS. Learn more in [transitions][trn].
+## Iframes
 
-## Problems?
+Usually, it's easiest to include a copy of webfontloader in every window where fonts are needed, so that each window manages its own fonts. However, if you need to have a single window manage fonts for multiple same-origin child windows or iframes that are built up using JavaScript, webfontloader supports that as well. Just use the optional `context` configuration option and give it a reference to the target window for loading:
 
-Please open [an issue][issues]. Sample pages are greatly appreciated.
+    WebFont.load({
+      google: {
+        families: ['Droid Sans']
+      },
+      context: frames['my-child']
+    });
 
-## Developing
+# Browser Support
 
-Is there something else WebFont Loader should do? Did you find a bug and want
-to fix it?
+Every web browser has varying levels of support for fonts linked via `@font-face`. Support for web fonts is determined using the browser user agent string. The user agent string may claim to support a web font format when it in fact does not. This is especially noticable on mobile browsers with a "Desktop" mode, which usually identify as Chrome on Linux. In this case a web font provider may decide to send WOFF fonts to the device because the real desktop Chrome supports it, while the mobile browser does not. The WebFont Loader is not designed to handle these cases and it chooses to believe the user agent string. Web font providers can build on top of the basic WebFont Loader functionality to handle these special cases individually.
 
-### Installing development requirements
+If WebFont Loader determines that the current browser does not support `@font-face`, the `inactive` event will be triggered.
+
+When loading fonts from multiple providers, each provider may or may not support a given browser. If WebFont Loader determines that the current browser can support `@font-face`, and *at least* one provider is able to serve fonts, the fonts from that provide will be loaded. When finished, the `active` event will be triggered.
+
+For fonts loaded from supported providers, the `fontactive` event will be triggered. For fonts loaded from a provider that *does not* support the current browser, the `fontinactive` event will be triggered.
+
+For example:
+
+    WebFont.load({
+      providerA: 'Family1',
+      providerB: 'Family2'
+    });
+
+If `providerA` can serve fonts to a browser, but `providerB` cannot, The `fontinactive` event will be triggered for `Family2`. The `fontactive` event will be triggered for `Family1` once it loads, as will the `active` event.
+
+# Contributing
+
+Please open [an issue](https://github.com/typekit/webfontloader/issues) if you find or suspect any problems. Sample pages and test cases are greatly appreciated.
+
+## Development requirements
 
 You'll need a few rubygems to run the tests, demo server, and other rake tasks, which should be installed with [Bundler](http://gembundler.com/).
 
@@ -109,13 +158,13 @@ To run the tests in a headless WebKit you will also need to have [PhantomJS](htt
 
     $ brew install phantomjs
 
-### Building
+## Building
 
 To build a JS file from source, just run rake:
 
     $ rake
 
-### Demos
+## Demos
 
 A full suite of demo pages is included in this source. Here you can find some
 live examples using the JS and CSS events. Run the demo server with:
@@ -127,9 +176,9 @@ development. Just start the server in dev mode:
 
     $ rake demodev
 
-Browse the demos [source code][demos].
+Browse the demos [source code](http://github.com/typekit/webfontloader/blob/master/lib/webfontloader/demo/public).
 
-### Testing
+## Testing
 
 WebFont Loader has an extensive test suite that runs via Jasmine. The test suite
 should be passing before submitting a pull request, and new tests should be added
@@ -143,34 +192,6 @@ To run tests in a headless WebKit using [PhantomJS](http://www.phantomjs.org) ru
 
     $ rake test
 
-## Contributing
+# License
 
-* Fork webfontloader
-* Create a topic branch - `git checkout -b my_branch`
-* Push to your branch - `git push origin my_branch`
-* Make sure all tests are passing
-* Create a pull request for your branch
-* That's it!
-
-
-## Authors
-
-* Ryan Carver / ryan@typekit.com
-* Jeremie Lenfant-engelmann /  jeremiele@google.com
-* Sean McBride / sean@typekit.com
-* Bram Stein / bram@typekit.com
-
-
-## License
-
-WebFont Loader is released under the [Apache 2.0][lic] license.
-
-
-[mod]: http://github.com/typekit/webfontloader/blob/master/docs/MODULES.md
-[trn]: http://github.com/typekit/webfontloader/blob/master/docs/TRANSITIONS.md
-[evt]: http://github.com/typekit/webfontloader/blob/master/docs/EVENTS.md
-[lic]: http://github.com/typekit/webfontloader/blob/master/LICENSE
-[demos]: http://github.com/typekit/webfontloader/blob/master/lib/webfontloader/demo/public
-[gfontapi]: https://developers.google.com/fonts/
-[gajax]: https://developers.google.com/speed/libraries/
-[issues]: https://github.com/typekit/webfontloader/issues
+WebFont Loader is released under the [Apache 2.0](http://github.com/typekit/webfontloader/blob/master/LICENSE) license.
