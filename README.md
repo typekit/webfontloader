@@ -1,6 +1,6 @@
 # WebFont Loader
 
-WebFont Loader gives you added control when using linked fonts via `@font-face`. It provides a common interface to loading fonts regardless of the source, then adds a standard set of events you may use to control the loading experience. The WebFont Loader is able to load fonts from Google Fonts, Typekit, Ascender, Monotype, Fontdeck and self-hosted. It was co-developed by [Google](http://www.google.com/) and [Typekit](http://www.typekit.com).
+WebFont Loader gives you added control when using linked fonts via `@font-face`. It provides a common interface to loading fonts regardless of the source, then adds a standard set of events you may use to control the loading experience. The WebFont Loader is able to load fonts from [Google Fonts](http://www.google.com/fonts/), [Typekit](http://www.typekit.com/), [Ascender](http://www.ascenderfonts.com/webfonts/), [Fonts.com](http://www.fonts.com/), [Fontdeck](http://fontdeck.com/) and self-hosted. It was co-developed by [Google](http://www.google.com/) and [Typekit](http://www.typekit.com).
 
 ## Contents
 
@@ -33,17 +33,25 @@ Link to the WebFont Loader library, then tell it which fonts to load. Here we'll
       });
     </script>
 
-Alternatively, load fonts from [Typekit](http://www.typekit.com). Just specify your Kit ID.
+Alternatively, you can use the WebFont Loader asynchronously, for example to load [Typekit](http://www.typekit.com) fonts.
 
-    <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
     <script>
-      WebFont.load({
-        typekit: {
-          id: 'xxxxxx'
-        }
-      });
+      WebFontConfig = {
+        typekit: { id: 'xxxxxx' }
+      };
+
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+            '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })();
     </script>
 
+In the asynchronous case you can specify your Typekit ID in the `WebFontConfig` configuration object.
 
 ## Configuration
 
@@ -67,44 +75,34 @@ CSS events are implemented as classes on the `html` element. The following class
     .wf-loading
     .wf-active
     .wf-inactive
-    .wf-familyname-fvd-loading
-    .wf-familyname-fvd-active
-    .wf-familyname-fvd-inactive
+    .wf-<familyname>-<fvd>-loading
+    .wf-<familyname>-<fvd>-active
+    .wf-<familyname>-<fvd>-inactive
 
-`familyname` is a sanitized version of the name of each font family. Spaces and underscores are removed from the name, and all characters are converted to lower case. For example, `Droid Sans` becomes `droidsans`. `fvd` is a *[Font Variation Description](https://github.com/typekit/fvd)*. Put simply, it's a shorthand for describing the style and weight of a particular font. Here are a few examples:
+The `<familyname>` placeholder will be replaced by a sanitized version of the name of each font family. Spaces and underscores are removed from the name, and all characters are converted to lower case. For example, `Droid Sans` becomes `droidsans`. The `<fvd>` placeholder is a [Font Variation Description](https://github.com/typekit/fvd). Put simply, it's a shorthand for describing the style and weight of a particular font. Here are a few examples:
 
-    @font-face {
-      font-style: normal;
-      font-weight: normal;
-    }
-    => n4
+    /* n4 */
+    @font-face { font-style: normal; font-weight: normal; }
 
-    @font-face {
-      font-style: italic;
-      font-weight: bold;
-    }
-    => i7
+    /* i7 */
+    @font-face { font-style: italic; font-weight: bold; }
 
-If no style/weight is specified, the default "n4" (font-style: normal; font-weight: normal;) will be used.
+If no style/weight is specified, the default `n4` (`font-style: normal; font-weight: normal;`) will be used.
 
 If fonts are loaded multiple times on a single page, the CSS classes continue to update to reflect the current state of the page. The global `wf-loading` class is applied whenever fonts are being requested (even if other fonts are already active or inactive). The `wf-inactive` class is applied only if none of the fonts on the page have rendered. Otherwise, the `wf-active` class is applied instead (even if some fonts are inactive).
 
 JavaScript events are implemented as callback functions on the `WebFont.load` function.
 
     WebFont.load({
-      loading: function() {
-      },
-      active: function() {
-      },
-      inactive: function() {
-      },
-      fontloading: function(familyName, fvd) {
-      },
-      fontactive: function(familyName, fvd) {
-      },
-      fontinactive: function(familyName, fvd) {
-      }
-    })
+      loading: function() {},
+      active: function() {},
+      inactive: function() {},
+      fontloading: function(familyName, fvd) {},
+      fontactive: function(familyName, fvd) {},
+      fontinactive: function(familyName, fvd) {}
+    });
+
+The `fontloading`, `fontactive` and `fontinactive` callbacks are passed the family name and font variation description of the font that concerns the event. 
 
 ### Timeouts
 
