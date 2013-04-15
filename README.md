@@ -13,8 +13,8 @@ WebFont Loader gives you added control when using linked fonts via `@font-face`.
     * [Ascender](#ascender)
     * [Custom](#custom)
     * [Fontdeck](#fontdeck)
+    * [Fonts.com](#fonts.com)
     * [Google](#google)
-    * [Monotype](#monotype)
     * [Typekit](#typekit)
 * [Browser support](#browser-support)
 * [Contributing](#contributing)
@@ -22,7 +22,7 @@ WebFont Loader gives you added control when using linked fonts via `@font-face`.
 
 ## Get Started
 
-Link to the WebFont Loader library, then tell it which fonts to load. Here we'll load fonts from [Google Fonts](http://www.google.com/fonts/) using the WebFont Loader hosted on [Google's AJAX Libraries](https://developers.google.com/speed/libraries/).
+Link to the WebFont Loader library, then tell it which fonts to load. Here we'll load fonts from [Google Fonts](http://www.google.com/fonts/) using the WebFont Loader hosted on [Google Hosted Libraries](https://developers.google.com/speed/libraries/).
 
     <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
     <script>
@@ -49,7 +49,7 @@ Alternatively, load fonts from [Typekit](http://www.typekit.com). Just specify y
 
 The WebFont Loader configuration defines which fonts to load from each web font provider and can specify callbacks that will be called when certain events fire.
 
-The WebFont Loader configuration is defined by a global variable named WebFontConfig when loading the script asynchronously, or passed directly to the `WebFont.load` method. When using the asynchronous approach, you must define the global variable `WebFontConfig` before the code that loads the WebFont Loader.
+The WebFont Loader configuration is defined by a global variable named `WebFontConfig` when loading the script asynchronously, or passed directly to the `WebFont.load` method. When using the asynchronous approach, you must define the global variable `WebFontConfig` before the code that loads the WebFont Loader.
 
 ### Events
 
@@ -130,6 +130,82 @@ Usually, it's easiest to include a copy of webfontloader in every window where f
         families: ['Droid Sans']
       },
       context: frames['my-child']
+    });
+
+## Modules
+
+WebFont Loader provides a generic module system so that any web font provider
+may be used. The specifics of each provider are documented here.
+
+### Custom
+
+To load fonts from any external stylesheet, use the `custom` module. Here you'll
+need to specify both the url of the stylesheet as well as the font families it
+provides.
+
+You can specify a specific font variation or set of variations to load and watch
+by appending the variations separated by commas to the family name separated by 
+a colon. Variations are specified using [FVD notation](https://github.com/typekit/fvd).
+
+    WebFont.load({
+      custom: {
+        families: ['My Font', 'My Other Font:n4,i4,n7'],
+        urls: ['/fonts.css']
+      }
+    });
+
+### Fontdeck
+
+To use the [Fontdeck](http://fontdeck.com/) module, specify the ID of your website. You can find this ID on the website page within your account settings.
+
+    WebFont.load({
+      fontdeck: {
+        id: 'xxxxx'
+      }
+    });
+
+### Fonts.com
+
+When using [Fonts.com web fonts](http://webfonts.fonts.com/) specify your Project ID.
+
+    WebFont.load({
+      monotype: {
+        projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+        version: 12345 // (optional, flushes the CDN cache)
+      }
+    });
+
+The Fonts.com module has an optional `version` option which acts as a cache-buster.
+
+### Google
+
+Using [Google's Font API](https://code.google.com/apis/webfonts/docs/getting_started.html), name the font families you'd like to load.
+
+    WebFont.load({
+      google: {
+        families: ['Droid Sans', 'Droid Serif']
+      }
+    });
+
+You can also supply the `text` parameter to perform character subsetting:
+
+    WebFont.load({
+      google: {
+        families: ['Droid Sans', 'Droid Serif'],
+        text: 'abcdedfghijklmopqrstuvwxyz!'
+      }
+    });
+
+This functionality is only available for the Google module.
+
+### Typekit
+
+When using [Typekit](http://www.typekit.com), specify the Kit to retrieve by its ID. You can find this ID within Typekit's Kit Editor interface.
+
+    WebFont.load({
+      typekit: {
+        id: 'xxxxxx'
+      }
     });
 
 ## Browser Support
