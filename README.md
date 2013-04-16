@@ -51,7 +51,7 @@ Alternatively, you can use the WebFont Loader asynchronously, for example to loa
       })();
     </script>
 
-In the asynchronous case you can specify your Typekit ID in the `WebFontConfig` configuration object.
+In the asynchronous case, you should specify the font to load in the 'WebFontConfig' configuration object.
 
 ## Configuration
 
@@ -70,7 +70,7 @@ WebFont Loader provides an event system that developers can hook into. It gives 
   * `fontactive` - This event is triggered once for each font that renders.
   * `fontinactive` - This event is triggered if the font can't be loaded.
 
-CSS events are implemented as classes on the `html` element. The following classes can be set on the `html` element:
+CSS events are implemented as classes on the `html` element. The following classes are set on the `html` element:
 
     .wf-loading
     .wf-active
@@ -208,11 +208,11 @@ When using [Typekit](http://www.typekit.com), specify the Kit to retrieve by its
 
 ## Browser Support
 
-Every web browser has varying levels of support for fonts linked via `@font-face`. Support for web fonts is determined using the browser user agent string. The user agent string may claim to support a web font format when it in fact does not. This is especially noticable on mobile browsers with a "Desktop" mode, which usually identify as Chrome on Linux. In this case a web font provider may decide to send WOFF fonts to the device because the real desktop Chrome supports it, while the mobile browser does not. The WebFont Loader is not designed to handle these cases and it chooses to believe the user agent string. Web font providers can build on top of the basic WebFont Loader functionality to handle these special cases individually.
+Every web browser has varying levels of support for fonts linked via `@font-face`. Support for web fonts is determined using the browser user agent string. The user agent string may claim to support a web font format when it in fact does not. This is especially noticeable on mobile browsers with a "Desktop" mode, which usually identify as Chrome on Linux. In this case a web font provider may decide to send WOFF fonts to the device because the real desktop Chrome supports it, while the mobile browser does not. The WebFont Loader is not designed to handle these cases and it chooses to believe the user agent string. Web font providers can build on top of the basic WebFont Loader functionality to handle these special cases individually.
 
 If WebFont Loader determines that the current browser does not support `@font-face`, the `inactive` event will be triggered.
 
-When loading fonts from multiple providers, each provider may or may not support a given browser. If WebFont Loader determines that the current browser can support `@font-face`, and *at least* one provider is able to serve fonts, the fonts from that provide will be loaded. When finished, the `active` event will be triggered.
+When loading fonts from multiple providers, each provider may or may not support a given browser. If WebFont Loader determines that the current browser can support `@font-face`, and *at least* one provider is able to serve fonts, the fonts from that provider will be loaded. When finished, the `active` event will be triggered.
 
 For fonts loaded from supported providers, the `fontactive` event will be triggered. For fonts loaded from a provider that *does not* support the current browser, the `fontinactive` event will be triggered.
 
