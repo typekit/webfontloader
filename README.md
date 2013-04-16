@@ -51,7 +51,7 @@ Alternatively, you can use the WebFont Loader asynchronously, for example to loa
       })();
     </script>
 
-In the asynchronous case, you should specify the font to load in the 'WebFontConfig' configuration object.
+In the asynchronous case, you should specify the font to load in the `WebFontConfig` configuration object.
 
 ## Configuration
 
@@ -134,6 +134,19 @@ Usually, it's easiest to include a copy of webfontloader in every window where f
 
 WebFont Loader provides a generic module system so that any web font provider
 may be used. The specifics of each provider are documented here.
+
+### Ascender
+
+To load fonts from the FontsLive service use the `ascender` module.
+
+    WebFont.load({
+      ascender: {
+        key: 'myAscenderKey',
+        families: [ 'AscenderSans:bold,bolditalic,italic,regular' ]
+      }
+    });
+
+**NOTE**: The Ascender font service has been acquired by Monotype (Fonts.com) and as such the use of the Fonts.com module is recommended.
 
 ### Custom
 
