@@ -25,7 +25,7 @@ WebFont Loader gives you added control when using linked fonts via `@font-face`.
 Link to the WebFont Loader library, then tell it which fonts to load. Here we'll load fonts from [Google Fonts](http://www.google.com/fonts/) using the WebFont Loader hosted on [Google Hosted Libraries](https://developers.google.com/speed/libraries/).
 
     <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.2/webfont.js"></script>
-    <script>
+    <script>    
       WebFont.load({
         google: {
           families: ['Droid Sans', 'Droid Serif']
@@ -53,13 +53,9 @@ It is also possible to use the WebFont Loader asynchronously, for example to loa
       })();
     </script>
 
-In the asynchronous case, you should specify the font to load in the `WebFontConfig` configuration object.
-
 ## Configuration
 
-The WebFont Loader configuration defines which fonts to load from each web font provider and can specify callbacks that will be called when certain events fire.
-
-The WebFont Loader configuration is defined by a global variable named `WebFontConfig` when loading the script asynchronously, or passed directly to the `WebFont.load` method. When using the asynchronous approach, you must define the global variable `WebFontConfig` before the code that loads the WebFont Loader.
+The WebFont Loader configuration is defined by a global variable named `WebFontConfig`, or passed directly to the `WebFont.load` method. It defines which fonts to load from each web font provider and gives you the option to specify callbacks for certain events. When using the asynchronous approach, you must define the global variable `WebFontConfig` before the code that loads the WebFont Loader.
 
 ### Events
 
@@ -93,16 +89,16 @@ If no style/weight is specified, the default `n4` (`font-style: normal; font-wei
 
 If fonts are loaded multiple times on a single page, the CSS classes continue to update to reflect the current state of the page. The global `wf-loading` class is applied whenever fonts are being requested (even if other fonts are already active or inactive). The `wf-inactive` class is applied only if none of the fonts on the page have rendered. Otherwise, the `wf-active` class is applied instead (even if some fonts are inactive).
 
-JavaScript events are implemented as callback functions on the `WebFont.load` function.
+JavaScript events are implemented as callback functions on the `WebFontConfig` configuration object.
 
-    WebFont.load({
+    WebFontConfig = {
       loading: function() {},
       active: function() {},
       inactive: function() {},
       fontloading: function(familyName, fvd) {},
       fontactive: function(familyName, fvd) {},
       fontinactive: function(familyName, fvd) {}
-    });
+    };
 
 The `fontloading`, `fontactive` and `fontinactive` callbacks are passed the family name and font variation description of the font that concerns the event. 
 
@@ -110,14 +106,14 @@ The `fontloading`, `fontactive` and `fontinactive` callbacks are passed the fami
 
 Since the Internet is not 100% reliable, it's possible that a font fails to load. The `fontinactive` event will be triggered after 5 seconds if the font fails to render. If *at least* one font succesfully renders, the `active` event will be triggered, else the `inactive` even will be triggered.
 
-You can change the default timeout by using the `timeout` configuration on the `WebFont.load` function.
+You can change the default timeout by using the `timeout` option on the `WebFontConfig` object.
 
-    WebFont.load({
+    WebFontConfig = {
       google: {
         families: ['Droid Sans']
       },
       timeout: 2000 // Set the timeout to two seconds
-    });
+    };
 
 The timeout value should be in milliseconds, and defaults to 5 seconds if not supplied.
 
@@ -125,12 +121,12 @@ The timeout value should be in milliseconds, and defaults to 5 seconds if not su
 
 Usually, it's easiest to include a copy of webfontloader in every window where fonts are needed, so that each window manages its own fonts. However, if you need to have a single window manage fonts for multiple same-origin child windows or iframes that are built up using JavaScript, webfontloader supports that as well. Just use the optional `context` configuration option and give it a reference to the target window for loading:
 
-    WebFont.load({
+    WebFontConfig = {
       google: {
         families: ['Droid Sans']
       },
       context: frames['my-child']
-    });
+    };
 
 ## Modules
 
@@ -141,12 +137,12 @@ may be used. The specifics of each provider are documented here.
 
 To load fonts from the FontsLive service use the `ascender` module.
 
-    WebFont.load({
+    WebFontConfig = {
       ascender: {
         key: 'myAscenderKey',
         families: [ 'AscenderSans:bold,bolditalic,italic,regular' ]
       }
-    });
+    };
 
 **NOTE**: The Ascender font service has been acquired by Monotype (Fonts.com) and as such the use of the Fonts.com module is recommended.
 
@@ -160,33 +156,33 @@ You can specify a specific font variation or set of variations to load and watch
 by appending the variations separated by commas to the family name separated by 
 a colon. Variations are specified using [FVD notation](https://github.com/typekit/fvd).
 
-    WebFont.load({
+    WebFontConfig = {
       custom: {
         families: ['My Font', 'My Other Font:n4,i4,n7'],
         urls: ['/fonts.css']
       }
-    });
+    };
 
 ### Fontdeck
 
 To use the [Fontdeck](http://fontdeck.com/) module, specify the ID of your website. You can find this ID on the website page within your account settings.
 
-    WebFont.load({
+    WebFontConfig = {
       fontdeck: {
         id: 'xxxxx'
       }
-    });
+    };
 
 ### Fonts.com
 
 When using [Fonts.com web fonts](http://webfonts.fonts.com/) specify your Project ID.
 
-    WebFont.load({
+    WebFontConfig = {
       monotype: {
         projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
         version: 12345 // (optional, flushes the CDN cache)
       }
-    });
+    };
 
 The Fonts.com module has an optional `version` option which acts as a cache-buster.
 
@@ -194,20 +190,20 @@ The Fonts.com module has an optional `version` option which acts as a cache-bust
 
 Using [Google's Font API](https://code.google.com/apis/webfonts/docs/getting_started.html), name the font families you'd like to load.
 
-    WebFont.load({
+    WebFontConfig = {
       google: {
         families: ['Droid Sans', 'Droid Serif']
       }
-    });
+    };
 
 You can also supply the `text` parameter to perform character subsetting:
 
-    WebFont.load({
+    WebFontConfig = {
       google: {
         families: ['Droid Sans', 'Droid Serif'],
         text: 'abcdedfghijklmopqrstuvwxyz!'
       }
-    });
+    };
 
 This functionality is only available for the Google module.
 
@@ -215,11 +211,11 @@ This functionality is only available for the Google module.
 
 When using [Typekit](http://www.typekit.com), specify the Kit to retrieve by its ID. You can find this ID within Typekit's Kit Editor interface.
 
-    WebFont.load({
+    WebFontConfig = {
       typekit: {
         id: 'xxxxxx'
       }
-    });
+    };
 
 ## Browser Support
 
@@ -233,10 +229,10 @@ For fonts loaded from supported providers, the `fontactive` event will be trigge
 
 For example:
 
-    WebFont.load({
+    WebFontConfig = {
       providerA: 'Family1',
       providerB: 'Family2'
-    });
+    };
 
 If `providerA` can serve fonts to a browser, but `providerB` cannot, The `fontinactive` event will be triggered for `Family2`. The `fontactive` event will be triggered for `Family1` once it loads, as will the `active` event.
 
