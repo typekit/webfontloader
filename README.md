@@ -24,7 +24,7 @@ WebFont Loader gives you added control when using linked fonts via `@font-face`.
 
 Link to the WebFont Loader library, then tell it which fonts to load. Here we'll load fonts from [Google Fonts](http://www.google.com/fonts/) using the WebFont Loader hosted on [Google Hosted Libraries](https://developers.google.com/speed/libraries/).
 
-    <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.2/webfont.js"></script>
     <script>
       WebFont.load({
         google: {
@@ -33,7 +33,9 @@ Link to the WebFont Loader library, then tell it which fonts to load. Here we'll
       });
     </script>
 
-Alternatively, you can use the WebFont Loader asynchronously, for example to load [Typekit](http://www.typekit.com) fonts.
+Alternatively one can link to the latest version of the WebFont Loader by using `//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js` as the `script` source. Note that this version has a shorter cache time. We recommend using an explicit version and manually updating the WebFont Loader version you use.
+
+It is also possible to use the WebFont Loader asynchronously, for example to load [Typekit](http://www.typekit.com) fonts.
 
     <script>
       WebFontConfig = {
@@ -43,7 +45,7 @@ Alternatively, you can use the WebFont Loader asynchronously, for example to loa
       (function() {
         var wf = document.createElement('script');
         wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-            '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+            '://ajax.googleapis.com/ajax/libs/webfont/1.4.2/webfont.js';
         wf.type = 'text/javascript';
         wf.async = 'true';
         var s = document.getElementsByTagName('script')[0];
