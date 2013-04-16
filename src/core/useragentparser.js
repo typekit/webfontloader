@@ -273,12 +273,12 @@ goog.scope(function () {
     } else if (/Silk\/\d/.test(this.userAgent_)) {
       version = this.getMatchingGroup_(this.userAgent_,
           /Silk\/([\d\._]+)/, 1);
-    } else if (this.userAgent_.indexOf("Version/") != -1) {
-      version = this.getMatchingGroup_(this.userAgent_,
-          /Version\/([\d\.\w]+)/, 1);
     } else if (name == "Chrome") {
       version = this.getMatchingGroup_(this.userAgent_,
           /(Chrome|CrMo|CriOS)\/([\d\.]+)/, 2);
+    } else if (this.userAgent_.indexOf("Version/") != -1) {
+      version = this.getMatchingGroup_(this.userAgent_,
+          /Version\/([\d\.\w]+)/, 1);
     } else if (name == "AdobeAIR") {
       version = this.getMatchingGroup_(this.userAgent_,
           /AdobeAIR\/([\d\.]+)/, 1);

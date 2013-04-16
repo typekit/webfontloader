@@ -596,11 +596,11 @@ describe('UserAgentParser', function () {
         });
       });
 
-      it('should detect Samsung Galaxy S4 builtin browser', function () {
+      it('should detect Samsung Galaxy S4 builtin browser (desktop mode?)', function () {
         expect(parse('Mozilla/5.0 (Linux; Android 4.2.2; sl-si; SAMSUNG GT-I9505 Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Version/1.0 Chrome/18.0.1025.308 Mobile Safari/535.19'))
         .toMatchUserAgent({
-          name: 'BuiltinBrowser',
-          version: 'Unknown',
+          name: 'Chrome',
+          version: '18.0.1025.308',
           platform: 'Android',
           platformVersion: '4.2.2',
           engine: 'AppleWebKit',
