@@ -130,8 +130,7 @@ Usually, it's easiest to include a copy of webfontloader in every window where f
 
 ## Modules
 
-WebFont Loader provides a generic module system so that any web font provider
-may be used. The specifics of each provider are documented here.
+WebFont Loader provides a generic module system so that any web font provider may be used. It is also possible to use multiple providers at the same time. The specifics of each provider are documented here.
 
 ### Ascender
 
