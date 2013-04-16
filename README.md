@@ -119,7 +119,7 @@ The timeout value should be in milliseconds, and defaults to 5 seconds if not su
 
 ### Iframes
 
-Usually, it's easiest to include a copy of webfontloader in every window where fonts are needed, so that each window manages its own fonts. However, if you need to have a single window manage fonts for multiple same-origin child windows or iframes that are built up using JavaScript, webfontloader supports that as well. Just use the optional `context` configuration option and give it a reference to the target window for loading:
+Usually, it's easiest to include a copy of WebFont Loader in every window where fonts are needed, so that each window manages its own fonts. However, if you need to have a single window manage fonts for multiple same-origin child windows or iframes that are built up using JavaScript, WebFont Loader supports that as well. Just use the optional `context` configuration option and give it a reference to the target window for loading:
 
     WebFontConfig = {
       google: {
