@@ -3,7 +3,6 @@ goog.provide('webfont.GoogleFontApi');
 goog.require('webfont.FontApiUrlBuilder');
 goog.require('webfont.FontApiParser');
 goog.require('webfont.FontWatchRunner');
-goog.require('webfont.LastResortWebKitFontWatchRunner');
 
 /**
  * @constructor
@@ -20,19 +19,11 @@ webfont.GoogleFontApi.NAME = 'google';
 goog.scope(function () {
   var GoogleFontApi = webfont.GoogleFontApi,
       FontWatchRunner = webfont.FontWatchRunner,
-      LastResortWebKitFontWatchRunner = webfont.LastResortWebKitFontWatchRunner,
       FontApiUrlBuilder = webfont.FontApiUrlBuilder,
       FontApiParser = webfont.FontApiParser;
 
   GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) {
     support(userAgent.getBrowserInfo().hasWebFontSupport());
-  };
-
-  GoogleFontApi.prototype.getFontWatchRunnerCtor = function() {
-    if (this.userAgent_.getEngine() == "AppleWebKit") {
-      return LastResortWebKitFontWatchRunner;
-    }
-    return FontWatchRunner;
   };
 
   GoogleFontApi.prototype.load = function(onReady) {

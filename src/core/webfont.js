@@ -58,9 +58,7 @@ goog.scope(function () {
    */
   WebFont.prototype.isModuleSupportingUserAgent_ = function(module, eventDispatcher,
       fontWatcher, support) {
-    var fontWatchRunnerCtor = module.getFontWatchRunnerCtor ?
-        module.getFontWatchRunnerCtor() : webfont.FontWatchRunner,
-        that = this;
+    var that = this;
 
     if (!support) {
       var allModulesLoaded = --this.moduleLoading_ == 0;
@@ -73,32 +71,22 @@ goog.scope(function () {
           eventDispatcher.dispatchLoading();
         }
       }
-      fontWatcher.watch([], {}, fontWatchRunnerCtor, allModulesLoaded);
+      fontWatcher.watch([], {}, allModulesLoaded);
       return;
     }
 
     module.load(function (fonts, opt_fontTestStrings) {
-      that.onModuleReady_(eventDispatcher, fontWatcher, fontWatchRunnerCtor, fonts, opt_fontTestStrings);
+      that.onModuleReady_(eventDispatcher, fontWatcher, fonts, opt_fontTestStrings);
     });
   };
 
   /**
    * @param {webfont.EventDispatcher} eventDispatcher
    * @param {webfont.FontWatcher} fontWatcher
-   * @param {function(new:webfont.FontWatchRunner,
-   *                  function(webfont.Font),
-   *                  function(webfont.Font),
-   *                  webfont.DomHelper,
-   *                  webfont.Font,
-   *                  webfont.BrowserInfo,
-   *                  number=,
-   *                  Object.<string, boolean>=,
-   *                  string=)} fontWatchRunnerCtor
    * @param {Array.<webfont.Font>} fonts
    * @param {webfont.FontTestStrings=} opt_fontTestStrings
    */
-  WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher,
-      fontWatchRunnerCtor, fonts, opt_fontTestStrings) {
+  WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher, fonts, opt_fontTestStrings) {
     var allModulesLoaded = --this.moduleLoading_ == 0;
 
     if (allModulesLoaded) {
@@ -106,7 +94,7 @@ goog.scope(function () {
     }
 
     setTimeout(function () {
-      fontWatcher.watch(fonts, opt_fontTestStrings || {}, fontWatchRunnerCtor, allModulesLoaded);
+      fontWatcher.watch(fonts, opt_fontTestStrings || {}, allModulesLoaded);
     }, 0);
   };
 

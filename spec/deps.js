@@ -20,7 +20,6 @@ goog.addDependency("../../src/custom/customcss.js", ["webfont.CustomCss"], ["web
 goog.addDependency("../../src/fontdeck/fontdeck_script.js", ["webfont.FontdeckScript"], ["webfont.Font"]);
 goog.addDependency("../../src/google/fontapiparser.js", ["webfont.FontApiParser"], ["webfont.Font"]);
 goog.addDependency("../../src/google/fontapiurlbuilder.js", ["webfont.FontApiUrlBuilder"], []);
-goog.addDependency("../../src/google/googlefontapi.js", ["webfont.GoogleFontApi"], ["webfont.FontApiUrlBuilder","webfont.FontApiParser","webfont.FontWatchRunner","webfont.LastResortWebKitFontWatchRunner"]);
-goog.addDependency("../../src/google/lastresortwebkitfontwatchrunner.js", ["webfont.LastResortWebKitFontWatchRunner"], ["webfont.Font","webfont.FontRuler"]);
+goog.addDependency("../../src/google/googlefontapi.js", ["webfont.GoogleFontApi"], ["webfont.FontApiUrlBuilder","webfont.FontApiParser","webfont.FontWatchRunner"]);
 goog.addDependency("../../src/monotype/monotype_script.js", ["webfont.MonotypeScript"], ["webfont.Font"]);
 goog.addDependency("../../src/typekit/typekit_script.js", ["webfont.TypekitScript"], ["webfont.Font"]);
