@@ -1,6 +1,6 @@
 # WebFont Loader
 
-WebFont Loader gives you added control when using linked fonts via `@font-face`. It provides a common interface to loading fonts regardless of the source, then adds a standard set of events you may use to control the loading experience. The WebFont Loader is able to load fonts from [Google Fonts](http://www.google.com/fonts/), [Typekit](http://www.typekit.com/), [Ascender](http://www.ascenderfonts.com/webfonts/), [Fonts.com](http://www.fonts.com/), [Fontdeck](http://fontdeck.com/) and self-hosted. It was co-developed by [Google](http://www.google.com/) and [Typekit](http://www.typekit.com).
+WebFont Loader gives you added control when using linked fonts via `@font-face`. It provides a common interface to loading fonts regardless of the source, then adds a standard set of events you may use to control the loading experience. The WebFont Loader is able to load fonts from [Google Fonts](http://www.google.com/fonts/), [Typekit](http://www.typekit.com/), [Ascender](http://www.ascenderfonts.com/webfonts/), [Fonts.com](http://www.fonts.com/), [Fontdeck](http://fontdeck.com/) and self-hosted. It is co-developed by [Google](http://www.google.com/) and [Typekit](http://www.typekit.com).
 
 ## Contents
 
@@ -52,6 +52,10 @@ It is also possible to use the WebFont Loader asynchronously, for example to loa
         s.parentNode.insertBefore(wf, s);
       })();
     </script>
+
+Using the WebFont Loader asynchronously avoids blocking your page while loading fonts. If the script is used asynchronously the rest of the page might render before the WebFont Loader is loaded and executed, which can cause a [Flash of Unstyled Text (FOUT)](http://help.typekit.com/customer/portal/articles/6852).
+
+The FOUT can be more easily avoided when loading the WebFont Loader synchronously, as it will automatically set the `wf-loading` class on the HTML element as soon at the WebFont Loader has loaded. This works because the page will wait for the script to load before continuing to load the rest of the content.
 
 ## Configuration
 
