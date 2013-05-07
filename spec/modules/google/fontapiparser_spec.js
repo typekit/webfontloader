@@ -1,5 +1,5 @@
-describe('FontApiParser', function () {
-  var FontApiParser = webfont.modules.FontApiParser,
+describe('modules.google.FontApiParser', function () {
+  var FontApiParser = webfont.modules.google.FontApiParser,
       Font = webfont.Font;
 
   describe('parsed values are coherent', function () {

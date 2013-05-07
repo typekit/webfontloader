@@ -1,5 +1,5 @@
-describe('MonotypeScript', function () {
-  var MonotypeScript = webfont.modules.MonotypeScript,
+describe('modules.Monotype', function () {
+  var Monotype = webfont.modules.Monotype,
       Font = webfont.Font,
       BrowserInfo = webfont.BrowserInfo,
       UserAgent = webfont.UserAgent;
@@ -30,11 +30,11 @@ describe('MonotypeScript', function () {
     load = jasmine.createSpy('load');
     useragent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.3', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false, false));
 
-    monotype = new MonotypeScript(useragent, fakeDomHelper, configuration);
+    monotype = new Monotype(useragent, fakeDomHelper, configuration);
     monotype.supportUserAgent(useragent, support);
     monotype.load(load);
 
-    global[MonotypeScript.HOOK + configuration.projectId] = function () {
+    global[Monotype.HOOK + configuration.projectId] = function () {
       return [{fontfamily: 'aachen bold'}, {fontfamily: 'kid print regular'}];
     };
 

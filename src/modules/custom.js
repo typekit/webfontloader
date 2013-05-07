@@ -1,4 +1,4 @@
-goog.provide('webfont.modules.CustomCss');
+goog.provide('webfont.modules.Custom');
 
 goog.require('webfont.Font');
 
@@ -13,18 +13,18 @@ goog.require('webfont.Font');
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.modules.CustomCss = function(domHelper, configuration) {
+webfont.modules.Custom = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
 };
 
-webfont.modules.CustomCss.NAME = 'custom';
+webfont.modules.Custom.NAME = 'custom';
 
 goog.scope(function () {
-  var CustomCss = webfont.modules.CustomCss,
+  var Custom = webfont.modules.Custom,
       Font = webfont.Font;
 
-  CustomCss.prototype.load = function(onReady) {
+  Custom.prototype.load = function(onReady) {
     var i, len;
     var urls = this.configuration_['urls'] || [];
     var familiesConfiguration = this.configuration_['families'] || [];
@@ -54,11 +54,11 @@ goog.scope(function () {
     onReady(fonts);
   };
 
-  CustomCss.prototype.supportUserAgent = function(userAgent, support) {
+  Custom.prototype.supportUserAgent = function(userAgent, support) {
     return support(userAgent.getBrowserInfo().hasWebFontSupport());
   };
 });
 
-globalNamespaceObject.addModule(webfont.modules.CustomCss.NAME, function(configuration, domHelper) {
-  return new webfont.modules.CustomCss(domHelper, configuration);
+globalNamespaceObject.addModule(webfont.modules.Custom.NAME, function(configuration, domHelper) {
+  return new webfont.modules.Custom(domHelper, configuration);
 });

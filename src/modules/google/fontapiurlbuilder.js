@@ -1,13 +1,13 @@
-goog.provide('webfont.modules.FontApiUrlBuilder');
+goog.provide('webfont.modules.google.FontApiUrlBuilder');
 
 /**
  * @constructor
  */
-webfont.modules.FontApiUrlBuilder = function(apiUrl, protocol, text) {
+webfont.modules.google.FontApiUrlBuilder = function(apiUrl, protocol, text) {
   if (apiUrl) {
     this.apiUrl_ = apiUrl;
   } else {
-    this.apiUrl_ = protocol + webfont.modules.FontApiUrlBuilder.DEFAULT_API_URL;
+    this.apiUrl_ = protocol + webfont.modules.google.FontApiUrlBuilder.DEFAULT_API_URL;
   }
   this.fontFamilies_ = [];
   this.subsets_ = [];
@@ -15,10 +15,10 @@ webfont.modules.FontApiUrlBuilder = function(apiUrl, protocol, text) {
 };
 
 
-webfont.modules.FontApiUrlBuilder.DEFAULT_API_URL = '//fonts.googleapis.com/css';
+webfont.modules.google.FontApiUrlBuilder.DEFAULT_API_URL = '//fonts.googleapis.com/css';
 
 goog.scope(function () {
-  var FontApiUrlBuilder = webfont.modules.FontApiUrlBuilder;
+  var FontApiUrlBuilder = webfont.modules.google.FontApiUrlBuilder;
 
   FontApiUrlBuilder.prototype.setFontFamilies = function(fontFamilies) {
     this.parseFontFamilies_(fontFamilies);

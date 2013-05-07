@@ -15,7 +15,7 @@ core:
   - core/initialize.js
 
 ascender:
-  - modules/ascender/ascender_script.js
+  - modules/ascender.js
 
 google:
   - modules/google/lastresortwebkitfontwatchrunner.js
@@ -24,13 +24,13 @@ google:
   - modules/google/googlefontapi.js
 
 fontdeck:
-  - modules/fontdeck/fontdeck_script.js
+  - modules/fontdeck.js
 
 typekit:
-  - modules/typekit/typekit_script.js
+  - modules/typekit.js
 
 monotype:
-  - modules/monotype/monotype_script.js
+  - modules/monotype.js
 
 custom:
-  - modules/custom/customcss.js
+  - modules/custom.js

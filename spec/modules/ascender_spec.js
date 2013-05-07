@@ -1,5 +1,5 @@
-describe('AscenderScript', function () {
-  var AscenderScript = webfont.modules.AscenderScript,
+describe('modules.Ascender', function () {
+  var Ascender = webfont.modules.Ascender,
       Font = webfont.Font;
 
   var configuration = {
@@ -10,7 +10,7 @@ describe('AscenderScript', function () {
   describe('load family and variations', function () {
     var fakeDomHelper = null,
         fakeOnReady = null,
-        ascenderScript = null;
+        ascender = null;
 
     beforeEach(function () {
       fakeDomHelper = {
@@ -21,8 +21,8 @@ describe('AscenderScript', function () {
 
       fakeOnReady = jasmine.createSpy('onReady');
 
-      ascenderScript = new AscenderScript(fakeDomHelper, configuration);
-      ascenderScript.load(fakeOnReady);
+      ascender = new Ascender(fakeDomHelper, configuration);
+      ascender.load(fakeOnReady);
     });
 
     it('should create the link correctly', function () {
@@ -39,24 +39,24 @@ describe('AscenderScript', function () {
     });
 
     it('should parse variations correctly', function () {
-      expect(ascenderScript.parseVariations('regular')).toEqual(['n4']);
-      expect(ascenderScript.parseVariations('bold')).toEqual(['n7']);
-      expect(ascenderScript.parseVariations('italic')).toEqual(['i4']);
-      expect(ascenderScript.parseVariations('bolditalic')).toEqual(['i7']);
-      expect(ascenderScript.parseVariations('regular,')).toEqual(['n4']);
-      expect(ascenderScript.parseVariations('regular,bold')).toEqual(['n4', 'n7']);
-      expect(ascenderScript.parseVariations('regular,,bold')).toEqual(['n4', 'n7']);
-      expect(ascenderScript.parseVariations('n4,n7')).toEqual(['n4', 'n7']);
+      expect(ascender.parseVariations('regular')).toEqual(['n4']);
+      expect(ascender.parseVariations('bold')).toEqual(['n7']);
+      expect(ascender.parseVariations('italic')).toEqual(['i4']);
+      expect(ascender.parseVariations('bolditalic')).toEqual(['i7']);
+      expect(ascender.parseVariations('regular,')).toEqual(['n4']);
+      expect(ascender.parseVariations('regular,bold')).toEqual(['n4', 'n7']);
+      expect(ascender.parseVariations('regular,,bold')).toEqual(['n4', 'n7']);
+      expect(ascender.parseVariations('n4,n7')).toEqual(['n4', 'n7']);
     });
 
     it('should parse font families correctly', function () {
-      expect(ascenderScript.parseFamilyAndVariations('Arial')).toEqual([new Font('Arial')]);
-      expect(ascenderScript.parseFamilyAndVariations('Arial:bold,regular')).toEqual([new Font('Arial', 'n7'), new Font('Arial', 'n4')]);
-      expect(ascenderScript.parseFamilyAndVariations('Arial:n4,n7')).toEqual([new Font('Arial', 'n4'), new Font('Arial', 'n7')]);
+      expect(ascender.parseFamilyAndVariations('Arial')).toEqual([new Font('Arial')]);
+      expect(ascender.parseFamilyAndVariations('Arial:bold,regular')).toEqual([new Font('Arial', 'n7'), new Font('Arial', 'n4')]);
+      expect(ascender.parseFamilyAndVariations('Arial:n4,n7')).toEqual([new Font('Arial', 'n4'), new Font('Arial', 'n7')]);
     });
 
     it('should parse multiple font families correctly', function () {
-      expect(ascenderScript.parseFamiliesAndVariations(['Arial', 'Sans:n4,n7'])).toEqual([
+      expect(ascender.parseFamiliesAndVariations(['Arial', 'Sans:n4,n7'])).toEqual([
         new Font('Arial', 'n4'),
         new Font('Sans', 'n4'),
         new Font('Sans', 'n7')

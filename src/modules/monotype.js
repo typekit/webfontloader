@@ -1,4 +1,4 @@
-goog.provide('webfont.modules.MonotypeScript');
+goog.provide('webfont.modules.Monotype');
 
 goog.require('webfont.Font');
 
@@ -14,7 +14,7 @@ projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'//this is your Fonts.com Web fo
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.modules.MonotypeScript = function (userAgent, domHelper, configuration) {
+webfont.modules.Monotype = function (userAgent, domHelper, configuration) {
   this.userAgent_ = userAgent;
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
@@ -25,38 +25,38 @@ webfont.modules.MonotypeScript = function (userAgent, domHelper, configuration) 
  * name of the module through which external API is supposed to call the MonotypeFontAPI.
  * @const
  */
-webfont.modules.MonotypeScript.NAME = 'monotype';
+webfont.modules.Monotype.NAME = 'monotype';
 
 /**
  * __mti_fntLst is the name of function that exposes Monotype's font list.
  * @const
  */
-webfont.modules.MonotypeScript.HOOK = '__mti_fntLst';
+webfont.modules.Monotype.HOOK = '__mti_fntLst';
 
 /**
  * __MonotypeAPIScript__ is the id of script added by google API. Currently 'webfonts.fonts.com' supports only one script in a page.
  * This may require change in future if 'webfonts.fonts.com' begins supporting multiple scripts per page.
  * @const
  */
-webfont.modules.MonotypeScript.SCRIPTID = '__MonotypeAPIScript__';
+webfont.modules.Monotype.SCRIPTID = '__MonotypeAPIScript__';
 
 goog.scope(function () {
-  var MonotypeScript = webfont.modules.MonotypeScript,
+  var Monotype = webfont.modules.Monotype,
       Font = webfont.Font;
 
-  MonotypeScript.prototype.supportUserAgent = function (userAgent, support) {
+  Monotype.prototype.supportUserAgent = function (userAgent, support) {
     var self = this;
     var projectId = self.configuration_['projectId'];
     var version = self.configuration_['version'];
     if (projectId) {
       var sc = self.domHelper_.createElement("script");
-      sc["id"] = MonotypeScript.SCRIPTID + projectId;
+      sc["id"] = Monotype.SCRIPTID + projectId;
 
       var loadWindow = this.domHelper_.getLoadWindow();
 
       function onload() {
-        if (loadWindow[MonotypeScript.HOOK + projectId]) {
-          var mti_fnts = loadWindow[webfont.modules.MonotypeScript.HOOK + projectId]();
+        if (loadWindow[Monotype.HOOK + projectId]) {
+          var mti_fnts = loadWindow[Monotype.HOOK + projectId]();
           if (mti_fnts) {
             for (var i = 0; i < mti_fnts.length; i++) {
               self.fonts_.push(new Font(mti_fnts[i]["fontfamily"]));
@@ -84,19 +84,19 @@ goog.scope(function () {
     }
   };
 
-  MonotypeScript.prototype.getScriptSrc = function (projectId, version) {
+  Monotype.prototype.getScriptSrc = function (projectId, version) {
     var p = this.domHelper_.getProtocol();
     var api = (this.configuration_['api'] || 'fast.fonts.com/jsapi').replace(/^.*http(s?):(\/\/)?/, "");
     return p + "//" + api + '/' + projectId + '.js' + ( version ? '?v='+ version : '' );
   };
 
-  MonotypeScript.prototype.load = function (onReady) {
+  Monotype.prototype.load = function (onReady) {
     onReady(this.fonts_);
   };
 });
 
-globalNamespaceObject.addModule(webfont.modules.MonotypeScript.NAME, function (configuration, domHelper) {
+globalNamespaceObject.addModule(webfont.modules.Monotype.NAME, function (configuration, domHelper) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
-  return new webfont.modules.MonotypeScript(userAgent, domHelper, configuration);
+  return new webfont.modules.Monotype(userAgent, domHelper, configuration);
 });
