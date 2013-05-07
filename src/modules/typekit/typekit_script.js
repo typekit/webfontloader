@@ -1,4 +1,4 @@
-goog.provide('webfont.TypekitScript');
+goog.provide('webfont.modules.TypekitScript');
 
 goog.require('webfont.Font');
 
@@ -6,17 +6,17 @@ goog.require('webfont.Font');
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.TypekitScript = function(domHelper, configuration) {
+webfont.modules.TypekitScript = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
   this.fonts_ = [];
 };
 
-webfont.TypekitScript.NAME = 'typekit';
-webfont.TypekitScript.HOOK = '__webfonttypekitmodule__';
+webfont.modules.TypekitScript.NAME = 'typekit';
+webfont.modules.TypekitScript.HOOK = '__webfonttypekitmodule__';
 
 goog.scope(function () {
-  var TypekitScript = webfont.TypekitScript,
+  var TypekitScript = webfont.modules.TypekitScript,
       Font = webfont.Font;
 
   TypekitScript.prototype.getScriptSrc = function(kitId) {
@@ -33,13 +33,13 @@ goog.scope(function () {
 
     if (kitId) {
       // Provide data to Typekit for processing.main
-      if (!loadWindow[webfont.TypekitScript.HOOK]) {
-        loadWindow[webfont.TypekitScript.HOOK] = {};
+      if (!loadWindow[webfont.modules.TypekitScript.HOOK]) {
+        loadWindow[webfont.modules.TypekitScript.HOOK] = {};
       }
 
       // Typekit will call 'init' to indicate whether it supports fonts
       // and what fonts will be provided.
-      loadWindow[webfont.TypekitScript.HOOK][kitId] = function(callback) {
+      loadWindow[webfont.modules.TypekitScript.HOOK][kitId] = function(callback) {
         var init = function(typekitSupports, fontFamilies, fontVariations) {
           for (var i = 0; i < fontFamilies.length; i += 1) {
             var variations = fontVariations[fontFamilies[i]];
@@ -70,6 +70,6 @@ goog.scope(function () {
   };
 });
 
-globalNamespaceObject.addModule(webfont.TypekitScript.NAME, function(configuration, domHelper) {
-  return new webfont.TypekitScript(domHelper, configuration);
+globalNamespaceObject.addModule(webfont.modules.TypekitScript.NAME, function(configuration, domHelper) {
+  return new webfont.modules.TypekitScript(domHelper, configuration);
 });

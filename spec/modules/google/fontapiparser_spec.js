@@ -1,5 +1,5 @@
 describe('FontApiParser', function () {
-  var FontApiParser = webfont.FontApiParser,
+  var FontApiParser = webfont.modules.FontApiParser,
       Font = webfont.Font;
 
   describe('parsed values are coherent', function () {

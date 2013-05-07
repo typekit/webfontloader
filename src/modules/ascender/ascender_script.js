@@ -1,4 +1,4 @@
-goog.provide('webfont.AscenderScript');
+goog.provide('webfont.modules.AscenderScript');
 
 goog.require('webfont.Font');
 
@@ -14,14 +14,14 @@ goog.require('webfont.Font');
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.AscenderScript = function(domHelper, configuration) {
+webfont.modules.AscenderScript = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
 };
 
-webfont.AscenderScript.NAME = 'ascender';
+webfont.modules.AscenderScript.NAME = 'ascender';
 
-webfont.AscenderScript.VARIATIONS = {
+webfont.modules.AscenderScript.VARIATIONS = {
   'regular': 'n4',
   'bold': 'n7',
   'italic': 'i4',
@@ -33,7 +33,7 @@ webfont.AscenderScript.VARIATIONS = {
 };
 
 goog.scope(function () {
-  var AscenderScript = webfont.AscenderScript,
+  var AscenderScript = webfont.modules.AscenderScript,
       Font = webfont.Font;
 
   AscenderScript.prototype.supportUserAgent = function(userAgent, support) {
@@ -102,6 +102,6 @@ goog.scope(function () {
   };
 });
 
-globalNamespaceObject.addModule(webfont.AscenderScript.NAME, function(configuration, domHelper) {
-  return new webfont.AscenderScript(domHelper, configuration);
+globalNamespaceObject.addModule(webfont.modules.AscenderScript.NAME, function(configuration, domHelper) {
+  return new webfont.modules.AscenderScript(domHelper, configuration);
 });

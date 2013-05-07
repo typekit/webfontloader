@@ -1,5 +1,5 @@
 describe('GoogleFontApi', function () {
-  var GoogleFontApi = webfont.GoogleFontApi,
+  var GoogleFontApi = webfont.modules.GoogleFontApi,
       Font = webfont.Font,
       UserAgent = webfont.UserAgent,
       userAgent = null,

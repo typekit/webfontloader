@@ -1,5 +1,5 @@
 describe('FontApiUrlBuilder', function () {
-  var FontApiUrlBuilder = webfont.FontApiUrlBuilder;
+  var FontApiUrlBuilder = webfont.modules.FontApiUrlBuilder;
 
   it('should throw an exception if there are no font families', function () {
     var builder = new FontApiUrlBuilder('http://moo', 'http:');

@@ -1,5 +1,5 @@
 describe('AscenderScript', function () {
-  var AscenderScript = webfont.AscenderScript,
+  var AscenderScript = webfont.modules.AscenderScript,
       Font = webfont.Font;
 
   var configuration = {

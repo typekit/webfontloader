@@ -1,5 +1,5 @@
 describe('CustomCss', function () {
-  var CustomCss = webfont.CustomCss,
+  var CustomCss = webfont.modules.CustomCss,
       FontFamily = webfont.FontFamily;
 
   describe('insert links correctly', function () {

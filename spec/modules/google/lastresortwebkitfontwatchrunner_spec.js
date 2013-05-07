@@ -1,5 +1,5 @@
 describe('LastResortWebKitFontWatchRunner', function () {
-  var LastResortWebKitFontWatchRunner = webfont.LastResortWebKitFontWatchRunner,
+  var LastResortWebKitFontWatchRunner = webfont.modules.LastResortWebKitFontWatchRunner,
       BrowserInfo = webfont.BrowserInfo,
       DomHelper = webfont.DomHelper,
       FontRuler = webfont.FontRuler,

@@ -1,5 +1,5 @@
 describe('FontdeckScript', function () {
-  var FontdeckScript = webfont.FontdeckScript,
+  var FontdeckScript = webfont.modules.FontdeckScript,
       Font = webfont.Font;
 
   var configuration = {

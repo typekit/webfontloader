@@ -1,28 +1,28 @@
-goog.provide('webfont.GoogleFontApi');
+goog.provide('webfont.modules.GoogleFontApi');
 
-goog.require('webfont.FontApiUrlBuilder');
-goog.require('webfont.FontApiParser');
+goog.require('webfont.modules.FontApiUrlBuilder');
+goog.require('webfont.modules.FontApiParser');
 goog.require('webfont.FontWatchRunner');
-goog.require('webfont.LastResortWebKitFontWatchRunner');
+goog.require('webfont.modules.LastResortWebKitFontWatchRunner');
 
 /**
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.GoogleFontApi = function(userAgent, domHelper, configuration) {
+webfont.modules.GoogleFontApi = function(userAgent, domHelper, configuration) {
   this.userAgent_ = userAgent;
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
 };
 
-webfont.GoogleFontApi.NAME = 'google';
+webfont.modules.GoogleFontApi.NAME = 'google';
 
 goog.scope(function () {
-  var GoogleFontApi = webfont.GoogleFontApi,
+  var GoogleFontApi = webfont.modules.GoogleFontApi,
       FontWatchRunner = webfont.FontWatchRunner,
-      LastResortWebKitFontWatchRunner = webfont.LastResortWebKitFontWatchRunner,
-      FontApiUrlBuilder = webfont.FontApiUrlBuilder,
-      FontApiParser = webfont.FontApiParser;
+      LastResortWebKitFontWatchRunner = webfont.modules.LastResortWebKitFontWatchRunner,
+      FontApiUrlBuilder = webfont.modules.FontApiUrlBuilder,
+      FontApiParser = webfont.modules.FontApiParser;
 
   GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) {
     support(userAgent.getBrowserInfo().hasWebFontSupport());
@@ -63,8 +63,8 @@ goog.scope(function () {
   };
 });
 
-globalNamespaceObject.addModule(webfont.GoogleFontApi.NAME, function(configuration, domHelper) {
+globalNamespaceObject.addModule(webfont.modules.GoogleFontApi.NAME, function(configuration, domHelper) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
-  return new webfont.GoogleFontApi(userAgent, domHelper, configuration);
+  return new webfont.modules.GoogleFontApi(userAgent, domHelper, configuration);
 });

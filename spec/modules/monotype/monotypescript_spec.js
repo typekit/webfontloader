@@ -1,5 +1,5 @@
 describe('MonotypeScript', function () {
-  var MonotypeScript = webfont.MonotypeScript,
+  var MonotypeScript = webfont.modules.MonotypeScript,
       Font = webfont.Font,
       BrowserInfo = webfont.BrowserInfo,
       UserAgent = webfont.UserAgent;

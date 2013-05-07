@@ -1,18 +1,18 @@
-goog.provide('webfont.FontApiParser');
+goog.provide('webfont.modules.FontApiParser');
 
 goog.require('webfont.Font');
 
 /**
  * @constructor
  */
-webfont.FontApiParser = function(fontFamilies) {
+webfont.modules.FontApiParser = function(fontFamilies) {
   this.fontFamilies_ = fontFamilies;
   this.parsedFonts_ = [];
   this.fontTestStrings_ = {};
 };
 
 
-webfont.FontApiParser.INT_FONTS = {
+webfont.modules.FontApiParser.INT_FONTS = {
   'latin': webfont.FontWatchRunner.DEFAULT_TEST_STRING,
   'cyrillic': '&#1081;&#1103;&#1046;',
   'greek': '&#945;&#946;&#931;',
@@ -20,7 +20,7 @@ webfont.FontApiParser.INT_FONTS = {
   'Hanuman': '&#x1780;&#x1781;&#x1782;' // For backward compatibility
 };
 
-webfont.FontApiParser.WEIGHTS = {
+webfont.modules.FontApiParser.WEIGHTS = {
   'thin': '1',
   'extralight': '2',
   'extra-light': '2',
@@ -46,20 +46,20 @@ webfont.FontApiParser.WEIGHTS = {
   'b': '7'
 };
 
-webfont.FontApiParser.STYLES = {
+webfont.modules.FontApiParser.STYLES = {
   'i': 'i',
   'italic': 'i',
   'n': 'n',
   'normal': 'n'
 };
 
-webfont.FontApiParser.VARIATION_MATCH =
+webfont.modules.FontApiParser.VARIATION_MATCH =
     new RegExp("^(thin|(?:(?:extra|ultra)-?)?light|regular|book|medium|" +
         "(?:(?:semi|demi|extra|ultra)-?)?bold|black|heavy|l|r|b|[1-9]00)?(n|i" +
         "|normal|italic)?$");
 
 goog.scope(function () {
-  var FontApiParser = webfont.FontApiParser,
+  var FontApiParser = webfont.modules.FontApiParser,
       Font = webfont.Font;
 
   FontApiParser.prototype.parse = function() {

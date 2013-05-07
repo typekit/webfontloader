@@ -1,5 +1,5 @@
 describe('TypekitScript', function () {
-  var TypekitScript = webfont.TypekitScript,
+  var TypekitScript = webfont.modules.TypekitScript,
       Font = webfont.Font;
 
   var configuration = {

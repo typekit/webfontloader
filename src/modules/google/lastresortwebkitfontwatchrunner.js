@@ -1,4 +1,4 @@
-goog.provide('webfont.LastResortWebKitFontWatchRunner');
+goog.provide('webfont.modules.LastResortWebKitFontWatchRunner');
 
 goog.require('webfont.Font');
 goog.require('webfont.FontRuler');
@@ -15,7 +15,7 @@ goog.require('webfont.FontRuler');
  * @param {string=} opt_fontTestString
  * @extends webfont.FontWatchRunner
  */
-webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
+webfont.modules.LastResortWebKitFontWatchRunner = function(activeCallback,
     inactiveCallback, domHelper, font,
     browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
 
@@ -28,16 +28,16 @@ webfont.LastResortWebKitFontWatchRunner = function(activeCallback,
   this.lastObservedWidthB_ = this.lastResortWidths_[webfont.FontWatchRunner.LastResortFonts.SANS_SERIF];;
 };
 
-goog.inherits(webfont.LastResortWebKitFontWatchRunner, webfont.FontWatchRunner)
+goog.inherits(webfont.modules.LastResortWebKitFontWatchRunner, webfont.FontWatchRunner)
 
-webfont.LastResortWebKitFontWatchRunner.METRICS_COMPATIBLE_FONTS = {
+webfont.modules.LastResortWebKitFontWatchRunner.METRICS_COMPATIBLE_FONTS = {
     "Arimo": true,
     "Cousine": true,
     "Tinos": true
 };
 
 goog.scope(function () {
-  var LastResortWebKitFontWatchRunner = webfont.LastResortWebKitFontWatchRunner,
+  var LastResortWebKitFontWatchRunner = webfont.modules.LastResortWebKitFontWatchRunner,
       Font = webfont.Font,
       FontRuler = webfont.FontRuler;
 
