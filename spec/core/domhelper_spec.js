@@ -155,4 +155,59 @@ describe('DomHelper', function () {
       expect(div.style.top).toEqual('1px');
     });
   });
+
+  describe('#createStyle', function () {
+    var style = null;
+
+    beforeEach(function () {
+      style = domHelper.createStyle('font-size:300px;');
+    });
+
+    it('should create a style element', function () {
+      expect(style).not.toBeNull();
+      expect(style.nodeName).toEqual('STYLE');
+    });
+
+    it('should set the css content correctly', function () {
+      if (style.styleSheet) {
+        expect(style.styleSheet.cssText).toEqual('font-size:300px;');
+      } else {
+        expect(style.textContent).toEqual('font-size:300px;');
+      }
+    });
+  });
+
+  describe('#loadScript', function () {
+    it('should load the script', function () {
+      runs(function () {
+        domHelper.loadScript('core/external_script.js');
+      });
+
+      waitsFor(function () {
+        return window.EXTERNAL_SCRIPT_LOADED;
+      }, 'script was never inserted', 1000);
+
+      runs(function () {
+        expect(window.EXTERNAL_SCRIPT_LOADED).toBe(true);
+      });
+    });
+
+    it('should call the callback', function () {
+      var called = false;
+
+      runs(function () {
+        domHelper.loadScript('core/external_script.js', function () {
+          called = true;
+        });
+      });
+
+      waitsFor(function () {
+        return called;
+      }, 'callback was never called', 1000);
+
+      runs(function () {
+        expect(called).toBe(true);
+      });
+    });
+  });
 });
