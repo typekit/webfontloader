@@ -16,17 +16,24 @@ webfont.FontTestStrings;
  */
 var GLOBAL_NAME = 'WebFont';
 
+/**
+ * Name of the global configuration object
+ *
+ * @define {string}
+ */
+var GLOBAL_CONFIG_NAME = 'WebFontConfig';
+
 // Provide an instance of WebFont in the global namespace.
-var globalNamespaceObject = window[GLOBAL_NAME] = (function() {
+goog.global[GLOBAL_NAME] = (function() {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
   var fontModuleLoader = new webfont.FontModuleLoader();
   return new webfont.WebFont(window, fontModuleLoader, userAgent);
 })();
 
-if (window['WebFontConfig']) {
-  globalNamespaceObject['load'](window['WebFontConfig']);
+if (goog.global[GLOBAL_CONFIG_NAME]) {
+  goog.global[GLOBAL_NAME]['load'](goog.global[GLOBAL_CONFIG_NAME]);
 }
 
 // Export the public API.
-globalNamespaceObject['load'] = globalNamespaceObject.load;
+window[GLOBAL_NAME]['load'] = goog.global[GLOBAL_NAME].load;

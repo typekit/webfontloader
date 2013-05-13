@@ -63,7 +63,7 @@ goog.scope(function () {
   };
 });
 
-globalNamespaceObject.addModule(webfont.GoogleFontApi.NAME, function(configuration, domHelper) {
+goog.global[GLOBAL_NAME].addModule(webfont.GoogleFontApi.NAME, function(configuration, domHelper) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
   return new webfont.GoogleFontApi(userAgent, domHelper, configuration);

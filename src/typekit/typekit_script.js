@@ -70,6 +70,6 @@ goog.scope(function () {
   };
 });
 
-globalNamespaceObject.addModule(webfont.TypekitScript.NAME, function(configuration, domHelper) {
+goog.global[GLOBAL_NAME].addModule(webfont.TypekitScript.NAME, function(configuration, domHelper) {
   return new webfont.TypekitScript(domHelper, configuration);
 });

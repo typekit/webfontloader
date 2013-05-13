@@ -95,7 +95,7 @@ goog.scope(function () {
   };
 });
 
-globalNamespaceObject.addModule(webfont.MonotypeScript.NAME, function (configuration, domHelper) {
+goog.global[GLOBAL_NAME].addModule(webfont.MonotypeScript.NAME, function (configuration, domHelper) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
   return new webfont.MonotypeScript(userAgent, domHelper, configuration);

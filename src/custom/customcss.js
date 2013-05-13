@@ -59,6 +59,6 @@ goog.scope(function () {
   };
 });
 
-globalNamespaceObject.addModule(webfont.CustomCss.NAME, function(configuration, domHelper) {
+goog.global[GLOBAL_NAME].addModule(webfont.CustomCss.NAME, function(configuration, domHelper) {
   return new webfont.CustomCss(domHelper, configuration);
 });

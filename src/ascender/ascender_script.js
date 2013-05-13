@@ -102,6 +102,6 @@ goog.scope(function () {
   };
 });
 
-globalNamespaceObject.addModule(webfont.AscenderScript.NAME, function(configuration, domHelper) {
+goog.global[GLOBAL_NAME].addModule(webfont.AscenderScript.NAME, function(configuration, domHelper) {
   return new webfont.AscenderScript(domHelper, configuration);
 });
