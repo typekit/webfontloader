@@ -19,6 +19,19 @@ webfont.FontTestStrings;
  */
 var INCLUDE_MODULES = true;
 
+/**
+ * @define {string}
+ */
+var WEBFONT = 'WebFont';
+
+/**
+ * @define {string}
+ */
+var WEBFONT_CONFIG = 'WebFontConfig';
+
+/**
+ * @type {webfont.WebFont}
+ */
 var webFontLoader = new webfont.WebFont(goog.global);
 
 if (INCLUDE_MODULES) {
@@ -47,8 +60,11 @@ if (INCLUDE_MODULES) {
   });
 }
 
-if (goog.global['WebFontConfig']) {
-  webFontLoader.load(goog.global['WebFontConfig']);
-}
+if (!goog.global[WEBFONT]) {
+  goog.global[WEBFONT] = {};
+  goog.global[WEBFONT]['load'] = webFontLoader.load;
 
-goog.exportSymbol('WebFont.load', webFontLoader.load);
+  if (goog.global[WEBFONT_CONFIG]) {
+    webFontLoader.load(goog.global[WEBFONT_CONFIG]);
+  }
+}
