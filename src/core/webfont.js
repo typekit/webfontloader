@@ -3,18 +3,19 @@ goog.provide('webfont.WebFont');
 goog.require('webfont.DomHelper');
 goog.require('webfont.EventDispatcher');
 goog.require('webfont.FontWatcher');
+goog.require('webfont.FontModuleLoader');
+goog.require('webfont.UserAgentParser');
 
 /**
  * @param {Window} mainWindow The main application window containing
  *   webfontloader.js.
- * @param {webfont.FontModuleLoader} fontModuleLoader A loader instance to use.
- * @param {webfont.UserAgent} userAgent The detected user agent to load for.
  * @constructor
  */
-webfont.WebFont = function(mainWindow, fontModuleLoader, userAgent) {
+webfont.WebFont = function(mainWindow) {
   this.mainWindow_ = mainWindow;
-  this.fontModuleLoader_ = fontModuleLoader;
-  this.userAgent_ = userAgent;
+  this.fontModuleLoader_ = new webfont.FontModuleLoader();
+  this.userAgentParser_ = new webfont.UserAgentParser(mainWindow.navigator.userAgent, mainWindow.document);
+  this.userAgent_ = this.userAgentParser_.parse();
   this.moduleLoading_ = 0;
   this.moduleFailedLoading_ = 0;
 };

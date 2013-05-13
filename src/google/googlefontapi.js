@@ -9,8 +9,10 @@ goog.require('webfont.LastResortWebKitFontWatchRunner');
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.GoogleFontApi = function(userAgent, domHelper, configuration) {
-  this.userAgent_ = userAgent;
+webfont.GoogleFontApi = function(domHelper, configuration) {
+  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
+
+  this.userAgent_ = userAgentParser.parse();
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
 };
@@ -61,10 +63,4 @@ goog.scope(function () {
         fontApiUrlBuilder.build()));
     onReady(fontApiParser.getFonts(), fontApiParser.getFontTestStrings());
   };
-});
-
-goog.global[GLOBAL_NAME].addModule(webfont.GoogleFontApi.NAME, function(configuration, domHelper) {
-  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
-  var userAgent = userAgentParser.parse();
-  return new webfont.GoogleFontApi(userAgent, domHelper, configuration);
 });

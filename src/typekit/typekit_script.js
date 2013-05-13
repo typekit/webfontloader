@@ -69,7 +69,3 @@ goog.scope(function () {
     onReady(this.fonts_);
   };
 });
-
-goog.global[GLOBAL_NAME].addModule(webfont.TypekitScript.NAME, function(configuration, domHelper) {
-  return new webfont.TypekitScript(domHelper, configuration);
-});

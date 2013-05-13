@@ -19,8 +19,6 @@ webfont.AscenderScript = function(domHelper, configuration) {
   this.configuration_ = configuration;
 };
 
-webfont.AscenderScript.NAME = 'ascender';
-
 webfont.AscenderScript.VARIATIONS = {
   'regular': 'n4',
   'bold': 'n7',
@@ -100,8 +98,4 @@ goog.scope(function () {
     }
     return variations;
   };
-});
-
-goog.global[GLOBAL_NAME].addModule(webfont.AscenderScript.NAME, function(configuration, domHelper) {
-  return new webfont.AscenderScript(domHelper, configuration);
 });

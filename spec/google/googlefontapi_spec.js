@@ -1,8 +1,6 @@
 describe('GoogleFontApi', function () {
   var GoogleFontApi = webfont.GoogleFontApi,
       Font = webfont.Font,
-      UserAgent = webfont.UserAgent,
-      userAgent = null,
       link = '',
       insert = '',
       fakeDomHelper =  {
@@ -21,7 +19,6 @@ describe('GoogleFontApi', function () {
   beforeEach(function () {
     insert = '';
     link = '';
-    userAgent = new UserAgent('Test', '1.0', true);
   });
 
   describe('call onReady with font family loading', function () {
@@ -29,7 +26,7 @@ describe('GoogleFontApi', function () {
         fonts = null;
 
     beforeEach(function () {
-      googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, { families: ['Font1', 'Font2'] });
+      googleFontApi = new GoogleFontApi(fakeDomHelper, { families: ['Font1', 'Font2'] });
       googleFontApi.load(function (f) {
         fonts = f;
       });
@@ -52,7 +49,7 @@ describe('GoogleFontApi', function () {
     var googleFontApi = null;
 
     beforeEach(function () {
-      googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, {
+      googleFontApi = new GoogleFontApi(fakeDomHelper, {
         api: 'http://moo',
         families: ['Font1', 'Font2']
       });
@@ -69,7 +66,7 @@ describe('GoogleFontApi', function () {
     var googleFontApi = null;
 
     beforeEach(function () {
-      googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, { families: ['Font1 WithSpace', 'Font2 WithSpaceToo'] });
+      googleFontApi = new GoogleFontApi(fakeDomHelper, { families: ['Font1 WithSpace', 'Font2 WithSpaceToo'] });
       googleFontApi.load(function () {});
     });
 
@@ -83,7 +80,7 @@ describe('GoogleFontApi', function () {
     var googleFontApi = null;
 
     beforeEach(function () {
-      googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, { families: ['Font1 WithSpace:bi', 'Font2 WithSpaceToo:b,r'] });
+      googleFontApi = new GoogleFontApi(fakeDomHelper, { families: ['Font1 WithSpace:bi', 'Font2 WithSpaceToo:b,r'] });
       googleFontApi.load(function () {});
     });
 

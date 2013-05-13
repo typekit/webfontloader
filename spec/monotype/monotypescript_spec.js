@@ -30,7 +30,7 @@ describe('MonotypeScript', function () {
     load = jasmine.createSpy('load');
     useragent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.3', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false, false));
 
-    monotype = new MonotypeScript(useragent, fakeDomHelper, configuration);
+    monotype = new MonotypeScript(fakeDomHelper, configuration);
     monotype.supportUserAgent(useragent, support);
     monotype.load(load);
 

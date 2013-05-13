@@ -12,7 +12,6 @@ webfont.FontdeckScript = function(domHelper, configuration) {
   this.fonts_ = [];
 };
 
-webfont.FontdeckScript.NAME = 'fontdeck';
 webfont.FontdeckScript.HOOK = '__webfontfontdeckmodule__';
 webfont.FontdeckScript.API = '//f.fontdeck.com/s/css/js/';
 
@@ -63,8 +62,4 @@ goog.scope(function () {
   FontdeckScript.prototype.load = function(onReady) {
     onReady(this.fonts_);
   };
-});
-
-goog.global[GLOBAL_NAME].addModule(webfont.FontdeckScript.NAME, function(configuration, domHelper) {
-  return new webfont.FontdeckScript(domHelper, configuration);
 });

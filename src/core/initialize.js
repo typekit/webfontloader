@@ -1,8 +1,13 @@
 goog.provide('webfont');
 
-goog.require('webfont.UserAgentParser');
-goog.require('webfont.FontModuleLoader');
 goog.require('webfont.WebFont');
+
+goog.require('webfont.TypekitScript');
+goog.require('webfont.AscenderScript');
+goog.require('webfont.FontdeckScript');
+goog.require('webfont.MonotypeScript');
+goog.require('webfont.CustomCss');
+goog.require('webfont.GoogleFontApi');
 
 /**
  * @typedef {Object.<string, Array.<string>>}
@@ -10,30 +15,40 @@ goog.require('webfont.WebFont');
 webfont.FontTestStrings;
 
 /**
- * Name of the global object
- *
- * @define {string}
+ * @define {boolean}
  */
-var GLOBAL_NAME = 'WebFont';
+var INCLUDE_MODULES = true;
 
-/**
- * Name of the global configuration object
- *
- * @define {string}
- */
-var GLOBAL_CONFIG_NAME = 'WebFontConfig';
+var webFontLoader = new webfont.WebFont(goog.global);
 
-// Provide an instance of WebFont in the global namespace.
-goog.global[GLOBAL_NAME] = (function() {
-  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
-  var userAgent = userAgentParser.parse();
-  var fontModuleLoader = new webfont.FontModuleLoader();
-  return new webfont.WebFont(window, fontModuleLoader, userAgent);
-})();
+if (INCLUDE_MODULES) {
+  webFontLoader.addModule('ascender', function (configuration, domHelper) {
+    return new webfont.AscenderScript(domHelper, configuration);
+  });
 
-if (goog.global[GLOBAL_CONFIG_NAME]) {
-  goog.global[GLOBAL_NAME]['load'](goog.global[GLOBAL_CONFIG_NAME]);
+  webFontLoader.addModule('custom', function (configuration, domHelper) {
+    return new webfont.CustomCss(domHelper, configuration);
+  });
+
+  webFontLoader.addModule('fontdeck', function (configuration, domHelper) {
+    return new webfont.FontdeckScript(domHelper, configuration);
+  });
+
+  webFontLoader.addModule('monotype', function (configuration, domHelper) {
+    return new webfont.MonotypeScript(domHelper, configuration);
+  });
+
+  webFontLoader.addModule('typekit', function (configuration, domHelper) {
+    return new webfont.TypekitScript(domHelper, configuration);
+  });
+
+  webFontLoader.addModule('google', function (configuration, domHelper) {
+    return new webfont.GoogleFontApi(domHelper, configuration);
+  });
 }
 
-// Export the public API.
-window[GLOBAL_NAME]['load'] = goog.global[GLOBAL_NAME].load;
+if (goog.global['WebFontConfig']) {
+  webFontLoader.load(goog.global['WebFontConfig']);
+}
+
+goog.exportSymbol('WebFont.load', webFontLoader.load);

@@ -14,18 +14,11 @@ projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'//this is your Fonts.com Web fo
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.MonotypeScript = function (userAgent, domHelper, configuration) {
-  this.userAgent_ = userAgent;
+webfont.MonotypeScript = function (domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
   this.fonts_ = [];
 };
-
-/**
- * name of the module through which external API is supposed to call the MonotypeFontAPI.
- * @const
- */
-webfont.MonotypeScript.NAME = 'monotype';
 
 /**
  * __mti_fntLst is the name of function that exposes Monotype's font list.
@@ -80,7 +73,7 @@ goog.scope(function () {
       this.domHelper_.insertInto('head', sc);
     }
     else {
-      support(true);
+      support(true); // XXX: ???
     }
   };
 
@@ -93,10 +86,4 @@ goog.scope(function () {
   MonotypeScript.prototype.load = function (onReady) {
     onReady(this.fonts_);
   };
-});
-
-goog.global[GLOBAL_NAME].addModule(webfont.MonotypeScript.NAME, function (configuration, domHelper) {
-  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
-  var userAgent = userAgentParser.parse();
-  return new webfont.MonotypeScript(userAgent, domHelper, configuration);
 });
