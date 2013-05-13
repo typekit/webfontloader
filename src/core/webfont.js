@@ -43,11 +43,7 @@ goog.scope(function () {
     var eventDispatcher = new EventDispatcher(
         this.domHelper_, context.document.documentElement, configuration);
 
-    if (this.userAgent_.getBrowserInfo().hasWebFontSupport()) {
-      this.load_(eventDispatcher, configuration);
-    } else {
-      eventDispatcher.dispatchInactive();
-    }
+    this.load_(eventDispatcher, configuration);
   };
 
   /**
