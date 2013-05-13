@@ -24,5 +24,9 @@ var globalNamespaceObject = window[GLOBAL_NAME] = (function() {
   return new webfont.WebFont(window, fontModuleLoader, userAgent);
 })();
 
+if (window['WebFontConfig']) {
+  globalNamespaceObject['load'](window['WebFontConfig']);
+}
+
 // Export the public API.
 globalNamespaceObject['load'] = globalNamespaceObject.load;
