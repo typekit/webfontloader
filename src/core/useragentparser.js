@@ -238,7 +238,7 @@ goog.scope(function () {
 
     if (browserName == UserAgentParser.BUILTIN_BROWSER) {
       browserVersion = new Version();
-    } else if (/Silk\/\d/.test(this.userAgent_)) {
+    } else if (browserName == "Silk") {
       browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Silk\/([\d\._]+)/, 1));
     } else if (this.userAgent_.indexOf("Version/") != -1) {
       browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.\w]+)/, 1));
