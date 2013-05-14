@@ -229,7 +229,7 @@ describe('UserAgentParser', function () {
           name: 'Chrome',
           version: new Version(18, 0, 1025, 46),
           platform: 'CrOS',
-          platformVersion: new Version(), //'i686 1660.57.0'
+          platformVersion: new Version(1660, 57, 0),
           engine: 'AppleWebKit',
           engineVersion: new Version(535, 19),
           documentMode: undefined,

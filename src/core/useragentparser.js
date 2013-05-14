@@ -99,9 +99,14 @@ goog.scope(function () {
    */
   UserAgentParser.prototype.getPlatformVersionString_ = function() {
     var genericVersion = this.getMatchingGroup_(this.userAgent_,
-        /(OS X|Windows NT|Android|CrOS) ([^;)]+)/, 2);
+        /(OS X|Windows NT|Android) ([^;)]+)/, 2);
     if (genericVersion) {
       return genericVersion;
+    }
+    var crOsVersion = this.getMatchingGroup_(this.userAgent_,
+        /CrOS (?:[ix][\d_]+)\s([^;)]+)/, 1);
+    if (crOsVersion) {
+      return crOsVersion;
     }
     var winPhoneVersion = this.getMatchingGroup_(this.userAgent_,
         /Windows Phone( OS)? ([^;)]+)/, 2);
