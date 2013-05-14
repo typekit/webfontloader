@@ -168,6 +168,31 @@ a colon. Variations are specified using [FVD notation](https://github.com/typeki
       }
     };
 
+In this example, the `fonts.css` file might look something like this:
+
+    @font-face {
+      font-family: 'My Font';
+      src: ...;
+    }
+    @font-face {
+      font-family: 'My Other Font';
+      font-style: normal;
+      font-weight: normal; /* or 400 */
+      src: ...;
+    }
+    @font-face {
+      font-family: 'My Other Font';
+      font-style: italic;
+      font-weight: normal; /* or 400 */
+      src: ...;
+    }
+    @font-face {
+      font-family: 'My Other Font';
+      font-style: normal;
+      font-weight: bold; /* or 700 */
+      src: ...;
+    }
+
 ### Fontdeck
 
 To use the [Fontdeck](http://fontdeck.com/) module, specify the ID of your website. You can find this ID on the website page within your account settings.
