@@ -69,6 +69,25 @@ describe('UserAgentParser', function () {
     });
   });
 
+  describe('#getPlatformVersionString_', function () {
+    function parsePlatformVersion(str) {
+      return new UserAgentParser(str, {}).getPlatformVersionString_();
+    }
+
+    it('should parse Linux versions correctly', function () {
+      expect(parsePlatformVersion('(Linux; U; en-us; KFJWI Build/IML74K)')).toEqual('Unknown');
+      expect(parsePlatformVersion('(Linux i686; U; en)')).toEqual('Unknown');
+      expect(parsePlatformVersion('(X11; Linux i686; U; Linux Mint; nb)')).toEqual('Unknown');
+      expect(parsePlatformVersion('(X11; Linux x86_64)')).toEqual('Unknown');
+      expect(parsePlatformVersion('(X11; U; en-US; rv:2.0; Linux i686 10.1)')).toEqual('10.1');
+      expect(parsePlatformVersion('(X11; Linux i868 10.1; U; en-US; rv:2.0)')).toEqual('10.1');
+    });
+
+    it('should parse ChromeOS versions correctly', function () {
+      expect(parsePlatformVersion('(X11; CrOS i686 1660.57.0)')).toEqual('1660.57.0');
+    });
+  });
+
   describe('#parse', function () {
     function parse(userAgentString, doc) {
       return new UserAgentParser(userAgentString, doc || {}).parse();
@@ -1149,88 +1168,6 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
-            hasWebKitFallbackBug: false,
-            hasWebKitMetricsBug: false
-          }
-        });
-      });
-
-      it('should detect Linux versions correctly', function () {
-        expect(parse('Mozilla/5.0 (X11; U; Linux i686; en-US; rv:2.0) Gecko/20081202 Firefox (Debian-2.0.0.19)'))
-        .toMatchUserAgent({
-          name: 'Firefox',
-          version: new Version(),
-          platform: 'Linux',
-          platformVersion: new Version(),
-          engine: 'Gecko',
-          engineVersion: new Version(2, 0),
-          documentMode: undefined,
-          browserInfo: {
-            hasWebFontSupport: true,
-            hasWebKitFallbackBug: false,
-            hasWebKitMetricsBug: false
-          }
-        });
-
-        expect(parse('Mozilla/5.0 (X11; U; Linux; en-US; rv:2.0) Gecko/20081202 Firefox (Debian-2.0.0.19)'))
-        .toMatchUserAgent({
-          name: 'Firefox',
-          version: new Version(),
-          platform: 'Linux',
-          platformVersion: new Version(),
-          engine: 'Gecko',
-          engineVersion: new Version(2, 0),
-          documentMode: undefined,
-          browserInfo: {
-            hasWebFontSupport: true,
-            hasWebKitFallbackBug: false,
-            hasWebKitMetricsBug: false
-          }
-        });
-
-        expect(parse('Mozilla/5.0 (X11; U; en-US; rv:2.0; Linux i686 10.1) Gecko/20081202 Firefox (Debian-2.0.0.19)'))
-        .toMatchUserAgent({
-          name: 'Firefox',
-          version: new Version(),
-          platform: 'Linux',
-          platformVersion: new Version(10, 1),
-          engine: 'Gecko',
-          engineVersion: new Version(2, 0),
-          documentMode: undefined,
-          browserInfo: {
-            hasWebFontSupport: true,
-            hasWebKitFallbackBug: false,
-            hasWebKitMetricsBug: false
-          }
-        });
-
-        expect(parse('Mozilla/5.0 (X11; Linux i868 10.1; U; en-US; rv:2.0) Gecko/20081202 Firefox (Debian-2.0.0.19)'))
-        .toMatchUserAgent({
-          name: 'Firefox',
-          version: new Version(),
-          platform: 'Linux',
-          platformVersion: new Version(10, 1),
-          engine: 'Gecko',
-          engineVersion: new Version(2, 0),
-          documentMode: undefined,
-          browserInfo: {
-            hasWebFontSupport: true,
-            hasWebKitFallbackBug: false,
-            hasWebKitMetricsBug: false
-          }
-        });
-
-        expect(parse('Mozilla/5.0 (X11; Linux x64_32; U; en-US; rv:2.0) Gecko/20081202 Firefox (Debian-2.0.0.19)'))
-        .toMatchUserAgent({
-          name: 'Firefox',
-          version: new Version(),
-          platform: 'Linux',
-          platformVersion: new Version(),
-          engine: 'Gecko',
-          engineVersion: new Version(2, 0),
-          documentMode: undefined,
-          browserInfo: {
-            hasWebFontSupport: true,
             hasWebKitFallbackBug: false,
             hasWebKitMetricsBug: false
           }

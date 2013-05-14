@@ -103,11 +103,6 @@ goog.scope(function () {
     if (genericVersion) {
       return genericVersion;
     }
-    var crOsVersion = this.getMatchingGroup_(this.userAgent_,
-        /CrOS (?:[ix][\d_]+)\s([^;)]+)/, 1);
-    if (crOsVersion) {
-      return crOsVersion;
-    }
     var winPhoneVersion = this.getMatchingGroup_(this.userAgent_,
         /Windows Phone( OS)? ([^;)]+)/, 2);
     if (winPhoneVersion) {
@@ -118,10 +113,10 @@ goog.scope(function () {
     if (iVersion) {
       return iVersion;
     }
-    var linuxVersion = this.getMatchingGroup_(this.userAgent_,
-        /Linux (?:[ix][\d_]+)\s([^;)]+)/, 1);
-    if (linuxVersion) {
-      return linuxVersion;
+    var linuxOrCrOsVersion = this.getMatchingGroup_(this.userAgent_,
+        /(?:Linux|CrOS)(?:\s[ix][\d_]+)\s([^;)]+)/, 1);
+    if (linuxOrCrOsVersion) {
+      return linuxOrCrOsVersion;
     }
     var blackBerryVersion = this.getMatchingGroup_(this.userAgent_,
         /(BB\d{2}|BlackBerry).*?Version\/([^\s]*)/, 2);
