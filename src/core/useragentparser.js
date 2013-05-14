@@ -114,7 +114,7 @@ goog.scope(function () {
       return iVersion;
     }
     var linuxVersion = this.getMatchingGroup_(this.userAgent_,
-        /Linux ([i\d]+)/, 1);
+        /Linux (?:[ix][\d_]+)\s([^;)]+)/, 1);
     if (linuxVersion) {
       return linuxVersion;
     }

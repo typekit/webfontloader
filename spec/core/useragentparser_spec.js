@@ -1154,6 +1154,88 @@ describe('UserAgentParser', function () {
           }
         });
       });
+
+      it('should detect Linux versions correctly', function () {
+        expect(parse('Mozilla/5.0 (X11; U; Linux i686; en-US; rv:2.0) Gecko/20081202 Firefox (Debian-2.0.0.19)'))
+        .toMatchUserAgent({
+          name: 'Firefox',
+          version: new Version(),
+          platform: 'Linux',
+          platformVersion: new Version(),
+          engine: 'Gecko',
+          engineVersion: new Version(2, 0),
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
+
+        expect(parse('Mozilla/5.0 (X11; U; Linux; en-US; rv:2.0) Gecko/20081202 Firefox (Debian-2.0.0.19)'))
+        .toMatchUserAgent({
+          name: 'Firefox',
+          version: new Version(),
+          platform: 'Linux',
+          platformVersion: new Version(),
+          engine: 'Gecko',
+          engineVersion: new Version(2, 0),
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
+
+        expect(parse('Mozilla/5.0 (X11; U; en-US; rv:2.0; Linux i686 10.1) Gecko/20081202 Firefox (Debian-2.0.0.19)'))
+        .toMatchUserAgent({
+          name: 'Firefox',
+          version: new Version(),
+          platform: 'Linux',
+          platformVersion: new Version(10, 1),
+          engine: 'Gecko',
+          engineVersion: new Version(2, 0),
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
+
+        expect(parse('Mozilla/5.0 (X11; Linux i868 10.1; U; en-US; rv:2.0) Gecko/20081202 Firefox (Debian-2.0.0.19)'))
+        .toMatchUserAgent({
+          name: 'Firefox',
+          version: new Version(),
+          platform: 'Linux',
+          platformVersion: new Version(10, 1),
+          engine: 'Gecko',
+          engineVersion: new Version(2, 0),
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
+
+        expect(parse('Mozilla/5.0 (X11; Linux x64_32; U; en-US; rv:2.0) Gecko/20081202 Firefox (Debian-2.0.0.19)'))
+        .toMatchUserAgent({
+          name: 'Firefox',
+          version: new Version(),
+          platform: 'Linux',
+          platformVersion: new Version(),
+          engine: 'Gecko',
+          engineVersion: new Version(2, 0),
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
     });
   });
 });
