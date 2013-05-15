@@ -114,9 +114,14 @@ goog.scope(function () {
       return iVersion;
     }
     var linuxOrCrOsVersion = this.getMatchingGroup_(this.userAgent_,
-        /(?:Linux|CrOS)(?:\s[ix][\d_]+)\s([^;)]+)/, 1);
+        /(?:Linux|CrOS) ([^;)]+)/, 1);
     if (linuxOrCrOsVersion) {
-      return linuxOrCrOsVersion;
+      var parts = linuxOrCrOsVersion.split(/\s/);
+      for (var i = 0; i < parts.length; i += 1) {
+        if (/^[\d\._]+$/.test(parts[i])) {
+          return parts[i];
+        }
+      }
     }
     var blackBerryVersion = this.getMatchingGroup_(this.userAgent_,
         /(BB\d{2}|BlackBerry).*?Version\/([^\s]*)/, 2);

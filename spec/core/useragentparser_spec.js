@@ -81,6 +81,7 @@ describe('UserAgentParser', function () {
       expect(parsePlatformVersion('(X11; Linux x86_64)')).toEqual('Unknown');
       expect(parsePlatformVersion('(X11; U; en-US; rv:2.0; Linux i686 10.1)')).toEqual('10.1');
       expect(parsePlatformVersion('(X11; Linux i868 10.1; U; en-US; rv:2.0)')).toEqual('10.1');
+      expect(parsePlatformVersion('(X11; Linux 10.1; U; en-US)')).toEqual('10.1');
     });
 
     it('should parse ChromeOS versions correctly', function () {
