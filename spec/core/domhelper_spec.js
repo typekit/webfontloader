@@ -358,9 +358,7 @@ describe('DomHelper', function () {
         domHelper.whenBodyExists(callback);
       });
 
-      waitsFor(function () {
-        return callback.wasCalled;
-      }, 'callback was never called', 200);
+      waits(100);
 
       runs(function () {
         expect(callback).not.toHaveBeenCalled();

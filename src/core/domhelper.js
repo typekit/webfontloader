@@ -82,8 +82,9 @@ goog.scope(function () {
    * @param {function()} callback The function to call.
    */
   DomHelper.prototype.whenBodyExists = function(callback) {
+    var that = this;
     var check = function() {
-      if (document.body) {
+      if (that.document_.body) {
         callback();
       } else {
         setTimeout(check, 0);
