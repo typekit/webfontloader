@@ -14,7 +14,8 @@ goog.addDependency("../../src/core/fontwatchrunner.js", ["webfont.FontWatchRunne
 goog.addDependency("../../src/core/initialize.js", ["webfont"], ["webfont.UserAgentParser","webfont.FontModuleLoader","webfont.WebFont"]);
 goog.addDependency("../../src/core/namespace.js", [], []);
 goog.addDependency("../../src/core/useragent.js", ["webfont.UserAgent"], []);
-goog.addDependency("../../src/core/useragentparser.js", ["webfont.UserAgentParser"], ["webfont.BrowserInfo","webfont.UserAgent"]);
+goog.addDependency("../../src/core/useragentparser.js", ["webfont.UserAgentParser"], ["webfont.BrowserInfo","webfont.UserAgent","webfont.Version"]);
+goog.addDependency("../../src/core/version.js", ["webfont.Version"], []);
 goog.addDependency("../../src/core/webfont.js", ["webfont.WebFont"], ["webfont.DomHelper","webfont.EventDispatcher","webfont.FontWatcher"]);
 goog.addDependency("../../src/custom/customcss.js", ["webfont.CustomCss"], ["webfont.Font"]);
 goog.addDependency("../../src/fontdeck/fontdeck_script.js", ["webfont.FontdeckScript"], ["webfont.Font"]);
