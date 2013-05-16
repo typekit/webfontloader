@@ -1,3 +1,12 @@
+v1.4.3 (May 16, 2013)
+* UserAgent now maintains version numbers as instances of the Version class.
+
+v1.4.2 (April 11, 2013)
+* Namespace is now configurable at compile time
+* BrowserInfo and UserAgent are exported so Typekit KitJS and the standalone webfontloader can share data
+* Add "aria-hidden=true" to test spans so screen readers do not read test spans
+* Fix passing the test strings from the modules to core.
+
 v1.4.1 (April 8, 2013)
 * Internal rewrite of font and variations
 * Fix for the configurable timeout on the Google module

@@ -1,6 +1,7 @@
 goog.provide('webfont.BrowserInfo');
 
 /**
+ * @export
  * @constructor
  * @param {boolean} webfontSupport
  * @param {boolean} webKitFallbackBug
@@ -16,6 +17,7 @@ goog.scope(function () {
   var BrowserInfo = webfont.BrowserInfo;
 
   /**
+   * @export
    * Returns true if the browser supports web fonts.
    *
    * @return {boolean}
@@ -25,6 +27,8 @@ goog.scope(function () {
   };
 
   /**
+   * @export
+   *
    * Returns true if the browser has the WebKit fallback bug.
    *
    * The bug causes the normal CSS font stack to be ignored while
@@ -49,6 +53,8 @@ goog.scope(function () {
   };
 
   /**
+   * @export
+   *
    * Returns true if the browser has the WebKit metrics bug
    *
    * The metrics bug causes WebKit to change the height of a font

@@ -1,5 +1,6 @@
 describe('UserAgentParser', function () {
-  var UserAgentParser = webfont.UserAgentParser;
+  var UserAgentParser = webfont.UserAgentParser,
+      Version = webfont.Version;
 
   beforeEach(function () {
     this.addMatchers({
@@ -18,7 +19,7 @@ describe('UserAgentParser', function () {
           return false;
         }
 
-        if (actual.getVersion() !== expected.version) {
+        if (actual.getVersion().ne(expected.version)) {
           this.message = msg('version', actual.getVersion(), expected.version);
           return false;
         }
@@ -28,17 +29,17 @@ describe('UserAgentParser', function () {
           return false;
         }
 
-        if (actual.getPlatformVersion() !== expected.platformVersion) {
+        if (actual.getPlatformVersion().ne(expected.platformVersion)) {
           this.message = msg('platform version', actual.getPlatformVersion(), expected.platformVersion);
           return false;
         }
 
-        if (actual.getEngine()  !== expected.engine) {
+        if (actual.getEngine() !== expected.engine) {
           this.message = msg('engine', actual.getEngine(), expected.engine);
           return false;
         }
 
-        if (actual.getEngineVersion() !== expected.engineVersion) {
+        if (actual.getEngineVersion().ne(expected.engineVersion)) {
           this.message = msg('engine version', actual.getEngineVersion(), expected.engineVersion);
           return false;
         }
@@ -68,6 +69,26 @@ describe('UserAgentParser', function () {
     });
   });
 
+  describe('#getPlatformVersionString_', function () {
+    function parsePlatformVersion(str) {
+      return new UserAgentParser(str, {}).getPlatformVersionString_();
+    }
+
+    it('should parse Linux versions correctly', function () {
+      expect(parsePlatformVersion('(Linux; U; en-us; KFJWI Build/IML74K)')).toEqual('Unknown');
+      expect(parsePlatformVersion('(Linux i686; U; en)')).toEqual('Unknown');
+      expect(parsePlatformVersion('(X11; Linux i686; U; Linux Mint; nb)')).toEqual('Unknown');
+      expect(parsePlatformVersion('(X11; Linux x86_64)')).toEqual('Unknown');
+      expect(parsePlatformVersion('(X11; U; en-US; rv:2.0; Linux i686 10.1)')).toEqual('10.1');
+      expect(parsePlatformVersion('(X11; Linux i868 10.1; U; en-US; rv:2.0)')).toEqual('10.1');
+      expect(parsePlatformVersion('(X11; Linux 10.1; U; en-US)')).toEqual('10.1');
+    });
+
+    it('should parse ChromeOS versions correctly', function () {
+      expect(parsePlatformVersion('(X11; CrOS i686 1660.57.0)')).toEqual('1660.57.0');
+    });
+  });
+
   describe('#parse', function () {
     function parse(userAgentString, doc) {
       return new UserAgentParser(userAgentString, doc || {}).parse();
@@ -78,11 +99,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/531.9 (KHTML, like Gecko) AdobeAIR/2.5'))
         .toMatchUserAgent({
           name: 'AdobeAIR',
-          version: '2.5',
+          version: new Version(2, 5),
           platform: 'Macintosh',
-          platformVersion: 'Unknown',
+          platformVersion: new Version(),
           engine: 'AppleWebKit',
-          engineVersion: '531.9',
+          engineVersion: new Version(531, 9),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -96,11 +117,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en) AppleWebKit/531.9 (KHTML, like Gecko) AdobeAIR/2.0'))
         .toMatchUserAgent({
           name: 'AdobeAIR',
-          version: '2.0',
+          version: new Version(2, 0),
           platform: 'Macintosh',
-          platformVersion: 'Unknown',
+          platformVersion: new Version(),
           engine: 'AppleWebKit',
-          engineVersion: '531.9',
+          engineVersion: new Version(531, 9),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -116,11 +137,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3 GTB7.1'))
         .toMatchUserAgent({
           name: 'Firefox',
-          version: '3.6.3',
+          version: new Version(3, 6, 3),
           platform: 'Macintosh',
-          platformVersion: '10.5',
+          platformVersion: new Version(10, 5),
           engine: 'Gecko',
-          engineVersion: '1.9.2.3',
+          engineVersion: new Version(1, 9, 2, 3),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -132,11 +153,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (X11; U; Linux i686; ru-RU; rv:1.9.2a1pre) Gecko/20090405 Ubuntu/9.04 (jaunty) Firefox/3.6a1pre'))
         .toMatchUserAgent({
           name: 'Firefox',
-          version: '3.6a1pre',
+          version: new Version(3, 6, null, 'a1pre'),
           platform: 'Linux',
-          platformVersion: 'i686',
+          platformVersion: new Version(), //'i686'
           engine: 'Gecko',
-          engineVersion: '1.9.2a1pre',
+          engineVersion: new Version(1, 9, 2, 'a1pre'),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -150,11 +171,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:2.0b1) Gecko/20100630 Firefox/4.0b1'))
         .toMatchUserAgent({
           name: 'Firefox',
-          version: '4.0b1',
+          version: new Version(4, 0, null, 'b1'),
           platform: 'Macintosh',
-          platformVersion: '10.6',
+          platformVersion: new Version(10, 6),
           engine: 'Gecko',
-          engineVersion: '2.0b1',
+          engineVersion: new Version(2, 0, 'b1'),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -170,11 +191,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Android; Mobile; rv:13.0) Gecko/15.0 Firefox/14.0'))
         .toMatchUserAgent({
           name: 'Firefox',
-          version: '14.0',
+          version: new Version(14, 0),
           platform: 'Android',
-          platformVersion: 'Unknown',
+          platformVersion: new Version(),
           engine: 'Gecko',
-          engineVersion: '13.0',
+          engineVersion: new Version(13, 0),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -188,11 +209,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.19) Gecko/20081202 Firefox (Debian-2.0.0.19-0etch1)'))
         .toMatchUserAgent({
           name: 'Firefox',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'Linux',
-          platformVersion: 'i686',
+          platformVersion: new Version(), //'i686'
           engine: 'Gecko',
-          engineVersion: '1.8.1.19',
+          engineVersion: new Version(1, 8, 1, 19),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -208,11 +229,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/5.0.342.9 Safari/533.2'))
         .toMatchUserAgent({
           name: 'Chrome',
-          version: '5.0.342.9',
+          version: new Version(5, 0, 342, 9),
           platform: 'Macintosh',
-          platformVersion: '10_5_8',
+          platformVersion: new Version(10, 5, 8),
           engine: 'AppleWebKit',
-          engineVersion: '533.2',
+          engineVersion: new Version(533, 2),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -226,11 +247,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (X11; CrOS i686 1660.57.0) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.46 Safari/535.19'))
         .toMatchUserAgent({
           name: 'Chrome',
-          version: '18.0.1025.46',
+          version: new Version(18, 0, 1025, 46),
           platform: 'CrOS',
-          platformVersion: 'i686 1660.57.0',
+          platformVersion: new Version(1660, 57, 0),
           engine: 'AppleWebKit',
-          engineVersion: '535.19',
+          engineVersion: new Version(535, 19),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -244,11 +265,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; Nexus S Build/IML74K) AppleWebKit/535.7 (KHTML, like Gecko) CrMo/16.0.912.75 Mobile Safari/535.7'))
         .toMatchUserAgent({
           name: 'Chrome',
-          version: '16.0.912.75',
+          version: new Version(16, 0, 912, 75),
           platform: 'Android',
-          platformVersion: '4.0.3',
+          platformVersion: new Version(4, 0, 3),
           engine: 'AppleWebKit',
-          engineVersion: '535.7',
+          engineVersion: new Version(535, 7),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -262,11 +283,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (iPad; U; CPU OS 5_1_1 like Mac OS X; en-us) AppleWebKit/534.46.0 (KHTML, like Gecko) CriOS/19.0.1084.60 Mobile/9B206 Safari/7534.48.3'))
         .toMatchUserAgent({
           name: 'Chrome',
-          version: '19.0.1084.60',
+          version: new Version(19, 0, 1084, 60),
           platform: 'iPad',
-          platformVersion: '5_1_1',
+          platformVersion: new Version(5, 1, 1),
           engine: 'AppleWebKit',
-          engineVersion: '534.46.0',
+          engineVersion: new Version(534, 46, 0),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -280,11 +301,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (iPod; U; CPU iPhone OS 5_1_1 like Mac OS X; en-us) AppleWebKit/534.46.0 (KHTML, like Gecko) CriOS/19.0.1084.60 Mobile/9B206 Safari/7534.48.3'))
         .toMatchUserAgent({
           name: 'Chrome',
-          version: '19.0.1084.60',
+          version: new Version(19, 0, 1084, 60),
           platform: 'iPod',
-          platformVersion: '5_1_1',
+          platformVersion: new Version(5, 1, 1),
           engine: 'AppleWebKit',
-          engineVersion: '534.46.0',
+          engineVersion: new Version(534, 46, 0),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -300,11 +321,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-us) AppleWebKit/531.21.8 (KHTML, like Gecko) Version/4.0.4 Safari/531.21.10'))
         .toMatchUserAgent({
           name: 'Safari',
-          version: '4.0.4',
+          version: new Version(4, 0, 4),
           platform: 'Macintosh',
-          platformVersion: '10_5_8',
+          platformVersion: new Version(10, 5, 8),
           engine: 'AppleWebKit',
-          engineVersion: '531.21.8',
+          engineVersion: new Version(531, 21, 8),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -316,11 +337,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10_4_11; tr) AppleWebKit/528.4+ (KHTML, like Gecko) Version/4.0dp1 Safari/526.11.2'))
         .toMatchUserAgent({
           name: 'Safari',
-          version: '4.0dp1',
+          version: new Version(4, 0, null, 'dp1'),
           platform: 'Macintosh',
-          platformVersion: '10_4_11',
+          platformVersion: new Version(10, 4, 11),
           engine: 'AppleWebKit',
-          engineVersion: '528.4+',
+          engineVersion: new Version(528, 4),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -334,11 +355,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_1_2 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7D11 Safari/528.16'))
         .toMatchUserAgent({
           name: 'Safari',
-          version: '4.0',
+          version: new Version(4, 0),
           platform: 'iPhone',
-          platformVersion: '3_1_2',
+          platformVersion: new Version(3, 1, 2),
           engine: 'AppleWebKit',
-          engineVersion: '528.18',
+          engineVersion: new Version(528, 18),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -352,11 +373,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B314 Safari/531.21.10'))
         .toMatchUserAgent({
           name: 'Safari',
-          version: '4.0.4',
+          version: new Version(4, 0, 4),
           platform: 'iPad',
-          platformVersion: '3_2',
+          platformVersion: new Version(3, 2),
           engine: 'AppleWebKit',
-          engineVersion: '531.21.10',
+          engineVersion: new Version(531, 21, 10),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -368,11 +389,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B360 Safari/531.21.10"'))
         .toMatchUserAgent({
           name: 'Safari',
-          version: '4.0.4',
+          version: new Version(4, 0, 4),
           platform: 'iPad',
-          platformVersion: '3_2',
+          platformVersion: new Version(3, 2),
           engine: 'AppleWebKit',
-          engineVersion: '531.21.10',
+          engineVersion: new Version(531, 21, 10),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -384,11 +405,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.10'))
         .toMatchUserAgent({
           name: 'Safari',
-          version: '4.0.4',
+          version: new Version(4, 0, 4),
           platform: 'iPad',
-          platformVersion: '3_2',
+          platformVersion: new Version(3, 2),
           engine: 'AppleWebKit',
-          engineVersion: '531.21.10',
+          engineVersion: new Version(531, 21, 10),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -402,11 +423,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (iPod; U; CPU iPhone OS 2_2_1 like Mac OS X; en-us) AppleWebKit/525.18.1 (KHTML, like Gecko) Mobile/5H11a'))
         .toMatchUserAgent({
           name: 'Unknown',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'iPod',
-          platformVersion: '2_2_1',
+          platformVersion: new Version(2, 2, 1),
           engine: 'AppleWebKit',
-          engineVersion: '525.18.1',
+          engineVersion: new Version(525, 18, 1),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -418,11 +439,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (iPod; U; CPU iPhone OS 3_1 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7C144 Safari/528.16'))
         .toMatchUserAgent({
           name: 'Safari',
-          version: '4.0',
+          version: new Version(4, 0),
           platform: 'iPod',
-          platformVersion: '3_1',
+          platformVersion: new Version(3, 1),
           engine: 'AppleWebKit',
-          engineVersion: '528.18',
+          engineVersion: new Version(528, 18),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -438,11 +459,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; InfoPath.2; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)'))
         .toMatchUserAgent({
           name: 'MSIE',
-          version: '7.0',
+          version: new Version(7, 0),
           platform: 'Windows',
-          platformVersion: '5.1',
+          platformVersion: new Version(5, 1),
           engine: 'MSIE',
-          engineVersion: '7.0',
+          engineVersion: new Version(7, 0),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -454,11 +475,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/4.0 (compatible; MSIE 7.0b; Windows NT 5.1; Media Center PC 3.0; .NET CLR 1.0.3705; .NET CLR 1.1.4322; .NET CLR 2.0.50727; InfoPath.1)'))
         .toMatchUserAgent({
           name: 'MSIE',
-          version: '7.0b',
+          version: new Version(7, 0, null, 'b'),
           platform: 'Windows',
-          platformVersion: '5.1',
+          platformVersion: new Version(5, 1),
           engine: 'MSIE',
-          engineVersion: '7.0b',
+          engineVersion: new Version(7, 0, null, 'b'),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -472,11 +493,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'))
         .toMatchUserAgent({
           name: 'MSIE',
-          version: '7.0',
+          version: new Version(7, 0),
           platform: 'Windows',
-          platformVersion: '5.1',
+          platformVersion: new Version(5, 1),
           engine: 'MSIE',
-          engineVersion: '7.0',
+          engineVersion: new Version(7, 0),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -490,11 +511,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; Trident/6.0; ARM; Touch; IEMobile/10.0; <Manufacturer>; <Device>; <Operator>)'))
         .toMatchUserAgent({
           name: 'MSIE',
-          version: '10.0',
+          version: new Version(10, 0),
           platform: 'Windows Phone',
-          platformVersion: '8.0',
+          platformVersion: new Version(8, 0),
           engine: 'MSIE',
-          engineVersion: '10.0',
+          engineVersion: new Version(10, 0),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -508,11 +529,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; SAMSUNG; SGH-i917)'))
         .toMatchUserAgent({
           name: 'MSIE',
-          version: '9.0',
+          version: new Version(9, 0),
           platform: 'Windows Phone',
-          platformVersion: '7.5',
+          platformVersion: new Version(7, 5),
           engine: 'MSIE',
-          engineVersion: '9.0',
+          engineVersion: new Version(9, 0),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -526,11 +547,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/4.0 (compatible; MSIE 5.23; Mac_PowerPC)'))
         .toMatchUserAgent({
           name: 'MSIE',
-          version: '5.23',
+          version: new Version(5, 23),
           platform: 'Macintosh',
-          platformVersion: 'Unknown',
+          platformVersion: new Version(),
           engine: 'MSIE',
-          engineVersion: '5.23',
+          engineVersion: new Version(5, 23),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -544,11 +565,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; InfoPath.2)', { documentMode: 8 }))
         .toMatchUserAgent({
           name: 'MSIE',
-          version: '8.0',
+          version: new Version(8, 0),
           platform: 'Windows',
-          platformVersion: '6.1',
+          platformVersion: new Version(6, 1),
           engine: 'MSIE',
-          engineVersion: '8.0',
+          engineVersion: new Version(8, 0),
           documentMode: 8,
           browserInfo: {
             hasWebFontSupport: true,
@@ -564,11 +585,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; Android 2.2.1; en-ca; LG-P505R Build/FRG83) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1'))
         .toMatchUserAgent({
           name: 'BuiltinBrowser',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'Android',
-          platformVersion: '2.2.1',
+          platformVersion: new Version(2, 2, 1),
           engine: 'AppleWebKit',
-          engineVersion: '533.1',
+          engineVersion: new Version(533, 1),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -582,11 +603,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; Android 2.1-update1; en-us; Nexus One Build/ERE27) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17'))
         .toMatchUserAgent({
           name: 'BuiltinBrowser',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'Android',
-          platformVersion: '2.1-update1',
+          platformVersion: new Version(2, 1, null, 'update1'),
           engine: 'AppleWebKit',
-          engineVersion: '530.17',
+          engineVersion: new Version(530, 17),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -600,11 +621,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.34 Safari/534.24'))
         .toMatchUserAgent({
           name: 'Chrome',
-          version: '11.0.696.34',
+          version: new Version(11, 0, 696, 34),
           platform: 'Linux',
-          platformVersion: 'Unknown',
+          platformVersion: new Version(),
           engine: 'AppleWebKit',
-          engineVersion: '534.24',
+          engineVersion: new Version(534, 24),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -618,11 +639,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; Android 4.1.2; en-us; sdk Build/MASTER) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30'))
         .toMatchUserAgent({
           name: 'BuiltinBrowser',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'Android',
-          platformVersion: '4.1.2',
+          platformVersion: new Version(4, 1, 2),
           engine: 'AppleWebKit',
-          engineVersion: '534.30',
+          engineVersion: new Version(534, 30),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -636,11 +657,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.34 Safari/534.24'))
         .toMatchUserAgent({
           name: 'Chrome',
-          version: '11.0.696.34',
+          version: new Version(11, 0, 696, 34),
           platform: 'Linux',
-          platformVersion: 'Unknown',
+          platformVersion: new Version(),
           engine: 'AppleWebKit',
-          engineVersion: '534.24',
+          engineVersion: new Version(534, 24),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -654,11 +675,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; Android 4.1.2; en-us; Nexus S Build/JZO54K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30'))
         .toMatchUserAgent({
           name: 'BuiltinBrowser',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'Android',
-          platformVersion: '4.1.2',
+          platformVersion: new Version(4, 1, 2),
           engine: 'AppleWebKit',
-          engineVersion: '534.30',
+          engineVersion: new Version(534, 30),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -672,11 +693,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (BB10; Touch) AppleWebKit/537.3+ (KHTML, like Gecko) Version/10.0.9.388 Mobile Safari/537.3+'))
         .toMatchUserAgent({
           name: 'BuiltinBrowser',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'BlackBerry',
-          platformVersion: '10.0.9.388',
+          platformVersion: new Version(10, 0, 9, 388),
           engine: 'AppleWebKit',
-          engineVersion: '537.3+',
+          engineVersion: new Version(537, 3),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -690,11 +711,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (BlackBerry; U; BlackBerry 9900; en) AppleWebKit/534.11+ (KHTML, like Gecko) Version/7.1.0.346 Mobile Safari/534.11+'))
         .toMatchUserAgent({
           name: 'BuiltinBrowser',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'BlackBerry',
-          platformVersion: '7.1.0.346',
+          platformVersion: new Version(7, 1, 0, 346),
           engine: 'AppleWebKit',
-          engineVersion: '534.11+',
+          engineVersion: new Version(534, 11),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -710,11 +731,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFOT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Mobile Safari/535.19 Silk-Accelerated=false'))
         .toMatchUserAgent({
           name: 'Silk',
-          version: '2.6',
+          version: new Version(2, 6),
           platform: 'Android',
-          platformVersion: '4.0.3',
+          platformVersion: new Version(4, 0, 3),
           engine: 'AppleWebKit',
-          engineVersion: '535.19',
+          engineVersion: new Version(535, 19),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -728,11 +749,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; en-us; KFOT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Safari/535.19 Silk-Accelerated=false'))
         .toMatchUserAgent({
           name: 'Silk',
-          version: '2.6',
+          version: new Version(2, 6),
           platform: 'Linux',
-          platformVersion: 'Unknown',
+          platformVersion: new Version(),
           engine: 'AppleWebKit',
-          engineVersion: '535.19',
+          engineVersion: new Version(535, 19),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -746,11 +767,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Mobile Safari/535.19 Silk-Accelerated=false'))
         .toMatchUserAgent({
           name: 'Silk',
-          version: '2.6',
+          version: new Version(2, 6),
           platform: 'Android',
-          platformVersion: '4.0.3',
+          platformVersion: new Version(4, 0, 3),
           engine: 'AppleWebKit',
-          engineVersion: '535.19',
+          engineVersion: new Version(535, 19),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -764,11 +785,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; en-us; KFTT Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Safari/535.19 Silk-Accelerated=false'))
         .toMatchUserAgent({
           name: 'Silk',
-          version: '2.6',
+          version: new Version(2, 6),
           platform: 'Linux',
-          platformVersion: 'Unknown',
+          platformVersion: new Version(),
           engine: 'AppleWebKit',
-          engineVersion: '535.19',
+          engineVersion: new Version(535, 19),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -782,11 +803,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFJWI Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Mobile Safari/535.19 Silk-Accelerated=false'))
         .toMatchUserAgent({
           name: 'Silk',
-          version: '2.6',
+          version: new Version(2, 6),
           platform: 'Android',
-          platformVersion: '4.0.3',
+          platformVersion: new Version(4, 0, 3),
           engine: 'AppleWebKit',
-          engineVersion: '535.19',
+          engineVersion: new Version(535, 19),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -800,11 +821,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; en-us; KFJWI Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Safari/535.19 Silk-Accelerated=false'))
         .toMatchUserAgent({
           name: 'Silk',
-          version: '2.6',
+          version: new Version(2, 6),
           platform: 'Linux',
-          platformVersion: 'Unknown',
+          platformVersion: new Version(),
           engine: 'AppleWebKit',
-          engineVersion: '535.19',
+          engineVersion: new Version(535, 19),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -818,11 +839,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; KFJWA Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Mobile Safari/535.19 Silk-Accelerated=false'))
         .toMatchUserAgent({
           name: 'Silk',
-          version: '2.6',
+          version: new Version(2, 6),
           platform: 'Android',
-          platformVersion: '4.0.3',
+          platformVersion: new Version(4, 0, 3),
           engine: 'AppleWebKit',
-          engineVersion: '535.19',
+          engineVersion: new Version(535, 19),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -836,11 +857,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; en-us; KFJWA Build/IML74K) AppleWebKit/535.19 (KHTML, like Gecko) Silk/2.6 Safari/535.19 Silk-Accelerated=false'))
         .toMatchUserAgent({
           name: 'Silk',
-          version: '2.6',
+          version: new Version(2, 6),
           platform: 'Linux',
-          platformVersion: 'Unknown',
+          platformVersion: new Version(),
           engine: 'AppleWebKit',
-          engineVersion: '535.19',
+          engineVersion: new Version(535, 19),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -854,11 +875,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux; U; Android 2.3.4; en-us; Silk/1.0.22.79_10013310) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1 Silk-Accelerated=false'))
         .toMatchUserAgent({
           name: 'Silk',
-          version: '1.0.22.79_10013310',
+          version: new Version(1, 0, 22, '79_10013310'),
           platform: 'Android',
-          platformVersion: '2.3.4',
+          platformVersion: new Version(2, 3, 4),
           engine: 'AppleWebKit',
-          engineVersion: '533.1',
+          engineVersion: new Version(533, 1),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -872,11 +893,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-us; Silk/1.0.22.79_10013310) AppleWebKit/533.16 (KHTML, like Gecko) Version/5.0 Safari/533.16 Silk-Accelerated=false'))
         .toMatchUserAgent({
           name: 'Silk',
-          version: '1.0.22.79_10013310',
+          version: new Version(1, 0, 22, '79_10013310'),
           platform: 'Macintosh',
-          platformVersion: '10_6_3',
+          platformVersion: new Version(10, 6, 3),
           engine: 'AppleWebKit',
-          engineVersion: '533.16',
+          engineVersion: new Version(533, 16),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -892,11 +913,11 @@ describe('UserAgentParser', function () {
         expect(parse('Opera/9.80 (Linux i686; U; en) Presto/2.5.22 Version/10.51'))
         .toMatchUserAgent({
           name: 'Opera',
-          version: '10.51',
+          version: new Version(10, 51),
           platform: 'Linux',
-          platformVersion: 'i686',
+          platformVersion: new Version(), //'i686'
           engine: 'Presto',
-          engineVersion: '2.5.22',
+          engineVersion: new Version(2, 5, 22),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -910,9 +931,9 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Linux i686 ; U; en; rv:1.8.1) Gecko/20061208 Firefox/2.0.0 Opera 9.70'))
         .toMatchUserAgent({
           name: 'Opera',
-          version: '9.70',
+          version: new Version(9, 70),
           platform: 'Linux',
-          platformVersion: 'i686',
+          platformVersion: new Version(), //'i686'
           engine: 'Gecko',
           engineVersion: '1.8.1',
           documentMode: undefined,
@@ -928,11 +949,11 @@ describe('UserAgentParser', function () {
         expect(parse('Opera/9.64 (X11; Linux i686; U; Linux Mint; nb) Presto/2.1.1'))
         .toMatchUserAgent({
           name: 'Opera',
-          version: '9.64',
+          version: new Version(9, 64),
           platform: 'Linux',
-          platformVersion: 'i686',
+          platformVersion: new Version(), //'i686'
           engine: 'Presto',
-          engineVersion: '2.1.1',
+          engineVersion: new Version(2, 1, 1),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -946,11 +967,11 @@ describe('UserAgentParser', function () {
         expect(parse('Opera/9.80 (Android 4.1.1; Linux; Opera Mobi/ADR-1207201819; U; en) Presto/2.10.254 Version/12.00'))
         .toMatchUserAgent({
           name: 'Opera',
-          version: '12.00',
+          version: new Version(12, 0),
           platform: 'Android',
-          platformVersion: '4.1.1',
+          platformVersion: new Version(4, 1, 1),
           engine: 'Presto',
-          engineVersion: '2.10.254',
+          engineVersion: new Version(2, 10, 254),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -964,11 +985,11 @@ describe('UserAgentParser', function () {
         expect(parse('Opera/9.80 (Android; Opera Mini/7.0.29952/28.2144; U; en) Presto/2.8.119 Version/11.10'))
         .toMatchUserAgent({
           name: 'OperaMini',
-          version: '7.0.29952',
+          version: new Version(7, 0, 29952),
           platform: 'Android',
           platformVersion: 'Unknown',
           engine: 'Presto',
-          engineVersion: '2.8.119',
+          engineVersion: new Version(2, 8, 119),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -984,11 +1005,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5'))
         .toMatchUserAgent({
           name: 'Chrome',
-          version: '19.0.1084.9',
+          version: new Version(19, 0, 1084, 9),
           platform: 'Linux',
-          platformVersion: 'Unknown',
+          platformVersion: new Version(),
           engine: 'AppleWebKit',
-          engineVersion: '536.5',
+          engineVersion: new Version(536, 5),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -1002,11 +1023,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.814.2 Safari/536.11'))
         .toMatchUserAgent({
           name: 'Chrome',
-          version: '20.0.814.2',
+          version: new Version(20, 0, 814, 2),
           platform: 'Linux',
-          platformVersion: 'Unknown',
+          platformVersion: new Version(),
           engine: 'AppleWebKit',
-          engineVersion: '536.11',
+          engineVersion: new Version(536, 11),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -1022,11 +1043,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:1.9.1.4) Gecko/20091016 (.NET CLR 3.5.30729)'))
         .toMatchUserAgent({
           name: 'Mozilla',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'Windows',
-          platformVersion: '5.1',
+          platformVersion: new Version(5, 1),
           engine: 'Gecko',
-          engineVersion: '1.9.1.4',
+          engineVersion: new Version(1, 9, 1, 4),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -1040,11 +1061,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:2.5.8) Gecko/20091016 (.NET CLR 3.5.30729)'))
         .toMatchUserAgent({
           name: 'Mozilla',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'Windows',
-          platformVersion: '5.1',
+          platformVersion: new Version(5, 1),
           engine: 'Gecko',
-          engineVersion: '2.5.8',
+          engineVersion: new Version(2, 5, 8),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -1058,11 +1079,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:1.10.1b) Gecko/20091016 (.NET CLR 3.5.30729)'))
         .toMatchUserAgent({
           name: 'Mozilla',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'Windows',
-          platformVersion: '5.1',
+          platformVersion: new Version(5, 1),
           engine: 'Gecko',
-          engineVersion: '1.10.1b',
+          engineVersion: new Version(1, 10, 1, 'b'),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -1076,11 +1097,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:1.b) Gecko/20091016 (.NET CLR 3.5.30729)'))
         .toMatchUserAgent({
           name: 'Mozilla',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'Windows',
-          platformVersion: '5.1',
+          platformVersion: new Version(5, 1),
           engine: 'Gecko',
-          engineVersion: '1.b',
+          engineVersion: new Version(1, null, null, 'b'),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -1092,11 +1113,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:1.b) Gecko/20091016 (.NET CLR 3.5.30729)'))
         .toMatchUserAgent({
           name: 'Mozilla',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'Windows',
-          platformVersion: '5.1',
+          platformVersion: new Version(5, 1),
           engine: 'Gecko',
-          engineVersion: '1.b',
+          engineVersion: new Version(1, null, null, 'b'),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -1108,11 +1129,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:1.9) Gecko/20091016 (.NET CLR 3.5.30729)'))
         .toMatchUserAgent({
           name: 'Mozilla',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'Windows',
-          platformVersion: '5.1',
+          platformVersion: new Version(5, 1),
           engine: 'Gecko',
-          engineVersion: '1.9',
+          engineVersion: new Version(1, 9),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -1124,11 +1145,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:0.10.1) Gecko/20091016 (.NET CLR 3.5.30729)'))
         .toMatchUserAgent({
           name: 'Mozilla',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'Windows',
-          platformVersion: '5.1',
+          platformVersion: new Version(5, 1),
           engine: 'Gecko',
-          engineVersion: '0.10.1',
+          engineVersion: new Version(0, 10, 1),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -1140,11 +1161,11 @@ describe('UserAgentParser', function () {
         expect(parse('Mozilla/5.0 (Windows; U; Windows NT 5.1; ru-RU; rv:0.3.42) Gecko/20091016 (.NET CLR 3.5.30729)'))
         .toMatchUserAgent({
           name: 'Mozilla',
-          version: 'Unknown',
+          version: new Version(),
           platform: 'Windows',
-          platformVersion: '5.1',
+          platformVersion: new Version(5, 1),
           engine: 'Gecko',
-          engineVersion: '0.3.42',
+          engineVersion: new Version(0, 3, 42),
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
