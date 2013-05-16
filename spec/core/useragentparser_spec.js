@@ -69,6 +69,26 @@ describe('UserAgentParser', function () {
     });
   });
 
+  describe('#getPlatformVersionString_', function () {
+    function parsePlatformVersion(str) {
+      return new UserAgentParser(str, {}).getPlatformVersionString_();
+    }
+
+    it('should parse Linux versions correctly', function () {
+      expect(parsePlatformVersion('(Linux; U; en-us; KFJWI Build/IML74K)')).toEqual('Unknown');
+      expect(parsePlatformVersion('(Linux i686; U; en)')).toEqual('Unknown');
+      expect(parsePlatformVersion('(X11; Linux i686; U; Linux Mint; nb)')).toEqual('Unknown');
+      expect(parsePlatformVersion('(X11; Linux x86_64)')).toEqual('Unknown');
+      expect(parsePlatformVersion('(X11; U; en-US; rv:2.0; Linux i686 10.1)')).toEqual('10.1');
+      expect(parsePlatformVersion('(X11; Linux i868 10.1; U; en-US; rv:2.0)')).toEqual('10.1');
+      expect(parsePlatformVersion('(X11; Linux 10.1; U; en-US)')).toEqual('10.1');
+    });
+
+    it('should parse ChromeOS versions correctly', function () {
+      expect(parsePlatformVersion('(X11; CrOS i686 1660.57.0)')).toEqual('1660.57.0');
+    });
+  });
+
   describe('#parse', function () {
     function parse(userAgentString, doc) {
       return new UserAgentParser(userAgentString, doc || {}).parse();
@@ -229,7 +249,7 @@ describe('UserAgentParser', function () {
           name: 'Chrome',
           version: new Version(18, 0, 1025, 46),
           platform: 'CrOS',
-          platformVersion: new Version(), //'i686 1660.57.0'
+          platformVersion: new Version(1660, 57, 0),
           engine: 'AppleWebKit',
           engineVersion: new Version(535, 19),
           documentMode: undefined,

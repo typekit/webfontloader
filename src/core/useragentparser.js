@@ -99,7 +99,7 @@ goog.scope(function () {
    */
   UserAgentParser.prototype.getPlatformVersionString_ = function() {
     var genericVersion = this.getMatchingGroup_(this.userAgent_,
-        /(OS X|Windows NT|Android|CrOS) ([^;)]+)/, 2);
+        /(OS X|Windows NT|Android) ([^;)]+)/, 2);
     if (genericVersion) {
       return genericVersion;
     }
@@ -113,10 +113,15 @@ goog.scope(function () {
     if (iVersion) {
       return iVersion;
     }
-    var linuxVersion = this.getMatchingGroup_(this.userAgent_,
-        /Linux ([i\d]+)/, 1);
-    if (linuxVersion) {
-      return linuxVersion;
+    var linuxOrCrOsVersion = this.getMatchingGroup_(this.userAgent_,
+        /(?:Linux|CrOS) ([^;)]+)/, 1);
+    if (linuxOrCrOsVersion) {
+      var parts = linuxOrCrOsVersion.split(/\s/);
+      for (var i = 0; i < parts.length; i += 1) {
+        if (/^[\d\._]+$/.test(parts[i])) {
+          return parts[i];
+        }
+      }
     }
     var blackBerryVersion = this.getMatchingGroup_(this.userAgent_,
         /(BB\d{2}|BlackBerry).*?Version\/([^\s]*)/, 2);
@@ -238,7 +243,7 @@ goog.scope(function () {
 
     if (browserName == UserAgentParser.BUILTIN_BROWSER) {
       browserVersion = new Version();
-    } else if (/Silk\/\d/.test(this.userAgent_)) {
+    } else if (browserName == "Silk") {
       browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Silk\/([\d\._]+)/, 1));
     } else if (this.userAgent_.indexOf("Version/") != -1) {
       browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.\w]+)/, 1));

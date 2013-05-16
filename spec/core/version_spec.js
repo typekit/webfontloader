@@ -44,11 +44,10 @@ describe('Version', function () {
       expect(Version.parse('5.0.342.9')).toEqual(new Version(5, 0, 342, 9));
       expect(Version.parse('10_5_8')).toEqual(new Version(10, 5, 8));
       expect(Version.parse('18.0.1025.46')).toEqual(new Version(18, 0, 1025, 46));
-      expect(Version.parse('i868 1660.57.0')).toEqual(new Version()); // FIXME: ???
       expect(Version.parse('4.0dp1')).toEqual(new Version(4, 0, null, 'dp1'));
       expect(Version.parse('528.4+')).toEqual(new Version(528, 4));
       expect(Version.parse('2.1-update1')).toEqual(new Version(2, 1, null, 'update1'));
-      expect(Version.parse('10.0.22.79_1003310')).toEqual(new Version(10, 0, 22, '79_1003310')); // FIXME: ???
+      expect(Version.parse('10.0.22.79_1003310')).toEqual(new Version(10, 0, 22, '79_1003310'));
       expect(Version.parse('1.b')).toEqual(new Version(1, null, null, 'b'));
       expect(Version.parse('0.10.1')).toEqual(new Version(0, 10, 1));
     });
