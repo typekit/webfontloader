@@ -17,8 +17,6 @@ webfont.GoogleFontApi = function(domHelper, configuration) {
   this.configuration_ = configuration;
 };
 
-webfont.GoogleFontApi.NAME = 'google';
-
 goog.scope(function () {
   var GoogleFontApi = webfont.GoogleFontApi,
       FontWatchRunner = webfont.FontWatchRunner,

@@ -12,7 +12,6 @@ webfont.TypekitScript = function(domHelper, configuration) {
   this.fonts_ = [];
 };
 
-webfont.TypekitScript.NAME = 'typekit';
 webfont.TypekitScript.HOOK = '__webfonttypekitmodule__';
 
 goog.scope(function () {
