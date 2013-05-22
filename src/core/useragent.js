@@ -15,8 +15,10 @@ goog.provide('webfont.UserAgent');
  * @param {string} versionString
  * @param {string} engine
  * @param {webfont.Version} engineVersion
+ * @param {string} engineVersionString
  * @param {string} platform
  * @param {webfont.Version} platformVersion
+ * @param {string} platformVersionString
  * @param {number|undefined} documentMode
  * @param {!webfont.BrowserInfo} browserInfo
  * @constructor
