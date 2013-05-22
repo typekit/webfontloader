@@ -1,6 +1,6 @@
 describe('WebFont', function () {
   var WebFont = webfont.WebFont,
-      Font = webfont.Font
+      Font = webfont.Font;
 
   describe('font load', function () {
     var font = null,
