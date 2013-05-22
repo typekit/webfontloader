@@ -2,7 +2,8 @@ describe('modules.Monotype', function () {
   var Monotype = webfont.modules.Monotype,
       Font = webfont.Font,
       BrowserInfo = webfont.BrowserInfo,
-      UserAgent = webfont.UserAgent;
+      UserAgent = webfont.UserAgent,
+      Version = webfont.Version;
 
   var configuration = {
     projectId: '01e2ff27-25bf-4801-a23e-73d328e6c7cc',
@@ -28,7 +29,19 @@ describe('modules.Monotype', function () {
     };
     support = jasmine.createSpy('support');
     load = jasmine.createSpy('load');
-    useragent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.3', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false, false));
+    useragent = new UserAgent(
+      'Firefox',
+      new Version(3, 6),
+      '3.6',
+      'Gecko',
+      new Version(1, 9, 3),
+      '1.9.3',
+      'Macintosh',
+      new Version(10, 6),
+      '10.6',
+      undefined,
+      new BrowserInfo(true, false, false)
+    );
 
     monotype = new Monotype(useragent, fakeDomHelper, configuration);
     monotype.supportUserAgent(useragent, support);
