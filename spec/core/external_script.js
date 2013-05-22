@@ -1,0 +1,1 @@
+window.EXTERNAL_SCRIPT_LOADED = true;
