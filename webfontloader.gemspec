@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.4.3'
-  s.date              = '2013-05-16'
+  s.version           = '1.4.4'
+  s.date              = '2013-05-22'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -66,15 +66,13 @@ DESC
   ## THE MANIFEST COMMENTS, they are used as delimiters by the task.
   # = MANIFEST =
   s.files = %w[
+    AUTHORS
     CHANGELOG
     Gemfile
     LICENSE
     README.md
     Rakefile
     bin/webfontloader-demos
-    docs/EVENTS.md
-    docs/MODULES.md
-    docs/TRANSITIONS.md
     lib/webfontloader.rb
     lib/webfontloader/demo/public/ascender-iframe.html
     lib/webfontloader/demo/public/ascender.html
