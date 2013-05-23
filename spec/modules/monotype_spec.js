@@ -1,5 +1,5 @@
-describe('MonotypeScript', function () {
-  var MonotypeScript = webfont.MonotypeScript,
+describe('modules.Monotype', function () {
+  var Monotype = webfont.modules.Monotype,
       Font = webfont.Font,
       BrowserInfo = webfont.BrowserInfo,
       UserAgent = webfont.UserAgent,
@@ -46,11 +46,15 @@ describe('MonotypeScript', function () {
       new BrowserInfo(true, false, false)
     );
 
-    global[MonotypeScript.HOOK + configuration.projectId] = function () {
+    monotype = new Monotype(useragent, fakeDomHelper, configuration);
+    monotype.supportUserAgent(useragent, support);
+    monotype.load(load);
+
+    global[Monotype.HOOK + configuration.projectId] = function () {
       return [{fontfamily: 'aachen bold'}, {fontfamily: 'kid print regular'}];
     };
 
-    monotype = new MonotypeScript(useragent, fakeDomHelper, configuration);
+    monotype = new Monotype(useragent, fakeDomHelper, configuration);
     monotype.supportUserAgent(useragent, support);
     monotype.load(load);
   });
