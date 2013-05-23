@@ -82,8 +82,9 @@ goog.scope(function () {
    * @param {function()} callback The function to call.
    */
   DomHelper.prototype.whenBodyExists = function(callback) {
+    var that = this;
     var check = function() {
-      if (document.body) {
+      if (that.document_.body) {
         callback();
       } else {
         setTimeout(check, 0);
@@ -233,5 +234,65 @@ goog.scope(function () {
       protocol = this.mainWindow_.location.protocol;
     }
     return protocol == 'https:' ? 'https:' : 'http:';
+  };
+
+  /**
+   * Returns the secure status of the current document.
+   * @return {boolean} true if the current document is served securely.
+   */
+  DomHelper.prototype.isHttps = function() {
+    return this.getProtocol() === 'https:';
+  };
+
+  /**
+   * Returns the hostname of the current document.
+   * @return {string} hostname.
+   */
+  DomHelper.prototype.getHostName = function() {
+    return this.getLoadWindow().location.hostname || this.getMainWindow().location.hostname;
+  };
+
+  /**
+   * Creates a style element.
+   * @param {string} css Contents of the style element.
+   * @return {Element} a DOM element.
+   */
+  DomHelper.prototype.createStyle = function(css) {
+    var e = this.document_.createElement('style');
+
+    e.setAttribute('type', 'text/css');
+    if (e.styleSheet) { // IE
+      e.styleSheet.cssText = css;
+    } else {
+      e.appendChild(document.createTextNode(css));
+    }
+    return e;
+  };
+
+  /**
+   * Loads an external script file.
+   * @param {string} src URL of the script.
+   * @param {function()=} opt_callback callback when the script has loaded.
+   */
+  DomHelper.prototype.loadScript = function(src, opt_callback) {
+    var head = this.document_.getElementsByTagName('head')[0];
+
+    if (head) {
+      var script = this.document_.createElement('script');
+      script.src = src;
+      var done = false;
+      script.onload = script.onreadystatechange = function() {
+        if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
+          done = true;
+          if (opt_callback) {
+            opt_callback();
+          }
+          script.onload = script.onreadystatechange = null;
+          // Avoid a bizarre issue with unclosed <base> tag in IE6 - http://blog.dotsmart.net/2008/04/
+          if (script.parentNode.tagName == 'HEAD') head.removeChild(script);
+        }
+      };
+      head.appendChild(script);
+    }
   };
 });
