@@ -1,4 +1,4 @@
-goog.provide('webfont.CustomCss');
+goog.provide('webfont.modules.Custom');
 
 goog.require('webfont.Font');
 
@@ -13,16 +13,16 @@ goog.require('webfont.Font');
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.CustomCss = function(domHelper, configuration) {
+webfont.modules.Custom = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
 };
 
 goog.scope(function () {
-  var CustomCss = webfont.CustomCss,
+  var Custom = webfont.modules.Custom,
       Font = webfont.Font;
 
-  CustomCss.prototype.load = function(onReady) {
+  Custom.prototype.load = function(onReady) {
     var i, len;
     var urls = this.configuration_['urls'] || [];
     var familiesConfiguration = this.configuration_['families'] || [];
@@ -52,7 +52,7 @@ goog.scope(function () {
     onReady(fonts);
   };
 
-  CustomCss.prototype.supportUserAgent = function(userAgent, support) {
+  Custom.prototype.supportUserAgent = function(userAgent, support) {
     return support(userAgent.getBrowserInfo().hasWebFontSupport());
   };
 });

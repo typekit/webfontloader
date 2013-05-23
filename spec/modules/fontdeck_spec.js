@@ -1,5 +1,5 @@
-describe('FontdeckScript', function () {
-  var FontdeckScript = webfont.FontdeckScript,
+describe('modules.Fontdeck', function () {
+  var Fontdeck = webfont.modules.Fontdeck,
       Font = webfont.Font;
 
   var configuration = {
@@ -55,8 +55,8 @@ describe('FontdeckScript', function () {
       insertInto: jasmine.createSpy('insertInto'),
       createScriptSrc: jasmine.createSpy('createScriptSrc'),
       getLoadWindow: jasmine.createSpy('getLoadWindow').andReturn(global),
-      getMainWindow: jasmine.createSpy('getMainWindow').andReturn({ location: { hostname: 'test-host-name' } }),
-      getProtocol: jasmine.createSpy('getProtocol').andReturn('https:')
+      getProtocol: jasmine.createSpy('getProtocol').andReturn('https:'),
+      getHostName: function () { return 'test-host-name';  }
     };
   });
 
@@ -65,7 +65,7 @@ describe('FontdeckScript', function () {
         support = null;
 
     beforeEach(function () {
-      fontdeck = new FontdeckScript(fakeDomHelper, configuration);
+      fontdeck = new Fontdeck(fakeDomHelper, configuration);
       support = jasmine.createSpy('support');
 
       fontdeck.supportUserAgent('user agent', support);
@@ -95,7 +95,7 @@ describe('FontdeckScript', function () {
         support = null;
 
     beforeEach(function () {
-      fontdeck = new FontdeckScript(fakeDomHelper, { id: null });
+      fontdeck = new Fontdeck(fakeDomHelper, { id: null });
       support = jasmine.createSpy('support');
 
       fontdeck.supportUserAgent('user agent', support);

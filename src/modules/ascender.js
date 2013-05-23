@@ -1,4 +1,4 @@
-goog.provide('webfont.AscenderScript');
+goog.provide('webfont.modules.Ascender');
 
 goog.require('webfont.Font');
 
@@ -14,12 +14,12 @@ goog.require('webfont.Font');
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.AscenderScript = function(domHelper, configuration) {
+webfont.modules.Ascender = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
 };
 
-webfont.AscenderScript.VARIATIONS = {
+webfont.modules.Ascender.VARIATIONS = {
   'regular': 'n4',
   'bold': 'n7',
   'italic': 'i4',
@@ -31,14 +31,14 @@ webfont.AscenderScript.VARIATIONS = {
 };
 
 goog.scope(function () {
-  var AscenderScript = webfont.AscenderScript,
+  var Ascender = webfont.modules.Ascender,
       Font = webfont.Font;
 
-  AscenderScript.prototype.supportUserAgent = function(userAgent, support) {
+  Ascender.prototype.supportUserAgent = function(userAgent, support) {
     return support(userAgent.getBrowserInfo().hasWebFontSupport());
   };
 
-  AscenderScript.prototype.load = function(onReady) {
+  Ascender.prototype.load = function(onReady) {
     var key = this.configuration_['key'];
     var protocol = this.domHelper_.getProtocol();
     var url = protocol + '//webfonts.fontslive.com/css/' + key + '.css';
@@ -51,7 +51,7 @@ goog.scope(function () {
    * @param {Array.<string>} providedFamilies
    * @return {Array.<webfont.Font>}
    */
-  AscenderScript.prototype.parseFamiliesAndVariations = function (providedFamilies) {
+  Ascender.prototype.parseFamiliesAndVariations = function (providedFamilies) {
     var fonts = [];
 
     for (var i = 0, len = providedFamilies.length; i < len; i++) {
@@ -64,7 +64,7 @@ goog.scope(function () {
    * @param {string} providedFamily
    * @return {Array.<webfont.Font>}
    */
-  AscenderScript.prototype.parseFamilyAndVariations = function (providedFamily){
+  Ascender.prototype.parseFamilyAndVariations = function (providedFamily){
     var parts = providedFamily.split(':'),
         familyName = parts[0];
 
@@ -84,7 +84,7 @@ goog.scope(function () {
    * @param {string} source
    * @return {Array.<string>}
    */
-  AscenderScript.prototype.parseVariations = function (source) {
+  Ascender.prototype.parseVariations = function (source) {
     var providedVariations = source.split(','),
         variations = [];
 
@@ -92,7 +92,7 @@ goog.scope(function () {
       var pv = providedVariations[i];
 
       if (pv) {
-        var v = AscenderScript.VARIATIONS[pv];
+        var v = Ascender.VARIATIONS[pv];
         variations.push(v ? v : pv);
       }
     }

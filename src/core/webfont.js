@@ -70,7 +70,7 @@ goog.scope(function () {
           eventDispatcher.dispatchLoading();
         }
       }
-      fontWatcher.watch([], {}, fontWatchRunnerCtor, allModulesLoaded);
+      fontWatcher.watchFonts([], {}, fontWatchRunnerCtor, allModulesLoaded);
       return;
     }
 
@@ -103,7 +103,7 @@ goog.scope(function () {
     }
 
     setTimeout(function () {
-      fontWatcher.watch(fonts, opt_fontTestStrings || {}, fontWatchRunnerCtor, allModulesLoaded);
+      fontWatcher.watchFonts(fonts, opt_fontTestStrings || {}, fontWatchRunnerCtor, allModulesLoaded);
     }, 0);
   };
 
