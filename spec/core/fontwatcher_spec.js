@@ -65,7 +65,7 @@ describe('FontWatcher', function () {
       activeFonts = [];
       var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
 
-      fontWatcher.watch([], {}, FakeFontWatchRunner, true);
+      fontWatcher.watchFonts([], {}, FakeFontWatchRunner, true);
       expect(eventDispatcher.dispatchInactive).toHaveBeenCalled();
     });
 
@@ -73,7 +73,7 @@ describe('FontWatcher', function () {
       activeFonts = [];
       var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
 
-      fontWatcher.watch([], {}, FakeFontWatchRunner, false);
+      fontWatcher.watchFonts([], {}, FakeFontWatchRunner, false);
       expect(eventDispatcher.dispatchInactive).not.toHaveBeenCalled();
     });
   });
@@ -83,7 +83,7 @@ describe('FontWatcher', function () {
       activeFonts = [font1];
       var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
 
-      fontWatcher.watch([font1], {}, FakeFontWatchRunner, false);
+      fontWatcher.watchFonts([font1], {}, FakeFontWatchRunner, false);
       expect(eventDispatcher.dispatchFontInactive).not.toHaveBeenCalled();
       expect(eventDispatcher.dispatchActive).not.toHaveBeenCalled();
       expect(eventDispatcher.dispatchInactive).not.toHaveBeenCalled();
@@ -95,7 +95,7 @@ describe('FontWatcher', function () {
       activeFonts = [font1];
       var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
 
-      fontWatcher.watch([font1], {}, FakeFontWatchRunner, true);
+      fontWatcher.watchFonts([font1], {}, FakeFontWatchRunner, true);
       expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith(font1);
       expect(eventDispatcher.dispatchFontActive).toHaveBeenCalledWith(font1);
       expect(eventDispatcher.dispatchFontInactive).not.toHaveBeenCalled();
@@ -109,7 +109,7 @@ describe('FontWatcher', function () {
       activeFonts = [];
       var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
 
-      fontWatcher.watch([font1], {}, FakeFontWatchRunner, true);
+      fontWatcher.watchFonts([font1], {}, FakeFontWatchRunner, true);
       expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith(font1);
       expect(eventDispatcher.dispatchFontActive).not.toHaveBeenCalled();
       expect(eventDispatcher.dispatchFontInactive).toHaveBeenCalledWith(font1);
@@ -123,7 +123,7 @@ describe('FontWatcher', function () {
       activeFonts = [font1, font2, font3];
       var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
 
-      fontWatcher.watch([font1, font2, font3], {}, FakeFontWatchRunner, true);
+      fontWatcher.watchFonts([font1, font2, font3], {}, FakeFontWatchRunner, true);
       expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith(font1);
       expect(eventDispatcher.dispatchFontActive).toHaveBeenCalledWith(font1);
       expect(eventDispatcher.dispatchFontInactive).not.toHaveBeenCalled();
@@ -137,7 +137,7 @@ describe('FontWatcher', function () {
       activeFonts = [];
       var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
 
-      fontWatcher.watch([font1, font2, font3], {}, FakeFontWatchRunner, true);
+      fontWatcher.watchFonts([font1, font2, font3], {}, FakeFontWatchRunner, true);
       expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith(font1);
       expect(eventDispatcher.dispatchFontActive).not.toHaveBeenCalled();
       expect(eventDispatcher.dispatchFontInactive).toHaveBeenCalledWith(font1);
@@ -151,7 +151,7 @@ describe('FontWatcher', function () {
       activeFonts = [font1, font3];
       var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
 
-      fontWatcher.watch([font1, font2, font3], {}, FakeFontWatchRunner, true);
+      fontWatcher.watchFonts([font1, font2, font3], {}, FakeFontWatchRunner, true);
       expect(eventDispatcher.dispatchFontLoading.callCount).toEqual(3);
       expect(eventDispatcher.dispatchFontLoading.calls[0].args[0]).toEqual(font1);
       expect(eventDispatcher.dispatchFontLoading.calls[1].args[0]).toEqual(font2);
@@ -180,7 +180,7 @@ describe('FontWatcher', function () {
       activeFonts = [font5, font6];
       var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
 
-      fontWatcher.watch([font5, font6, font7, font8, font9], {}, FakeFontWatchRunner, true);
+      fontWatcher.watchFonts([font5, font6, font7, font8, font9], {}, FakeFontWatchRunner, true);
 
       expect(eventDispatcher.dispatchFontLoading.callCount).toEqual(5);
       expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith(font5);
@@ -209,7 +209,7 @@ describe('FontWatcher', function () {
 
       var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
 
-      fontWatcher.watch([font1, font2, font3, font4], {
+      fontWatcher.watchFonts([font1, font2, font3, font4], {
         'font1': 'testString1',
         'font2': null,
         'font3': 'testString2',
@@ -225,7 +225,7 @@ describe('FontWatcher', function () {
   it('should pass on the timeout to FontWatchRunner', function () {
     var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher, 4000);
 
-    fontWatcher.watch([font1], {}, FakeFontWatchRunner, true);
+    fontWatcher.watchFonts([font1], {}, FakeFontWatchRunner, true);
 
     expect(timeout).toHaveBeenCalledWith(4000);
   });
