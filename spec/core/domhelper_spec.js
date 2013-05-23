@@ -1,5 +1,6 @@
 describe('DomHelper', function () {
-  var domHelper = new webfont.DomHelper(window);
+  var DomHelper = webfont.DomHelper,
+      domHelper = new DomHelper(window);
 
   describe('#createElement', function () {
     it('should create an element', function () {
@@ -153,6 +154,250 @@ describe('DomHelper', function () {
       domHelper.setStyle(div, 'left:3px;top:1px;');
       expect(div.style.left).toEqual('3px');
       expect(div.style.top).toEqual('1px');
+    });
+  });
+
+  describe('#createStyle', function () {
+    var style = null;
+
+    beforeEach(function () {
+      style = domHelper.createStyle('font-size:300px;');
+    });
+
+    it('should create a style element', function () {
+      expect(style).not.toBeNull();
+      expect(style.nodeName).toEqual('STYLE');
+    });
+
+    it('should set the css content correctly', function () {
+      if (style.styleSheet) {
+        expect(style.styleSheet.cssText).toEqual('font-size:300px;');
+      } else {
+        expect(style.textContent).toEqual('font-size:300px;');
+      }
+    });
+  });
+
+  describe('#loadScript', function () {
+    it('should load the script', function () {
+      runs(function () {
+        domHelper.loadScript('core/external_script.js');
+      });
+
+      waitsFor(function () {
+        return window.EXTERNAL_SCRIPT_LOADED;
+      }, 'script was never inserted', 1000);
+
+      runs(function () {
+        expect(window.EXTERNAL_SCRIPT_LOADED).toBe(true);
+      });
+    });
+
+    it('should call the callback', function () {
+      var called = false;
+
+      runs(function () {
+        domHelper.loadScript('core/external_script.js', function () {
+          called = true;
+        });
+      });
+
+      waitsFor(function () {
+        return called;
+      }, 'callback was never called', 1000);
+
+      runs(function () {
+        expect(called).toBe(true);
+      });
+    });
+  });
+
+  describe('#getProtocol', function () {
+    it('should return http', function () {
+      var domHelper = new DomHelper({
+        location: {
+          protocol: 'http:'
+        }
+      });
+
+      expect(domHelper.getProtocol()).toEqual('http:');
+    });
+
+    it('should return https', function () {
+      var domHelper = new DomHelper({
+        location: {
+          protocol: 'https:'
+        }
+      });
+
+      expect(domHelper.getProtocol()).toEqual('https:');
+    });
+
+    it('should return the protocol from an iframe', function () {
+      var domHelper = new DomHelper({
+        location: {
+          protocol: 'https:'
+        }
+      }, {
+        location: {
+          protocol: 'http:'
+        }
+      });
+
+      expect(domHelper.getProtocol()).toEqual('http:');
+    });
+
+    it('should return the protocol from the main window if the iframe has no protocol', function () {
+      var domHelper = new DomHelper({
+        location: {
+          protocol: 'http:'
+        }
+      }, {
+        location: {
+          protocol: 'about:'
+        }
+      });
+
+      expect(domHelper.getProtocol()).toEqual('http:');
+    });
+  });
+
+  describe('#isHttps', function () {
+    it('should return true if the protocol is https', function () {
+      var domHelper = new DomHelper({
+        location: {
+          protocol: 'https:'
+        }
+      });
+
+      expect(domHelper.isHttps()).toBe(true);
+    });
+
+    it('should return false if the protocol is not https', function () {
+      var domHelper = new DomHelper({
+        location: {
+          protocol: 'http:'
+        }
+      });
+
+      expect(domHelper.isHttps()).toBe(false);
+    });
+  });
+
+  describe('#getHostname', function () {
+    it('should return the hostname', function () {
+      var domHelper = new DomHelper({
+        location: {
+          hostname: 'example.com'
+        }
+      });
+
+      expect(domHelper.getHostName()).toEqual('example.com');
+    });
+
+    it('should return the hostname from the iframe if present', function () {
+      var domHelper = new DomHelper({
+        location: {
+          hostname: 'example.com'
+        }
+      }, {
+        location: {
+          hostname: 'example.org'
+        }
+      });
+
+      expect(domHelper.getHostName()).toEqual('example.org');
+    });
+  });
+
+  describe('#insertInto', function () {
+    it('should insert an element', function () {
+      var a = domHelper.createElement('div');
+
+      var result = domHelper.insertInto('body', a);
+
+      expect(result).toBe(true);
+      expect(a.parentNode.nodeName).toEqual('BODY');
+    });
+  });
+
+  describe('#whenBodyExists', function () {
+    var domHelper = null,
+        callback = null;
+
+    beforeEach(function () {
+      domHelper = new DomHelper({
+        document: {}
+      });
+
+      callback = jasmine.createSpy('callback');
+    });
+
+    it('should wait until the body exists before calling the callback', function () {
+      runs(function () {
+        domHelper.whenBodyExists(callback);
+      });
+
+      waits(200);
+
+      runs(function () {
+        domHelper.document_.body = true;
+      });
+
+      waitsFor(function () {
+        return callback.wasCalled;
+      }, 'callback was never called', 100);
+
+      runs(function () {
+        expect(callback).toHaveBeenCalled();
+      });
+    });
+
+    it('should not call the callback if the body is not available', function () {
+      runs(function () {
+        domHelper.whenBodyExists(callback);
+      });
+
+      waits(100);
+
+      runs(function () {
+        expect(callback).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('#removeElement', function () {
+    it('should remove an element', function () {
+      var a = domHelper.createElement('div'),
+          b = domHelper.createElement('div');
+
+      a.appendChild(b);
+
+      var result = domHelper.removeElement(b);
+      expect(result).toBe(true);
+      expect(b.parentNode).toEqual(null);
+    });
+
+    it('should return false when failing to remove an element', function () {
+      var a = domHelper.createElement('div');
+
+      var result = domHelper.removeElement(a);
+
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('#getMainWindow', function () {
+    it('should return the main window', function () {
+      var domHelper = new DomHelper(1, 2);
+      expect(domHelper.getMainWindow()).toEqual(1);
+    });
+  });
+
+  describe('#getLoadWindow', function () {
+    it('should return the load window', function () {
+      var domHelper = new DomHelper(1, 2);
+      expect(domHelper.getLoadWindow()).toEqual(2);
     });
   });
 });

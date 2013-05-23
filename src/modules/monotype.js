@@ -49,9 +49,6 @@ goog.scope(function () {
     var projectId = self.configuration_['projectId'];
     var version = self.configuration_['version'];
     if (projectId) {
-      var sc = self.domHelper_.createElement("script");
-      sc["id"] = Monotype.SCRIPTID + projectId;
-
       var loadWindow = this.domHelper_.getLoadWindow();
 
       function onload() {
@@ -65,19 +62,7 @@ goog.scope(function () {
         }
         support(userAgent.getBrowserInfo().hasWebFontSupport());
       }
-
-      var done = false;
-
-      sc["onload"] = sc["onreadystatechange"] = function () {
-        if (!done && (!this["readyState"] || this["readyState"] === "loaded" || this["readyState"] === "complete")) {
-          done = true;
-          onload();
-          sc["onload"] = sc["onreadystatechange"] = null;
-        }
-      };
-
-      sc["src"] = self.getScriptSrc(projectId, version);
-      this.domHelper_.insertInto('head', sc);
+      self.domHelper_.loadScript(self.getScriptSrc(projectId, version), onload);
     }
     else {
       support(true);

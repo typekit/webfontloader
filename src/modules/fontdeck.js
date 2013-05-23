@@ -24,8 +24,7 @@ goog.scope(function () {
   Fontdeck.prototype.getScriptSrc = function(projectId) {
     var protocol = this.domHelper_.getProtocol();
     // For empty iframes, fall back to main window's hostname.
-    var hostname = this.domHelper_.getLoadWindow().location.hostname ||
-        this.domHelper_.getMainWindow().location.hostname;
+    var hostname = this.domHelper_.getHostName();
     var api = this.configuration_['api'] || webfont.modules.Fontdeck.API;
     return protocol + api + hostname + '/' + projectId + '.js';
   };

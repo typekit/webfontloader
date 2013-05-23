@@ -55,8 +55,8 @@ describe('modules.Fontdeck', function () {
       insertInto: jasmine.createSpy('insertInto'),
       createScriptSrc: jasmine.createSpy('createScriptSrc'),
       getLoadWindow: jasmine.createSpy('getLoadWindow').andReturn(global),
-      getMainWindow: jasmine.createSpy('getMainWindow').andReturn({ location: { hostname: 'test-host-name' } }),
-      getProtocol: jasmine.createSpy('getProtocol').andReturn('https:')
+      getProtocol: jasmine.createSpy('getProtocol').andReturn('https:'),
+      getHostName: function () { return 'test-host-name';  }
     };
   });
 
