@@ -1,5 +1,5 @@
-describe('TypekitScript', function () {
-  var TypekitScript = webfont.TypekitScript,
+describe('modules.Typekit', function () {
+  var Typekit = webfont.modules.Typekit,
       Font = webfont.Font;
 
   var configuration = {
@@ -27,7 +27,7 @@ describe('TypekitScript', function () {
   });
 
   it('support load and life cycle', function () {
-    var typekit = new TypekitScript(fakeDomHelper, configuration);
+    var typekit = new Typekit(fakeDomHelper, configuration);
 
     typekit.supportUserAgent('useragent', support);
 
@@ -53,7 +53,7 @@ describe('TypekitScript', function () {
   });
 
   it('should load with variations', function () {
-    var typekit = new TypekitScript(fakeDomHelper, configuration);
+    var typekit = new Typekit(fakeDomHelper, configuration);
 
     typekit.supportUserAgent('useragent', support);
 
@@ -75,7 +75,7 @@ describe('TypekitScript', function () {
   });
 
   it('should load through the alternative API', function () {
-    var typekit = new TypekitScript(fakeDomHelper, { id: 'abc', api: '/test' });
+    var typekit = new Typekit(fakeDomHelper, { id: 'abc', api: '/test' });
 
     typekit.supportUserAgent('useragent', support);
     expect(fakeDomHelper.insertInto.calls[0].args[0]).toEqual('head');
@@ -83,7 +83,7 @@ describe('TypekitScript', function () {
   });
 
   it('should not load without a kit id', function () {
-    var typekit = new TypekitScript(fakeDomHelper, { id: null });
+    var typekit = new Typekit(fakeDomHelper, { id: null });
 
     typekit.supportUserAgent('useragent', support);
 

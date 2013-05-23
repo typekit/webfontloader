@@ -1,5 +1,5 @@
-describe('LastResortWebKitFontWatchRunner', function () {
-  var LastResortWebKitFontWatchRunner = webfont.LastResortWebKitFontWatchRunner,
+describe('modules.google.LastResortWebKitFontWatchRunner', function () {
+  var LastResortWebKitFontWatchRunner = webfont.modules.google.LastResortWebKitFontWatchRunner,
       BrowserInfo = webfont.BrowserInfo,
       DomHelper = webfont.DomHelper,
       FontRuler = webfont.FontRuler,

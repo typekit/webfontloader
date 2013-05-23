@@ -1,4 +1,4 @@
-goog.provide('webfont.FontdeckScript');
+goog.provide('webfont.modules.Fontdeck');
 
 goog.require('webfont.Font');
 
@@ -6,44 +6,43 @@ goog.require('webfont.Font');
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.FontdeckScript = function(domHelper, configuration) {
+webfont.modules.Fontdeck = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
   this.fonts_ = [];
 };
 
-webfont.FontdeckScript.NAME = 'fontdeck';
-webfont.FontdeckScript.HOOK = '__webfontfontdeckmodule__';
-webfont.FontdeckScript.API = '//f.fontdeck.com/s/css/js/';
+webfont.modules.Fontdeck.NAME = 'fontdeck';
+webfont.modules.Fontdeck.HOOK = '__webfontfontdeckmodule__';
+webfont.modules.Fontdeck.API = '//f.fontdeck.com/s/css/js/';
 
 goog.scope(function () {
-  var FontdeckScript = webfont.FontdeckScript,
+  var Fontdeck = webfont.modules.Fontdeck,
       Font = webfont.Font,
       FontVariationDescription = webfont.FontVariationDescription;
 
-  FontdeckScript.prototype.getScriptSrc = function(projectId) {
+  Fontdeck.prototype.getScriptSrc = function(projectId) {
     var protocol = this.domHelper_.getProtocol();
     // For empty iframes, fall back to main window's hostname.
-    var hostname = this.domHelper_.getLoadWindow().location.hostname ||
-        this.domHelper_.getMainWindow().location.hostname;
-    var api = this.configuration_['api'] || webfont.FontdeckScript.API;
+    var hostname = this.domHelper_.getHostName();
+    var api = this.configuration_['api'] || webfont.modules.Fontdeck.API;
     return protocol + api + hostname + '/' + projectId + '.js';
   };
 
-  FontdeckScript.prototype.supportUserAgent = function(userAgent, support) {
+  Fontdeck.prototype.supportUserAgent = function(userAgent, support) {
     var projectId = this.configuration_['id'];
     var loadWindow = this.domHelper_.getLoadWindow();
     var self = this;
 
     if (projectId) {
       // Provide data to Fontdeck for processing.
-      if (!loadWindow[webfont.FontdeckScript.HOOK]) {
-        loadWindow[webfont.FontdeckScript.HOOK] = {};
+      if (!loadWindow[webfont.modules.Fontdeck.HOOK]) {
+        loadWindow[webfont.modules.Fontdeck.HOOK] = {};
       }
 
       // Fontdeck will call this function to indicate support status
       // and what fonts are provided.
-      loadWindow[webfont.FontdeckScript.HOOK][projectId] = function(fontdeckSupports, data) {
+      loadWindow[webfont.modules.Fontdeck.HOOK][projectId] = function(fontdeckSupports, data) {
         for (var i = 0, j = data['fonts'].length; i<j; ++i) {
           var font = data['fonts'][i];
           self.fonts_.push(new Font(font['name'], Font.parseCssVariation('font-weight:' + font['weight'] + ';font-style:' + font['style'])));
@@ -60,11 +59,11 @@ goog.scope(function () {
     }
   };
 
-  FontdeckScript.prototype.load = function(onReady) {
+  Fontdeck.prototype.load = function(onReady) {
     onReady(this.fonts_);
   };
 });
 
-globalNamespaceObject.addModule(webfont.FontdeckScript.NAME, function(configuration, domHelper) {
-  return new webfont.FontdeckScript(domHelper, configuration);
+globalNamespaceObject.addModule(webfont.modules.Fontdeck.NAME, function(configuration, domHelper) {
+  return new webfont.modules.Fontdeck(domHelper, configuration);
 });

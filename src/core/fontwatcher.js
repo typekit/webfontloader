@@ -39,7 +39,7 @@ goog.scope(function () {
    *                  string=)} fontWatchRunnerCtor The font watch runner constructor.
    * @param {boolean} last True if this is the last set of fonts to watch.
    */
-  FontWatcher.prototype.watch = function(fonts,
+  FontWatcher.prototype.watchFonts = function(fonts,
       fontTestStrings, fontWatchRunnerCtor, last) {
     var length = fonts.length;
 
