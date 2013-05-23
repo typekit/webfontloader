@@ -1,26 +1,26 @@
-goog.provide('webfont.GoogleFontApi');
+goog.provide('webfont.modules.google.GoogleFontApi');
 
-goog.require('webfont.FontApiUrlBuilder');
-goog.require('webfont.FontApiParser');
+goog.require('webfont.modules.google.FontApiUrlBuilder');
+goog.require('webfont.modules.google.FontApiParser');
 goog.require('webfont.FontWatchRunner');
 
 /**
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.GoogleFontApi = function(userAgent, domHelper, configuration) {
+webfont.modules.google.GoogleFontApi = function(userAgent, domHelper, configuration) {
   this.userAgent_ = userAgent;
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
 };
 
-webfont.GoogleFontApi.NAME = 'google';
+webfont.modules.google.GoogleFontApi.NAME = 'google';
 
 goog.scope(function () {
-  var GoogleFontApi = webfont.GoogleFontApi,
+  var GoogleFontApi = webfont.modules.google.GoogleFontApi,
       FontWatchRunner = webfont.FontWatchRunner,
-      FontApiUrlBuilder = webfont.FontApiUrlBuilder,
-      FontApiParser = webfont.FontApiParser;
+      FontApiUrlBuilder = webfont.modules.google.FontApiUrlBuilder,
+      FontApiParser = webfont.modules.google.FontApiParser;
 
   GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) {
     support(userAgent.getBrowserInfo().hasWebFontSupport());
@@ -54,8 +54,8 @@ goog.scope(function () {
   };
 });
 
-globalNamespaceObject.addModule(webfont.GoogleFontApi.NAME, function(configuration, domHelper) {
+globalNamespaceObject.addModule(webfont.modules.google.GoogleFontApi.NAME, function(configuration, domHelper) {
   var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
   var userAgent = userAgentParser.parse();
-  return new webfont.GoogleFontApi(userAgent, domHelper, configuration);
+  return new webfont.modules.google.GoogleFontApi(userAgent, domHelper, configuration);
 });

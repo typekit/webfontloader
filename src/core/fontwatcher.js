@@ -31,8 +31,11 @@ goog.scope(function () {
    *     each family.
    * @param {boolean} last True if this is the last set of fonts to watch.
    */
-  FontWatcher.prototype.watch = function(fonts, fontTestStrings, last) {
-    if (fonts.length === 0 && last) {
+  FontWatcher.prototype.watchFonts = function(fonts,
+      fontTestStrings, last) {
+    var length = fonts.length;
+
+    if (length === 0 && last) {
       this.eventDispatcher_.dispatchInactive();
       return;
     }

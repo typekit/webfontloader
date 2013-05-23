@@ -71,7 +71,7 @@ goog.scope(function () {
           eventDispatcher.dispatchLoading();
         }
       }
-      fontWatcher.watch([], {}, allModulesLoaded);
+      fontWatcher.watchFonts([], {}, allModulesLoaded);
       return;
     }
 
@@ -94,7 +94,7 @@ goog.scope(function () {
     }
 
     setTimeout(function () {
-      fontWatcher.watch(fonts, opt_fontTestStrings || {}, allModulesLoaded);
+      fontWatcher.watchFonts(fonts, opt_fontTestStrings || {}, allModulesLoaded);
     }, 0);
   };
 

@@ -16,21 +16,21 @@ core:
   - core/initialize.js
 
 ascender:
-  - ascender/ascender_script.js
+  - modules/ascender.js
 
 google:
-  - google/fontapiurlbuilder.js
-  - google/fontapiparser.js
-  - google/googlefontapi.js
+  - modules/google/fontapiurlbuilder.js
+  - modules/google/fontapiparser.js
+  - modules/google/googlefontapi.js
 
 fontdeck:
-  - fontdeck/fontdeck_script.js
+  - modules/fontdeck.js
 
 typekit:
-  - typekit/typekit_script.js
+  - modules/typekit.js
 
 monotype:
-  - monotype/monotype_script.js
+  - modules/monotype.js
 
 custom:
-  - custom/customcss.js
+  - modules/custom.js
