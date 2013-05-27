@@ -3,7 +3,7 @@ require 'yaml'
 require 'webfontloader/modules'
 
 module WebFontLoader
-  VERSION = '1.4.4'
+  VERSION = '1.4.5'
 
   ProjectRoot = File.expand_path(File.dirname(__FILE__) + "/..")
 
