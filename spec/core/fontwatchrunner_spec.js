@@ -145,7 +145,7 @@ describe('FontWatchRunner', function () {
         expect(activeCallback).toHaveBeenCalledWith(font);
       });
 
-      it('should consider last resort font as having identical metrics, but not metric compatible and call inactive', function () {
+      it('should consider last resort font as having identical metrics, and call active', function () {
         actualWidths = [
           LAST_RESORT_SIZE, LAST_RESORT_SIZE,
           LAST_RESORT_SIZE, LAST_RESORT_SIZE
@@ -159,7 +159,7 @@ describe('FontWatchRunner', function () {
         fontWatchRunner.start();
 
         jasmine.Clock.tick(1 * 25);
-        expect(inactiveCallback).toHaveBeenCalledWith(font);
+        expect(activeCallback).toHaveBeenCalledWith(font);
       });
 
       it('should fail to load font and call inactive', function () {
@@ -180,6 +180,23 @@ describe('FontWatchRunner', function () {
         expect(inactiveCallback).toHaveBeenCalledWith(font);
       });
 
+      it('should call inactive when we are loading a metric compatible font', function () {
+        actualWidths = [
+          LAST_RESORT_SIZE, LAST_RESORT_SIZE,
+          LAST_RESORT_SIZE, LAST_RESORT_SIZE
+        ];
+
+        timesToGetTimeBeforeTimeout = 2;
+
+        var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+            domHelper, font, fallbackBugBrowserInfo, 0, { 'My Other Family': true });
+
+        fontWatchRunner.start();
+
+        jasmine.Clock.tick(1 * 25);
+        expect(inactiveCallback).toHaveBeenCalledWith(font);
+      });
+
       it('should call active when we are loading a metric compatible font', function () {
         actualWidths = [
           LAST_RESORT_SIZE, LAST_RESORT_SIZE,
@@ -189,7 +206,7 @@ describe('FontWatchRunner', function () {
         timesToGetTimeBeforeTimeout = 2;
 
         var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, new Font('Arimo'), fallbackBugBrowserInfo, 0);
+            domHelper, new Font('Arimo'), fallbackBugBrowserInfo, 0, { 'Arimo': true });
 
         fontWatchRunner.start();
 
@@ -224,7 +241,7 @@ describe('FontWatchRunner', function () {
         ];
 
         fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, font, browserInfo, 0, 'TestString');
+            domHelper, font, browserInfo, 0, null, 'TestString');
 
         fontWatchRunner.start();
 

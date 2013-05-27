@@ -11,10 +11,11 @@ goog.require('webfont.FontRuler');
  * @param {webfont.Font} font
  * @param {webfont.BrowserInfo} browserInfo
  * @param {number=} opt_timeout
+ * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    font, browserInfo, opt_timeout, opt_fontTestString) {
+    font, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
@@ -23,6 +24,8 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.browserInfo_ = browserInfo;
   this.lastResortWidths_ = {};
   this.timeout_ = opt_timeout || 5000;
+
+  this.metricCompatibleFonts_ = opt_metricCompatibleFonts || null;
 
   this.fontRulerA_ = null;
   this.fontRulerB_ = null;
@@ -38,19 +41,6 @@ webfont.FontWatchRunner.LastResortFonts = {
   SERIF: 'serif',
   SANS_SERIF: 'sans-serif',
   MONOSPACE: 'monospace'
-};
-
-/**
- * Fonts that are known to be metric compatible with
- * system fonts.
- *
- * @type {Object.<string, boolean>}
- * @const
- */
-webfont.FontWatchRunner.MetricCompatibleFonts = {
-  'Arimo': true,
-  'Cousine': true,
-  'Tinos': true
 };
 
 /**
@@ -166,13 +156,14 @@ goog.scope(function () {
   };
 
   /**
-   * Returns true if the current font is metric compatible.
+   * Returns true if the current font is metric compatible. Also returns true
+   * if we do not have a list of metric compatible fonts.
    *
    * @private
    * @return {boolean}
    */
   FontWatchRunner.prototype.isMetricCompatibleFont_ = function () {
-    return FontWatchRunner.MetricCompatibleFonts.hasOwnProperty(this.font_.getName());
+    return this.metricCompatibleFonts_ === null || this.metricCompatibleFonts_.hasOwnProperty(this.font_.getName());
   };
 
   /**

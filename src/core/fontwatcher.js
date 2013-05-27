@@ -59,6 +59,7 @@ goog.scope(function () {
             font,
             this.browserInfo_,
             this.timeout_,
+            null,
             fontTestString
           );
 
