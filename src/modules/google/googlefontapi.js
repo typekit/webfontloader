@@ -22,6 +22,12 @@ goog.scope(function () {
       FontApiUrlBuilder = webfont.modules.google.FontApiUrlBuilder,
       FontApiParser = webfont.modules.google.FontApiParser;
 
+  GoogleFontApi.METRICS_COMPATIBLE_FONTS = {
+    "Arimo": true,
+    "Cousine": true,
+    "Tinos": true
+  };
+
   GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) {
     support(userAgent.getBrowserInfo().hasWebFontSupport());
   };
@@ -50,7 +56,7 @@ goog.scope(function () {
 
     domHelper.insertInto('head', domHelper.createCssLink(
         fontApiUrlBuilder.build()));
-    onReady(fontApiParser.getFonts(), fontApiParser.getFontTestStrings());
+    onReady(fontApiParser.getFonts(), fontApiParser.getFontTestStrings(), GoogleFontApi.METRICS_COMPATIBLE_FONTS);
   };
 });
 

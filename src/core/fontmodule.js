@@ -15,7 +15,7 @@ goog.scope(function () {
   FontModule.prototype.supportUserAgent = function (userAgent, support) {};
 
   /**
-   * @param {function(Array.<webfont.Font>,  webfont.FontTestStrings=)} onReady
+   * @param {function(Array.<webfont.Font>,  webfont.FontTestStrings=, Object.<string, boolean>=)} onReady
    */
   FontModule.prototype.load = function (onReady) {};
 });

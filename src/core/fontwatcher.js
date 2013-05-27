@@ -29,10 +29,11 @@ goog.scope(function () {
    * @param {Array.<webfont.Font>} fonts The fonts to watch.
    * @param {Object.<string, string>} fontTestStrings The font test strings for
    *     each family.
+   * @param {Object.<String, boolean>} metricCompatibleFonts
    * @param {boolean} last True if this is the last set of fonts to watch.
    */
   FontWatcher.prototype.watchFonts = function(fonts,
-      fontTestStrings, last) {
+      fontTestStrings, metricCompatibleFonts, last) {
     var length = fonts.length;
 
     if (length === 0 && last) {
@@ -59,7 +60,7 @@ goog.scope(function () {
             font,
             this.browserInfo_,
             this.timeout_,
-            null,
+            metricCompatibleFonts,
             fontTestString
           );
 

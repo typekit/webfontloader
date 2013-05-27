@@ -71,12 +71,12 @@ goog.scope(function () {
           eventDispatcher.dispatchLoading();
         }
       }
-      fontWatcher.watchFonts([], {}, allModulesLoaded);
+      fontWatcher.watchFonts([], {}, null, allModulesLoaded);
       return;
     }
 
-    module.load(function (fonts, opt_fontTestStrings) {
-      that.onModuleReady_(eventDispatcher, fontWatcher, fonts, opt_fontTestStrings);
+    module.load(function (fonts, opt_fontTestStrings, opt_metricCompatibleFonts) {
+      that.onModuleReady_(eventDispatcher, fontWatcher, fonts, opt_fontTestStrings, opt_metricCompatibleFonts);
     });
   };
 
@@ -85,8 +85,9 @@ goog.scope(function () {
    * @param {webfont.FontWatcher} fontWatcher
    * @param {Array.<webfont.Font>} fonts
    * @param {webfont.FontTestStrings=} opt_fontTestStrings
+   * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
    */
-  WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher, fonts, opt_fontTestStrings) {
+  WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher, fonts, opt_fontTestStrings, opt_metricCompatibleFonts) {
     var allModulesLoaded = --this.moduleLoading_ == 0;
 
     if (allModulesLoaded) {
@@ -94,7 +95,7 @@ goog.scope(function () {
     }
 
     setTimeout(function () {
-      fontWatcher.watchFonts(fonts, opt_fontTestStrings || {}, allModulesLoaded);
+      fontWatcher.watchFonts(fonts, opt_fontTestStrings || {}, opt_metricCompatibleFonts || null, allModulesLoaded);
     }, 0);
   };
 
