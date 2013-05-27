@@ -145,7 +145,7 @@ describe('FontWatchRunner', function () {
         expect(activeCallback).toHaveBeenCalledWith(font);
       });
 
-      it('should consider last resort font as having identical metrics, and call active', function () {
+      it('should consider last resort font as having identical metrics and call active', function () {
         actualWidths = [
           LAST_RESORT_SIZE, LAST_RESORT_SIZE,
           LAST_RESORT_SIZE, LAST_RESORT_SIZE
@@ -180,7 +180,7 @@ describe('FontWatchRunner', function () {
         expect(inactiveCallback).toHaveBeenCalledWith(font);
       });
 
-      it('should call inactive when we are loading a metric compatible font', function () {
+      it('should call inactive when we are loading a metric incompatible font', function () {
         actualWidths = [
           LAST_RESORT_SIZE, LAST_RESORT_SIZE,
           LAST_RESORT_SIZE, LAST_RESORT_SIZE
