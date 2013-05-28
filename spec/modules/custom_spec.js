@@ -1,5 +1,5 @@
-describe('CustomCss', function () {
-  var CustomCss = webfont.CustomCss,
+describe('modules.Custom', function () {
+  var Custom = webfont.modules.Custom,
       FontFamily = webfont.FontFamily;
 
   describe('insert links correctly', function () {
@@ -14,7 +14,7 @@ describe('CustomCss', function () {
 
       load = jasmine.createSpy('load');
 
-      var defaultModule = new CustomCss(fakeDomHelper, {
+      var defaultModule = new Custom(fakeDomHelper, {
         families: ['Font1', 'Font2', 'Font3'],
         urls: ['http://moo', 'http://meuh']
       });

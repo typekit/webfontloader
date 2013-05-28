@@ -19,8 +19,8 @@ describe('UserAgentParser', function () {
           return false;
         }
 
-        if (actual.getVersion().ne(expected.version)) {
-          this.message = msg('version', actual.getVersion(), expected.version);
+        if (actual.getParsedVersion().ne(expected.version)) {
+          this.message = msg('version', actual.getParsedVersion(), expected.version);
           return false;
         }
 
@@ -29,8 +29,8 @@ describe('UserAgentParser', function () {
           return false;
         }
 
-        if (actual.getPlatformVersion().ne(expected.platformVersion)) {
-          this.message = msg('platform version', actual.getPlatformVersion(), expected.platformVersion);
+        if (actual.getParsedPlatformVersion().ne(expected.platformVersion)) {
+          this.message = msg('platform version', actual.getParsedPlatformVersion(), expected.platformVersion);
           return false;
         }
 
@@ -39,8 +39,8 @@ describe('UserAgentParser', function () {
           return false;
         }
 
-        if (actual.getEngineVersion().ne(expected.engineVersion)) {
-          this.message = msg('engine version', actual.getEngineVersion(), expected.engineVersion);
+        if (actual.getParsedEngineVersion().ne(expected.engineVersion)) {
+          this.message = msg('engine version', actual.getParsedEngineVersion(), expected.engineVersion);
           return false;
         }
 
