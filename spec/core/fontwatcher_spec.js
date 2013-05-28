@@ -209,8 +209,10 @@ describe('FontWatcher', function () {
       }, null, true);
 
       expect(testStrings.callCount).toEqual(4);
-      expect(testStrings).toHaveBeenCalledWith('testString1');
-      expect(testStrings).toHaveBeenCalledWith('testString2');
+      expect(testStrings.calls[0].args[0]).toEqual('testString1');
+      expect(testStrings.calls[1].args[0]).toEqual(FontWatchRunner.DEFAULT_TEST_STRING);
+      expect(testStrings.calls[2].args[0]).toEqual('testString2');
+      expect(testStrings.calls[3].args[0]).toEqual(FontWatchRunner.DEFAULT_TEST_STRING);
     });
   });
 
