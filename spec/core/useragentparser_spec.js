@@ -277,6 +277,22 @@ describe('UserAgentParser', function () {
             hasWebKitMetricsBug: false
           }
         });
+
+        expect(parse('Mozilla/5.0 (Linux; Android 4.2.2; SGH-M919 Build/JDQ39) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.169 Mobile Safari/537.22'))
+        .toMatchUserAgent({
+          name: 'Chrome',
+          version: new Version(25, 0, 1364, 169),
+          platform: 'Android',
+          platformVersion: new Version(4, 2, 2),
+          engine: 'AppleWebKit',
+          engineVersion: new Version(537, 22),
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
       });
 
       it('should detect Chrome on iPad', function () {
@@ -611,6 +627,40 @@ describe('UserAgentParser', function () {
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
+
+      it('should detect Samsung Galaxy S4 builtin browser', function () {
+        expect(parse('Mozilla/5.0 (Linux; Android 4.2.2; sl-si; SAMSUNG GT-I9505 Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Version/1.0 Chrome/18.0.1025.308 Mobile Safari/535.19'))
+        .toMatchUserAgent({
+          name: 'Chrome',
+          version: new Version(18, 0, 1025, 308),
+          platform: 'Android',
+          platformVersion: new Version(4, 2, 2),
+          engine: 'AppleWebKit',
+          engineVersion: new Version(535, 19),
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: false
+          }
+        });
+
+        expect(parse('Mozilla/5.0 (Linux; Android 4.2.2; en-us; SAMSUNG SGH-M919 Build/JDQ39) AppleWebKit/535.19 (KHTML, like Gecko) Version/1.0 Chrome/18.0.1025.308 Mobile Safari/535.19'))
+        .toMatchUserAgent({
+          name: 'Chrome',
+          version: new Version(18, 0, 1025, 308),
+          platform: 'Android',
+          platformVersion: new Version(4, 2, 2),
+          engine: 'AppleWebKit',
+          engineVersion: new Version(535, 19),
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
             hasWebKitFallbackBug: true,
             hasWebKitMetricsBug: false
           }

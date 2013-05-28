@@ -313,10 +313,10 @@ goog.scope(function () {
       browserVersion = new Version();
     } else if (browserName == "Silk") {
       browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Silk\/([\d\._]+)/, 1));
-    } else if (this.userAgent_.indexOf("Version/") != -1) {
-      browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.\w]+)/, 1));
     } else if (browserName == "Chrome") {
       browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /(Chrome|CrMo|CriOS)\/([\d\.]+)/, 2));
+    } else if (this.userAgent_.indexOf("Version/") != -1) {
+      browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.\w]+)/, 1));
     } else if (browserName == "AdobeAIR") {
       browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /AdobeAIR\/([\d\.]+)/, 1));
     }
