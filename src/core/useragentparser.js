@@ -62,6 +62,8 @@ goog.scope(function () {
       return this.parseIeUserAgentString_();
     } else if (this.isOpera_()) {
       return this.parseOperaUserAgentString_();
+    } else if (this.isOperaNext_()) {
+      return this.parseWebKitUserAgentString_();
     } else if (this.isWebKit_()) {
       return this.parseWebKitUserAgentString_();
     } else if (this.isGecko_()) {
@@ -182,6 +184,13 @@ goog.scope(function () {
   /**
    * @private
    */
+  UserAgentParser.prototype.isOperaNext_ = function () {
+    return this.userAgent_.indexOf("OPR") != -1;
+  };
+
+  /**
+   * @private
+   */
   UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
     var engineName = UserAgentParser.UNKNOWN,
         engineVersionString = this.getMatchingGroup_(this.userAgent_, /Presto\/([\d\w\.]+)/, 1),
@@ -295,7 +304,9 @@ goog.scope(function () {
         browserVersionString = UserAgentParser.UNKNOWN,
         supportWebFont = false;
 
-    if (this.userAgent_.indexOf("Chrome") != -1 ||
+    if (this.userAgent_.indexOf("OPR") != -1) {
+      browserName = "Opera";
+    } else if (this.userAgent_.indexOf("Chrome") != -1 ||
         this.userAgent_.indexOf("CrMo") != -1 ||
         this.userAgent_.indexOf("CriOS") != -1) {
       browserName = "Chrome";
@@ -319,6 +330,8 @@ goog.scope(function () {
       browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.\w]+)/, 1));
     } else if (browserName == "AdobeAIR") {
       browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /AdobeAIR\/([\d\.]+)/, 1));
+    } else if (browserName == "Opera") {
+      browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /OPR\/([\d.]+)/, 1));
     }
 
     if (browserName == "AdobeAIR") {

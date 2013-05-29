@@ -1048,6 +1048,24 @@ describe('UserAgentParser', function () {
           }
         });
       });
+
+      it('should detect Opera Next (15)', function () {
+        expect(parse('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.20 Safari/537.36  OPR/15.0.1147.18 (Edition Next)'))
+        .toMatchUserAgent({
+          name: 'Opera',
+          version: new Version(15, 0, 1147, 18),
+          platform: 'Macintosh',
+          platformVersion: new Version(10, 8, 3),
+          engine: 'AppleWebKit',
+          engineVersion: new Version(537, 36),
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: true
+          }
+        });
+      });
     });
 
     describe('WebKit fallback bug', function () {
