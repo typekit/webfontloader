@@ -19,9 +19,8 @@ goog.addDependency("../../src/core/webfont.js", ["webfont.WebFont"], ["webfont.D
 goog.addDependency("../../src/modules/ascender.js", ["webfont.modules.Ascender"], ["webfont.Font"]);
 goog.addDependency("../../src/modules/custom.js", ["webfont.modules.Custom"], ["webfont.Font"]);
 goog.addDependency("../../src/modules/fontdeck.js", ["webfont.modules.Fontdeck"], ["webfont.Font"]);
-goog.addDependency("../../src/modules/google/fontapiparser.js", ["webfont.modules.FontApiParser"], ["webfont.Font"]);
-goog.addDependency("../../src/modules/google/fontapiurlbuilder.js", ["webfont.modules.FontApiUrlBuilder"], []);
-goog.addDependency("../../src/modules/google/googlefontapi.js", ["webfont.modules.GoogleFontApi"], ["webfont.modules.FontApiUrlBuilder","webfont.modules.FontApiParser","webfont.FontWatchRunner","webfont.modules.LastResortWebKitFontWatchRunner"]);
-goog.addDependency("../../src/modules/google/lastresortwebkitfontwatchrunner.js", ["webfont.modules.LastResortWebKitFontWatchRunner"], ["webfont.Font","webfont.FontRuler"]);
+goog.addDependency("../../src/modules/google/fontapiparser.js", ["webfont.modules.google.FontApiParser"], ["webfont.Font"]);
+goog.addDependency("../../src/modules/google/fontapiurlbuilder.js", ["webfont.modules.google.FontApiUrlBuilder"], []);
+goog.addDependency("../../src/modules/google/googlefontapi.js", ["webfont.modules.google.GoogleFontApi"], ["webfont.modules.google.FontApiUrlBuilder","webfont.modules.google.FontApiParser","webfont.FontWatchRunner"]);
 goog.addDependency("../../src/modules/monotype.js", ["webfont.modules.Monotype"], ["webfont.Font"]);
 goog.addDependency("../../src/modules/typekit.js", ["webfont.modules.Typekit"], ["webfont.Font"]);

@@ -3,7 +3,6 @@ goog.provide('webfont.modules.google.GoogleFontApi');
 goog.require('webfont.modules.google.FontApiUrlBuilder');
 goog.require('webfont.modules.google.FontApiParser');
 goog.require('webfont.FontWatchRunner');
-goog.require('webfont.modules.google.LastResortWebKitFontWatchRunner');
 
 /**
  * @constructor
@@ -20,19 +19,17 @@ webfont.modules.google.GoogleFontApi.NAME = 'google';
 goog.scope(function () {
   var GoogleFontApi = webfont.modules.google.GoogleFontApi,
       FontWatchRunner = webfont.FontWatchRunner,
-      LastResortWebKitFontWatchRunner = webfont.modules.google.LastResortWebKitFontWatchRunner,
       FontApiUrlBuilder = webfont.modules.google.FontApiUrlBuilder,
       FontApiParser = webfont.modules.google.FontApiParser;
 
-  GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) {
-    support(userAgent.getBrowserInfo().hasWebFontSupport());
+  GoogleFontApi.METRICS_COMPATIBLE_FONTS = {
+    "Arimo": true,
+    "Cousine": true,
+    "Tinos": true
   };
 
-  GoogleFontApi.prototype.getFontWatchRunnerCtor = function() {
-    if (this.userAgent_.getEngine() == "AppleWebKit") {
-      return LastResortWebKitFontWatchRunner;
-    }
-    return FontWatchRunner;
+  GoogleFontApi.prototype.supportUserAgent = function(userAgent, support) {
+    support(userAgent.getBrowserInfo().hasWebFontSupport());
   };
 
   GoogleFontApi.prototype.load = function(onReady) {
@@ -59,7 +56,7 @@ goog.scope(function () {
 
     domHelper.insertInto('head', domHelper.createCssLink(
         fontApiUrlBuilder.build()));
-    onReady(fontApiParser.getFonts(), fontApiParser.getFontTestStrings());
+    onReady(fontApiParser.getFonts(), fontApiParser.getFontTestStrings(), GoogleFontApi.METRICS_COMPATIBLE_FONTS);
   };
 });
 
