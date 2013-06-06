@@ -310,16 +310,17 @@ goog.scope(function () {
     }
 
     if (browserName == UserAgentParser.BUILTIN_BROWSER) {
-      browserVersion = new Version();
+      browserVersionString = UserAgentParser.UNKNOWN;
     } else if (browserName == "Silk") {
-      browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Silk\/([\d\._]+)/, 1));
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /Silk\/([\d\._]+)/, 1);
     } else if (browserName == "Chrome") {
-      browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /(Chrome|CrMo|CriOS)\/([\d\.]+)/, 2));
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /(Chrome|CrMo|CriOS)\/([\d\.]+)/, 2);
     } else if (this.userAgent_.indexOf("Version/") != -1) {
-      browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.\w]+)/, 1));
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.\w]+)/, 1);
     } else if (browserName == "AdobeAIR") {
-      browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /AdobeAIR\/([\d\.]+)/, 1));
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /AdobeAIR\/([\d\.]+)/, 1);
     }
+    browserVersion = Version.parse(browserVersionString);
 
     if (browserName == "AdobeAIR") {
       supportWebFont = browserVersion.major > 2 || browserVersion.major == 2 && browserVersion.minor >= 5;
