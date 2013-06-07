@@ -17,6 +17,7 @@
     <script src="../tools/jasmine/jasmine.js"></script>
     <script src="../tools/jasmine/jasmine-html.js"></script>
     <script src="../tools/jasmine-phantomjs/terminal-reporter.js"></script>
+    <script src="../tools/jasmine-browserstack/jasmine-browserstack.js"></script>
     <script src="../tools/compiler/base.js"></script>
     <script src="../spec/deps.js"></script>
 
@@ -63,10 +64,12 @@
             terminalReporter = new jasmine.TerminalReporter({
               verbosity: 3,
               color: true
-            });
+            }),
+            browserStackReporter = new jasmine.BrowserStackReporter();
 
         env.addReporter(terminalReporter);
         env.addReporter(htmlReporter);
+        env.addReporter(browserStackReporter);
         env.specFilter = function (spec) {
           return htmlReporter.specFilter(spec);
         };
