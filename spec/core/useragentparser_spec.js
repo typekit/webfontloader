@@ -1429,5 +1429,28 @@ describe('UserAgentParser', function () {
         });
       });
     });
+
+    describe('PhantomJS', function () {
+      it('should detect PhantomJS as having web font support', function () {
+        expect(parse('Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.0 (development) Safari/534.34'))
+        .toMatchUserAgent({
+          name: 'PhantomJS',
+          parsedVersion: new Version(1, 9, 0),
+          version: '1.9.0',
+          platform: 'Macintosh',
+          parsedPlatformVersion: new Version(),
+          platformVersion: 'Unknown',
+          engine: 'AppleWebKit',
+          parsedEngineVersion: new Version(534, 34),
+          engineVersion: '534.34',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: true,
+            hasWebKitMetricsBug: true
+          }
+        });
+      });
+    });
   });
 });
