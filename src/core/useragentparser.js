@@ -185,7 +185,7 @@ goog.scope(function () {
    * @private
    */
   UserAgentParser.prototype.isOperaNext_ = function () {
-    return this.userAgent_.indexOf("OPR") != -1;
+    return /OPR\/[\d.]+/.test(this.userAgent_);
   };
 
   /**
