@@ -303,6 +303,8 @@ goog.scope(function () {
       browserName = "Silk";
     } else if (platform == "BlackBerry" || platform == "Android") {
       browserName = UserAgentParser.BUILTIN_BROWSER;
+    } else if (this.userAgent_.indexOf("PhantomJS") != -1) {
+      browserName = "PhantomJS";
     } else if (this.userAgent_.indexOf("Safari") != -1) {
       browserName = "Safari";
     } else if (this.userAgent_.indexOf("AdobeAIR") != -1) {
@@ -319,6 +321,8 @@ goog.scope(function () {
       browserVersionString = this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.\w]+)/, 1);
     } else if (browserName == "AdobeAIR") {
       browserVersionString = this.getMatchingGroup_(this.userAgent_, /AdobeAIR\/([\d\.]+)/, 1);
+    } else if (browserName == "PhantomJS") {
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /PhantomJS\/([\d.]+)/, 1);
     }
     browserVersion = Version.parse(browserVersionString);
 
