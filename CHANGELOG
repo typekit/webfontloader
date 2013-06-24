@@ -1,3 +1,7 @@
+v1.4.7 (June 6, 2013)
+* Fix backwards compatibility with version strings for Chrome
+* Restore specs that test against version strings for backwards compatibility with the old UserAgent API.
+
 v1.4.6 (May 29, 2013)
 * Merge font watching strategies from core and the Google module
 * Add support for the Samsung Galaxy S4 user agent string
