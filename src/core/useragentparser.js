@@ -304,7 +304,7 @@ goog.scope(function () {
         browserVersionString = UserAgentParser.UNKNOWN,
         supportWebFont = false;
 
-    if (this.userAgent_.indexOf("OPR") != -1) {
+    if (/OPR\/[\d.]+/.test(this.userAgent_)) {
       browserName = "Opera";
     } else if (this.userAgent_.indexOf("Chrome") != -1 ||
         this.userAgent_.indexOf("CrMo") != -1 ||
