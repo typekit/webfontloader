@@ -60,9 +60,9 @@ goog.scope(function () {
   UserAgentParser.prototype.parse = function() {
     if (this.isIe_()) {
       return this.parseIeUserAgentString_();
+    } else if (this.isOldOpera_()) {
+      return this.parseOldOperaUserAgentString_();
     } else if (this.isOpera_()) {
-      return this.parseOperaUserAgentString_();
-    } else if (this.isOperaNext_()) {
       return this.parseWebKitUserAgentString_();
     } else if (this.isWebKit_()) {
       return this.parseWebKitUserAgentString_();
@@ -177,21 +177,21 @@ goog.scope(function () {
   /**
    * @private
    */
-  UserAgentParser.prototype.isOpera_ = function() {
+  UserAgentParser.prototype.isOldOpera_ = function() {
     return this.userAgent_.indexOf("Opera") != -1;
   };
 
   /**
    * @private
    */
-  UserAgentParser.prototype.isOperaNext_ = function () {
+  UserAgentParser.prototype.isOpera_ = function () {
     return /OPR\/[\d.]+/.test(this.userAgent_);
   };
 
   /**
    * @private
    */
-  UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
+  UserAgentParser.prototype.parseOldOperaUserAgentString_ = function() {
     var engineName = UserAgentParser.UNKNOWN,
         engineVersionString = this.getMatchingGroup_(this.userAgent_, /Presto\/([\d\w\.]+)/, 1),
         engineVersion = Version.parse(engineVersionString),
