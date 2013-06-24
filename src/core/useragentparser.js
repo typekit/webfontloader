@@ -60,8 +60,10 @@ goog.scope(function () {
   UserAgentParser.prototype.parse = function() {
     if (this.isIe_()) {
       return this.parseIeUserAgentString_();
+    } else if (this.isOldOpera_()) {
+      return this.parseOldOperaUserAgentString_();
     } else if (this.isOpera_()) {
-      return this.parseOperaUserAgentString_();
+      return this.parseWebKitUserAgentString_();
     } else if (this.isWebKit_()) {
       return this.parseWebKitUserAgentString_();
     } else if (this.isGecko_()) {
@@ -175,14 +177,21 @@ goog.scope(function () {
   /**
    * @private
    */
-  UserAgentParser.prototype.isOpera_ = function() {
+  UserAgentParser.prototype.isOldOpera_ = function() {
     return this.userAgent_.indexOf("Opera") != -1;
   };
 
   /**
    * @private
    */
-  UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
+  UserAgentParser.prototype.isOpera_ = function () {
+    return /OPR\/[\d.]+/.test(this.userAgent_);
+  };
+
+  /**
+   * @private
+   */
+  UserAgentParser.prototype.parseOldOperaUserAgentString_ = function() {
     var engineName = UserAgentParser.UNKNOWN,
         engineVersionString = this.getMatchingGroup_(this.userAgent_, /Presto\/([\d\w\.]+)/, 1),
         engineVersion = Version.parse(engineVersionString),
@@ -295,7 +304,9 @@ goog.scope(function () {
         browserVersionString = UserAgentParser.UNKNOWN,
         supportWebFont = false;
 
-    if (this.userAgent_.indexOf("Chrome") != -1 ||
+    if (/OPR\/[\d.]+/.test(this.userAgent_)) {
+      browserName = "Opera";
+    } else if (this.userAgent_.indexOf("Chrome") != -1 ||
         this.userAgent_.indexOf("CrMo") != -1 ||
         this.userAgent_.indexOf("CriOS") != -1) {
       browserName = "Chrome";
@@ -321,6 +332,8 @@ goog.scope(function () {
       browserVersionString = this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.\w]+)/, 1);
     } else if (browserName == "AdobeAIR") {
       browserVersionString = this.getMatchingGroup_(this.userAgent_, /AdobeAIR\/([\d\.]+)/, 1);
+    } else if (browserName == "Opera") {
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /OPR\/([\d.]+)/, 1);
     } else if (browserName == "PhantomJS") {
       browserVersionString = this.getMatchingGroup_(this.userAgent_, /PhantomJS\/([\d.]+)/, 1);
     }
