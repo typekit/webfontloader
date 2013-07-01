@@ -192,7 +192,7 @@ goog.scope(function () {
    */
   DomHelper.prototype.hasSupportForStyle_ = function() {
     if (this.supportForStyle_ === undefined) {
-      var e = this.document_.createElement('p');
+      var e = this.createElement('p');
       e.innerHTML = '<a style="top:1px;">w</a>';
       this.supportForStyle_ = /top/.test(e.getElementsByTagName('a')[0].getAttribute('style'));
     }
@@ -247,7 +247,7 @@ goog.scope(function () {
    * @return {Element} a DOM element.
    */
   DomHelper.prototype.createStyle = function(css) {
-    var e = this.document_.createElement('style');
+    var e = this.createElement('style');
 
     e.setAttribute('type', 'text/css');
     if (e.styleSheet) { // IE
@@ -268,7 +268,7 @@ goog.scope(function () {
     var head = this.document_.getElementsByTagName('head')[0];
 
     if (head) {
-      var script = this.document_.createElement('script');
+      var script = this.createElement('script');
       script.src = src;
       var done = false;
       script.onload = script.onreadystatechange = function() {
