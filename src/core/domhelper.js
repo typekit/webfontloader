@@ -261,10 +261,12 @@ goog.scope(function () {
   /**
    * Loads an external script file.
    * @param {string} src URL of the script.
-   * @param {function()=} opt_callback callback when the script has loaded.
+   * @param {function(boolean)=} opt_callback callback when the script has loaded
+   * @param {number=} opt_timeout The number of milliseconds after which the callback will be called
+   * with a timeout error..
    * @return {Element} The script element
    */
-  DomHelper.prototype.loadScript = function(src, opt_callback) {
+  DomHelper.prototype.loadScript = function(src, opt_callback, opt_timeout) {
     var head = this.document_.getElementsByTagName('head')[0];
 
     if (head) {
@@ -275,7 +277,7 @@ goog.scope(function () {
         if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
           done = true;
           if (opt_callback) {
-            opt_callback();
+            opt_callback(false);
           }
           script.onload = script.onreadystatechange = null;
           // Avoid a bizarre issue with unclosed <base> tag in IE6 - http://blog.dotsmart.net/2008/04/
@@ -283,6 +285,14 @@ goog.scope(function () {
         }
       };
       head.appendChild(script);
+
+      window.setTimeout(function () {
+        done = true;
+        if (opt_callback) {
+          opt_callback(true);
+        }
+      }, opt_timeout || 2000);
+
       return script;
     }
 

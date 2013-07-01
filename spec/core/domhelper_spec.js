@@ -205,6 +205,33 @@ describe('DomHelper', function () {
       expect(script).not.toBeNull();
       expect(script.nodeName).toEqual('SCRIPT');
     });
+
+    it('should timeout if the script does not load or is very slow', function () {
+      var called = false,
+          error = false;
+
+      // Spy on createElement so the all loadScript code is executed but
+      // the "script" won't actually load.
+      spyOn(domHelper, 'createElement').andCallFake(function (name) {
+        return document.createElement('div');
+      });
+
+      runs(function () {
+        domHelper.loadScript('core/external_script.js', function (err) {
+          called = true;
+          error = err;
+        }, 100);
+      });
+
+      waitsFor(function () {
+        return called;
+      });
+
+      runs(function () {
+        expect(called).toBe(true);
+        expect(error).toBe(true);
+      });
+    });
   });
 
   describe('#getProtocol', function () {
