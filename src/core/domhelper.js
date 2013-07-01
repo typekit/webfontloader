@@ -273,6 +273,7 @@ goog.scope(function () {
    * Loads an external script file.
    * @param {string} src URL of the script.
    * @param {function()=} opt_callback callback when the script has loaded.
+   * @return {Element} The script element
    */
   DomHelper.prototype.loadScript = function(src, opt_callback) {
     var head = this.document_.getElementsByTagName('head')[0];
@@ -293,6 +294,9 @@ goog.scope(function () {
         }
       };
       head.appendChild(script);
+      return script;
     }
+
+    return null;
   };
 });

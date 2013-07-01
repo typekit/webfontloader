@@ -210,6 +210,13 @@ describe('DomHelper', function () {
         expect(called).toBe(true);
       });
     });
+
+    it('should return a script element', function () {
+      var script = domHelper.loadScript('core/external_script.js');
+
+      expect(script).not.toBeNull();
+      expect(script.nodeName).toEqual('SCRIPT');
+    });
   });
 
   describe('#getProtocol', function () {
