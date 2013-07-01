@@ -58,7 +58,11 @@ goog.scope(function () {
       };
 
       // Load the Typekit script.
-      this.domHelper_.loadScript(this.getScriptSrc(kitId));
+      this.domHelper_.loadScript(this.getScriptSrc(kitId), function (err) {
+        if (err) {
+          support(false);
+        }
+      });
     } else {
       support(false);
     }

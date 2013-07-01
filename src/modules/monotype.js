@@ -63,7 +63,13 @@ goog.scope(function () {
         support(userAgent.getBrowserInfo().hasWebFontSupport());
       }
 
-      var script = this.domHelper_.loadScript(self.getScriptSrc(projectId, version), onload);
+      var script = this.domHelper_.loadScript(self.getScriptSrc(projectId, version), function (err) {
+        if (err) {
+          support(false);
+        } else {
+          onload();
+        }
+      });
       script["id"] = Monotype.SCRIPTID + projectId;
     }
     else {

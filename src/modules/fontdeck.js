@@ -51,7 +51,11 @@ goog.scope(function () {
       };
 
       // Call the Fontdeck API.
-      this.domHelper_.loadScript(this.getScriptSrc(projectId));
+      this.domHelper_.loadScript(this.getScriptSrc(projectId), function (err) {
+        if (err) {
+          support(false);
+        }
+      });
     } else {
       support(false);
     }
