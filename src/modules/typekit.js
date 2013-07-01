@@ -58,10 +58,9 @@ goog.scope(function () {
       };
 
       // Load the Typekit script.
-      var script = this.domHelper_.createScriptSrc(this.getScriptSrc(kitId))
-      this.domHelper_.insertInto('head', script);
+      this.domHelper_.loadScript(this.getScriptSrc(kitId));
     } else {
-      support(true);
+      support(false);
     }
   };
 
