@@ -57,18 +57,6 @@ describe('DomHelper', function () {
     });
   });
 
-  describe('#createScriptSrc', function () {
-    var script = domHelper.createScriptSrc('http://moo/somescript.js');
-
-    it('should create a script element', function () {
-      expect(script).not.toBeNull();
-    });
-
-    it('should have a src property', function () {
-      expect(script.src).toEqual('http://moo/somescript.js');
-    });
-  });
-
   describe('#appendClassName', function () {
     it('should have added a class name', function () {
       var div = domHelper.createElement('div');

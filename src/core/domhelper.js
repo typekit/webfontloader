@@ -119,17 +119,6 @@ goog.scope(function () {
   };
 
   /**
-   * Creates a link to a javascript document.
-   * @param {string} src The URL of the script.
-   * @return {Element} a script element.
-   */
-  DomHelper.prototype.createScriptSrc = function(src) {
-    return this.createElement('script', {
-      'src': src
-    });
-  };
-
-  /**
    * Appends a name to an element's class attribute.
    * @param {Element} e The element.
    * @param {string} name The class name to add.
