@@ -261,9 +261,10 @@ goog.scope(function () {
   /**
    * Loads an external script file.
    * @param {string} src URL of the script.
-   * @param {function(boolean)=} opt_callback callback when the script has loaded
+   * @param {function(Error)=} opt_callback callback when the script has loaded. The first argument to
+   * the callback is an error object that is falsy when there are no errors and truthy when there are.
    * @param {number=} opt_timeout The number of milliseconds after which the callback will be called
-   * with a timeout error..
+   * with a timeout error. Defaults to 5 seconds.
    * @return {Element} The script element
    */
   DomHelper.prototype.loadScript = function(src, opt_callback, opt_timeout) {
@@ -277,7 +278,7 @@ goog.scope(function () {
         if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
           done = true;
           if (opt_callback) {
-            opt_callback(false);
+            opt_callback(null);
           }
           script.onload = script.onreadystatechange = null;
           // Avoid a bizarre issue with unclosed <base> tag in IE6 - http://blog.dotsmart.net/2008/04/
@@ -289,9 +290,9 @@ goog.scope(function () {
       window.setTimeout(function () {
         done = true;
         if (opt_callback) {
-          opt_callback(true);
+          opt_callback(new Error('Script load timeout'));
         }
-      }, opt_timeout || 2000);
+      }, opt_timeout || 5000);
 
       return script;
     }

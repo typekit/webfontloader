@@ -62,7 +62,7 @@ goog.scope(function () {
         if (err) {
           support(false);
         }
-      });
+      }, 2000);
     } else {
       support(false);
     }

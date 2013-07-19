@@ -182,11 +182,13 @@ describe('DomHelper', function () {
     });
 
     it('should call the callback', function () {
-      var called = false;
+      var called = false,
+          error = null;
 
       runs(function () {
-        domHelper.loadScript('core/external_script.js', function () {
+        domHelper.loadScript('core/external_script.js', function (err) {
           called = true;
+          error = err;
         });
       });
 
@@ -196,6 +198,7 @@ describe('DomHelper', function () {
 
       runs(function () {
         expect(called).toBe(true);
+        expect(error).toBeFalsy();
       });
     });
 
@@ -229,7 +232,7 @@ describe('DomHelper', function () {
 
       runs(function () {
         expect(called).toBe(true);
-        expect(error).toBe(true);
+        expect(error).toBeTruthy();
       });
     });
   });
