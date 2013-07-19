@@ -345,7 +345,11 @@ describe('FontWatchRunner', function () {
       });
 
       runs(function () {
-        expect(inactiveCallback).toHaveBeenCalledWith(elena);
+        if (userAgent.getBrowserInfo().hasWebKitFallbackBug()) {
+          expect(activeCallback).toHaveBeenCalledWith(elena);
+        } else {
+          expect(inactiveCallback).toHaveBeenCalledWith(elena);
+        }
       });
     });
 
