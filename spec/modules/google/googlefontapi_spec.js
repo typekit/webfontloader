@@ -6,10 +6,7 @@ describe('modules.google.GoogleFontApi', function () {
       link = '',
       insert = '',
       fakeDomHelper =  {
-        insertInto: function (tag, e) {
-          insert = tag;
-        },
-        createCssLink: function (cssLink) {
+        loadStylesheet: function (cssLink) {
           link = cssLink;
         },
         getProtocol: function () {
@@ -36,7 +33,6 @@ describe('modules.google.GoogleFontApi', function () {
     });
 
     it('has inserted the link element correctly', function () {
-      expect(insert).toEqual('head');
       expect(link).toEqual('http://fonts.googleapis.com/css?family=Font1%7CFont2');
     });
 
@@ -60,7 +56,6 @@ describe('modules.google.GoogleFontApi', function () {
     });
 
     it('has inserted the link element correctly', function () {
-      expect(insert).toEqual('head');
       expect(link).toEqual('http://moo?family=Font1%7CFont2');
     });
   });
@@ -74,7 +69,6 @@ describe('modules.google.GoogleFontApi', function () {
     });
 
     it('has inserted the link element correctly', function () {
-      expect(insert).toEqual('head');
       expect(link).toEqual('http://fonts.googleapis.com/css?family=Font1+WithSpace%7CFont2+WithSpaceToo');
     });
  });
@@ -88,7 +82,6 @@ describe('modules.google.GoogleFontApi', function () {
     });
 
     it('has inserted the link element correctly', function () {
-      expect(insert).toEqual('head');
       expect(link).toEqual('http://fonts.googleapis.com/css?family=Font1+WithSpace:bi%7CFont2+WithSpaceToo:b,r');
     });
  });

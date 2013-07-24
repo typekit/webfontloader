@@ -44,19 +44,6 @@ describe('DomHelper', function () {
     });
   });
 
-  describe('#createCssLink', function () {
-    var link = domHelper.createCssLink('http://moo/somecss.css');
-
-    it('should create a link', function () {
-      expect(link).not.toBeNull();
-    });
-
-    it('should create a link with correct rel and href properties', function () {
-      expect(link.rel).toEqual('stylesheet');
-      expect(link.href).toEqual('http://moo/somecss.css');
-    });
-  });
-
   describe('#createScriptSrc', function () {
     var script = domHelper.createScriptSrc('http://moo/somescript.js');
 
@@ -175,6 +162,31 @@ describe('DomHelper', function () {
       } else {
         expect(style.textContent).toEqual('font-size:300px;');
       }
+    });
+  });
+
+  describe('#loadStylesheet', function () {
+    it('should load the stylesheet', function () {
+      var el = null,
+          width = null,
+          link = null;
+
+      runs(function () {
+        el = domHelper.createElement('div', { id: 'TEST_ELEMENT' });
+        domHelper.insertInto('body', el);
+        width = el.offsetWidth;
+        link = domHelper.loadStylesheet('core/external_stylesheet.css');
+      });
+
+      waitsFor(function () {
+        return width !== el.offsetWidth;
+      });
+
+      runs(function () {
+        expect(link).not.toBeNull();
+        expect(link.rel).toEqual('stylesheet');
+        expect(el.offsetWidth).toEqual(300);
+      });
     });
   });
 

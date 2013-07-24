@@ -107,18 +107,6 @@ goog.scope(function () {
   };
 
   /**
-   * Creates a link to a CSS document.
-   * @param {string} src The URL of the stylesheet.
-   * @return {Element} a link element.
-   */
-  DomHelper.prototype.createCssLink = function(src) {
-    return this.createElement('link', {
-      'rel': 'stylesheet',
-      'href': src
-    });
-  };
-
-  /**
    * Creates a link to a javascript document.
    * @param {string} src The URL of the script.
    * @return {Element} a script element.
@@ -267,6 +255,55 @@ goog.scope(function () {
       e.appendChild(document.createTextNode(css));
     }
     return e;
+  };
+
+  /**
+   * Loads an external stylesheet.
+   *
+   * @param {string} href the URL of the stylesheet
+   * @param {function(Error)=} opt_callback Called when the stylesheet has loaded or failed to
+   * load. Note that the callback is *NOT* guaranteed to be called in all browsers. The first
+   * argument to the callback is an error object that is falsy when there are no errors and
+   * truthy when there are.
+   * @return {Element} The link element
+   */
+  DomHelper.prototype.loadStylesheet = function (href, opt_callback) {
+    var head = this.document_.getElementsByTagName('head')[0];
+
+    if (head) {
+      var link = this.createElement('link', {
+        'rel': 'stylesheet',
+        'href': href
+      });
+
+      var done = false;
+
+      link.onload = function () {
+        if (!done) {
+          done = true;
+
+          if (opt_callback) {
+            opt_callback(null);
+          }
+          link.onload = null;
+        }
+      };
+
+      link.onerror = function () {
+        if (!done) {
+          done = true;
+
+          if (opt_callback) {
+            opt_callback(new Error('Stylesheet failed to load'));
+          }
+          link.onload = null;
+        }
+      };
+      head.appendChild(link);
+
+      return link;
+    }
+    return null;
   };
 
   /**
