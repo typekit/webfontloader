@@ -289,9 +289,11 @@ goog.scope(function () {
       head.appendChild(script);
 
       window.setTimeout(function () {
-        done = true;
-        if (opt_callback) {
-          opt_callback(new Error('Script load timeout'));
+        if (!done) {
+          done = true;
+          if (opt_callback) {
+            opt_callback(new Error('Script load timeout'));
+          }
         }
       }, opt_timeout || 5000);
 
