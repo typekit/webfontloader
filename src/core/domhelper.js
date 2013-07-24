@@ -271,8 +271,9 @@ goog.scope(function () {
     var head = this.document_.getElementsByTagName('head')[0];
 
     if (head) {
-      var script = this.createElement('script');
-      script.src = src;
+      var script = this.createElement('script', {
+        'src': src
+      });
       var done = false;
       script.onload = script.onreadystatechange = function() {
         if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
