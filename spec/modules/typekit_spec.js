@@ -19,8 +19,7 @@ describe('modules.Typekit', function () {
     load = jasmine.createSpy('load');
 
     fakeDomHelper = {
-      insertInto: jasmine.createSpy('insertInto'),
-      createScriptSrc: jasmine.createSpy('createScriptSrc'),
+      loadScript: jasmine.createSpy('loadScript'),
       getLoadWindow: jasmine.createSpy('getLoadWindow').andReturn(global),
       getProtocol: jasmine.createSpy('getProtocol').andReturn('http:')
     };
@@ -31,8 +30,8 @@ describe('modules.Typekit', function () {
 
     typekit.supportUserAgent('useragent', support);
 
-    expect(fakeDomHelper.insertInto.calls[0].args[0]).toEqual('head');
-    expect(fakeDomHelper.createScriptSrc).toHaveBeenCalledWith('http://use.typekit.net/abc.js');
+    expect(fakeDomHelper.loadScript).toHaveBeenCalled();
+    expect(fakeDomHelper.loadScript.calls[0].args[0]).toEqual('http://use.typekit.net/abc.js');
     expect(support).not.toHaveBeenCalled();
 
     expect(global.__webfonttypekitmodule__).not.toBeNull();
@@ -78,8 +77,8 @@ describe('modules.Typekit', function () {
     var typekit = new Typekit(fakeDomHelper, { id: 'abc', api: '/test' });
 
     typekit.supportUserAgent('useragent', support);
-    expect(fakeDomHelper.insertInto.calls[0].args[0]).toEqual('head');
-    expect(fakeDomHelper.createScriptSrc).toHaveBeenCalledWith('/test/abc.js');
+    expect(fakeDomHelper.loadScript).toHaveBeenCalled();
+    expect(fakeDomHelper.loadScript.calls[0].args[0]).toEqual('/test/abc.js');
   });
 
   it('should not load without a kit id', function () {
@@ -87,8 +86,7 @@ describe('modules.Typekit', function () {
 
     typekit.supportUserAgent('useragent', support);
 
-    expect(fakeDomHelper.insertInto).not.toHaveBeenCalled();
-    expect(fakeDomHelper.createScriptSrc).not.toHaveBeenCalled();
+    expect(fakeDomHelper.loadScript).not.toHaveBeenCalled();
     expect(support).toHaveBeenCalled();
 
     typekit.load(load);

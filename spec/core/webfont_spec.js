@@ -270,4 +270,51 @@ describe('WebFont', function () {
       expect(inactive).toHaveBeenCalled();
     });
   });
+
+  describe('module fails to load', function () {
+    var font = null,
+        testModule = null,
+        inactive = null,
+        active = null;
+
+    beforeEach(function () {
+      inactive = jasmine.createSpy('inactive'),
+      active = jasmine.createSpy('active');
+
+      font = new WebFont(window, fontModuleLoader, userAgent);
+
+      font.addModule('test', function (conf, domHelper) {
+        testModule = new function () {};
+        testModule.supportUserAgent = function (ua, support) {
+          window.setTimeout(function () {
+            support(false);
+          }, 100);
+        };
+        testModule.load = function (onReady) {
+          onReady();
+        };
+
+        return testModule;
+      });
+    });
+
+    it('times out and calls inactive', function () {
+      runs(function () {
+        font.load({
+          'test': {},
+          inactive: inactive,
+          active: active
+        });
+      });
+
+      waitsFor(function () {
+        return active.wasCalled || inactive.wasCalled;
+      });
+
+      runs(function () {
+        expect(inactive).toHaveBeenCalled();
+        expect(active).not.toHaveBeenCalled();
+      });
+    });
+  });
 });
