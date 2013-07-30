@@ -268,40 +268,36 @@ goog.scope(function () {
    * @return {Element} The link element
    */
   DomHelper.prototype.loadStylesheet = function (href, opt_callback) {
-    var head = this.document_.getElementsByTagName('head')[0];
+    var link = this.createElement('link', {
+      'rel': 'stylesheet',
+      'href': href
+    });
 
-    if (head) {
-      var link = this.createElement('link', {
-        'rel': 'stylesheet',
-        'href': href
-      });
+    var done = false;
 
-      var done = false;
+    link.onload = function () {
+      if (!done) {
+        done = true;
 
-      link.onload = function () {
-        if (!done) {
-          done = true;
-
-          if (opt_callback) {
-            opt_callback(null);
-          }
+        if (opt_callback) {
+          opt_callback(null);
         }
-      };
+      }
+    };
 
-      link.onerror = function () {
-        if (!done) {
-          done = true;
+    link.onerror = function () {
+      if (!done) {
+        done = true;
 
-          if (opt_callback) {
-            opt_callback(new Error('Stylesheet failed to load'));
-          }
+        if (opt_callback) {
+          opt_callback(new Error('Stylesheet failed to load'));
         }
-      };
-      head.appendChild(link);
+      }
+    };
 
-      return link;
-    }
-    return null;
+    this.insertInto('head', link);
+
+    return link;
   };
 
   /**
