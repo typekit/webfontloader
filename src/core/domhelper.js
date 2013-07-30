@@ -285,7 +285,6 @@ goog.scope(function () {
           if (opt_callback) {
             opt_callback(null);
           }
-          link.onload = null;
         }
       };
 
@@ -296,7 +295,6 @@ goog.scope(function () {
           if (opt_callback) {
             opt_callback(new Error('Stylesheet failed to load'));
           }
-          link.onload = null;
         }
       };
       head.appendChild(link);
