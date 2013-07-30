@@ -175,7 +175,7 @@ describe('DomHelper', function () {
         el = domHelper.createElement('div', { id: 'TEST_ELEMENT' });
         domHelper.insertInto('body', el);
         width = el.offsetWidth;
-        link = domHelper.loadStylesheet('core/external_stylesheet.css');
+        link = domHelper.loadStylesheet('fixtures/external_stylesheet.css');
       });
 
       waitsFor(function () {
@@ -193,7 +193,7 @@ describe('DomHelper', function () {
   describe('#loadScript', function () {
     it('should load the script', function () {
       runs(function () {
-        domHelper.loadScript('core/external_script.js');
+        domHelper.loadScript('fixtures/external_script.js');
       });
 
       waitsFor(function () {
@@ -209,7 +209,7 @@ describe('DomHelper', function () {
       var called = false;
 
       runs(function () {
-        domHelper.loadScript('core/external_script.js', function () {
+        domHelper.loadScript('fixtures/external_script.js', function () {
           called = true;
         });
       });
