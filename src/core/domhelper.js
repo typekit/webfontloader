@@ -14,9 +14,6 @@ webfont.DomHelper = function(mainWindow, opt_loadWindow) {
 
   /** @type {Document} */
   this.document_ = this.loadWindow_.document;
-
-  /** @type {boolean|undefined} */
-  this.supportForStyle_ = undefined;
 };
 
 goog.scope(function () {
@@ -164,27 +161,7 @@ goog.scope(function () {
    * @param {string} styleString The style string.
    */
   DomHelper.prototype.setStyle = function(e, styleString) {
-    if (this.hasSupportForStyle_()) {
-      e.setAttribute("style", styleString);
-    } else {
-      e.style.cssText = styleString;
-    }
-  };
-
-  /**
-   * Check if getting and setting the style attribute on an element with
-   * getAttribute/setAttribute is supported. In old IE, you must use style.cssText
-   * instead. Feature detection is only done the first time this is called.
-   * @private
-   * @return {boolean} Whether or not the feature is supported.
-   */
-  DomHelper.prototype.hasSupportForStyle_ = function() {
-    if (this.supportForStyle_ === undefined) {
-      var e = this.createElement('p');
-      e.innerHTML = '<a style="top:1px;">w</a>';
-      this.supportForStyle_ = /top/.test(e.getElementsByTagName('a')[0].getAttribute('style'));
-    }
-    return this.supportForStyle_
+    e.style.cssText = styleString;
   };
 
   /**
