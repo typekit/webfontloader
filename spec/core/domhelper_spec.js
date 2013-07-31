@@ -44,19 +44,6 @@ describe('DomHelper', function () {
     });
   });
 
-  describe('#createCssLink', function () {
-    var link = domHelper.createCssLink('http://moo/somecss.css');
-
-    it('should create a link', function () {
-      expect(link).not.toBeNull();
-    });
-
-    it('should create a link with correct rel and href properties', function () {
-      expect(link.rel).toEqual('stylesheet');
-      expect(link.href).toEqual('http://moo/somecss.css');
-    });
-  });
-
   describe('#appendClassName', function () {
     it('should have added a class name', function () {
       var div = domHelper.createElement('div');
@@ -166,10 +153,35 @@ describe('DomHelper', function () {
     });
   });
 
+  describe('#loadStylesheet', function () {
+    it('should load the stylesheet', function () {
+      var el = null,
+          width = null,
+          link = null;
+
+      runs(function () {
+        el = domHelper.createElement('div', { id: 'TEST_ELEMENT' });
+        domHelper.insertInto('body', el);
+        width = el.offsetWidth;
+        link = domHelper.loadStylesheet('fixtures/external_stylesheet.css');
+      });
+
+      waitsFor(function () {
+        return width !== el.offsetWidth;
+      });
+
+      runs(function () {
+        expect(link).not.toBeNull();
+        expect(link.rel).toEqual('stylesheet');
+        expect(el.offsetWidth).toEqual(300);
+      });
+    });
+  });
+
   describe('#loadScript', function () {
     it('should load the script', function () {
       runs(function () {
-        domHelper.loadScript('core/external_script.js');
+        domHelper.loadScript('fixtures/external_script.js');
       });
 
       waitsFor(function () {
@@ -186,7 +198,7 @@ describe('DomHelper', function () {
           error = null;
 
       runs(function () {
-        domHelper.loadScript('core/external_script.js', function (err) {
+        domHelper.loadScript('fixtures/external_script.js', function (err) {
           called = true;
           error = err;
         });
@@ -203,7 +215,7 @@ describe('DomHelper', function () {
     });
 
     it('should return a script element', function () {
-      var script = domHelper.loadScript('core/external_script.js');
+      var script = domHelper.loadScript('fixtures/external_script.js');
 
       expect(script).not.toBeNull();
       expect(script.nodeName).toEqual('SCRIPT');
@@ -220,7 +232,7 @@ describe('DomHelper', function () {
       });
 
       runs(function () {
-        domHelper.loadScript('core/external_script.js', function (err) {
+        domHelper.loadScript('fixtures/external_script.js', function (err) {
           called = true;
           error = err;
         }, 100);
