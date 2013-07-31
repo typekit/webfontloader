@@ -19,6 +19,12 @@ webfont.modules.Ascender = function(domHelper, configuration) {
   this.configuration_ = configuration;
 };
 
+/**
+ * @const
+ * @type {string}
+ */
+webfont.modules.Ascender.NAME = 'ascender';
+
 webfont.modules.Ascender.VARIATIONS = {
   'regular': 'n4',
   'bold': 'n7',

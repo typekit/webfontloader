@@ -21,6 +21,14 @@ webfont.modules.Monotype = function (domHelper, configuration) {
 };
 
 /**
+ * name of the module through which external API is supposed to call the MonotypeFontAPI.
+ *
+ * @const
+ * @type {string}
+ */
+webfont.modules.Monotype.NAME = 'monotype';
+
+/**
  * __mti_fntLst is the name of function that exposes Monotype's font list.
  * @const
  */

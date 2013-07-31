@@ -12,6 +12,11 @@ webfont.modules.Fontdeck = function(domHelper, configuration) {
   this.fonts_ = [];
 };
 
+/**
+ * @const
+ * @type {string}
+ */
+webfont.modules.Fontdeck.NAME = 'fontdeck';
 webfont.modules.Fontdeck.HOOK = '__webfontfontdeckmodule__';
 webfont.modules.Fontdeck.API = '//f.fontdeck.com/s/css/js/';
 

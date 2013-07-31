@@ -60,37 +60,37 @@ var WEBFONT_CONFIG = 'WebFontConfig';
 var webFontLoader = new webfont.WebFont(goog.global);
 
 if (INCLUDE_ASCENDER_MODULE) {
-  webFontLoader.addModule('ascender', function (configuration, domHelper) {
+  webFontLoader.addModule(webfont.modules.Ascender.NAME, function (configuration, domHelper) {
     return new webfont.modules.Ascender(domHelper, configuration);
   });
 }
 
 if (INCLUDE_CUSTOM_MODULE) {
-  webFontLoader.addModule('custom', function (configuration, domHelper) {
+  webFontLoader.addModule(webfont.modules.Custom.NAME, function (configuration, domHelper) {
     return new webfont.modules.Custom(domHelper, configuration);
   });
 }
 
 if (INCLUDE_FONTDECK_MODULE) {
-  webFontLoader.addModule('fontdeck', function (configuration, domHelper) {
+  webFontLoader.addModule(webfont.modules.Fontdeck.NAME, function (configuration, domHelper) {
     return new webfont.modules.Fontdeck(domHelper, configuration);
   });
 }
 
 if (INCLUDE_MONOTYPE_MODULE) {
-  webFontLoader.addModule('monotype', function (configuration, domHelper) {
+  webFontLoader.addModule(webfont.modules.Monotype.NAME, function (configuration, domHelper) {
     return new webfont.modules.Monotype(domHelper, configuration);
   });
 }
 
 if (INCLUDE_TYPEKIT_MODULE) {
-  webFontLoader.addModule('typekit', function (configuration, domHelper) {
+  webFontLoader.addModule(webfont.modules.Typekit.NAME, function (configuration, domHelper) {
     return new webfont.modules.Typekit(domHelper, configuration);
   });
 }
 
 if (INCLUDE_GOOGLE_MODULE) {
-  webFontLoader.addModule('google', function (configuration, domHelper) {
+  webFontLoader.addModule(webfont.modules.google.GoogleFontApi.NAME, function (configuration, domHelper) {
     return new webfont.modules.google.GoogleFontApi(domHelper, configuration);
   });
 }

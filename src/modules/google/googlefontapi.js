@@ -17,6 +17,12 @@ webfont.modules.google.GoogleFontApi = function(domHelper, configuration) {
   this.configuration_ = configuration;
 };
 
+/**
+ * @const
+ * @type {string}
+ */
+webfont.modules.google.GoogleFontApi.NAME = 'google';
+
 goog.scope(function () {
   var GoogleFontApi = webfont.modules.google.GoogleFontApi,
       FontWatchRunner = webfont.FontWatchRunner,

@@ -18,6 +18,12 @@ webfont.modules.Custom = function(domHelper, configuration) {
   this.configuration_ = configuration;
 };
 
+/**
+ * @const
+ * @type {string}
+ */
+webfont.modules.Custom.NAME = 'custom';
+
 goog.scope(function () {
   var Custom = webfont.modules.Custom,
       Font = webfont.Font;
