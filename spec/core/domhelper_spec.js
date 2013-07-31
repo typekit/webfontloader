@@ -44,18 +44,6 @@ describe('DomHelper', function () {
     });
   });
 
-  describe('#createScriptSrc', function () {
-    var script = domHelper.createScriptSrc('http://moo/somescript.js');
-
-    it('should create a script element', function () {
-      expect(script).not.toBeNull();
-    });
-
-    it('should have a src property', function () {
-      expect(script.src).toEqual('http://moo/somescript.js');
-    });
-  });
-
   describe('#appendClassName', function () {
     it('should have added a class name', function () {
       var div = domHelper.createElement('div');
@@ -206,11 +194,13 @@ describe('DomHelper', function () {
     });
 
     it('should call the callback', function () {
-      var called = false;
+      var called = false,
+          error = null;
 
       runs(function () {
-        domHelper.loadScript('fixtures/external_script.js', function () {
+        domHelper.loadScript('fixtures/external_script.js', function (err) {
           called = true;
+          error = err;
         });
       });
 
@@ -220,6 +210,41 @@ describe('DomHelper', function () {
 
       runs(function () {
         expect(called).toBe(true);
+        expect(error).toBeFalsy();
+      });
+    });
+
+    it('should return a script element', function () {
+      var script = domHelper.loadScript('fixtures/external_script.js');
+
+      expect(script).not.toBeNull();
+      expect(script.nodeName).toEqual('SCRIPT');
+    });
+
+    it('should timeout if the script does not load or is very slow', function () {
+      var called = false,
+          error = false;
+
+      // Spy on createElement so the all loadScript code is executed but
+      // the "script" won't actually load.
+      spyOn(domHelper, 'createElement').andCallFake(function (name) {
+        return document.createElement('div');
+      });
+
+      runs(function () {
+        domHelper.loadScript('fixtures/external_script.js', function (err) {
+          called = true;
+          error = err;
+        }, 100);
+      });
+
+      waitsFor(function () {
+        return called;
+      });
+
+      runs(function () {
+        expect(called).toBe(true);
+        expect(error).toBeTruthy();
       });
     });
   });
