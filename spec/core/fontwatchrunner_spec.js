@@ -372,7 +372,7 @@ describe('FontWatchRunner', function () {
         var link = document.createElement('link');
 
         link.rel = "stylesheet";
-        link.href= "fonts/sourcesansb.css";
+        link.href= "fixtures/fonts/sourcesansb.css";
 
         domHelper.insertInto('head', link);
       });
