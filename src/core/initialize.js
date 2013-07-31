@@ -22,7 +22,7 @@ var INCLUDE_ASCENDER_MODULE = false;
 /**
  * @define {boolean}
  */
-var INCLUDE_CUSTOM_MODULE = true;
+var INCLUDE_CUSTOM_MODULE = false;
 
 /**
  * @define {boolean}

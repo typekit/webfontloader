@@ -92,6 +92,7 @@ file "target/webfont.js" => SourceJs + ["target"] do |t|
     ["-jar", JsCompilerJar],
     ["--compilation_level", "ADVANCED_OPTIMIZATIONS"],
     ["--js_output_file", t.name],
+    "--define INCLUDE_CUSTOM_MODULE",
     "--define INCLUDE_GOOGLE_MODULE",
     "--define INCLUDE_TYPEKIT_MODULE",
     "--define INCLUDE_ASCENDER_MODULE",
