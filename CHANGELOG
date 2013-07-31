@@ -1,3 +1,7 @@
+v1.4.9 (July 24, 2013)
+* Disable terminal spec report when not using PhantomJS
+* Remove obsolete namespace declaration
+
 v1.4.8 (June 24, 2013)
 * Add support for the Chromium based Opera browser
 * Change the debug task to do a Closure Compiler debug build
