@@ -1,3 +1,9 @@
+v1.4.10 (July 31, 2013)
+* Add loadStylesheet method with optional callback that replaces createCssLink
+* Remove supportForStyle check because it breaks XHTML/SVG and is no longer necessary
+* Fix inactive never called when script loading times out
+* Move test assets into fixtures directory
+
 v1.4.9 (July 24, 2013)
 * Disable terminal spec report when not using PhantomJS
 * Remove obsolete namespace declaration
