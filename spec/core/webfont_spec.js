@@ -1,6 +1,31 @@
 describe('WebFont', function () {
   var WebFont = webfont.WebFont,
       Font = webfont.Font;
+      UserAgent = webfont.UserAgent,
+      FontWatchRunner = webfont.FontWatchRunner,
+      BrowserInfo = webfont.BrowserInfo,
+      Version = webfont.Version,
+      Font = webfont.Font,
+      FontModuleLoader = webfont.FontModuleLoader,
+      fontModuleLoader = null,
+      userAgent = null;
+
+  beforeEach(function () {
+    userAgent = new UserAgent(
+      'Firefox',
+      new Version(3, 6),
+      '3.6',
+      'Gecko',
+      new Version(1, 9, 2),
+      '1.9.2',
+      'Macintosh',
+      new Version(10, 6),
+      '10.6',
+      undefined,
+      new BrowserInfo(true, false, false)
+    );
+    fontModuleLoader = new FontModuleLoader();
+  });
 
   describe('font load', function () {
     var font = null,
@@ -123,22 +148,13 @@ describe('WebFont', function () {
           this.fonts = [];
         };
 
-        testModule.getFontWatchRunnerCtor = function () {
-          function FakeFontWatchRunner(activeCallback, inactiveCallback) {
-            this.inactive = inactiveCallback;
-            this.active = activeCallback;
-          };
-
-          FakeFontWatchRunner.prototype.start = function () {
-            if (conf.id) {
-              this.active(font);
-            } else {
-              this.inactive(font);
-            }
-          };
-
-          return FakeFontWatchRunner;
-        };
+        spyOn(FontWatchRunner.prototype, 'start').andCallFake(function () {
+          if (conf.id) {
+            active(font);
+          } else {
+            inactive(font);
+          }
+        });
 
         testModule.supportUserAgent = function (userAgent, support) {
           if (conf.id) {
@@ -213,8 +229,8 @@ describe('WebFont', function () {
       });
 
       expect(font.onModuleReady_).toHaveBeenCalled();
-      expect(font.onModuleReady_.calls[0].args[3]).toEqual([new Font('Elena')]);
-      expect(font.onModuleReady_.calls[0].args[4]).toEqual({ 'Elena': '1234567' });
+      expect(font.onModuleReady_.calls[0].args[2]).toEqual([new Font('Elena')]);
+      expect(font.onModuleReady_.calls[0].args[3]).toEqual({ 'Elena': '1234567' });
     });
   });
 

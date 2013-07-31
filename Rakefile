@@ -101,7 +101,8 @@ file "target/webfont.js" => SourceJs + ["target"] do |t|
     "--generate_exports",
     ["--output_wrapper", %("#{output_wrapper}")],
     ["--warning_level", "VERBOSE"],
-    ["--summary_detail_level", "3"]
+    ["--summary_detail_level", "3"],
+    "--define goog.DEBUG=false"
   ]
 
   # Extra args to add warnings.
@@ -121,12 +122,34 @@ desc "Creates debug version into target/webfont.js"
 task :debug => "target/webfont_debug.js"
 
 file "target/webfont_debug.js" => SourceJs + ["target"] do |t|
-  File.open(t.name, "w") { |f|
-    @modules.all_source_files.each { |src|
-      f.puts File.read(src)
-      f.puts ""
-    }
-  }
+
+  output_marker = "%output%"
+  output_wrapper = @modules.js_output_wrapper(output_marker)
+
+  args = [
+    ["-jar", JsCompilerJar],
+    ["--compilation_level", "ADVANCED_OPTIMIZATIONS"],
+    ["--js_output_file", t.name],
+    "--generate_exports",
+    ["--output_wrapper", %("#{output_wrapper}")],
+    ["--warning_level", "VERBOSE"],
+    ["--summary_detail_level", "3"],
+    "--debug=true",
+    "--formatting=PRETTY_PRINT",
+    "--formatting=PRINT_INPUT_DELIMITER"
+  ]
+
+  # Extra args to add warnings.
+  args.concat([
+    ["--warning_level", "VERBOSE"],
+    ["--summary_detail_level", "1"]
+  ])
+
+  source = @modules.all_source_files
+  args.concat source.map { |f| ["--js", f] }
+
+  output = `java #{args.flatten.join(' ')} 2>&1`
+  $?.success? ? (puts output) : (fail output)
 end
 
 #

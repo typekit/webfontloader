@@ -189,8 +189,7 @@ describe('FontWatchRunner', function () {
         timesToGetTimeBeforeTimeout = 2;
 
         var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, font, fallbackBugBrowserInfo,
-            0, { 'My Other Family': true });
+            domHelper, font, fallbackBugBrowserInfo, 0, { 'My Other Family': true });
 
         fontWatchRunner.start();
 
@@ -207,13 +206,12 @@ describe('FontWatchRunner', function () {
         timesToGetTimeBeforeTimeout = 2;
 
         var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, font, fallbackBugBrowserInfo,
-            0, { 'My Family': true });
+            domHelper, new Font('Arimo'), fallbackBugBrowserInfo, 0, { 'Arimo': true });
 
         fontWatchRunner.start();
 
         jasmine.Clock.tick(1 * 25);
-        expect(activeCallback).toHaveBeenCalledWith(font);
+        expect(activeCallback).toHaveBeenCalledWith(new Font('Arimo'));
       });
     });
 
@@ -243,7 +241,7 @@ describe('FontWatchRunner', function () {
         ];
 
         fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, font, browserInfo, 0, {}, 'TestString');
+            domHelper, font, browserInfo, 0, null, 'TestString');
 
         fontWatchRunner.start();
 
@@ -347,7 +345,11 @@ describe('FontWatchRunner', function () {
       });
 
       runs(function () {
-        expect(inactiveCallback).toHaveBeenCalledWith(elena);
+        if (userAgent.getBrowserInfo().hasWebKitFallbackBug()) {
+          expect(activeCallback).toHaveBeenCalledWith(elena);
+        } else {
+          expect(inactiveCallback).toHaveBeenCalledWith(elena);
+        }
       });
     });
 

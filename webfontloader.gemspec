@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.4.4'
-  s.date              = '2013-05-22'
+  s.version           = '1.4.9'
+  s.date              = '2013-07-24'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -106,10 +106,10 @@ DESC
     lib/webfontloader/demo/public/typekit.html
     lib/webfontloader/demo/server.rb
     lib/webfontloader/modules.rb
-    spec/ascender/ascenderscript_spec.js
     spec/core/cssclassname_spec.js
     spec/core/domhelper_spec.js
     spec/core/eventdispatcher_spec.js
+    spec/core/external_script.js
     spec/core/font_spec.js
     spec/core/fontmoduleloader_spec.js
     spec/core/fontruler_spec.js
@@ -119,9 +119,7 @@ DESC
     spec/core/useragentparser_spec.js
     spec/core/version_spec.js
     spec/core/webfont_spec.js
-    spec/custom/customcss_spec.js
     spec/deps.js
-    spec/fontdeck/fontdeckscript_spec.js
     spec/fonts/LICENSE.txt
     spec/fonts/nullfont.css
     spec/fonts/nullfont1.css
@@ -137,14 +135,15 @@ DESC
     spec/fonts/sourcesansc.css
     spec/fonts/sourcesanscbold.css
     spec/fonts/sourcesanscbold.otf
-    spec/google/fontapiparser_spec.js
-    spec/google/fontapiurlbuilder_spec.js
-    spec/google/googlefontapi_spec.js
-    spec/google/lastresortwebkitfontwatchrunner_spec.js
     spec/index.html
-    spec/monotype/monotypescript_spec.js
-    spec/typekit/typekitscript_spec.js
-    src/ascender/ascender_script.js
+    spec/modules/ascender_spec.js
+    spec/modules/custom_spec.js
+    spec/modules/fontdeck_spec.js
+    spec/modules/google/fontapiparser_spec.js
+    spec/modules/google/fontapiurlbuilder_spec.js
+    spec/modules/google/googlefontapi_spec.js
+    spec/modules/monotype_spec.js
+    spec/modules/typekit_spec.js
     src/async_load.js
     src/closure.js
     src/core/browserinfo.js
@@ -152,25 +151,25 @@ DESC
     src/core/domhelper.js
     src/core/eventdispatcher.js
     src/core/font.js
+    src/core/fontmodule.js
     src/core/fontmoduleloader.js
     src/core/fontruler.js
     src/core/fontwatcher.js
     src/core/fontwatchrunner.js
     src/core/initialize.js
-    src/core/namespace.js
     src/core/useragent.js
     src/core/useragentparser.js
     src/core/version.js
     src/core/webfont.js
-    src/custom/customcss.js
-    src/fontdeck/fontdeck_script.js
-    src/google/fontapiparser.js
-    src/google/fontapiurlbuilder.js
-    src/google/googlefontapi.js
-    src/google/lastresortwebkitfontwatchrunner.js
     src/modules.yml
-    src/monotype/monotype_script.js
-    src/typekit/typekit_script.js
+    src/modules/ascender.js
+    src/modules/custom.js
+    src/modules/fontdeck.js
+    src/modules/google/fontapiparser.js
+    src/modules/google/fontapiurlbuilder.js
+    src/modules/google/googlefontapi.js
+    src/modules/monotype.js
+    src/modules/typekit.js
     tools/compiler/base.js
     tools/compiler/compiler.jar
     tools/jasmine-phantomjs/jasmine-phantomjs.js

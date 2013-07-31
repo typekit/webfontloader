@@ -2,6 +2,8 @@
 
 Web Font Loader gives you added control when using linked fonts via `@font-face`. It provides a common interface to loading fonts regardless of the source, then adds a standard set of events you may use to control the loading experience. The Web Font Loader is able to load fonts from [Google Fonts](http://www.google.com/fonts/), [Typekit](http://www.typekit.com/), [Ascender](http://www.ascenderfonts.com/webfonts/), [Fonts.com](http://www.fonts.com/), and [Fontdeck](http://fontdeck.com/), as well as self-hosted web fonts. It is co-developed by [Google](http://www.google.com/) and [Typekit](http://www.typekit.com).
 
+[![Build Status](https://travis-ci.org/typekit/webfontloader.png?branch=master)](https://travis-ci.org/typekit/webfontloader)
+
 ## Contents
 
 * [Get started](#get-started)
@@ -17,14 +19,13 @@ Web Font Loader gives you added control when using linked fonts via `@font-face`
     * [Google](#google)
     * [Typekit](#typekit)
 * [Browser support](#browser-support)
-* [Contributing](#contributing)
 * [License](#license)
 
 ## Get Started
 
 To use the Web Font Loader library, just include it in your page and tell it which fonts to load. For example, you could load fonts from [Google Fonts](http://www.google.com/fonts/) using the Web Font Loader hosted on [Google Hosted Libraries](https://developers.google.com/speed/libraries/) using the following code.
 
-    <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.2/webfont.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
     <script>
       WebFont.load({
         google: {
@@ -33,7 +34,7 @@ To use the Web Font Loader library, just include it in your page and tell it whi
       });
     </script>
 
-Alternatively, you can link to the latest `1.x` version of the Web Font Loader by using `//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js` as the `script` source. Note that the version in this url is less specific. It will always load the latest `1.x` version, but it also has a shorter cache time to ensure that your page gets updates in a timely manner. For performance reasons, we recommend using an explicit version number (such as `1.4.2`) in urls when using the Web Font Loader in production. You can manually update the Web Font Loader version number in the url when you want to adopt a new version.
+Alternatively, you can link to the latest `1.x` version of the Web Font Loader by using `//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js` as the `script` source. Note that the version in this url is less specific. It will always load the latest `1.x` version, but it also has a shorter cache time to ensure that your page gets updates in a timely manner. For performance reasons, we recommend using an explicit version number (such as `1.4.7`) in urls when using the Web Font Loader in production. You can manually update the Web Font Loader version number in the url when you want to adopt a new version.
 
 It is also possible to use the Web Font Loader asynchronously. For example, to load [Typekit](http://www.typekit.com) fonts asynchronously, you could use the following code.
 
@@ -45,7 +46,7 @@ It is also possible to use the Web Font Loader asynchronously. For example, to l
       (function() {
         var wf = document.createElement('script');
         wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-            '://ajax.googleapis.com/ajax/libs/webfont/1.4.2/webfont.js';
+            '://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js';
         wf.type = 'text/javascript';
         wf.async = 'true';
         var s = document.getElementsByTagName('script')[0];
@@ -267,54 +268,6 @@ For example:
     };
 
 If `providerA` can serve fonts to a browser, but `providerB` cannot, The `fontinactive` event will be triggered for `Family2`. The `fontactive` event will be triggered for `Family1` once it loads, as will the `active` event.
-
-## Contributing
-
-Please open [an issue](https://github.com/typekit/webfontloader/issues) if you find or suspect any problems. Sample pages and test cases are greatly appreciated.
-
-### Development requirements
-
-You'll need a few rubygems to run the tests, demo server, and other rake tasks, which should be installed with [Bundler](http://gembundler.com/).
-
-    $ gem install bundler
-    $ bundle install
-
-To run the tests in a headless WebKit you will also need to have [PhantomJS](http://www.phantomjs.org) installed. You can install PhantomJS by downloading a binary of using HomeBrew.
-
-    $ brew install phantomjs
-
-### Building
-
-To build a JS file from source, just run rake:
-
-    $ rake
-
-### Demos
-
-A full suite of demo pages is included in this source. Here you can find some
-live examples using the JS and CSS events. Run the demo server with:
-
-    $ rake demo
-
-You can also run the demos with uncompressed, debuggable code to aid in
-development. Just start the server in dev mode:
-
-    $ rake demodev
-
-Browse the demos [source code](http://github.com/typekit/webfontloader/blob/master/lib/webfontloader/demo/public).
-
-### Testing
-
-Web Font Loader has an extensive test suite that runs via Jasmine. The test suite
-should be passing before submitting a pull request, and new tests should be added for any new functionality.
-
-To run tests, open up `spec/index.html` in a browser and check the results. The
-test suite will run automatically. Again, before submitting a pull request
-please run the test suite in multiple browsers and list them in the pull request.
-
-To run tests in a headless WebKit using [PhantomJS](http://www.phantomjs.org) run:
-
-    $ rake test
 
 ## License
 

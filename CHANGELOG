@@ -1,3 +1,26 @@
+v1.4.9 (July 24, 2013)
+* Disable terminal spec report when not using PhantomJS
+* Remove obsolete namespace declaration
+
+v1.4.8 (June 24, 2013)
+* Add support for the Chromium based Opera browser
+* Change the debug task to do a Closure Compiler debug build
+* Fix a global variable leak in the compiled output
+* Add support for the PhantomJS user agent string
+
+v1.4.7 (June 6, 2013)
+* Fix backwards compatibility with version strings for Chrome
+* Restore specs that test against version strings for backwards compatibility with the old UserAgent API.
+
+v1.4.6 (May 29, 2013)
+* Merge font watching strategies from core and the Google module
+* Add support for the Samsung Galaxy S4 user agent string
+
+v1.4.5 (May 23, 2013)
+* Move modules into their own namespace
+* Add new methods into DomHelper and add specs for all DomHelper methods
+* Rename watch method so as not to conflict with Firefox Object.prototype.watch
+
 v1.4.4 (May 22, 2013)
 * Change the UserAgent API so that it is backwards compatible with older Typekit kits.
 

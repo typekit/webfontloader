@@ -60,8 +60,10 @@ goog.scope(function () {
   UserAgentParser.prototype.parse = function() {
     if (this.isIe_()) {
       return this.parseIeUserAgentString_();
+    } else if (this.isOldOpera_()) {
+      return this.parseOldOperaUserAgentString_();
     } else if (this.isOpera_()) {
-      return this.parseOperaUserAgentString_();
+      return this.parseWebKitUserAgentString_();
     } else if (this.isWebKit_()) {
       return this.parseWebKitUserAgentString_();
     } else if (this.isGecko_()) {
@@ -175,14 +177,21 @@ goog.scope(function () {
   /**
    * @private
    */
-  UserAgentParser.prototype.isOpera_ = function() {
+  UserAgentParser.prototype.isOldOpera_ = function() {
     return this.userAgent_.indexOf("Opera") != -1;
   };
 
   /**
    * @private
    */
-  UserAgentParser.prototype.parseOperaUserAgentString_ = function() {
+  UserAgentParser.prototype.isOpera_ = function () {
+    return /OPR\/[\d.]+/.test(this.userAgent_);
+  };
+
+  /**
+   * @private
+   */
+  UserAgentParser.prototype.parseOldOperaUserAgentString_ = function() {
     var engineName = UserAgentParser.UNKNOWN,
         engineVersionString = this.getMatchingGroup_(this.userAgent_, /Presto\/([\d\w\.]+)/, 1),
         engineVersion = Version.parse(engineVersionString),
@@ -295,7 +304,9 @@ goog.scope(function () {
         browserVersionString = UserAgentParser.UNKNOWN,
         supportWebFont = false;
 
-    if (this.userAgent_.indexOf("Chrome") != -1 ||
+    if (/OPR\/[\d.]+/.test(this.userAgent_)) {
+      browserName = "Opera";
+    } else if (this.userAgent_.indexOf("Chrome") != -1 ||
         this.userAgent_.indexOf("CrMo") != -1 ||
         this.userAgent_.indexOf("CriOS") != -1) {
       browserName = "Chrome";
@@ -303,6 +314,8 @@ goog.scope(function () {
       browserName = "Silk";
     } else if (platform == "BlackBerry" || platform == "Android") {
       browserName = UserAgentParser.BUILTIN_BROWSER;
+    } else if (this.userAgent_.indexOf("PhantomJS") != -1) {
+      browserName = "PhantomJS";
     } else if (this.userAgent_.indexOf("Safari") != -1) {
       browserName = "Safari";
     } else if (this.userAgent_.indexOf("AdobeAIR") != -1) {
@@ -310,16 +323,21 @@ goog.scope(function () {
     }
 
     if (browserName == UserAgentParser.BUILTIN_BROWSER) {
-      browserVersion = new Version();
+      browserVersionString = UserAgentParser.UNKNOWN;
     } else if (browserName == "Silk") {
-      browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Silk\/([\d\._]+)/, 1));
-    } else if (this.userAgent_.indexOf("Version/") != -1) {
-      browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.\w]+)/, 1));
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /Silk\/([\d\._]+)/, 1);
     } else if (browserName == "Chrome") {
-      browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /(Chrome|CrMo|CriOS)\/([\d\.]+)/, 2));
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /(Chrome|CrMo|CriOS)\/([\d\.]+)/, 2);
+    } else if (this.userAgent_.indexOf("Version/") != -1) {
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.\w]+)/, 1);
     } else if (browserName == "AdobeAIR") {
-      browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /AdobeAIR\/([\d\.]+)/, 1));
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /AdobeAIR\/([\d\.]+)/, 1);
+    } else if (browserName == "Opera") {
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /OPR\/([\d.]+)/, 1);
+    } else if (browserName == "PhantomJS") {
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /PhantomJS\/([\d.]+)/, 1);
     }
+    browserVersion = Version.parse(browserVersionString);
 
     if (browserName == "AdobeAIR") {
       supportWebFont = browserVersion.major > 2 || browserVersion.major == 2 && browserVersion.minor >= 5;
