@@ -34,9 +34,7 @@ goog.scope(function () {
     var familiesConfiguration = this.configuration_['families'] || [];
 
     for (i = 0, len = urls.length; i < len; i++) {
-      var url = urls[i];
-
-      this.domHelper_.insertInto('head', this.domHelper_.createCssLink(url));
+      this.domHelper_.loadStylesheet(urls[i]);
     }
 
     var fonts = [];

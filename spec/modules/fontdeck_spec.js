@@ -52,8 +52,7 @@ describe('modules.Fontdeck', function () {
     };
 
     fakeDomHelper = {
-      insertInto: jasmine.createSpy('insertInto'),
-      createScriptSrc: jasmine.createSpy('createScriptSrc'),
+      loadScript: jasmine.createSpy('loadScript'),
       getLoadWindow: jasmine.createSpy('getLoadWindow').andReturn(global),
       getProtocol: jasmine.createSpy('getProtocol').andReturn('https:'),
       getHostName: function () { return 'test-host-name';  }
@@ -72,8 +71,8 @@ describe('modules.Fontdeck', function () {
     });
 
     it('should create the script correctly', function () {
-      expect(fakeDomHelper.createScriptSrc).toHaveBeenCalledWith('https://f.fontdeck.com/s/css/js/test-host-name/2282.js');
-      expect(fakeDomHelper.insertInto.calls[0].args[0]).toEqual('head');
+      expect(fakeDomHelper.loadScript).toHaveBeenCalled();
+      expect(fakeDomHelper.loadScript.calls[0].args[0]).toEqual('https://f.fontdeck.com/s/css/js/test-host-name/2282.js');
     });
 
     it('should have created a global', function () {

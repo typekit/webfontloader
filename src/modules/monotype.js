@@ -50,10 +50,7 @@ goog.scope(function () {
     var projectId = self.configuration_['projectId'];
     var version = self.configuration_['version'];
     if (projectId) {
-      var loadWindow = self.domHelper_.getLoadWindow(),
-          sc = self.domHelper_.createElement("script");
-
-      sc["id"] = Monotype.SCRIPTID + projectId;
+      var loadWindow = self.domHelper_.getLoadWindow();
 
       function onload() {
         if (loadWindow[Monotype.HOOK + projectId]) {
@@ -67,21 +64,17 @@ goog.scope(function () {
         support(userAgent.getBrowserInfo().hasWebFontSupport());
       }
 
-      var done = false;
-
-      sc["onload"] = sc["onreadystatechange"] = function () {
-        if (!done && (!this["readyState"] || this["readyState"] === "loaded" || this["readyState"] === "complete")) {
-          done = true;
+      var script = this.domHelper_.loadScript(self.getScriptSrc(projectId, version), function (err) {
+        if (err) {
+          support(false);
+        } else {
           onload();
-          sc["onload"] = sc["onreadystatechange"] = null;
         }
-      };
-
-      sc["src"] = self.getScriptSrc(projectId, version);
-      this.domHelper_.insertInto('head', sc);
+      });
+      script["id"] = Monotype.SCRIPTID + projectId;
     }
     else {
-      support(true); // XXX: ???
+      support(false);
     }
   };
 

@@ -61,8 +61,7 @@ goog.scope(function () {
     var fontApiParser = new FontApiParser(fontFamilies);
     fontApiParser.parse();
 
-    domHelper.insertInto('head', domHelper.createCssLink(
-        fontApiUrlBuilder.build()));
+    domHelper.loadStylesheet(fontApiUrlBuilder.build());
     onReady(fontApiParser.getFonts(), fontApiParser.getFontTestStrings(), GoogleFontApi.METRICS_COMPATIBLE_FONTS);
   };
 });

@@ -48,7 +48,7 @@ goog.scope(function () {
     var key = this.configuration_['key'];
     var protocol = this.domHelper_.getProtocol();
     var url = protocol + '//webfonts.fontslive.com/css/' + key + '.css';
-    this.domHelper_.insertInto('head', this.domHelper_.createCssLink(url));
+    this.domHelper_.loadStylesheet(url);
     var fv = this.parseFamiliesAndVariations(this.configuration_['families']);
     onReady(fv);
   };

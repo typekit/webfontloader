@@ -8,8 +8,7 @@ describe('modules.Custom', function () {
 
     beforeEach(function () {
       fakeDomHelper = {
-        createCssLink: jasmine.createSpy('createCssLink'),
-        insertInto: jasmine.createSpy('insertInto')
+        loadStylesheet: jasmine.createSpy('createCssLink')
       };
 
       load = jasmine.createSpy('load');
@@ -23,9 +22,9 @@ describe('modules.Custom', function () {
     });
 
     it('should have inserted the links correctly', function () {
-      expect(fakeDomHelper.createCssLink.callCount).toEqual(2);
-      expect(fakeDomHelper.createCssLink).toHaveBeenCalledWith('http://moo');
-      expect(fakeDomHelper.createCssLink).toHaveBeenCalledWith('http://meuh');
+      expect(fakeDomHelper.loadStylesheet.callCount).toEqual(2);
+      expect(fakeDomHelper.loadStylesheet).toHaveBeenCalledWith('http://moo');
+      expect(fakeDomHelper.loadStylesheet).toHaveBeenCalledWith('http://meuh');
     });
 
     it('should have loaded the families correctly', function () {

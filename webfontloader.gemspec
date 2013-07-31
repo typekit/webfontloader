@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.4.9'
-  s.date              = '2013-07-24'
+  s.version           = '1.4.10'
+  s.date              = '2013-07-31'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -68,6 +68,7 @@ DESC
   s.files = %w[
     AUTHORS
     CHANGELOG
+    CONTRIBUTING.md
     Gemfile
     LICENSE
     README.md
@@ -109,7 +110,6 @@ DESC
     spec/core/cssclassname_spec.js
     spec/core/domhelper_spec.js
     spec/core/eventdispatcher_spec.js
-    spec/core/external_script.js
     spec/core/font_spec.js
     spec/core/fontmoduleloader_spec.js
     spec/core/fontruler_spec.js
@@ -120,21 +120,23 @@ DESC
     spec/core/version_spec.js
     spec/core/webfont_spec.js
     spec/deps.js
-    spec/fonts/LICENSE.txt
-    spec/fonts/nullfont.css
-    spec/fonts/nullfont1.css
-    spec/fonts/nullfont2.css
-    spec/fonts/nullfont3.css
-    spec/fonts/sourcesans.eot
-    spec/fonts/sourcesans.otf
-    spec/fonts/sourcesans.svg
-    spec/fonts/sourcesans.ttf
-    spec/fonts/sourcesans.woff
-    spec/fonts/sourcesansa.css
-    spec/fonts/sourcesansb.css
-    spec/fonts/sourcesansc.css
-    spec/fonts/sourcesanscbold.css
-    spec/fonts/sourcesanscbold.otf
+    spec/fixtures/external_script.js
+    spec/fixtures/external_stylesheet.css
+    spec/fixtures/fonts/LICENSE.txt
+    spec/fixtures/fonts/nullfont.css
+    spec/fixtures/fonts/nullfont1.css
+    spec/fixtures/fonts/nullfont2.css
+    spec/fixtures/fonts/nullfont3.css
+    spec/fixtures/fonts/sourcesans.eot
+    spec/fixtures/fonts/sourcesans.otf
+    spec/fixtures/fonts/sourcesans.svg
+    spec/fixtures/fonts/sourcesans.ttf
+    spec/fixtures/fonts/sourcesans.woff
+    spec/fixtures/fonts/sourcesansa.css
+    spec/fixtures/fonts/sourcesansb.css
+    spec/fixtures/fonts/sourcesansc.css
+    spec/fixtures/fonts/sourcesanscbold.css
+    spec/fixtures/fonts/sourcesanscbold.otf
     spec/index.html
     spec/modules/ascender_spec.js
     spec/modules/custom_spec.js
