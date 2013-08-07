@@ -4,16 +4,19 @@
     <title>Webfontloader tests</title>
     <link rel="stylesheet" href="../tools/jasmine/jasmine.css">
 
-    <link rel="stylesheet" href="fonts/nullfont.css">
-    <link rel="stylesheet" href="fonts/nullfont1.css">
-    <link rel="stylesheet" href="fonts/nullfont2.css">
-    <link rel="stylesheet" href="fonts/nullfont3.css">
-    <link rel="stylesheet" href="fonts/sourcesansa.css">
-    <link rel="stylesheet" href="fonts/sourcesansb.css">
-    <link rel="stylesheet" href="fonts/sourcesansc.css">
-    <link rel="stylesheet" href="fonts/sourcesanscbold.css">
+    <link rel="stylesheet" href="fixtures/fonts/nullfont.css">
+    <link rel="stylesheet" href="fixtures/fonts/nullfont1.css">
+    <link rel="stylesheet" href="fixtures/fonts/nullfont2.css">
+    <link rel="stylesheet" href="fixtures/fonts/nullfont3.css">
+    <link rel="stylesheet" href="fixtures/fonts/sourcesansa.css">
+    <link rel="stylesheet" href="fixtures/fonts/sourcesansb.css">
+    <link rel="stylesheet" href="fixtures/fonts/sourcesansc.css">
+    <link rel="stylesheet" href="fixtures/fonts/sourcesanscbold.css">
  </head>
-  <body>
+ <body>
+    <script>
+      CLOSURE_NO_DEPS = true;
+    </script>
     <script src="../tools/jasmine/jasmine.js"></script>
     <script src="../tools/jasmine/jasmine-html.js"></script>
     <script src="../tools/jasmine-phantomjs/terminal-reporter.js"></script>
@@ -67,7 +70,9 @@
             }),
             browserStackReporter = new jasmine.BrowserStackReporter();
 
-        env.addReporter(terminalReporter);
+        if (/PhantomJS/.test(navigator.userAgent)) {
+          env.addReporter(terminalReporter);
+        }
         env.addReporter(htmlReporter);
         env.addReporter(browserStackReporter);
         env.specFilter = function (spec) {

@@ -14,8 +14,7 @@ describe('modules.Ascender', function () {
 
     beforeEach(function () {
       fakeDomHelper = {
-        insertInto: jasmine.createSpy('insertInto'),
-        createCssLink: jasmine.createSpy('createCssLink'),
+        loadStylesheet: jasmine.createSpy('createCssLink'),
         getProtocol: jasmine.createSpy('getProtocol').andReturn('http:')
       };
 
@@ -26,8 +25,7 @@ describe('modules.Ascender', function () {
     });
 
     it('should create the link correctly', function () {
-      expect(fakeDomHelper.createCssLink).toHaveBeenCalledWith('http://webfonts.fontslive.com/css/ec2de397-11ae-4c10-937f-bf94283a70c1.css');
-      expect(fakeDomHelper.insertInto.calls[0].args[0]).toEqual('head');
+      expect(fakeDomHelper.loadStylesheet).toHaveBeenCalledWith('http://webfonts.fontslive.com/css/ec2de397-11ae-4c10-937f-bf94283a70c1.css');
     });
 
     it('should pass the fonts correctly', function () {

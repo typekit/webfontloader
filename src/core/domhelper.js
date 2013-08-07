@@ -14,9 +14,6 @@ webfont.DomHelper = function(mainWindow, opt_loadWindow) {
 
   /** @type {Document} */
   this.document_ = this.loadWindow_.document;
-
-  /** @type {boolean|undefined} */
-  this.supportForStyle_ = undefined;
 };
 
 goog.scope(function () {
@@ -107,29 +104,6 @@ goog.scope(function () {
   };
 
   /**
-   * Creates a link to a CSS document.
-   * @param {string} src The URL of the stylesheet.
-   * @return {Element} a link element.
-   */
-  DomHelper.prototype.createCssLink = function(src) {
-    return this.createElement('link', {
-      'rel': 'stylesheet',
-      'href': src
-    });
-  };
-
-  /**
-   * Creates a link to a javascript document.
-   * @param {string} src The URL of the script.
-   * @return {Element} a script element.
-   */
-  DomHelper.prototype.createScriptSrc = function(src) {
-    return this.createElement('script', {
-      'src': src
-    });
-  };
-
-  /**
    * Appends a name to an element's class attribute.
    * @param {Element} e The element.
    * @param {string} name The class name to add.
@@ -187,27 +161,7 @@ goog.scope(function () {
    * @param {string} styleString The style string.
    */
   DomHelper.prototype.setStyle = function(e, styleString) {
-    if (this.hasSupportForStyle_()) {
-      e.setAttribute("style", styleString);
-    } else {
-      e.style.cssText = styleString;
-    }
-  };
-
-  /**
-   * Check if getting and setting the style attribute on an element with
-   * getAttribute/setAttribute is supported. In old IE, you must use style.cssText
-   * instead. Feature detection is only done the first time this is called.
-   * @private
-   * @return {boolean} Whether or not the feature is supported.
-   */
-  DomHelper.prototype.hasSupportForStyle_ = function() {
-    if (this.supportForStyle_ === undefined) {
-      var e = this.document_.createElement('p');
-      e.innerHTML = '<a style="top:1px;">w</a>';
-      this.supportForStyle_ = /top/.test(e.getElementsByTagName('a')[0].getAttribute('style'));
-    }
-    return this.supportForStyle_
+    e.style.cssText = styleString;
   };
 
   /**
@@ -258,7 +212,7 @@ goog.scope(function () {
    * @return {Element} a DOM element.
    */
   DomHelper.prototype.createStyle = function(css) {
-    var e = this.document_.createElement('style');
+    var e = this.createElement('style');
 
     e.setAttribute('type', 'text/css');
     if (e.styleSheet) { // IE
@@ -270,22 +224,70 @@ goog.scope(function () {
   };
 
   /**
+   * Loads an external stylesheet.
+   *
+   * @param {string} href the URL of the stylesheet
+   * @param {function(Error)=} opt_callback Called when the stylesheet has loaded or failed to
+   * load. Note that the callback is *NOT* guaranteed to be called in all browsers. The first
+   * argument to the callback is an error object that is falsy when there are no errors and
+   * truthy when there are.
+   * @return {Element} The link element
+   */
+  DomHelper.prototype.loadStylesheet = function (href, opt_callback) {
+    var link = this.createElement('link', {
+      'rel': 'stylesheet',
+      'href': href
+    });
+
+    var done = false;
+
+    link.onload = function () {
+      if (!done) {
+        done = true;
+
+        if (opt_callback) {
+          opt_callback(null);
+        }
+      }
+    };
+
+    link.onerror = function () {
+      if (!done) {
+        done = true;
+
+        if (opt_callback) {
+          opt_callback(new Error('Stylesheet failed to load'));
+        }
+      }
+    };
+
+    this.insertInto('head', link);
+
+    return link;
+  };
+
+  /**
    * Loads an external script file.
    * @param {string} src URL of the script.
-   * @param {function()=} opt_callback callback when the script has loaded.
+   * @param {function(Error)=} opt_callback callback when the script has loaded. The first argument to
+   * the callback is an error object that is falsy when there are no errors and truthy when there are.
+   * @param {number=} opt_timeout The number of milliseconds after which the callback will be called
+   * with a timeout error. Defaults to 5 seconds.
+   * @return {Element} The script element
    */
-  DomHelper.prototype.loadScript = function(src, opt_callback) {
+  DomHelper.prototype.loadScript = function(src, opt_callback, opt_timeout) {
     var head = this.document_.getElementsByTagName('head')[0];
 
     if (head) {
-      var script = this.document_.createElement('script');
-      script.src = src;
+      var script = this.createElement('script', {
+        'src': src
+      });
       var done = false;
       script.onload = script.onreadystatechange = function() {
         if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) {
           done = true;
           if (opt_callback) {
-            opt_callback();
+            opt_callback(null);
           }
           script.onload = script.onreadystatechange = null;
           // Avoid a bizarre issue with unclosed <base> tag in IE6 - http://blog.dotsmart.net/2008/04/
@@ -293,6 +295,19 @@ goog.scope(function () {
         }
       };
       head.appendChild(script);
+
+      window.setTimeout(function () {
+        if (!done) {
+          done = true;
+          if (opt_callback) {
+            opt_callback(new Error('Script load timeout'));
+          }
+        }
+      }, opt_timeout || 5000);
+
+      return script;
     }
+
+    return null;
   };
 });
