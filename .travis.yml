@@ -1,6 +1,6 @@
 before_script:
-- npm install -g browserstack-test
-- rackup -p 9999
+- npm install -g browserstack-test simple-http-server
+- nserver -p 9999 &
 env: 
   global: 
   - secure: JyPRwQevSHwJ8+989sucMBlsxXLX29OVmo00yiQJuE638oaPwqzz5AM/JEPOsAVRsHYn+rlAZOeQeS3x3MHyWQTIizi8qCv2aIRfuI6g44GqyntkxYXshgt3ohlRy3CIGTS0miWfDX65pSg5iWyjJn1YPrMg/miGYYmpW7ZVNvo=
