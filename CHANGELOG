@@ -1,3 +1,8 @@
+v1.4.11 (August 8, 2013)
+* Remove Ascender module (according to Monotype the service has now been shutdown completely.)
+* Switch Monotype module to use fast.fonts.net instead of fast.fonts.com
+* Update license
+
 v1.4.10 (July 31, 2013)
 * Add loadStylesheet method with optional callback that replaces createCssLink
 * Remove supportForStyle check because it breaks XHTML/SVG and is no longer necessary

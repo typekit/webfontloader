@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.4.10'
-  s.date              = '2013-07-31'
+  s.version           = '1.4.11'
+  s.date              = '2013-08-08'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -75,8 +75,6 @@ DESC
     Rakefile
     bin/webfontloader-demos
     lib/webfontloader.rb
-    lib/webfontloader/demo/public/ascender-iframe.html
-    lib/webfontloader/demo/public/ascender.html
     lib/webfontloader/demo/public/basic.css
     lib/webfontloader/demo/public/blank.html
     lib/webfontloader/demo/public/custom-iframe.html
@@ -138,7 +136,6 @@ DESC
     spec/fixtures/fonts/sourcesanscbold.css
     spec/fixtures/fonts/sourcesanscbold.otf
     spec/index.html
-    spec/modules/ascender_spec.js
     spec/modules/custom_spec.js
     spec/modules/fontdeck_spec.js
     spec/modules/google/fontapiparser_spec.js
@@ -164,7 +161,6 @@ DESC
     src/core/version.js
     src/core/webfont.js
     src/modules.yml
-    src/modules/ascender.js
     src/modules/custom.js
     src/modules/fontdeck.js
     src/modules/google/fontapiparser.js
