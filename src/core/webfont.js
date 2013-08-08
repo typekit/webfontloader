@@ -60,10 +60,15 @@ goog.scope(function () {
       fontWatcher, support) {
     var that = this;
 
-    if (!support) {
+    if (support) {
+      module.load(function (fonts, opt_fontTestStrings, opt_metricCompatibleFonts) {
+        that.onModuleReady_(eventDispatcher, fontWatcher, fonts, opt_fontTestStrings, opt_metricCompatibleFonts);
+      });
+    } else {
       var allModulesLoaded = --this.moduleLoading_ == 0;
 
       this.moduleFailedLoading_--;
+
       if (allModulesLoaded) {
         if (this.moduleFailedLoading_ == 0) {
           eventDispatcher.dispatchInactive();
@@ -72,12 +77,7 @@ goog.scope(function () {
         }
       }
       fontWatcher.watchFonts([], {}, null, allModulesLoaded);
-      return;
     }
-
-    module.load(function (fonts, opt_fontTestStrings, opt_metricCompatibleFonts) {
-      that.onModuleReady_(eventDispatcher, fontWatcher, fonts, opt_fontTestStrings, opt_metricCompatibleFonts);
-    });
   };
 
   /**
