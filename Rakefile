@@ -84,7 +84,7 @@ desc "Compile the JavaScript into target/webfont.js"
 task :compile, [:modules] => "target/webfont.js"
 
 file "target/webfont.js", [:modules] => SourceJs + ["target"] do |t, args|
-  args.with_defaults(:modules => 'custom google typekit ascender monotype fontdeck')
+  args.with_defaults(:modules => 'custom google typekit monotype fontdeck')
 
   modules = args[:modules].split ' '
 
@@ -121,7 +121,7 @@ desc "Creates debug version into target/webfont.js"
 task :debug, [:modules] => "target/webfont_debug.js"
 
 file "target/webfont_debug.js", [:modules] => SourceJs + ["target"] do |t|
-  args.with_defaults(:modules => 'custom google typekit ascender monotype fontdeck')
+  args.with_defaults(:modules => 'custom google typekit monotype fontdeck')
 
   modules = args[:modules].split ' '
 

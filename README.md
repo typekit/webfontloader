@@ -1,6 +1,6 @@
 # Web Font Loader
 
-Web Font Loader gives you added control when using linked fonts via `@font-face`. It provides a common interface to loading fonts regardless of the source, then adds a standard set of events you may use to control the loading experience. The Web Font Loader is able to load fonts from [Google Fonts](http://www.google.com/fonts/), [Typekit](http://www.typekit.com/), [Ascender](http://www.ascenderfonts.com/webfonts/), [Fonts.com](http://www.fonts.com/), and [Fontdeck](http://fontdeck.com/), as well as self-hosted web fonts. It is co-developed by [Google](http://www.google.com/) and [Typekit](http://www.typekit.com).
+Web Font Loader gives you added control when using linked fonts via `@font-face`. It provides a common interface to loading fonts regardless of the source, then adds a standard set of events you may use to control the loading experience. The Web Font Loader is able to load fonts from [Google Fonts](http://www.google.com/fonts/), [Typekit](http://www.typekit.com/),  [Fonts.com](http://www.fonts.com/), and [Fontdeck](http://fontdeck.com/), as well as self-hosted web fonts. It is co-developed by [Google](http://www.google.com/) and [Typekit](http://www.typekit.com).
 
 [![Build Status](https://travis-ci.org/typekit/webfontloader.png?branch=master)](https://travis-ci.org/typekit/webfontloader)
 
@@ -12,7 +12,6 @@ Web Font Loader gives you added control when using linked fonts via `@font-face`
     * [Timeout](#timeout)
     * [Iframes](#iframes)
 * [Modules](#modules)
-    * [Ascender](#ascender)
     * [Custom](#custom)
     * [Fontdeck](#fontdeck)
     * [Fonts.com](#fonts.com)
@@ -139,19 +138,6 @@ This is an advanced configuration option that isn't needed for most use cases.
 
 Web Font Loader provides a module system so that any web font provider can contribute code that allows their fonts to be loaded. This makes it possible to use multiple web font providers at the same time. The specifics of each provider currently supported by the library are documented here.
 
-### Ascender
-
-To load fonts from the FontsLive service use the `ascender` module.
-
-    WebFontConfig = {
-      ascender: {
-        key: 'myAscenderKey',
-        families: [ 'AscenderSans:bold,bolditalic,italic,regular' ]
-      }
-    };
-
-**NOTE**: The Ascender font service has been acquired by Monotype (Fonts.com) and as such the use of the Fonts.com module is recommended.
-
 ### Custom
 
 To load fonts from any external stylesheet, use the `custom` module. Here you'll
@@ -269,6 +255,12 @@ For example:
 
 If `providerA` can serve fonts to a browser, but `providerB` cannot, The `fontinactive` event will be triggered for `Family2`. The `fontactive` event will be triggered for `Family1` once it loads, as will the `active` event.
 
-## License
+## Copyright and License
 
-Web Font Loader is released under the [Apache 2.0](http://github.com/typekit/webfontloader/blob/master/LICENSE) license.
+Web Font Loader Copyright (c) 2010 Adobe Systems Incorporated, Google Incorporated.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.

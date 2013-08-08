@@ -3,7 +3,6 @@ goog.provide('webfont');
 goog.require('webfont.WebFont');
 
 goog.require('webfont.modules.Typekit');
-goog.require('webfont.modules.Ascender');
 goog.require('webfont.modules.Fontdeck');
 goog.require('webfont.modules.Monotype');
 goog.require('webfont.modules.Custom');
@@ -13,11 +12,6 @@ goog.require('webfont.modules.google.GoogleFontApi');
  * @typedef {Object.<string, Array.<string>>}
  */
 webfont.FontTestStrings;
-
-/**
- * @define {boolean}
- */
-var INCLUDE_ASCENDER_MODULE = false;
 
 /**
  * @define {boolean}
@@ -58,12 +52,6 @@ var WEBFONT_CONFIG = 'WebFontConfig';
  * @type {webfont.WebFont}
  */
 var webFontLoader = new webfont.WebFont(goog.global);
-
-if (INCLUDE_ASCENDER_MODULE) {
-  webFontLoader.addModule(webfont.modules.Ascender.NAME, function (configuration, domHelper) {
-    return new webfont.modules.Ascender(domHelper, configuration);
-  });
-}
 
 if (INCLUDE_CUSTOM_MODULE) {
   webFontLoader.addModule(webfont.modules.Custom.NAME, function (configuration, domHelper) {

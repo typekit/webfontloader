@@ -16,8 +16,7 @@ core:
   - core/webfont.js
   - core/initialize.js
 
-ascender:
-  - modules/ascender.js
+
 
 google:
   - modules/google/fontapiurlbuilder.js
