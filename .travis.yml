@@ -1,10 +1,10 @@
-language: ruby
 script: rake bstest
 before_script: 
 - npm install -g browserstack-test simple-http-server
 - nserver -p 9999 &
 env: 
   global: 
-  - secure: RFyFiP5yNMwMoZuQNAE/6CLSUgiKIk2+OhgwXa6O+0ioUiTHUUvw9k52t2PCXaOOjuX4Qvr/a7wxD7i4WBAAYoIjOhACp5IdwJBeBEyjKIN7pNXhgs0f+AznuSaZVYDvSTudyK99mugy5jj7tbMqU4rDbAPwH26bhKepUXf65F8=
-  - secure: GP7mXf6AqjKY1DCFz+rIP6X0GieXBXlUOKU7WhKyj7PAZy9S2B9TAHA//ggSpVBlp/Or5xpS6a9hAZ3ppDzK5zhLLbpAwEmPU+WSmoXjqpJiunV8NmhikhsLcNwa4wR7owqHikZ1/YMRWKNu7NwjQWQpOKus/WDvwwDjMZ63VlE=
-  - secure: jL4Htb9qnKZt+TJit2AGRPARiCrmWLIelF5A+aWFunvQdwcZAHYdWiSowmOzMJK64rYrnVUV6k/w7AIM3/j78Q5Xq6cqAHtYM8FFAwpOiXZAvWF0LIQ6FHnpSDi3k8r+gNsJz1vU3Y6Lz6HSLNsFi6EzKRMbeIWGRbtN0ombVcM=
+  - secure: SpBESv1t9BSVNDIHUkXjWX6ky6Vm6zTtAH8Rim1nV/ls+GUZ8VDVonNmtzZwlW0Looe3flxLBGC/b+qGDTTBddb4yezhOxLpjwTshGk82+PBjMPrBZxZH5GTdDSNy+wQXVOmfMklE4WJ/XEEi6CUln5khnGyyxf7ZGD6L7YpBwg=
+  - secure: e5JNnWU/xS9UsXD6OzkiLPfBmjxUFCYHFGMyZt1Ccr9R67XP++DD19xcHli6EL6pZs5yaDoywlgJyerB8+FTPxTRb678bbhQn32P2I+0WWWAgrB7WuOp8LOhvzBz/qnCSkQJ1d85ZruGq59G0TO+u+aAB/AEwqEcDiCTz9wanmM=
+  - secure: kUwbB34My6ya3c9yQ895rElfbqXpeO7DF54/9PSkUOQRmlYs1tIxO4hNlb/0yR1ZXFQf/+HJTG+aHe7hFv/Aopa/TAISSg+94SHOU1H0+9bOPWMSfhWh2IwkSR3LPi5ysXKlRpPLMVkk4jIMX3HjNFQg7XmUA2Tj3BB39baTTxI=
+language: ruby
