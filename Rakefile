@@ -149,6 +149,10 @@ end
 #
 # Run
 #
+desc "BrowserStack tests"
+task :bstest do |t|
+  exec "browserstack-test -u $BROWSERSTACK_USERNAME -p $BROWSERSTACK_PASSWORD -k $BROWSERSTACK_KEY -b browsers.json http://localhost:9999/spec/index.html"
+end
 
 desc "Test everything"
 task :default => [:clean, :gzipbytes, :test]
