@@ -1,7 +1,7 @@
 script: rake bstest
 before_script: 
 - npm install -g browserstack-test simple-http-server
-- nserver -p 9999 &
+- nserver -p 9999 --nologs &
 env: 
   global: 
   - secure: SpBESv1t9BSVNDIHUkXjWX6ky6Vm6zTtAH8Rim1nV/ls+GUZ8VDVonNmtzZwlW0Looe3flxLBGC/b+qGDTTBddb4yezhOxLpjwTshGk82+PBjMPrBZxZH5GTdDSNy+wQXVOmfMklE4WJ/XEEi6CUln5khnGyyxf7ZGD6L7YpBwg=
