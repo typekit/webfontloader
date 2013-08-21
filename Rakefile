@@ -81,9 +81,12 @@ directory "target"
 directory "tmp"
 
 desc "Compile the JavaScript into target/webfont.js"
-task :compile => "target/webfont.js"
+task :compile, [:modules] => "target/webfont.js"
 
-file "target/webfont.js" => SourceJs + ["target"] do |t|
+file "target/webfont.js", [:modules] => SourceJs + ["target"] do |t, args|
+  args.with_defaults(:modules => 'custom google typekit monotype fontdeck')
+
+  modules = args[:modules].split ' '
 
   output_marker = "%output%"
   output_wrapper = @modules.js_output_wrapper(output_marker)
@@ -99,6 +102,8 @@ file "target/webfont.js" => SourceJs + ["target"] do |t|
     "--define goog.DEBUG=false"
   ]
 
+  args.concat modules.map { |m| "--define INCLUDE_" + m.upcase + "_MODULE" }
+
   # Extra args to add warnings.
   args.concat([
     ["--warning_level", "VERBOSE"],
@@ -113,9 +118,12 @@ file "target/webfont.js" => SourceJs + ["target"] do |t|
 end
 
 desc "Creates debug version into target/webfont.js"
-task :debug => "target/webfont_debug.js"
+task :debug, [:modules] => "target/webfont_debug.js"
 
-file "target/webfont_debug.js" => SourceJs + ["target"] do |t|
+file "target/webfont_debug.js", [:modules] => SourceJs + ["target"] do |t|
+  args.with_defaults(:modules => 'custom google typekit monotype fontdeck')
+
+  modules = args[:modules].split ' '
 
   output_marker = "%output%"
   output_wrapper = @modules.js_output_wrapper(output_marker)
@@ -132,6 +140,8 @@ file "target/webfont_debug.js" => SourceJs + ["target"] do |t|
     "--formatting=PRETTY_PRINT",
     "--formatting=PRINT_INPUT_DELIMITER"
   ]
+
+  args.concat modules.map { |m| "--define INCLUDE_" + m.upcase + "_MODULE" }
 
   # Extra args to add warnings.
   args.concat([

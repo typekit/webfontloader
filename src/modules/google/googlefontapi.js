@@ -8,12 +8,19 @@ goog.require('webfont.FontWatchRunner');
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.modules.google.GoogleFontApi = function(userAgent, domHelper, configuration) {
-  this.userAgent_ = userAgent;
+webfont.modules.google.GoogleFontApi = function(domHelper, configuration) {
+  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
+
+  this.userAgent_ = userAgentParser.parse();
+
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
 };
 
+/**
+ * @const
+ * @type {string}
+ */
 webfont.modules.google.GoogleFontApi.NAME = 'google';
 
 goog.scope(function () {
@@ -57,10 +64,4 @@ goog.scope(function () {
     domHelper.loadStylesheet(fontApiUrlBuilder.build());
     onReady(fontApiParser.getFonts(), fontApiParser.getFontTestStrings(), GoogleFontApi.METRICS_COMPATIBLE_FONTS);
   };
-});
-
-globalNamespaceObject.addModule(webfont.modules.google.GoogleFontApi.NAME, function(configuration, domHelper) {
-  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
-  var userAgent = userAgentParser.parse();
-  return new webfont.modules.google.GoogleFontApi(userAgent, domHelper, configuration);
 });

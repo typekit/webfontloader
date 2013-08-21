@@ -14,8 +14,7 @@ projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'//this is your Fonts.com Web fo
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.modules.Monotype = function (userAgent, domHelper, configuration) {
-  this.userAgent_ = userAgent;
+webfont.modules.Monotype = function (domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
   this.fonts_ = [];
@@ -23,7 +22,9 @@ webfont.modules.Monotype = function (userAgent, domHelper, configuration) {
 
 /**
  * name of the module through which external API is supposed to call the MonotypeFontAPI.
+ *
  * @const
+ * @type {string}
  */
 webfont.modules.Monotype.NAME = 'monotype';
 
@@ -86,10 +87,4 @@ goog.scope(function () {
   Monotype.prototype.load = function (onReady) {
     onReady(this.fonts_);
   };
-});
-
-globalNamespaceObject.addModule(webfont.modules.Monotype.NAME, function (configuration, domHelper) {
-  var userAgentParser = new webfont.UserAgentParser(navigator.userAgent, document);
-  var userAgent = userAgentParser.parse();
-  return new webfont.modules.Monotype(userAgent, domHelper, configuration);
 });

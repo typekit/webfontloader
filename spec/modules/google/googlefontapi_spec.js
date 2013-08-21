@@ -1,8 +1,6 @@
 describe('modules.google.GoogleFontApi', function () {
   var GoogleFontApi = webfont.modules.google.GoogleFontApi,
       Font = webfont.Font,
-      UserAgent = webfont.UserAgent,
-      userAgent = null,
       link = '',
       insert = '',
       fakeDomHelper =  {
@@ -18,7 +16,6 @@ describe('modules.google.GoogleFontApi', function () {
   beforeEach(function () {
     insert = '';
     link = '';
-    userAgent = new UserAgent('Test', '1.0', true);
   });
 
   describe('call onReady with font family loading', function () {
@@ -26,7 +23,7 @@ describe('modules.google.GoogleFontApi', function () {
         fonts = null;
 
     beforeEach(function () {
-      googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, { families: ['Font1', 'Font2'] });
+      googleFontApi = new GoogleFontApi(fakeDomHelper, { families: ['Font1', 'Font2'] });
       googleFontApi.load(function (f) {
         fonts = f;
       });
@@ -48,7 +45,7 @@ describe('modules.google.GoogleFontApi', function () {
     var googleFontApi = null;
 
     beforeEach(function () {
-      googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, {
+      googleFontApi = new GoogleFontApi(fakeDomHelper, {
         api: 'http://moo',
         families: ['Font1', 'Font2']
       });
@@ -64,7 +61,7 @@ describe('modules.google.GoogleFontApi', function () {
     var googleFontApi = null;
 
     beforeEach(function () {
-      googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, { families: ['Font1 WithSpace', 'Font2 WithSpaceToo'] });
+      googleFontApi = new GoogleFontApi(fakeDomHelper, { families: ['Font1 WithSpace', 'Font2 WithSpaceToo'] });
       googleFontApi.load(function () {});
     });
 
@@ -77,7 +74,7 @@ describe('modules.google.GoogleFontApi', function () {
     var googleFontApi = null;
 
     beforeEach(function () {
-      googleFontApi = new GoogleFontApi(userAgent, fakeDomHelper, { families: ['Font1 WithSpace:bi', 'Font2 WithSpaceToo:b,r'] });
+      googleFontApi = new GoogleFontApi(fakeDomHelper, { families: ['Font1 WithSpace:bi', 'Font2 WithSpaceToo:b,r'] });
       googleFontApi.load(function () {});
     });
 

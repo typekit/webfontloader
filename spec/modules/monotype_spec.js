@@ -45,7 +45,7 @@ describe('modules.Monotype', function () {
       new BrowserInfo(true, false, false)
     );
 
-    monotype = new Monotype(useragent, fakeDomHelper, configuration);
+    monotype = new Monotype(fakeDomHelper, configuration);
     monotype.supportUserAgent(useragent, support);
     monotype.load(load);
 

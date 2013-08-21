@@ -18,6 +18,10 @@ webfont.modules.Custom = function(domHelper, configuration) {
   this.configuration_ = configuration;
 };
 
+/**
+ * @const
+ * @type {string}
+ */
 webfont.modules.Custom.NAME = 'custom';
 
 goog.scope(function () {
@@ -55,8 +59,4 @@ goog.scope(function () {
   Custom.prototype.supportUserAgent = function(userAgent, support) {
     return support(userAgent.getBrowserInfo().hasWebFontSupport());
   };
-});
-
-globalNamespaceObject.addModule(webfont.modules.Custom.NAME, function(configuration, domHelper) {
-  return new webfont.modules.Custom(domHelper, configuration);
 });

@@ -1,5 +1,6 @@
 describe('WebFont', function () {
   var WebFont = webfont.WebFont,
+      Font = webfont.Font;
       UserAgent = webfont.UserAgent,
       FontWatchRunner = webfont.FontWatchRunner,
       BrowserInfo = webfont.BrowserInfo,
@@ -31,7 +32,7 @@ describe('WebFont', function () {
         testModule = null;
 
     beforeEach(function () {
-      font = new WebFont(window, fontModuleLoader, userAgent);
+      font = new WebFont(window);
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
@@ -92,10 +93,15 @@ describe('WebFont', function () {
   describe('font load with context', function () {
     var font = null,
         testModule = null,
-        fakeMainWindow = {};
+        fakeMainWindow = {
+          navigator: {
+            userAgent: 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/5.0.342.9 Safari/533.2'
+          },
+          document: {}
+        };
 
     beforeEach(function () {
-      font = new WebFont(fakeMainWindow, fontModuleLoader, userAgent);
+      font = new WebFont(fakeMainWindow);
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.domHelper = domHelper;
@@ -135,7 +141,7 @@ describe('WebFont', function () {
     beforeEach(function () {
       font = new Font('Font1');
       jasmine.Clock.useMock();
-      webfont = new WebFont(window, fontModuleLoader, userAgent);
+      webfont = new WebFont(window);
       webfont.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
@@ -202,7 +208,7 @@ describe('WebFont', function () {
         testModule = null;
 
     beforeEach(function () {
-      font = new WebFont(window, fontModuleLoader, userAgent);
+      font = new WebFont(window);
 
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {};
@@ -233,23 +239,14 @@ describe('WebFont', function () {
         testModule = null;
 
     beforeEach(function () {
-      font = new WebFont(window, fontModuleLoader, new UserAgent(
-        'Firefox',
-        new Version(3, 6),
-        '3.6',
-        'Gecko',
-        new Version(1, 9, 2),
-        '1.9.2',
-        'Macintosh',
-        new Version(10, 6),
-        '10.6',
-        undefined,
-        new BrowserInfo(false, false, false)
-      ));
+      font = new WebFont(window);
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
           this.loadCalled = false;
+        };
+        testModule.supportUserAgent = function (ua, support) {
+          support(false);
         };
         testModule.load = function () {};
         return testModule;
@@ -266,7 +263,6 @@ describe('WebFont', function () {
         inactive: inactive
       });
 
-      expect(testModule).toBeNull()
       expect(inactive).toHaveBeenCalled();
     });
   });

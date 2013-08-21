@@ -9,7 +9,7 @@ You'll need a few rubygems to run the tests, demo server, and other rake tasks, 
     $ gem install bundler
     $ bundle install
 
-To run the tests in a headless WebKit you will also need to have [PhantomJS](http://www.phantomjs.org) installed. You can install PhantomJS by downloading a binary of using HomeBrew.
+To run the tests in a headless WebKit you will also need to have [PhantomJS](http://www.phantomjs.org) installed. You can install PhantomJS by downloading a binary or using HomeBrew.
 
     $ brew install phantomjs
 
@@ -18,6 +18,12 @@ To run the tests in a headless WebKit you will also need to have [PhantomJS](htt
 To build a JS file from source, just run rake:
 
     $ rake
+
+If you want to build a JS file with only specific modules you can specify them on the command line:
+
+    $ rake compile['custom google typekit']
+
+This will compile a JS file with only the `custom`, `google` and `typekit` modules. The available modules are: `custom`, `google`, `typekit`, `ascender`, `monotype`, `fontdeck`. By default all modules are included.
 
 ## Demos
 
