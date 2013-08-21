@@ -12,7 +12,12 @@ webfont.modules.Typekit = function(domHelper, configuration) {
   this.fonts_ = [];
 };
 
+/**
+ * @const
+ * @type {string}
+ */
 webfont.modules.Typekit.NAME = 'typekit';
+
 webfont.modules.Typekit.HOOK = '__webfonttypekitmodule__';
 
 goog.scope(function () {
@@ -71,8 +76,4 @@ goog.scope(function () {
   Typekit.prototype.load = function(onReady) {
     onReady(this.fonts_);
   };
-});
-
-globalNamespaceObject.addModule(webfont.modules.Typekit.NAME, function(configuration, domHelper) {
-  return new webfont.modules.Typekit(domHelper, configuration);
 });
