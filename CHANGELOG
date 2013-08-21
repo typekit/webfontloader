@@ -1,3 +1,6 @@
+v1.4.12 (August 21, 2013)
+* Cleared up initialization code and made all modules optional and configurable at compile time
+
 v1.4.11 (August 8, 2013)
 * Remove Ascender module (according to Monotype the service has now been shutdown completely.)
 * Switch Monotype module to use fast.fonts.net instead of fast.fonts.com

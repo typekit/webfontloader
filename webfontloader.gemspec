@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.4.11'
-  s.date              = '2013-08-08'
+  s.version           = '1.4.12'
+  s.date              = '2013-08-21'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -74,6 +74,7 @@ DESC
     README.md
     Rakefile
     bin/webfontloader-demos
+    browsers.json
     lib/webfontloader.rb
     lib/webfontloader/demo/public/basic.css
     lib/webfontloader/demo/public/blank.html
@@ -143,7 +144,6 @@ DESC
     spec/modules/google/googlefontapi_spec.js
     spec/modules/monotype_spec.js
     spec/modules/typekit_spec.js
-    src/async_load.js
     src/closure.js
     src/core/browserinfo.js
     src/core/cssclassname.js
@@ -170,6 +170,7 @@ DESC
     src/modules/typekit.js
     tools/compiler/base.js
     tools/compiler/compiler.jar
+    tools/jasmine-browserstack/jasmine-browserstack.js
     tools/jasmine-phantomjs/jasmine-phantomjs.js
     tools/jasmine-phantomjs/terminal-reporter.js
     tools/jasmine/MIT.LICENSE
