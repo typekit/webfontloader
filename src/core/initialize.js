@@ -85,7 +85,7 @@ if (INCLUDE_GOOGLE_MODULE) {
 
 if (!goog.global[WEBFONT]) {
   goog.global[WEBFONT] = {};
-  goog.global[WEBFONT]['load'] = webFontLoader.load;
+  goog.global[WEBFONT]['load'] = goog.bind(webFontLoader.load, webFontLoader);
 
   if (goog.global[WEBFONT_CONFIG]) {
     webFontLoader.load(goog.global[WEBFONT_CONFIG]);
