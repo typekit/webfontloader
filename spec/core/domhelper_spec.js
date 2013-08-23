@@ -137,6 +137,11 @@ describe('DomHelper', function () {
 
     beforeEach(function () {
       style = domHelper.createStyle('blockquote{font-size:300px;}');
+      domHelper.insertInto('head', style);
+    });
+
+    afterEach(function () {
+      domHelper.removeElement(style);
     });
 
     it('should create a style element', function () {
