@@ -412,7 +412,7 @@ describe('DomHelper', function () {
 
       var result = domHelper.removeElement(b);
       expect(result).toBe(true);
-      expect(b.parentNode).toEqual(null);
+      expect(b.parentNode).not.toEqual(a);
     });
 
     it('should return false when failing to remove an element', function () {
