@@ -136,7 +136,7 @@ describe('DomHelper', function () {
     var style = null;
 
     beforeEach(function () {
-      style = domHelper.createStyle('font-size:300px;');
+      style = domHelper.createStyle('blockquote{font-size:300px;}');
     });
 
     it('should create a style element', function () {
@@ -146,9 +146,9 @@ describe('DomHelper', function () {
 
     it('should set the css content correctly', function () {
       if (style.styleSheet) {
-        expect(style.styleSheet.cssText).toEqual('font-size:300px;');
+        expect(style.styleSheet.cssText).toEqual('BLOCKQUOTE {\r\n\tFONT-SIZE: 300px\r\n}\r\n');
       } else {
-        expect(style.textContent).toEqual('font-size:300px;');
+        expect(style.textContent).toEqual('blockquote{font-size:300px;}');
       }
     });
   });
