@@ -4,6 +4,9 @@ describe('modules.google.GoogleFontApi', function () {
       link = '',
       insert = '',
       fakeDomHelper =  {
+        whenBodyExists: function (callback) {
+          callback();
+        },
         loadStylesheet: function (cssLink) {
           link = cssLink;
         },
