@@ -161,7 +161,7 @@ end
 #
 desc "BrowserStack tests"
 task :bstest do |t|
-  exec "browserstack-test -u $BROWSERSTACK_USERNAME -p $BROWSERSTACK_PASSWORD -k $BROWSERSTACK_KEY -b browsers.json -t 60 http://localhost:9999/spec/index.html"
+  exec "browserstack-test -u $BROWSERSTACK_USERNAME -p $BROWSERSTACK_PASSWORD -k $BROWSERSTACK_KEY -b browsers.json -t 300 http://localhost:9999/spec/index.html"
 end
 
 desc "Test everything"
