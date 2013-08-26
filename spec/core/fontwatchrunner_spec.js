@@ -292,7 +292,7 @@ describe('FontWatchRunner', function () {
 
     it('should load font succesfully', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, sourceSansA, userAgent.getBrowserInfo(), 500),
+          domHelper, sourceSansA, userAgent.getBrowserInfo(), 5000),
           ruler = new FontRuler(domHelper, 'abcdef'),
           monospace = new Font('monospace'),
           sourceSansAFallback = new Font("'SourceSansA', monospace"),
@@ -355,7 +355,7 @@ describe('FontWatchRunner', function () {
 
     it('should load even if @font-face is inserted after watching has started', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, sourceSansB, userAgent.getBrowserInfo(), 500),
+          domHelper, sourceSansB, userAgent.getBrowserInfo(), 5000),
           ruler = new FontRuler(domHelper, 'abcdef'),
           monospace = new Font('monospace'),
           sourceSansBFallback = new Font("'SourceSansB', monospace"),
@@ -403,9 +403,9 @@ describe('FontWatchRunner', function () {
 
     it('should load one weight after another', function () {
        var fontWatchRunnerRegular = new FontWatchRunner(activeCallback, inactiveCallback,
-           domHelper, sourceSansC, userAgent.getBrowserInfo(), 500),
+           domHelper, sourceSansC, userAgent.getBrowserInfo(), 5000),
            fontWatchRunnerBold = new FontWatchRunner(activeCallback, inactiveCallback,
-           domHelper, sourceSansCBold, userAgent.getBrowserInfo(), 500),
+           domHelper, sourceSansCBold, userAgent.getBrowserInfo(), 5000),
            fontRulerA = new FontRuler(domHelper, 'abcdef'),
            fontRulerB = new FontRuler(domHelper, 'abcdef');
 
