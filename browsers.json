@@ -21,7 +21,8 @@
     "os_version": "XP",
     "os": "Windows",
     "browser_version": "6.0",
-    "browser": "ie"
+    "browser": "ie",
+    "timeout": "300"
   },
   {
     "os_version": "XP",
@@ -69,54 +70,63 @@
     "os_version": "5.0",
     "device": "iPad 2 (5.0)",
     "os": "ios",
-    "browser": "Mobile Safari"
+    "browser": "Mobile Safari",
+    "timeout": "300"
   },
   {
     "os_version": "5.1",
     "device": "iPad 3rd",
     "os": "ios",
-    "browser": "Mobile Safari"
+    "browser": "Mobile Safari",
+    "timeout": "300"
   },
   {
     "os_version": "6.0",
     "device": "iPhone 5",
     "os": "ios",
-    "browser": "Mobile Safari"
+    "browser": "Mobile Safari",
+    "timeout": "300"
   },
   {
     "os_version": "4.3.2",
     "device": "iPad 2",
     "os": "ios",
-    "browser": "Mobile Safari"
+    "browser": "Mobile Safari",
+    "timeout": "300"
   },
   {
     "os_version": "2.3",
     "device": "Samsung Galaxy S II",
     "os": "android",
-    "browser": "Android Browser"
+    "browser": "Android Browser",
+    "timeout": "300"
   },
   {
     "os_version": "2.2",
     "device": "Samsung Galaxy S",
     "os": "android",
-    "browser": "Android Browser"
+    "browser": "Android Browser",
+    "timeout": "300"
   },
   {
     "os_version": "4.2",
     "device": "LG Nexus 4",
     "os": "android",
-    "browser": "Android Browser"
+    "browser": "Android Browser",
+    "timeout": "300"
   },
   {
     "os_version": "4.0",
     "device": "Samsung Galaxy Nexus",
     "os": "android",
-    "browser": "Android Browser"
+    "browser": "Android Browser",
+    "timeout": "300"
   },
   {
     "os_version": "4.1",
     "device": "Samsung Galaxy S III",
     "os": "android",
-    "browser": "Android Browser"
+    "browser": "Android Browser",
+    "timeout": "300"
   }
 ]
