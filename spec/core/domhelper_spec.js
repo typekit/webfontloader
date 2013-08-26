@@ -136,7 +136,12 @@ describe('DomHelper', function () {
     var style = null;
 
     beforeEach(function () {
-      style = domHelper.createStyle('font-size:300px;');
+      style = domHelper.createStyle('blockquote{font-size:300px}');
+      domHelper.insertInto('head', style);
+    });
+
+    afterEach(function () {
+      domHelper.removeElement(style);
     });
 
     it('should create a style element', function () {
@@ -145,11 +150,8 @@ describe('DomHelper', function () {
     });
 
     it('should set the css content correctly', function () {
-      if (style.styleSheet) {
-        expect(style.styleSheet.cssText).toEqual('font-size:300px;');
-      } else {
-        expect(style.textContent).toEqual('font-size:300px;');
-      }
+      var text = style.styleSheet ? style.styleSheet.cssText : style.textContent;
+      expect(text.replace(/[\s;]/g, '').toLowerCase()).toEqual('blockquote{font-size:300px}');
     });
   });
 
@@ -412,7 +414,7 @@ describe('DomHelper', function () {
 
       var result = domHelper.removeElement(b);
       expect(result).toBe(true);
-      expect(b.parentNode).toEqual(null);
+      expect(b.parentNode).not.toEqual(a);
     });
 
     it('should return false when failing to remove an element', function () {
