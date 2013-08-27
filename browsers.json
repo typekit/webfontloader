@@ -28,7 +28,8 @@
     "os_version": "XP",
     "os": "Windows",
     "browser_version": "7.0",
-    "browser": "ie"
+    "browser": "ie",
+    "timeout": "300"
   },
   {
     "os_version": "XP",
