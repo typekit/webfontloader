@@ -396,44 +396,5 @@ describe('FontWatchRunner', function () {
         expect(ruler.getWidth()).toEqual(activeWidth);
       });
     });
-
-    it('should load one weight after another', function () {
-       var fontWatchRunnerRegular = new FontWatchRunner(activeCallback, inactiveCallback,
-           domHelper, sourceSansC, userAgent.getBrowserInfo(), 5000),
-           fontWatchRunnerBold = new FontWatchRunner(activeCallback, inactiveCallback,
-           domHelper, sourceSansCBold, userAgent.getBrowserInfo(), 5000),
-           fontRulerA = new FontRuler(domHelper, 'abcdef'),
-           fontRulerB = new FontRuler(domHelper, 'abcdef');
-
-      runs(function () {
-        fontRulerA.insert();
-        fontRulerA.setFont(sourceSansC);
-        fontWatchRunnerRegular.start();
-      });
-
-      waitsFor(function () {
-        return activeCallback.wasCalled || inactiveCallback.wasCalled;
-      });
-
-      runs(function () {
-        expect(activeCallback).toHaveBeenCalledWith(sourceSansC);
-
-        activeCallback.reset();
-        inactiveCallback.reset();
-
-        fontRulerB.insert();
-        fontRulerB.setFont(sourceSansCBold);
-        fontWatchRunnerBold.start();
-      });
-
-      waitsFor(function () {
-        return activeCallback.wasCalled || inactiveCallback.wasCalled;
-      });
-
-      runs(function () {
-        expect(activeCallback).toHaveBeenCalledWith(sourceSansCBold);
-        expect(fontRulerA.getWidth()).not.toEqual(fontRulerB.getWidth());
-      });
-    });
   });
 });
