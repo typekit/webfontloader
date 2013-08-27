@@ -256,8 +256,6 @@ describe('FontWatchRunner', function () {
         nullFont = null,
         sourceSansA = null,
         sourceSansB = null,
-        sourceSansC = null,
-        sourceSansCBold = null,
         elena = null;
 
     beforeEach(function () {
@@ -266,8 +264,6 @@ describe('FontWatchRunner', function () {
       nullFont = new Font('__webfontloader_test__');
       sourceSansA = new Font('SourceSansA');
       sourceSansB = new Font('SourceSansB');
-      sourceSansC = new Font('SourceSansC');
-      sourceSansCBold = new Font('SourceSansC', 'n7');
       elena = new Font('Elena');
 
       userAgent = userAgentParser.parse();
