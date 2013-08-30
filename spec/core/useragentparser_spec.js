@@ -695,7 +695,7 @@ describe('UserAgentParser', function () {
       });
 
       it('should detect Internet Explorer 11', function () {
-        expect(parse('Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko'))
+        expect(parse('Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko', { documentMode: 11 }))
         .toMatchUserAgent({
           name: 'MSIE',
           parsedVersion: new Version(11, 0),
@@ -706,7 +706,7 @@ describe('UserAgentParser', function () {
           engine: 'Trident',
           parsedEngineVersion: new Version(7, 0),
           engineVersion: '7.0',
-          documentMode: undefined,
+          documentMode: 11,
           browserInfo: {
             hasWebFontSupport: true,
             hasWebKitFallbackBug: false,
