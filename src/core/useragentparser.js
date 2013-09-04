@@ -160,7 +160,7 @@ goog.scope(function () {
 
     if (this.userAgent_.indexOf("MSIE") != -1) {
       browserVersionString = this.getMatchingGroup_(this.userAgent_, /MSIE ([\d\w\.]+)/, 1);
-    } else if (this.userAgent_.indexOf("Trident/") != -1) {
+    } else {
       browserVersionString = this.getMatchingGroup_(this.userAgent_, /rv:([\d\w\.]+)/, 1);
     }
 
