@@ -180,7 +180,7 @@ In this example, the `fonts.css` file might look something like this:
       src: ...;
     }
 
-The custom module also supports customizing test strings, which can be used to load fonts with custom subsets or glyphs in the private use unicode area.
+The custom module also supports customizing the test strings that are used to determine whether or not a font has loaded. This can be used to load fonts with custom subsets or glyphs in the private use unicode area.
 
     WebFontConfig = {
       custom: {
@@ -191,7 +191,7 @@ The custom module also supports customizing test strings, which can be used to l
       }
     };
 
-Tests strings should be specified on a per font basis and contain at least one character. If not specified the default test string is used.
+Tests strings should be specified on a per font basis and contain at least one character. If not specified the default test string (`BESbswy`) is used.
 
 ### Fontdeck
 
