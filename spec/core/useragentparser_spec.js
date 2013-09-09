@@ -558,9 +558,9 @@ describe('UserAgentParser', function () {
           platform: 'Windows',
           parsedPlatformVersion: new Version(5, 1),
           platformVersion: '5.1',
-          engine: 'MSIE',
-          parsedEngineVersion: new Version(7, 0),
-          engineVersion: '7.0',
+          engine: 'Unknown',
+          parsedEngineVersion: new Version(),
+          engineVersion: 'Unknown',
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -577,9 +577,9 @@ describe('UserAgentParser', function () {
           platform: 'Windows',
           parsedPlatformVersion: new Version(5, 1),
           platformVersion: '5.1',
-          engine: 'MSIE',
-          parsedEngineVersion: new Version(7, 0, null, 'b'),
-          engineVersion: '7.0b',
+          engine: 'Unknown',
+          parsedEngineVersion: new Version(),
+          engineVersion: 'Unknown',
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -598,9 +598,9 @@ describe('UserAgentParser', function () {
           platform: 'Windows',
           parsedPlatformVersion: new Version(5, 1),
           platformVersion: '5.1',
-          engine: 'MSIE',
-          parsedEngineVersion: new Version(7, 0),
-          engineVersion: '7.0',
+          engine: 'Unknown',
+          parsedEngineVersion: new Version(),
+          engineVersion: 'Unknown',
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -619,9 +619,9 @@ describe('UserAgentParser', function () {
           platform: 'Windows Phone',
           parsedPlatformVersion: new Version(8, 0),
           platformVersion: '8.0',
-          engine: 'MSIE',
-          parsedEngineVersion: new Version(10, 0),
-          engineVersion: '10.0',
+          engine: 'Trident',
+          parsedEngineVersion: new Version(6, 0),
+          engineVersion: '6.0',
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
@@ -640,9 +640,9 @@ describe('UserAgentParser', function () {
           platform: 'Windows Phone',
           parsedPlatformVersion: new Version(7, 5),
           platformVersion: '7.5',
-          engine: 'MSIE',
-          parsedEngineVersion: new Version(9, 0),
-          engineVersion: '9.0',
+          engine: 'Trident',
+          parsedEngineVersion: new Version(5, 0),
+          engineVersion: '5.0',
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -661,9 +661,9 @@ describe('UserAgentParser', function () {
           platform: 'Macintosh',
           parsedPlatformVersion: new Version(),
           platformVersion: 'Unknown',
-          engine: 'MSIE',
-          parsedEngineVersion: new Version(5, 23),
-          engineVersion: '5.23',
+          engine: 'Unknown',
+          parsedEngineVersion: new Version(),
+          engineVersion: 'Unknown',
           documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: false,
@@ -673,7 +673,7 @@ describe('UserAgentParser', function () {
         });
       });
 
-      it('should detect Internet Explorer with Trident parsedVersion', function () {
+      it('should detect Internet Explorer with Trident version', function () {
         expect(parse('Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; InfoPath.2)', { documentMode: 8 }))
         .toMatchUserAgent({
           name: 'MSIE',
@@ -682,10 +682,31 @@ describe('UserAgentParser', function () {
           platform: 'Windows',
           parsedPlatformVersion: new Version(6, 1),
           platformVersion: '6.1',
-          engine: 'MSIE',
-          parsedEngineVersion: new Version(8, 0),
-          engineVersion: '8.0',
+          engine: 'Trident',
+          parsedEngineVersion: new Version(4, 0),
+          engineVersion: '4.0',
           documentMode: 8,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
+
+      it('should detect Internet Explorer 11', function () {
+        expect(parse('Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko', { documentMode: 11 }))
+        .toMatchUserAgent({
+          name: 'MSIE',
+          parsedVersion: new Version(11, 0),
+          version: '11.0',
+          platform: 'Windows',
+          parsedPlatformVersion: new Version(6, 3),
+          platformVersion: '6.3',
+          engine: 'Trident',
+          parsedEngineVersion: new Version(7, 0),
+          engineVersion: '7.0',
+          documentMode: 11,
           browserInfo: {
             hasWebFontSupport: true,
             hasWebKitFallbackBug: false,
