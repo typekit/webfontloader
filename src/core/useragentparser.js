@@ -141,7 +141,7 @@ goog.scope(function () {
    * @private
    */
   UserAgentParser.prototype.isIe_ = function() {
-    return this.userAgent_.indexOf("MSIE") != -1;
+    return this.userAgent_.indexOf("MSIE") != -1 || this.userAgent_.indexOf("Trident/") != -1;
   };
 
   /**
@@ -151,21 +151,40 @@ goog.scope(function () {
     var platform = this.getPlatform_(),
         platformVersionString = this.getPlatformVersionString_(),
         platformVersion = Version.parse(platformVersionString),
-        browserVersionString = this.getMatchingGroup_(this.userAgent_, /MSIE ([\d\w\.]+)/, 1),
-        browserVersion = Version.parse(browserVersionString),
-        documentMode = this.getDocumentMode_(this.doc_),
-        supportWebFont = (platform == "Windows" && browserVersion.major >= 6) ||
+        browserVersionString = null,
+        browserVersion = null,
+        engine = null,
+        engineVersion = null,
+        engineVersionString = this.getMatchingGroup_(this.userAgent_, /Trident\/([\d\w\.]+)/, 1),
+        documentMode = this.getDocumentMode_(this.doc_);
+
+    if (this.userAgent_.indexOf("MSIE") != -1) {
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /MSIE ([\d\w\.]+)/, 1);
+    } else {
+      browserVersionString = this.getMatchingGroup_(this.userAgent_, /rv:([\d\w\.]+)/, 1);
+    }
+
+    browserVersion = Version.parse(browserVersionString);
+
+    if (engineVersionString != '') {
+      engine = 'Trident';
+      engineVersion = Version.parse(engineVersionString);
+    } else {
+      engine = UserAgentParser.UNKNOWN;
+      engineVersion = new Version();
+      engineVersionString = UserAgentParser.UNKNOWN;
+    }
+
+    var supportWebFont = (platform == "Windows" && browserVersion.major >= 6) ||
                          (platform == "Windows Phone" && platformVersion.major >= 8);
 
-    // For IE we give MSIE as the engine name and the version of IE
-    // instead of the specific Trident engine name and version
     return new UserAgent(
       "MSIE",
       browserVersion,
       browserVersionString,
-      "MSIE",
-      browserVersion,
-      browserVersionString,
+      engine,
+      engineVersion,
+      engineVersionString,
       platform,
       platformVersion,
       platformVersionString,
