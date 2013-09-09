@@ -180,6 +180,19 @@ In this example, the `fonts.css` file might look something like this:
       src: ...;
     }
 
+The custom module also supports customizing the test strings that are used to determine whether or not a font has loaded. This can be used to load fonts with custom subsets or glyphs in the private use unicode area.
+
+    WebFontConfig = {
+      custom: {
+        families: ['My Font'],
+        testStrings: {
+          'My Font': '\uE003\uE005'
+        }
+      }
+    };
+
+Tests strings should be specified on a per font basis and contain at least one character. If not specified the default test string (`BESbswy`) is used.
+
 ### Fontdeck
 
 To use the [Fontdeck](http://fontdeck.com/) module, specify the ID of your website. You can find this ID on the website page within your account settings.

@@ -15,7 +15,10 @@ describe('modules.Custom', function () {
 
       var defaultModule = new Custom(fakeDomHelper, {
         families: ['Font1', 'Font2', 'Font3'],
-        urls: ['http://moo', 'http://meuh']
+        urls: ['http://moo', 'http://meuh'],
+        testStrings: {
+          Font3: 'hello world'
+        }
       });
 
       defaultModule.load(load);
@@ -33,6 +36,11 @@ describe('modules.Custom', function () {
       expect(load.calls[0].args[0][0].getName()).toEqual('Font1');
       expect(load.calls[0].args[0][1].getName()).toEqual('Font2');
       expect(load.calls[0].args[0][2].getName()).toEqual('Font3');
+    });
+
+    it('should have set a custom test string', function () {
+      expect(load.callCount).toEqual(1);
+      expect(load.calls[0].args[1]).toEqual({ Font3: 'hello world' });
     });
   });
 });

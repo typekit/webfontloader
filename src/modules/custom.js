@@ -32,6 +32,7 @@ goog.scope(function () {
     var i, len;
     var urls = this.configuration_['urls'] || [];
     var familiesConfiguration = this.configuration_['families'] || [];
+    var fontTestStrings = this.configuration_['testStrings'] || {};
 
     for (i = 0, len = urls.length; i < len; i++) {
       this.domHelper_.loadStylesheet(urls[i]);
@@ -53,7 +54,7 @@ goog.scope(function () {
       }
     }
 
-    onReady(fonts);
+    onReady(fonts, fontTestStrings);
   };
 
   Custom.prototype.supportUserAgent = function(userAgent, support) {
