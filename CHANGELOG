@@ -1,3 +1,8 @@
+v1.5.0 (September 9, 2013)
+* Correctly categorize Internet Explorer 11 as an Internet Explorer version.
+* Add support for custom test strings in the custom module.
+* Various small bug fixes to the test suite so it runs on all browsers automatically.
+
 v1.4.12 (August 21, 2013)
 * Cleared up initialization code and made all modules optional and configurable at compile time
 
