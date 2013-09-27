@@ -180,7 +180,7 @@ In this example, the `fonts.css` file might look something like this:
       src: ...;
     }
 
-Alternatively, you can load your fonts from a stylesheet not specified in WebFontConfig. As long as the names match those that are declared in the `families` array, the proper loading classes will be applied to the <html> element.
+Alternatively, you can load your fonts from a stylesheet not specified in WebFontConfig. As long as the names match those that are declared in the `families` array, the proper loading classes will be applied to the html element.
 
 ```
 <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
@@ -195,7 +195,7 @@ Alternatively, you can load your fonts from a stylesheet not specified in WebFon
 <style type="text/css">
    @font-face {
       font-family:"My Font";
-      url("assets/fonts/my_font.woff") format("woff")
+      src:url("assets/fonts/my_font.woff") format("woff");
    }
 </style>
 ```
