@@ -44,6 +44,8 @@ goog.scope(function () {
     var eventDispatcher = new EventDispatcher(
         this.domHelper_, context.document.documentElement, configuration);
 
+    eventDispatcher.dispatchLoading();
+
     this.load_(eventDispatcher, configuration);
   };
 
@@ -86,10 +88,6 @@ goog.scope(function () {
    */
   WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher, fonts, opt_fontTestStrings, opt_metricCompatibleFonts) {
     var allModulesLoaded = --this.moduleLoading_ == 0;
-
-    if (allModulesLoaded) {
-      eventDispatcher.dispatchLoading();
-    }
 
     setTimeout(function () {
       fontWatcher.watchFonts(fonts, opt_fontTestStrings || {}, opt_metricCompatibleFonts || null, allModulesLoaded);
