@@ -68,12 +68,8 @@ goog.scope(function () {
 
       this.moduleFailedLoading_--;
 
-      if (allModulesLoaded) {
-        if (this.moduleFailedLoading_ == 0) {
-          eventDispatcher.dispatchInactive();
-        } else {
-          eventDispatcher.dispatchLoading();
-        }
+      if (allModulesLoaded && this.moduleFailedLoading_ == 0) {
+        eventDispatcher.dispatchInactive();
       }
       fontWatcher.watchFonts([], {}, null, allModulesLoaded);
     }
