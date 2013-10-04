@@ -44,8 +44,6 @@ goog.scope(function () {
     var eventDispatcher = new EventDispatcher(
         this.domHelper_, context.document.documentElement, configuration);
 
-    eventDispatcher.dispatchLoading();
-
     this.load_(eventDispatcher, configuration);
   };
 
@@ -95,9 +93,15 @@ goog.scope(function () {
    * @param {Object} configuration
    */
   WebFont.prototype.load_ = function(eventDispatcher, configuration) {
-    var modules = this.fontModuleLoader_.getModules(configuration, this.domHelper_),
+    var modules = [],
         timeout = configuration['timeout'],
         self = this;
+
+    // Immediately dispatch the loading event before initializing the modules
+    // so we know for sure that the loading event is synchronous.
+    eventDispatcher.dispatchLoading();
+
+    modules = this.fontModuleLoader_.getModules(configuration, this.domHelper_);
 
     this.moduleFailedLoading_ = this.moduleLoading_ = modules.length;
 
