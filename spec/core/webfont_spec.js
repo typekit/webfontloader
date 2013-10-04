@@ -313,4 +313,55 @@ describe('WebFont', function () {
       });
     });
   });
+
+  describe('synchronous load event', function () {
+    var font = null,
+        testModule = null,
+        inactive = null,
+        loading = null,
+        active = null;
+
+    beforeEach(function () {
+      inactive = jasmine.createSpy('inactive'),
+      active = jasmine.createSpy('active');
+      loading = jasmine.createSpy('loading');
+
+      font = new WebFont(window, fontModuleLoader, userAgent);
+
+      font.addModule('test', function (conf, domHelper) {
+        testModule = new function () {};
+        testModule.supportUserAgent = function (ua, support) {
+          window.setTimeout(function () {
+            support(true);
+          }, 100);
+        };
+        testModule.load = function (onReady) {
+          onReady([]);
+        };
+
+        return testModule;
+      });
+    });
+
+    it('fires loading event correctly', function () {
+      runs(function () {
+        font.load({
+          'test': {},
+          inactive: inactive,
+          active: active,
+          loading: loading
+        });
+        expect(loading).toHaveBeenCalled();
+      });
+
+      waitsFor(function () {
+        return active.wasCalled || inactive.wasCalled;
+      });
+
+      runs(function () {
+        expect(inactive).toHaveBeenCalled();
+        expect(active).not.toHaveBeenCalled();
+      });
+    });
+  });
 });
