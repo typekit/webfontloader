@@ -66,12 +66,8 @@ goog.scope(function () {
 
       this.moduleFailedLoading_--;
 
-      if (allModulesLoaded) {
-        if (this.moduleFailedLoading_ == 0) {
-          eventDispatcher.dispatchInactive();
-        } else {
-          eventDispatcher.dispatchLoading();
-        }
+      if (allModulesLoaded && this.moduleFailedLoading_ == 0) {
+        eventDispatcher.dispatchInactive();
       }
       fontWatcher.watchFonts([], {}, null, allModulesLoaded);
     }
@@ -87,10 +83,6 @@ goog.scope(function () {
   WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher, fonts, opt_fontTestStrings, opt_metricCompatibleFonts) {
     var allModulesLoaded = --this.moduleLoading_ == 0;
 
-    if (allModulesLoaded) {
-      eventDispatcher.dispatchLoading();
-    }
-
     setTimeout(function () {
       fontWatcher.watchFonts(fonts, opt_fontTestStrings || {}, opt_metricCompatibleFonts || null, allModulesLoaded);
     }, 0);
@@ -101,9 +93,15 @@ goog.scope(function () {
    * @param {Object} configuration
    */
   WebFont.prototype.load_ = function(eventDispatcher, configuration) {
-    var modules = this.fontModuleLoader_.getModules(configuration, this.domHelper_),
+    var modules = [],
         timeout = configuration['timeout'],
         self = this;
+
+    // Immediately dispatch the loading event before initializing the modules
+    // so we know for sure that the loading event is synchronous.
+    eventDispatcher.dispatchLoading();
+
+    modules = this.fontModuleLoader_.getModules(configuration, this.domHelper_);
 
     this.moduleFailedLoading_ = this.moduleLoading_ = modules.length;
 
