@@ -1,3 +1,8 @@
+v1.5.1 (October 15, 2013)
+* Dispatch wf-loading event synchronously instead of waiting for asynchronous modules
+* Update README explaining how to use custom fonts without a stylesheet
+* Add license information to gemspec
+
 v1.5.0 (September 9, 2013)
 * Correctly categorize Internet Explorer 11 as an Internet Explorer version.
 * Add support for custom test strings in the custom module.
