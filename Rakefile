@@ -89,7 +89,7 @@ file "target/webfont.js", [:modules] => SourceJs + ["target"] do |t, args|
   modules = args[:modules].split ' '
 
   output_marker = "%output%"
-  output_wrapper = @modules.js_output_wrapper(output_marker)
+  output_wrapper = @modules.js_output_wrapper(output_marker, version)
 
   args = [
     ["-jar", JsCompilerJar],
@@ -126,7 +126,7 @@ file "target/webfont_debug.js", [:modules] => SourceJs + ["target"] do |t, args|
   modules = args[:modules].split ' '
 
   output_marker = "%output%"
-  output_wrapper = @modules.js_output_wrapper(output_marker)
+  output_wrapper = @modules.js_output_wrapper(output_marker, version)
 
   args = [
     ["-jar", JsCompilerJar],
