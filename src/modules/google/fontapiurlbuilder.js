@@ -51,7 +51,7 @@ goog.scope(function () {
 
   FontApiUrlBuilder.prototype.build = function() {
     if (this.fontFamilies_.length == 0) {
-      throw new Error('No fonts to load !');
+      throw new Error('No fonts to load!');
     }
     if (this.apiUrl_.indexOf("kit=") != -1) {
       return this.apiUrl_;
