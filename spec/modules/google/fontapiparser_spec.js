@@ -66,6 +66,22 @@ describe('modules.google.FontApiParser', function () {
     });
   });
 
+  describe('variations with dashes', function () {
+    var parser = null;
+
+    beforeEach(function () {
+      parser = new FontApiParser(['Nobile:semi-bold']);
+      parser.parse();
+    });
+
+    it('should parse the variation correctly', function () {
+      var fonts = parser.getFonts();
+
+      expect(fonts.length).toEqual(1);
+      expect(fonts[0]).toEqual(new Font('Nobile', 'n6'));
+    });
+  });
+
   describe('nonsense', function () {
     var parser = null;
 
