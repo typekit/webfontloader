@@ -103,7 +103,7 @@ goog.scope(function () {
   };
 
   FontApiParser.prototype.generateFontVariationDescription_ = function(variation) {
-    if (!variation.match(/^[\w]+$/)) {
+    if (!variation.match(/^[\w-]+$/)) {
       return '';
     }
     var normalizedVariation = variation.toLowerCase();
