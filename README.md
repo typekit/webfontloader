@@ -27,11 +27,11 @@ To use the Web Font Loader library, just include it in your page and tell it whi
 ```html
 <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
 <script>
-   WebFont.load({
-     google: {
-       families: ['Droid Sans', 'Droid Serif']
-     }
-   });
+  WebFont.load({
+    google: {
+      families: ['Droid Sans', 'Droid Serif']
+  }
+});
 </script>
 ```
 
@@ -41,19 +41,19 @@ It is also possible to use the Web Font Loader asynchronously. For example, to l
 
 ```html
 <script>
-   WebFontConfig = {
-     typekit: { id: 'xxxxxx' }
-   };
+  WebFontConfig = {
+    typekit: { id: 'xxxxxx' }
+  };
 
-   (function() {
-     var wf = document.createElement('script');
-     wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-         '://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js';
-     wf.type = 'text/javascript';
-     wf.async = 'true';
-     var s = document.getElementsByTagName('script')[0];
-     s.parentNode.insertBefore(wf, s);
-   })();
+  (function() {
+    var wf = document.createElement('script');
+    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+              '://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+  })();
 </script>
 ```
 
@@ -105,12 +105,12 @@ JavaScript events are implemented as callback functions on the `WebFontConfig` c
 
 ```javascript
 WebFontConfig = {
-   loading: function() {},
-   active: function() {},
-   inactive: function() {},
-   fontloading: function(familyName, fvd) {},
-   fontactive: function(familyName, fvd) {},
-   fontinactive: function(familyName, fvd) {}
+  loading: function() {},
+  active: function() {},
+  inactive: function() {},
+  fontloading: function(familyName, fvd) {},
+  fontactive: function(familyName, fvd) {},
+  fontinactive: function(familyName, fvd) {}
 };
 ```
 
@@ -124,10 +124,10 @@ You can change the default timeout by using the `timeout` option on the `WebFont
 
 ```javascript
 WebFontConfig = {
-   google: {
-     families: ['Droid Sans']
-   },
-   timeout: 2000 // Set the timeout to two seconds
+  google: {
+    families: ['Droid Sans']
+  },
+  timeout: 2000 // Set the timeout to two seconds
 };
 ```
 
@@ -139,10 +139,10 @@ Usually, it's easiest to include a copy of Web Font Loader in every window where
 
 ```javascript
 WebFontConfig = {
-   google: {
-     families: ['Droid Sans']
-   },
-   context: frames['my-child']
+  google: {
+    families: ['Droid Sans']
+  },
+  context: frames['my-child']
 };
 ```
 
@@ -164,10 +164,10 @@ a colon. Variations are specified using [FVD notation](https://github.com/typeki
 
 ```javascript
 WebFontConfig = {
-   custom: {
-     families: ['My Font', 'My Other Font:n4,i4,n7'],
-     urls: ['/fonts.css']
-   }
+  custom: {
+    families: ['My Font', 'My Other Font:n4,i4,n7'],
+    urls: ['/fonts.css']
+  }
 };
 ```
 
@@ -175,26 +175,26 @@ In this example, the `fonts.css` file might look something like this:
 
 ```css
 @font-face {
-   font-family: 'My Font';
-   src: ...;
+  font-family: 'My Font';
+  src: ...;
 }
 @font-face {
-   font-family: 'My Other Font';
-   font-style: normal;
-   font-weight: normal; /* or 400 */
-   src: ...;
+  font-family: 'My Other Font';
+  font-style: normal;
+  font-weight: normal; /* or 400 */
+  src: ...;
 }
 @font-face {
-   font-family: 'My Other Font';
-   font-style: italic;
-   font-weight: normal; /* or 400 */
-   src: ...;
+  font-family: 'My Other Font';
+  font-style: italic;
+  font-weight: normal; /* or 400 */
+  src: ...;
 }
 @font-face {
-   font-family: 'My Other Font';
-   font-style: normal;
-   font-weight: bold; /* or 700 */
-   src: ...;
+  font-family: 'My Other Font';
+  font-style: normal;
+  font-weight: bold; /* or 700 */
+  src: ...;
 }
 ```
 
@@ -203,18 +203,18 @@ Alternatively, you can load your fonts from a stylesheet not specified in WebFon
 ```html
 <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
 <script>
-   WebFont.load({
-      custom: {
-         families: ['My Font']
-      }
-   });
+  WebFont.load({
+    custom: {
+      families: ['My Font']
+    }
+  });
 </script>
 
 <style type="text/css">
-   @font-face {
-      font-family:"My Font";
-      src:url("assets/fonts/my_font.woff") format("woff");
-   }
+  @font-face {
+    font-family:"My Font";
+    src:url("assets/fonts/my_font.woff") format("woff");
+  }
 </style>
 ```
 
@@ -222,12 +222,12 @@ The custom module also supports customizing the test strings that are used to de
 
 ```javascript
 WebFontConfig = {
-   custom: {
-     families: ['My Font'],
-     testStrings: {
-       'My Font': '\uE003\uE005'
-     }
-   }
+  custom: {
+    families: ['My Font'],
+    testStrings: {
+      'My Font': '\uE003\uE005'
+    }
+  }
 };
 ```
 
@@ -239,9 +239,9 @@ To use the [Fontdeck](http://fontdeck.com/) module, specify the ID of your websi
 
 ```javascript
 WebFontConfig = {
-   fontdeck: {
-     id: 'xxxxx'
-   }
+  fontdeck: {
+    id: 'xxxxx'
+  }
 };
 ```
 
@@ -251,10 +251,10 @@ When using [Fonts.com web fonts](http://webfonts.fonts.com/) specify your Projec
 
 ```javascript
 WebFontConfig = {
-   monotype: {
-     projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-     version: 12345 // (optional, flushes the CDN cache)
-   }
+  monotype: {
+    projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+    version: 12345 // (optional, flushes the CDN cache)
+  }
 };
 ```
 
@@ -266,9 +266,9 @@ Using [Google's Font API](https://code.google.com/apis/webfonts/docs/getting_sta
 
 ```javascript
 WebFontConfig = {
-   google: {
-     families: ['Droid Sans', 'Droid Serif:bold']
-   }
+  google: {
+    families: ['Droid Sans', 'Droid Serif:bold']
+  }
 };
 ```
 
@@ -276,10 +276,10 @@ You can also supply the `text` parameter to perform character subsetting:
 
 ```javascript
 WebFontConfig = {
-   google: {
-     families: ['Droid Sans', 'Droid Serif'],
-     text: 'abcdedfghijklmopqrstuvwxyz!'
-   }
+  google: {
+    families: ['Droid Sans', 'Droid Serif'],
+    text: 'abcdedfghijklmopqrstuvwxyz!'
+  }
 };
 ```
 
@@ -291,9 +291,9 @@ When using [Typekit](http://www.typekit.com), specify the Kit to retrieve by its
 
 ```javascript
 WebFontConfig = {
-   typekit: {
-     id: 'xxxxxx'
-   }
+  typekit: {
+    id: 'xxxxxx'
+  }
 };
 ```
 
@@ -313,8 +313,8 @@ For example:
 
 ```javascript
 WebFontConfig = {
-   providerA: 'Family1',
-   providerB: 'Family2'
+  providerA: 'Family1',
+  providerB: 'Family2'
 };
 ```
 
