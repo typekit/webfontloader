@@ -24,34 +24,38 @@ Web Font Loader gives you added control when using linked fonts via `@font-face`
 
 To use the Web Font Loader library, just include it in your page and tell it which fonts to load. For example, you could load fonts from [Google Fonts](http://www.google.com/fonts/) using the Web Font Loader hosted on [Google Hosted Libraries](https://developers.google.com/speed/libraries/) using the following code.
 
-    <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
-    <script>
-      WebFont.load({
-        google: {
-          families: ['Droid Sans', 'Droid Serif']
-        }
-      });
-    </script>
+```html
+<script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+<script>
+WebFont.load({
+  google: {
+    families: ['Droid Sans', 'Droid Serif']
+  }
+});
+</script>
+```
 
 Alternatively, you can link to the latest `1.x` version of the Web Font Loader by using `//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js` as the `script` source. Note that the version in this url is less specific. It will always load the latest `1.x` version, but it also has a shorter cache time to ensure that your page gets updates in a timely manner. For performance reasons, we recommend using an explicit version number (such as `1.4.7`) in urls when using the Web Font Loader in production. You can manually update the Web Font Loader version number in the url when you want to adopt a new version.
 
 It is also possible to use the Web Font Loader asynchronously. For example, to load [Typekit](http://www.typekit.com) fonts asynchronously, you could use the following code.
 
-    <script>
-      WebFontConfig = {
-        typekit: { id: 'xxxxxx' }
-      };
+```html
+<script>
+  WebFontConfig = {
+    typekit: { id: 'xxxxxx' }
+  };
 
-      (function() {
-        var wf = document.createElement('script');
-        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-            '://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js';
-        wf.type = 'text/javascript';
-        wf.async = 'true';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(wf, s);
-      })();
-    </script>
+  (function() {
+    var wf = document.createElement('script');
+    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+              '://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+  })();
+</script>
+```
 
 Using the Web Font Loader asynchronously avoids blocking your page while loading the JavaScript. Be aware that if the script is used asynchronously, the rest of the page might render before the Web Font Loader is loaded and executed, which can cause a [Flash of Unstyled Text (FOUT)](http://help.typekit.com/customer/portal/articles/6852).
 
@@ -74,20 +78,24 @@ Web Font Loader provides an event system that developers can hook into. It gives
 
 CSS events are implemented as classes on the `html` element. The following classes are set on the `html` element:
 
-    .wf-loading
-    .wf-active
-    .wf-inactive
-    .wf-<familyname>-<fvd>-loading
-    .wf-<familyname>-<fvd>-active
-    .wf-<familyname>-<fvd>-inactive
+```css
+.wf-loading
+.wf-active
+.wf-inactive
+.wf-<familyname>-<fvd>-loading
+.wf-<familyname>-<fvd>-active
+.wf-<familyname>-<fvd>-inactive
+```
 
 The `<familyname>` placeholder will be replaced by a sanitized version of the name of each font family. Spaces and underscores are removed from the name, and all characters are converted to lower case. For example, `Droid Sans` becomes `droidsans`. The `<fvd>` placeholder is a [Font Variation Description](https://github.com/typekit/fvd). Put simply, it's a shorthand for describing the style and weight of a particular font. Here are a few examples:
 
-    /* n4 */
-    @font-face { font-style: normal; font-weight: normal; }
+```css
+/* n4 */
+@font-face { font-style: normal; font-weight: normal; }
 
-    /* i7 */
-    @font-face { font-style: italic; font-weight: bold; }
+/* i7 */
+@font-face { font-style: italic; font-weight: bold; }
+```
 
 Keep in mind that `font-weight: normal` maps to `font-weight: 400` and `font-weight: bold` maps to `font-weight: 700`. If no style/weight is specified, the default `n4` (`font-style: normal; font-weight: normal;`) will be used.
 
@@ -95,14 +103,16 @@ If fonts are loaded multiple times on a single page, the CSS classes continue to
 
 JavaScript events are implemented as callback functions on the `WebFontConfig` configuration object.
 
-    WebFontConfig = {
-      loading: function() {},
-      active: function() {},
-      inactive: function() {},
-      fontloading: function(familyName, fvd) {},
-      fontactive: function(familyName, fvd) {},
-      fontinactive: function(familyName, fvd) {}
-    };
+```javascript
+WebFontConfig = {
+  loading: function() {},
+  active: function() {},
+  inactive: function() {},
+  fontloading: function(familyName, fvd) {},
+  fontactive: function(familyName, fvd) {},
+  fontinactive: function(familyName, fvd) {}
+};
+```
 
 The `fontloading`, `fontactive` and `fontinactive` callbacks are passed the family name and font variation description of the font that concerns the event.
 
@@ -112,12 +122,14 @@ Since the Internet is not 100% reliable, it's possible that a font will fail to 
 
 You can change the default timeout by using the `timeout` option on the `WebFontConfig` object.
 
-    WebFontConfig = {
-      google: {
-        families: ['Droid Sans']
-      },
-      timeout: 2000 // Set the timeout to two seconds
-    };
+```javascript
+WebFontConfig = {
+  google: {
+    families: ['Droid Sans']
+  },
+  timeout: 2000 // Set the timeout to two seconds
+};
+```
 
 The timeout value should be in milliseconds, and defaults to 5000 milliseconds (5 seconds) if not supplied.
 
@@ -125,12 +137,14 @@ The timeout value should be in milliseconds, and defaults to 5000 milliseconds (
 
 Usually, it's easiest to include a copy of Web Font Loader in every window where fonts are needed, so that each window manages its own fonts. However, if you need to have a single window manage fonts for multiple same-origin child windows or iframes that are built up using JavaScript, Web Font Loader supports that as well. Just use the optional `context` configuration option and give it a reference to the target window for loading:
 
-    WebFontConfig = {
-      google: {
-        families: ['Droid Sans']
-      },
-      context: frames['my-child']
-    };
+```javascript
+WebFontConfig = {
+  google: {
+    families: ['Droid Sans']
+  },
+  context: frames['my-child']
+};
+```
 
 This is an advanced configuration option that isn't needed for most use cases.
 
@@ -148,68 +162,74 @@ You can specify a specific font variation or set of variations to load and watch
 by appending the variations separated by commas to the family name separated by
 a colon. Variations are specified using [FVD notation](https://github.com/typekit/fvd).
 
-    WebFontConfig = {
-      custom: {
-        families: ['My Font', 'My Other Font:n4,i4,n7'],
-        urls: ['/fonts.css']
-      }
-    };
+```javascript
+WebFontConfig = {
+  custom: {
+    families: ['My Font', 'My Other Font:n4,i4,n7'],
+    urls: ['/fonts.css']
+  }
+};
+```
 
 In this example, the `fonts.css` file might look something like this:
 
-    @font-face {
-      font-family: 'My Font';
-      src: ...;
-    }
-    @font-face {
-      font-family: 'My Other Font';
-      font-style: normal;
-      font-weight: normal; /* or 400 */
-      src: ...;
-    }
-    @font-face {
-      font-family: 'My Other Font';
-      font-style: italic;
-      font-weight: normal; /* or 400 */
-      src: ...;
-    }
-    @font-face {
-      font-family: 'My Other Font';
-      font-style: normal;
-      font-weight: bold; /* or 700 */
-      src: ...;
-    }
+```css
+@font-face {
+  font-family: 'My Font';
+  src: ...;
+}
+@font-face {
+  font-family: 'My Other Font';
+  font-style: normal;
+  font-weight: normal; /* or 400 */
+  src: ...;
+}
+@font-face {
+  font-family: 'My Other Font';
+  font-style: italic;
+  font-weight: normal; /* or 400 */
+  src: ...;
+}
+@font-face {
+  font-family: 'My Other Font';
+  font-style: normal;
+  font-weight: bold; /* or 700 */
+  src: ...;
+}
+```
 
 Alternatively, you can load your fonts from a stylesheet not specified in WebFontConfig. As long as the names match those that are declared in the `families` array, the proper loading classes will be applied to the html element.
 
-```
+```html
 <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
 <script>
-   WebFont.load({
-      custom: {
-         families: ['My Font']
-      }
-   });
+  WebFont.load({
+    custom: {
+      families: ['My Font']
+    }
+  });
 </script>
 
 <style type="text/css">
-   @font-face {
-      font-family:"My Font";
-      src:url("assets/fonts/my_font.woff") format("woff");
-   }
+  @font-face {
+    font-family:"My Font";
+    src:url("assets/fonts/my_font.woff") format("woff");
+  }
 </style>
 ```
 
 The custom module also supports customizing the test strings that are used to determine whether or not a font has loaded. This can be used to load fonts with custom subsets or glyphs in the private use unicode area.
 
-    WebFontConfig = {
-      custom: {
-        families: ['My Font'],
-        testStrings: {
-          'My Font': '\uE003\uE005'
-        }
-      }
-    };
+```javascript
+WebFontConfig = {
+  custom: {
+    families: ['My Font'],
+    testStrings: {
+      'My Font': '\uE003\uE005'
+    }
+  }
+};
+```
 
 Tests strings should be specified on a per font basis and contain at least one character. If not specified the default test string (`BESbswy`) is used.
 
@@ -217,22 +237,26 @@ Tests strings should be specified on a per font basis and contain at least one c
 
 To use the [Fontdeck](http://fontdeck.com/) module, specify the ID of your website. You can find this ID on the website page within your account settings.
 
-    WebFontConfig = {
-      fontdeck: {
-        id: 'xxxxx'
-      }
-    };
+```javascript
+WebFontConfig = {
+  fontdeck: {
+    id: 'xxxxx'
+  }
+};
+```
 
 ### Fonts.com
 
 When using [Fonts.com web fonts](http://webfonts.fonts.com/) specify your Project ID.
 
-    WebFontConfig = {
-      monotype: {
-        projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-        version: 12345 // (optional, flushes the CDN cache)
-      }
-    };
+```javascript
+WebFontConfig = {
+  monotype: {
+    projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+    version: 12345 // (optional, flushes the CDN cache)
+  }
+};
+```
 
 The Fonts.com module has an optional `version` option which acts as a cache-buster.
 
@@ -240,20 +264,24 @@ The Fonts.com module has an optional `version` option which acts as a cache-bust
 
 Using [Google's Font API](https://code.google.com/apis/webfonts/docs/getting_started.html), name the font families you'd like to load. You can use the same [syntax](https://developers.google.com/fonts/docs/getting_started#Syntax) as in the Font API to specify styles:
 
-    WebFontConfig = {
-      google: {
-        families: ['Droid Sans', 'Droid Serif:bold']
-      }
-    };
+```javascript
+WebFontConfig = {
+  google: {
+    families: ['Droid Sans', 'Droid Serif:bold']
+  }
+};
+```
 
 You can also supply the `text` parameter to perform character subsetting:
 
-    WebFontConfig = {
-      google: {
-        families: ['Droid Sans', 'Droid Serif'],
-        text: 'abcdedfghijklmopqrstuvwxyz!'
-      }
-    };
+```javascript
+WebFontConfig = {
+  google: {
+    families: ['Droid Sans', 'Droid Serif'],
+    text: 'abcdedfghijklmopqrstuvwxyz!'
+  }
+};
+```
 
 The `text` subsetting functionality is only available for the Google module.
 
@@ -261,11 +289,13 @@ The `text` subsetting functionality is only available for the Google module.
 
 When using [Typekit](http://www.typekit.com), specify the Kit to retrieve by its ID. You can find the Kit ID within Typekit's Kit Editor interface.
 
-    WebFontConfig = {
-      typekit: {
-        id: 'xxxxxx'
-      }
-    };
+```javascript
+WebFontConfig = {
+  typekit: {
+    id: 'xxxxxx'
+  }
+};
+```
 
 **FYI:** Typekit's own JavaScript is built using the Web Font Loader library and already provides all of the same font event functionality. If you're using Typekit, you should use their embed codes directly unless you also need to load web fonts from other providers on the same page.
 
@@ -281,10 +311,12 @@ For fonts loaded from supported providers, the `fontactive` event will be trigge
 
 For example:
 
-    WebFontConfig = {
-      providerA: 'Family1',
-      providerB: 'Family2'
-    };
+```javascript
+WebFontConfig = {
+  providerA: 'Family1',
+  providerB: 'Family2'
+};
+```
 
 If `providerA` can serve fonts to a browser, but `providerB` cannot, The `fontinactive` event will be triggered for `Family2`. The `fontactive` event will be triggered for `Family1` once it loads, as will the `active` event.
 
