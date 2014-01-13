@@ -27,11 +27,11 @@ To use the Web Font Loader library, just include it in your page and tell it whi
 ```html
 <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
 <script>
-WebFont.load({
-  google: {
-    families: ['Droid Sans', 'Droid Serif']
-  }
-});
+  WebFont.load({
+    google: {
+      families: ['Droid Sans', 'Droid Serif']
+    }
+  });
 </script>
 ```
 
