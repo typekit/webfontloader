@@ -384,6 +384,27 @@ describe('UserAgentParser', function () {
           }
         });
       });
+
+      it('should detect the Chrome based AOL Client', function () {
+        expect(parse('Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.0 AOL/9.7 AOLBuild/4343.2039.US Safari/537.1'))
+        .toMatchUserAgent({
+          name: 'Chrome',
+          parsedVersion: new Version(21, 0, 1180, 0),
+          version: '21.0.1180.0',
+          platform: 'Windows',
+          parsedPlatformVersion: new Version(6, 1),
+          platformVersion: '6.1',
+          engine: 'AppleWebKit',
+          parsedEngineVersion: new Version(537, 1),
+          engineVersion: '537.1',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
     });
 
     describe('Safari', function () {
@@ -707,6 +728,65 @@ describe('UserAgentParser', function () {
           parsedEngineVersion: new Version(7, 0),
           engineVersion: '7.0',
           documentMode: 11,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
+
+      it('should detect AOL Browser as Internet Explorer', function () {
+        expect(parse('Mozilla/4.0 (compatible; MSIE 6.0; AOL 6.0; Windows NT 5.1)'))
+        .toMatchUserAgent({
+          name: 'MSIE',
+          parsedVersion: new Version(6, 0),
+          version: '6.0',
+          platform: 'Windows',
+          parsedPlatformVersion: new Version(5, 1),
+          platformVersion: '5.1',
+          engine: 'Unknown',
+          parsedEngineVersion: new Version(),
+          engineVersion: 'Unknown',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
+
+        expect(parse('Mozilla/4.0 (compatible; MSIE 7.0; AOL 9.6; AOLBuild 4340.168; Windows NT 5.1; .NET4.0C; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)'))
+        .toMatchUserAgent({
+          name: 'MSIE',
+          parsedVersion: new Version(7, 0),
+          version: '7.0',
+          platform: 'Windows',
+          parsedPlatformVersion: new Version(5, 1),
+          platformVersion: '5.1',
+          engine: 'Unknown',
+          parsedEngineVersion: new Version(),
+          engineVersion: 'Unknown',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
+
+        expect(parse('Mozilla/5.0 (compatible; MSIE 10.0; AOL 9.7; AOLBuild 4343.1028; Windows NT 6.1; WOW64; Trident/7.0)'))
+        .toMatchUserAgent({
+          name: 'MSIE',
+          parsedVersion: new Version(10, 0),
+          version: '10.0',
+          platform: 'Windows',
+          parsedPlatformVersion: new Version(6, 1),
+          platformVersion: '6.1',
+          engine: 'Trident',
+          parsedEngineVersion: new Version(7, 0),
+          engineVersion: '7.0',
+          documentMode: undefined,
           browserInfo: {
             hasWebFontSupport: true,
             hasWebKitFallbackBug: false,
