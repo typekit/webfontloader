@@ -22,7 +22,7 @@ describe('WebFont', function () {
       new Version(10, 6),
       '10.6',
       undefined,
-      new BrowserInfo(true, false, false)
+      new BrowserInfo(true, false, false, false)
     );
     fontModuleLoader = new FontModuleLoader();
   });

@@ -5,6 +5,7 @@ describe('FontWatcher', function () {
       UserAgent = webfont.UserAgent,
       BrowserInfo = webfont.BrowserInfo,
       DomHelper = webfont.DomHelper,
+      Version = webfont.Version,
       domHelper = new DomHelper(window),
       eventDispatcher = {},
       testStrings = null,
@@ -17,7 +18,19 @@ describe('FontWatcher', function () {
       activeFonts = [];
 
   beforeEach(function () {
-    userAgent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.3', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false, false));
+    userAgent = new UserAgent(
+      'Firefox',
+      new Version(3, 6),
+      '3.6',
+      'Gecko',
+      new Version(1, 9, 3),
+      '1.9.3',
+      'Macintosh',
+      new Version(10, 6),
+      '10.6',
+      undefined,
+      new BrowserInfo(true, false, false, false)
+    );
     font1 = new Font('font1');
     font2 = new Font('font2');
     font3 = new Font('font3');
