@@ -189,7 +189,7 @@ goog.scope(function () {
       platformVersion,
       platformVersionString,
       documentMode,
-      new BrowserInfo(supportWebFont, false, false, !!goog.global['FontFace'])
+      new BrowserInfo(supportWebFont, false, false, !!this.doc_['fonts'])
     );
   };
 
@@ -244,7 +244,7 @@ goog.scope(function () {
         platformVersion,
         platformVersionString,
         documentMode,
-        new BrowserInfo(false, false, false, !!goog.global['FontFace'])
+        new BrowserInfo(false, false, false, !!this.doc_['fonts'])
       );
     }
 
@@ -265,7 +265,7 @@ goog.scope(function () {
           platformVersion,
           platformVersionString,
           documentMode,
-          new BrowserInfo(browserVersion.major >= 10, false, false, !!goog.global['FontFace'])
+          new BrowserInfo(browserVersion.major >= 10, false, false, !!this.doc_['fonts'])
         );
       }
     }
@@ -284,7 +284,7 @@ goog.scope(function () {
         platformVersion,
         platformVersionString,
         documentMode,
-        new BrowserInfo(browserVersion.major >= 10, false, false, !!goog.global['FontFace'])
+        new BrowserInfo(browserVersion.major >= 10, false, false, !!this.doc_['fonts'])
       );
     }
     return new UserAgent(
@@ -298,7 +298,7 @@ goog.scope(function () {
       platformVersion,
       platformVersionString,
       documentMode,
-      new BrowserInfo(false, false, false, !!goog.global['FontFace'])
+      new BrowserInfo(false, false, false, !!this.doc_['fonts'])
     );
   };
 
@@ -382,7 +382,7 @@ goog.scope(function () {
       platformVersion,
       platformVersionString,
       this.getDocumentMode_(this.doc_),
-      new BrowserInfo(supportWebFont, hasWebKitFallbackBug, hasWebKitMetricsBug, !!goog.global['FontFace'])
+      new BrowserInfo(supportWebFont, hasWebKitFallbackBug, hasWebKitMetricsBug, !!this.doc_['fonts'])
     );
   };
 
@@ -434,7 +434,7 @@ goog.scope(function () {
       platformVersion,
       platformVersionString,
       this.getDocumentMode_(this.doc_),
-      new BrowserInfo(supportWebFont, false, false, !!goog.global['FontFace'])
+      new BrowserInfo(supportWebFont, false, false, !!this.doc_['fonts'])
     );
   };
 
