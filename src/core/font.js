@@ -48,7 +48,7 @@ goog.scope(function () {
    * @return {string}
    */
   Font.prototype.toCssString = function () {
-    return this.getCssStyle() + ' ' + this.getCssWeight() + ' 300px ' + getCssName();
+    return this.getCssStyle() + ' ' + this.getCssWeight() + ' 300px ' + this.getCssName();
   };
 
   /**
