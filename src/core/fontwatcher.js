@@ -54,7 +54,7 @@ goog.scope(function () {
 
       this.eventDispatcher_.dispatchFontLoading(font);
 
-      var fontWatchRunner = false;
+      var fontWatchRunner = null;
 
       if (this.browserInfo_.hasNativeFontLoading()) {
         fontWatchRunner = new NativeFontWatchRunner(
@@ -62,9 +62,6 @@ goog.scope(function () {
             goog.bind(this.fontInactive_, this),
             this.domHelper_,
             font,
-            this.browserInfo_,
-            this.timeout_,
-            metricCompatibleFonts,
             fontTestString
           );
       } else {

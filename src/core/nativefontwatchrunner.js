@@ -9,13 +9,9 @@ goog.scope(function () {
   * @param {function(webfont.Font)} inactiveCallback
   * @param {webfont.DomHelper} domHelper
   * @param {webfont.Font} font
-  * @param {webfont.BrowserInfo} browserInfo
-  * @param {number=} opt_timeout
-  * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
   * @param {string=} opt_fontTestString
   */
-  webfont.NativeFontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-      font, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
+  webfont.NativeFontWatchRunner = function(activeCallback, inactiveCallback, domHelper, font, opt_fontTestString) {
     this.activeCallback_ = activeCallback;
     this.inactiveCallback_ = inactiveCallback;
     this.font_ = font;
