@@ -27,7 +27,7 @@ goog.scope(function () {
     if (doc['fonts']['check'](this.font_.toCssString(), this.fontTestString_)) {
       this.activeCallback_(this.font_);
     } else {
-      doc['fonts']['load'](this.font_.toCssString(), this.fontTestString_).then(
+      doc['fonts']['load'](this.font_.toCssString(), this.fontTestString_)['then'](
         goog.bind(this.activeCallback_, this, this.font_),
         goog.bind(this.inactiveCallback_, this, this.font_));
     }
