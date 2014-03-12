@@ -25,13 +25,9 @@ goog.scope(function () {
     var doc = this.domHelper_.getLoadWindow().document,
         that = this;
 
-    if (doc['fonts']['check'](this.font_.toCssString(), this.fontTestString_)) {
-      this.activeCallback_(this.font_);
-    } else {
-      doc['fonts']['load'](this.font_.toCssString(), this.fontTestString_)['then'](
-        function () { that.activeCallback_(that.font_); },
-        function () { that.inactiveCallback_(that.font_); }
-      );
-    }
+    doc['fonts']['load'](this.font_.toCssString(), this.fontTestString_)['then'](
+      function () { that.activeCallback_(that.font_); },
+      function () { that.inactiveCallback_(that.font_); }
+    );
   };
 });
