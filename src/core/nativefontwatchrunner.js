@@ -22,14 +22,16 @@ goog.scope(function () {
   var NativeFontWatchRunner = webfont.NativeFontWatchRunner;
 
   NativeFontWatchRunner.prototype.start = function () {
-    var doc = this.domHelper_.getLoadWindow();
+    var doc = this.domHelper_.getLoadWindow().document,
+        that = this;
 
     if (doc['fonts']['check'](this.font_.toCssString(), this.fontTestString_)) {
       this.activeCallback_(this.font_);
     } else {
       doc['fonts']['load'](this.font_.toCssString(), this.fontTestString_)['then'](
-        goog.bind(this.activeCallback_, this, this.font_),
-        goog.bind(this.inactiveCallback_, this, this.font_));
+        function () { that.activeCallback_(that.font_); },
+        function () { that.inactiveCallback_(that.font_); }
+      );
     }
   };
 });
