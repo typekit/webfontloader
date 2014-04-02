@@ -104,36 +104,74 @@ goog.scope(function () {
   };
 
   /**
+   * @deprecated Use updateClassName().
+   *
    * Appends a name to an element's class attribute.
    * @param {Element} e The element.
    * @param {string} name The class name to add.
    */
   DomHelper.prototype.appendClassName = function(e, name) {
-    var classes = e.className.split(/\s+/);
-    for (var i = 0, len = classes.length; i < len; i++) {
-      if (classes[i] == name) {
-        return;
-      }
-    }
-    classes.push(name);
-    e.className = classes.join(' ')
-                    .replace(/\s+/g, ' ')
-                    .replace(/^\s+|\s+$/, '');
+    this.updateClassName(e, [name]);
   };
 
   /**
+   * @deprecated Use updateClassName().
+   *
    * Removes a name to an element's class attribute.
    * @param {Element} e The element.
    * @param {string} name The class name to remove.
    */
   DomHelper.prototype.removeClassName = function(e, name) {
+    this.updateClassName(e, null, [name]);
+  };
+
+  /**
+   * Updates an element's class attribute in a single change. This
+   * allows multiple updates in a single class name change so there
+   * is no chance for a browser to relayout in between changes.
+   *
+   * @param {Element} e The element.
+   * @param {Array.<string>=} opt_add List of class names to add.
+   * @param {Array.<string>=} opt_remove List of class names to remove.
+   */
+  DomHelper.prototype.updateClassName = function (e, opt_add, opt_remove) {
+    var add = opt_add || [],
+        remove = opt_remove || [];
+
     var classes = e.className.split(/\s+/);
+
+    for (var i = 0; i < add.length; i += 1) {
+      var found = false;
+
+      for (var j = 0; j < classes.length; j += 1) {
+        if (add[i] === classes[j]) {
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
+        classes.push(add[i]);
+      }
+    }
+
     var remainingClasses = [];
-    for (var i = 0, len = classes.length; i < len; i++) {
-      if (classes[i] != name) {
+
+    for (var i = 0; i < classes.length; i += 1) {
+      var found = false;
+
+      for (var j = 0; j < remove.length; j += 1) {
+        if (classes[i] === remove[j]) {
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
         remainingClasses.push(classes[i]);
       }
     }
+
     e.className = remainingClasses.join(' ')
                     .replace(/\s+/g, ' ')
                     .replace(/^\s+|\s+$/, '');
