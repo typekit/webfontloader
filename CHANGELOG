@@ -1,3 +1,7 @@
+v1.5.3 (April 8, 2014)
+* Prevent a potential FOUT when setting the font event classes.
+* Add "display:block" to test rulers so "* { display: none; }" doesn't override it
+
 v1.5.2 (January 3, 2014)
 * Add Copyright, License and Version to the compiled output file(s)
 * Fix small bug in Google Font module that rejected font variations with dashes
