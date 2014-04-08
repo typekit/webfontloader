@@ -100,6 +100,21 @@ describe('DomHelper', function () {
   });
 
   describe('#updateClassName', function () {
+    it('should handle optional arguments correctly', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'moo');
+
+      domHelper.updateClassName(div);
+      expect(div.className).toEqual('moo');
+
+      domHelper.updateClassName(div, [], []);
+      expect(div.className).toEqual('moo');
+
+      domHelper.updateClassName(div, null, null);
+      expect(div.className).toEqual('moo');
+    });
+
     it('should have added a class name', function () {
       var div = domHelper.createElement('div');
       domHelper.updateClassName(div, ['moo']);
@@ -110,7 +125,7 @@ describe('DomHelper', function () {
     it('should not add duplicate class names', function () {
       var div = domHelper.createElement('div');
 
-      domHelper.appendClassName(div, ['moo']);
+      domHelper.appendClassName(div, 'moo');
       domHelper.updateClassName(div, ['moo']);
 
       expect(div.className).toEqual('moo');
@@ -170,6 +185,17 @@ describe('DomHelper', function () {
 
       domHelper.updateClassName(div, ['meu'], ['moo', 'meh']);
       expect(div.className).toEqual('meu');
+    });
+
+    it('should update one of many class names', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'moo');
+      domHelper.appendClassName(div, 'meh');
+      expect(div.className).toEqual('moo meh');
+
+      domHelper.updateClassName(div, ['meu'], ['moo']);
+      expect(div.className).toEqual('meh meu');
     });
   });
 
