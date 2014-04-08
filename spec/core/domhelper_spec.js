@@ -99,6 +99,106 @@ describe('DomHelper', function () {
     });
   });
 
+  describe('#updateClassName', function () {
+    it('should handle optional arguments correctly', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'moo');
+
+      domHelper.updateClassName(div);
+      expect(div.className).toEqual('moo');
+
+      domHelper.updateClassName(div, [], []);
+      expect(div.className).toEqual('moo');
+
+      domHelper.updateClassName(div, null, null);
+      expect(div.className).toEqual('moo');
+    });
+
+    it('should have added a class name', function () {
+      var div = domHelper.createElement('div');
+      domHelper.updateClassName(div, ['moo']);
+
+      expect(div.className).toEqual('moo');
+    });
+
+    it('should not add duplicate class names', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'moo');
+      domHelper.updateClassName(div, ['moo']);
+
+      expect(div.className).toEqual('moo');
+    });
+
+    it('should add multiple class names', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.updateClassName(div, ['moo', 'meu', 'moo']);
+      expect(div.className).toEqual('moo meu');
+    });
+
+    it('should normalize spaces and tabs', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.updateClassName(div, ['meu', '      foo']);
+      expect(div.className).toEqual('meu foo');
+    });
+
+    it('should remove class names', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'meu moo');
+      expect(div.className).toEqual('meu moo');
+
+      domHelper.updateClassName(div, null, ['meu']);
+      expect(div.className).toEqual('moo');
+    });
+
+    it('should remove multiple class names', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'meu');
+      domHelper.appendClassName(div, 'moo');
+      expect(div.className).toEqual('meu moo');
+
+      domHelper.updateClassName(div, null, ['meu', 'moo']);
+      expect(div.className).toEqual('');
+    });
+
+    it('should not remove non-existing classes', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'moo');
+      expect(div.className).toEqual('moo');
+
+      domHelper.updateClassName(div, null, 'boo');
+      expect(div.className).toEqual('moo');
+    });
+
+    it('should add and remove class names', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'moo');
+      domHelper.appendClassName(div, 'meh');
+      expect(div.className).toEqual('moo meh');
+
+      domHelper.updateClassName(div, ['meu'], ['moo', 'meh']);
+      expect(div.className).toEqual('meu');
+    });
+
+    it('should update one of many class names', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'moo');
+      domHelper.appendClassName(div, 'meh');
+      expect(div.className).toEqual('moo meh');
+
+      domHelper.updateClassName(div, ['meu'], ['moo']);
+      expect(div.className).toEqual('meh meu');
+    });
+  });
+
   describe('#hasClassName', function () {
     var div = null;
 
