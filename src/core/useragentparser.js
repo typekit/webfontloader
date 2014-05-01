@@ -87,11 +87,13 @@ goog.scope(function () {
       return mobileOs;
     }
     var os = this.getMatchingGroup_(this.userAgent_,
-        /(Linux|Mac_PowerPC|Macintosh|Windows|CrOS)/, 1);
+        /(Linux|Mac_PowerPC|Macintosh|Windows|CrOS|PlayStation)/, 1);
 
     if (os != "") {
       if (os == "Mac_PowerPC") {
         os = "Macintosh";
+      } else if (os == "PlayStation") {
+        os = "Linux";
       }
       return os;
     }
@@ -339,6 +341,8 @@ goog.scope(function () {
       browserName = "Safari";
     } else if (this.userAgent_.indexOf("AdobeAIR") != -1) {
       browserName = "AdobeAIR";
+    } else if (this.userAgent_.indexOf("PlayStation") != -1) {
+      browserName = "BuiltinBrowser";
     }
 
     if (browserName == UserAgentParser.BUILTIN_BROWSER) {

@@ -924,6 +924,27 @@ describe('UserAgentParser', function () {
           }
         });
       });
+
+      it('should detect the PS4 browser', function () {
+        expect(parse('Mozilla/5.0 (PlayStation 4 1.70) AppleWebKit/536.26 (KHTML, like Gecko)'))
+        .toMatchUserAgent({
+          name: 'BuiltinBrowser',
+          parsedVersion: new Version(),
+          version: 'Unknown',
+          platform: 'Linux',
+          parsedPlatformVersion: new Version(),
+          platformVersion: 'Unknown',
+          engine: 'AppleWebKit',
+          parsedEngineVersion: new Version(536, 26),
+          engineVersion: '536.26',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
     });
 
     describe('Amazon Silk', function () {
