@@ -62,6 +62,7 @@ goog.scope(function () {
             goog.bind(this.fontInactive_, this),
             this.domHelper_,
             font,
+            this.timeout_,
             fontTestString
           );
       } else {
