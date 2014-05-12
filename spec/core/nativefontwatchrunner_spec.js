@@ -11,7 +11,6 @@ describe('NativeFontWatchRunner', function () {
       userAgent = null,
       nullFont = null,
       sourceSansC = null,
-      sourceSansD = null,
       elena = null;
 
   beforeEach(function () {
@@ -24,7 +23,6 @@ describe('NativeFontWatchRunner', function () {
 
     nullFont = new Font('__webfontloader_test_3__');
     sourceSansC = new Font('SourceSansC');
-    sourceSansD = new Font('SourceSansD');
     elena = new Font('Elena');
 
     userAgent = userAgentParser.parse();
