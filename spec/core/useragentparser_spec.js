@@ -303,6 +303,27 @@ describe('UserAgentParser', function () {
         });
       });
 
+      it('should detect Chrome on CromeCast', function () {
+        expect(parse('Mozilla/5.0 (CrKey armv71 1.6.16664) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.0 Safari/537.36'))
+        .toMatchUserAgent({
+          name: 'Chrome',
+          parsedVersion: new Version(31, 0, 1650, 0),
+          version: '31.0.1650.0',
+          platform: 'CrKey',
+          parsedPlatformVersion: new Version(1, 6, 16664),
+          platformVersion: '1.6.16664',
+          engine: 'AppleWebKit',
+          parsedEngineVersion: new Version(537, 36),
+          engineVersion: '537.36',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
+      });
+
       it('should detect Chrome on Android', function () {
         expect(parse('Mozilla/5.0 (Linux; U; Android 4.0.3; en-us; Nexus S Build/IML74K) AppleWebKit/535.7 (KHTML, like Gecko) CrMo/16.0.912.75 Mobile Safari/535.7'))
         .toMatchUserAgent({

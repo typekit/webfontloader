@@ -87,7 +87,7 @@ goog.scope(function () {
       return mobileOs;
     }
     var os = this.getMatchingGroup_(this.userAgent_,
-        /(Linux|Mac_PowerPC|Macintosh|Windows|CrOS|PlayStation)/, 1);
+        /(Linux|Mac_PowerPC|Macintosh|Windows|CrOS|PlayStation|CrKey)/, 1);
 
     if (os != "") {
       if (os == "Mac_PowerPC") {
@@ -121,7 +121,7 @@ goog.scope(function () {
       return iVersion;
     }
     var linuxOrCrOsVersion = this.getMatchingGroup_(this.userAgent_,
-        /(?:Linux|CrOS) ([^;)]+)/, 1);
+        /(?:Linux|CrOS|CrKey) ([^;)]+)/, 1);
     if (linuxOrCrOsVersion) {
       var parts = linuxOrCrOsVersion.split(/\s/);
       for (var i = 0; i < parts.length; i += 1) {
