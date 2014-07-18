@@ -155,8 +155,7 @@ Web Font Loader provides a module system so that any web font provider can contr
 ### Custom
 
 To load fonts from any external stylesheet, use the `custom` module. Here you'll
-need to specify both the url of the stylesheet as well as the font families it
-provides.
+need to specify the font family names you're trying to load, and optionally the url of the stylesheet that provides the `@font-face` declarations for those fonts.
 
 You can specify a specific font variation or set of variations to load and watch
 by appending the variations separated by commas to the family name separated by
@@ -198,7 +197,7 @@ In this example, the `fonts.css` file might look something like this:
 }
 ```
 
-Alternatively, you can load your fonts from a stylesheet not specified in WebFontConfig. As long as the names match those that are declared in the `families` array, the proper loading classes will be applied to the html element.
+If your fonts are already included in another stylesheet you can also leave out the `urls` array and just specify font family names to start font loading. As long as the names match those that are declared in the `families` array, the proper loading classes will be applied to the html element.
 
 ```html
 <script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
