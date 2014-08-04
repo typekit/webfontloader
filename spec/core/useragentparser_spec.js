@@ -650,6 +650,25 @@ describe('UserAgentParser', function () {
             hasWebKitMetricsBug: false
           }
         });
+
+        expect(parse('Mozilla/5.0 (Windows Phone 8.1; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; NOKIA; id404) like Gecko'))
+        .toMatchUserAgent({
+          name: 'MSIE',
+          parsedVersion: new Version(11, 0),
+          version: '11.0',
+          platform: 'Windows Phone',
+          parsedPlatformVersion: new Version(8, 1),
+          platformVersion: '8.1',
+          engine: 'Trident',
+          parsedEngineVersion: new Version(7, 0),
+          engineVersion: '7.0',
+          documentMode: undefined,
+          browserInfo: {
+            hasWebFontSupport: true,
+            hasWebKitFallbackBug: false,
+            hasWebKitMetricsBug: false
+          }
+        });
       });
 
       it('should detect unsupported Internet Explorer on Windows Phone', function () {
