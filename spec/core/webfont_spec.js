@@ -264,6 +264,7 @@ describe('WebFont', function () {
       });
 
       expect(inactive).toHaveBeenCalled();
+      expect(inactive.calls.length).toEqual(1);
     });
   });
 
