@@ -1,3 +1,6 @@
+v1.5.6 (September 3, 2014)
+* Fix double inactive event when all modules fail to load
+
 v1.5.5 (June 5, 2014)
 * Add support for the Chromecast browser
 
