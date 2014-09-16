@@ -37,12 +37,9 @@ webfont.UserAgentParser.UNKNOWN_USER_AGENT = new webfont.UserAgent(
     webfont.UserAgentParser.UNKNOWN,
     new webfont.Version(),
     webfont.UserAgentParser.UNKNOWN,
-    webfont.UserAgentParser.UNKNOWN,
     new webfont.Version(),
     webfont.UserAgentParser.UNKNOWN,
-    webfont.UserAgentParser.UNKNOWN,
     new webfont.Version(),
-    webfont.UserAgentParser.UNKNOWN,
     undefined,
     new webfont.BrowserInfo(false, false, false));
 
@@ -151,9 +148,7 @@ goog.scope(function () {
    */
   UserAgentParser.prototype.parseIeUserAgentString_ = function() {
     var platform = this.getPlatform_(),
-        platformVersionString = this.getPlatformVersionString_(),
-        platformVersion = Version.parse(platformVersionString),
-        browserVersionString = null,
+        platformVersion = Version.parse(this.getPlatformVersionString_()),
         browserVersion = null,
         engine = null,
         engineVersion = null,
@@ -161,12 +156,10 @@ goog.scope(function () {
         documentMode = this.getDocumentMode_(this.doc_);
 
     if (this.userAgent_.indexOf("MSIE") != -1) {
-      browserVersionString = this.getMatchingGroup_(this.userAgent_, /MSIE ([\d\w\.]+)/, 1);
+      browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /MSIE ([\d\w\.]+)/, 1));
     } else {
-      browserVersionString = this.getMatchingGroup_(this.userAgent_, /rv:([\d\w\.]+)/, 1);
+      browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /rv:([\d\w\.]+)/, 1));
     }
-
-    browserVersion = Version.parse(browserVersionString);
 
     if (engineVersionString != '') {
       engine = 'Trident';
@@ -174,7 +167,6 @@ goog.scope(function () {
     } else {
       engine = UserAgentParser.UNKNOWN;
       engineVersion = new Version();
-      engineVersionString = UserAgentParser.UNKNOWN;
     }
 
     var supportWebFont = (platform == "Windows" && browserVersion.major >= 6) ||
@@ -183,13 +175,10 @@ goog.scope(function () {
     return new UserAgent(
       "MSIE",
       browserVersion,
-      browserVersionString,
       engine,
       engineVersion,
-      engineVersionString,
       platform,
       platformVersion,
-      platformVersionString,
       documentMode,
       new BrowserInfo(supportWebFont, false, false)
     );
@@ -214,10 +203,8 @@ goog.scope(function () {
    */
   UserAgentParser.prototype.parseOldOperaUserAgentString_ = function() {
     var engineName = UserAgentParser.UNKNOWN,
-        engineVersionString = this.getMatchingGroup_(this.userAgent_, /Presto\/([\d\w\.]+)/, 1),
-        engineVersion = Version.parse(engineVersionString),
-        platformVersionString = this.getPlatformVersionString_(),
-        platformVersion = Version.parse(platformVersionString),
+        engineVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Presto\/([\d\w\.]+)/, 1)),
+        platformVersion = Version.parse(this.getPlatformVersionString_()),
         documentMode = this.getDocumentMode_(this.doc_);
 
     if (engineVersion.isValid()) {
@@ -226,25 +213,20 @@ goog.scope(function () {
       if (this.userAgent_.indexOf("Gecko") != -1) {
         engineName = "Gecko";
       }
-      engineVersionString = this.getMatchingGroup_(this.userAgent_, /rv:([^\)]+)/, 1);
-      engineVersion = Version.parse(engineVersionString);
+      engineVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /rv:([^\)]+)/, 1));
     }
 
     // Check for Opera Mini first, since it looks like normal Opera
     if (this.userAgent_.indexOf("Opera Mini/") != -1) {
-      var browserVersionString = this.getMatchingGroup_(this.userAgent_, /Opera Mini\/([\d\.]+)/, 1);
-      var browserVersion = Version.parse(browserVersionString);
+      var browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Opera Mini\/([\d\.]+)/, 1));
 
       return new UserAgent(
         "OperaMini",
         browserVersion,
-        browserVersionString,
         engineName,
         engineVersion,
-        engineVersionString,
         this.getPlatform_(),
         platformVersion,
-        platformVersionString,
         documentMode,
         new BrowserInfo(false, false, false)
       );
@@ -252,39 +234,31 @@ goog.scope(function () {
 
     // Otherwise, find version information for normal Opera or Opera Mobile
     if (this.userAgent_.indexOf("Version/") != -1) {
-      var browserVersionString = this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.]+)/, 1);
-      var browserVersion = Version.parse(browserVersionString);
+      var browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Version\/([\d\.]+)/, 1));
 
       if (browserVersion.isValid()) {
         return new UserAgent(
           "Opera",
           browserVersion,
-          browserVersionString,
           engineName,
           engineVersion,
-          engineVersionString,
           this.getPlatform_(),
           platformVersion,
-          platformVersionString,
           documentMode,
           new BrowserInfo(browserVersion.major >= 10, false, false)
         );
       }
     }
-    var browserVersionString = this.getMatchingGroup_(this.userAgent_, /Opera[\/ ]([\d\.]+)/, 1);
-    var browserVersion = Version.parse(browserVersionString);
+    var browserVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /Opera[\/ ]([\d\.]+)/, 1));
 
     if (browserVersion.isValid()) {
       return new UserAgent(
         "Opera",
         browserVersion,
-        browserVersionString,
         engineName,
         engineVersion,
-        engineVersionString,
         this.getPlatform_(),
         platformVersion,
-        platformVersionString,
         documentMode,
         new BrowserInfo(browserVersion.major >= 10, false, false)
       );
@@ -292,13 +266,10 @@ goog.scope(function () {
     return new UserAgent(
       "Opera",
       new Version(),
-      UserAgentParser.UNKNOWN,
       engineName,
       engineVersion,
-      engineVersionString,
       this.getPlatform_(),
       platformVersion,
-      platformVersionString,
       documentMode,
       new BrowserInfo(false, false, false)
     );
@@ -316,10 +287,8 @@ goog.scope(function () {
    */
   UserAgentParser.prototype.parseWebKitUserAgentString_ = function() {
     var platform = this.getPlatform_(),
-        platformVersionString = this.getPlatformVersionString_(),
-        platformVersion = Version.parse(platformVersionString),
-        webKitVersionString = this.getMatchingGroup_(this.userAgent_, /AppleWeb(?:K|k)it\/([\d\.\+]+)/, 1),
-        webKitVersion = Version.parse(webKitVersionString),
+        platformVersion = Version.parse(this.getPlatformVersionString_()),
+        webKitVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /AppleWeb(?:K|k)it\/([\d\.\+]+)/, 1)),
         browserName = UserAgentParser.UNKNOWN,
         browserVersion = new Version(),
         browserVersionString = UserAgentParser.UNKNOWN,
@@ -378,13 +347,10 @@ goog.scope(function () {
     return new UserAgent(
       browserName,
       browserVersion,
-      browserVersionString,
       "AppleWebKit",
       webKitVersion,
-      webKitVersionString,
       platform,
       platformVersion,
-      platformVersionString,
       this.getDocumentMode_(this.doc_),
       new BrowserInfo(supportWebFont, hasWebKitFallbackBug, hasWebKitMetricsBug)
     );
@@ -403,40 +369,31 @@ goog.scope(function () {
   UserAgentParser.prototype.parseGeckoUserAgentString_ = function() {
     var name = UserAgentParser.UNKNOWN,
         version = new Version(),
-        versionString = UserAgentParser.UNKNOWN,
-        platformVersionString = this.getPlatformVersionString_(),
-        platformVersion = Version.parse(platformVersionString),
+        platformVersion = Version.parse(this.getPlatformVersionString_()),
         supportWebFont = false;
 
     if (this.userAgent_.indexOf("Firefox") != -1) {
       name = "Firefox";
-      versionString = this.getMatchingGroup_(this.userAgent_, /Firefox\/([\d\w\.]+)/, 1);
-      version = Version.parse(versionString);
+      version = Version.parse(this.getMatchingGroup_(this.userAgent_, /Firefox\/([\d\w\.]+)/, 1));
       supportWebFont = version.major >= 3 && version.minor >= 5;
     } else if (this.userAgent_.indexOf("Mozilla") != -1) {
       name = "Mozilla";
     }
 
-    var engineVersionString = this.getMatchingGroup_(this.userAgent_, /rv:([^\)]+)/, 1),
-        engineVersion = Version.parse(engineVersionString);
+    var engineVersion = Version.parse(this.getMatchingGroup_(this.userAgent_, /rv:([^\)]+)/, 1));
 
     if (!supportWebFont) {
       supportWebFont = engineVersion.major > 1 ||
                        engineVersion.major == 1 && engineVersion.minor > 9 ||
-                       engineVersion.major == 1 && engineVersion.minor == 9 && engineVersion.patch >= 2 ||
-                       engineVersionString.match(/1\.9\.1b[123]/) != null ||
-                       engineVersionString.match(/1\.9\.1\.[\d\.]+/) != null;
+                       engineVersion.major == 1 && engineVersion.minor == 9 && engineVersion.patch >= 2;
     }
     return new UserAgent(
       name,
       version,
-      versionString,
       "Gecko",
       engineVersion,
-      engineVersionString,
       this.getPlatform_(),
       platformVersion,
-      platformVersionString,
       this.getDocumentMode_(this.doc_),
       new BrowserInfo(supportWebFont, false, false)
     );
