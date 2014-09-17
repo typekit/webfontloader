@@ -9,16 +9,16 @@ Web Font Loader gives you added control when using linked fonts via `@font-face`
 * [Get started](#get-started)
 * [Configuration](#configuration)
     * [Events](#events)
-    * [Timeout](#timeout)
+    * [Timeout](#timeouts)
     * [Iframes](#iframes)
 * [Modules](#modules)
     * [Custom](#custom)
     * [Fontdeck](#fontdeck)
-    * [Fonts.com](#fonts.com)
+    * [Fonts.com](#fontscom)
     * [Google](#google)
     * [Typekit](#typekit)
 * [Browser support](#browser-support)
-* [License](#license)
+* [License](#copyright-and-license)
 
 ## Get Started
 
