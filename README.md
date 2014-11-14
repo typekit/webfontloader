@@ -44,17 +44,8 @@ It is also possible to use the Web Font Loader asynchronously. For example, to l
   WebFontConfig = {
     typekit: { id: 'xxxxxx' }
   };
-
-  (function() {
-    var wf = document.createElement('script');
-    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-              '://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js';
-    wf.type = 'text/javascript';
-    wf.async = 'true';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(wf, s);
-  })();
 </script>
+<script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js" async defer></script>
 ```
 
 Using the Web Font Loader asynchronously avoids blocking your page while loading the JavaScript. Be aware that if the script is used asynchronously, the rest of the page might render before the Web Font Loader is loaded and executed, which can cause a [Flash of Unstyled Text (FOUT)](http://help.typekit.com/customer/portal/articles/6852).
