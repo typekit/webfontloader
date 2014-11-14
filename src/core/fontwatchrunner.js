@@ -23,7 +23,7 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
   this.browserInfo_ = browserInfo;
   this.lastResortWidths_ = {};
-  this.timeout_ = opt_timeout || 5000;
+  this.timeout_ = opt_timeout || 3000;
 
   this.metricCompatibleFonts_ = opt_metricCompatibleFonts || null;
 
