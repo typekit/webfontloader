@@ -116,6 +116,24 @@ WebFontConfig = {
 
 The `fontloading`, `fontactive` and `fontinactive` callbacks are passed the family name and font variation description of the font that concerns the event.
 
+It is possible to disable setting classes on the HTML element by setting the `classes` configuration parameter to `false` (defaults to `true`).
+
+```javascript
+WebFontConfig = {
+  classes: false
+};
+```
+
+You can also disable font events (callbacks) by setting the `events` parameter to `false` (defaults to `true`).
+
+```javascript
+WebFontConfig = {
+  events: false
+};
+```
+
+If both events and classes are disabled, the Web Font Loader does not perform font watching and only acts as a way to insert @font-face rules in the document.
+
 ### Timeouts
 
 Since the Internet is not 100% reliable, it's possible that a font will fail to load. The `fontinactive` event will be triggered after 5 seconds if the font fails to render. If *at least* one font succesfully renders, the `active` event will be triggered, else the `inactive` event will be triggered.

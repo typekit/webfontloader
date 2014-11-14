@@ -6,29 +6,22 @@ describe('EventDispatcher', function () {
       element = null
       eventDispatcher = null,
       namespace = 'ns',
-      font = null,
-      nullFn = function () {},
-      callbacks = {
-        loading: nullFn,
-        active: nullFn,
-        inactive: nullFn,
-        fontloading: nullFn,
-        fontactive: nullFn,
-        fontinactive: nullFn
-      };
+      font = null;
 
   beforeEach(function () {
     element = domHelper.createElement();
+    callbacks = {
+      loading: jasmine.createSpy('loading'),
+      active: jasmine.createSpy('active'),
+      inactive: jasmine.createSpy('inactive'),
+      fontloading: jasmine.createSpy('fontloading'),
+      fontactive: jasmine.createSpy('fontactive'),
+      fontinactive: jasmine.createSpy('fontinactive')
+    };
+
     eventDispatcher = new EventDispatcher(domHelper, element, callbacks, namespace);
 
     font = new Font('My Family', 'n4');
-
-    spyOn(callbacks, 'loading');
-    spyOn(callbacks, 'active');
-    spyOn(callbacks, 'inactive');
-    spyOn(callbacks, 'fontloading');
-    spyOn(callbacks, 'fontactive');
-    spyOn(callbacks, 'fontinactive');
   });
 
   describe('#dispatchLoading', function () {
@@ -208,6 +201,43 @@ describe('EventDispatcher', function () {
 
     it('should set the correct class name', function () {
       expect(element.className).toEqual('ns-active');
+    });
+  });
+
+  describe('disable callbacks', function () {
+    beforeEach(function () {
+      eventDispatcher = new EventDispatcher(domHelper, element, callbacks, namespace, false);
+      eventDispatcher.dispatchInactive();
+      eventDispatcher.dispatchActive();
+      eventDispatcher.dispatchLoading();
+      eventDispatcher.dispatchFontInactive(font);
+      eventDispatcher.dispatchFontActive(font);
+      eventDispatcher.dispatchFontLoading(font);
+    });
+
+    it('should not fire any events', function () {
+      expect(callbacks.inactive).not.toHaveBeenCalled();
+      expect(callbacks.active).not.toHaveBeenCalled();
+      expect(callbacks.loading).not.toHaveBeenCalled();
+      expect(callbacks.fontinactive).not.toHaveBeenCalled();
+      expect(callbacks.fontactive).not.toHaveBeenCalled();
+      expect(callbacks.fontloading).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('disable classes', function () {
+    beforeEach(function () {
+      eventDispatcher = new EventDispatcher(domHelper, element, callbacks, namespace, true, false);
+      eventDispatcher.dispatchInactive();
+      eventDispatcher.dispatchActive();
+      eventDispatcher.dispatchLoading();
+      eventDispatcher.dispatchFontInactive(font);
+      eventDispatcher.dispatchFontActive(font);
+      eventDispatcher.dispatchFontLoading(font);
+    });
+
+    it('should not fire any events', function () {
+      expect(element.className).toEqual('');
     });
   });
 });
