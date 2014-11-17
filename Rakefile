@@ -83,6 +83,10 @@ directory "tmp"
 desc "Compile the JavaScript into target/webfont.js"
 task :compile, [:modules] => "target/webfont.js"
 
+file "webfontloader.js" => "target/webfont.js" do
+  cp "target/webfont.js", "webfontloader.js"
+end
+
 file "target/webfont.js", [:modules] => SourceJs + ["target"] do |t, args|
   args.with_defaults(:modules => 'custom google typekit monotype fontdeck')
 
@@ -205,7 +209,7 @@ end
 #
 #############################################################################
 
-task :release => :build do
+task :release => [:build, "webfontloader.js"] do
   unless `git branch` =~ /^\* master$/
     puts "You must be on the master branch to release!"
     exit!
