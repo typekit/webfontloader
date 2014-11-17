@@ -1,3 +1,10 @@
+v1.5.8 (November 17, 2014)
+* Add prebuilt library to repository
+
+v1.5.7 (November 17, 2014)
+* Decrease default timeout to 3 seconds
+* Add support for native font loading
+
 v1.5.6 (September 3, 2014)
 * Fix double inactive event when all modules fail to load
 

@@ -209,11 +209,12 @@ end
 #
 #############################################################################
 
-task :release => [:build, "webfontloader.js"] do
+task :release => [:build] do
   unless `git branch` =~ /^\* master$/
     puts "You must be on the master branch to release!"
     exit!
   end
+  sh "git add webfontloader.js"
   sh "git commit --allow-empty -a -m 'Release #{version}'"
   sh "git tag -a v#{version}"
   sh "git push --tags origin master"
@@ -221,6 +222,8 @@ task :release => [:build, "webfontloader.js"] do
 end
 
 task :build => :gemspec do
+  Rake::Task["target/webfont.js"].execute
+  Rake::Task["webfontloader.js"].execute
   sh "mkdir -p pkg"
   sh "gem build #{gemspec_file}"
   sh "mv #{gem_file} pkg"
