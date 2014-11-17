@@ -25,7 +25,7 @@ Web Font Loader gives you added control when using linked fonts via `@font-face`
 To use the Web Font Loader library, just include it in your page and tell it which fonts to load. For example, you could load fonts from [Google Fonts](http://www.google.com/fonts/) using the Web Font Loader hosted on [Google Hosted Libraries](https://developers.google.com/speed/libraries/) using the following code.
 
 ```html
-<script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/webfont/1.5.6/webfont.js"></script>
 <script>
   WebFont.load({
     google: {
@@ -48,7 +48,7 @@ It is also possible to use the Web Font Loader asynchronously. For example, to l
   (function() {
     var wf = document.createElement('script');
     wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-              '://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js';
+              '://ajax.googleapis.com/ajax/libs/webfont/1.5.6/webfont.js';
     wf.type = 'text/javascript';
     wf.async = 'true';
     var s = document.getElementsByTagName('script')[0];
@@ -200,7 +200,7 @@ In this example, the `fonts.css` file might look something like this:
 If your fonts are already included in another stylesheet you can also leave out the `urls` array and just specify font family names to start font loading. As long as the names match those that are declared in the `families` array, the proper loading classes will be applied to the html element.
 
 ```html
-<script src="//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/webfont/1.5.6/webfont.js"></script>
 <script>
   WebFont.load({
     custom: {
