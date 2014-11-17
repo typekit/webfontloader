@@ -131,7 +131,7 @@ WebFontConfig = {
 };
 ```
 
-The timeout value should be in milliseconds, and defaults to 5000 milliseconds (5 seconds) if not supplied.
+The timeout value should be in milliseconds, and defaults to 3000 milliseconds (3 seconds) if not supplied.
 
 ### Iframes
 
