@@ -1,7 +1,7 @@
 goog.provide('webfont.FontWatcher');
 
 goog.require('webfont.FontWatchRunner');
-
+goog.require('webfont.NativeFontWatchRunner');
 /**
  * @constructor
  * @param {webfont.UserAgent} userAgent
@@ -22,7 +22,8 @@ webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, opt_timeou
 
 goog.scope(function () {
   var FontWatcher = webfont.FontWatcher,
-      FontWatchRunner = webfont.FontWatchRunner;
+      FontWatchRunner = webfont.FontWatchRunner,
+      NativeFontWatchRunner = webfont.NativeFontWatchRunner;
 
   /**
    * Watches a set of font families.
@@ -53,7 +54,19 @@ goog.scope(function () {
 
       this.eventDispatcher_.dispatchFontLoading(font);
 
-      var fontWatchRunner = new FontWatchRunner(
+      var fontWatchRunner = null;
+
+      if (this.browserInfo_.hasNativeFontLoading()) {
+        fontWatchRunner = new NativeFontWatchRunner(
+            goog.bind(this.fontActive_, this),
+            goog.bind(this.fontInactive_, this),
+            this.domHelper_,
+            font,
+            this.timeout_,
+            fontTestString
+          );
+      } else {
+        fontWatchRunner = new FontWatchRunner(
             goog.bind(this.fontActive_, this),
             goog.bind(this.fontInactive_, this),
             this.domHelper_,
@@ -63,6 +76,7 @@ goog.scope(function () {
             metricCompatibleFonts,
             fontTestString
           );
+      }
 
       fontWatchRunner.start();
     }

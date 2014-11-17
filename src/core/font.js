@@ -42,6 +42,16 @@ goog.scope(function () {
   };
 
   /**
+   * Returns a CSS string representation of the font that
+   * can be used as the CSS font property shorthand.
+   *
+   * @return {string}
+   */
+  Font.prototype.toCssString = function () {
+    return this.getCssStyle() + ' ' + this.getCssWeight() + ' 300px ' + this.getCssName();
+  };
+
+  /**
    * @private
    * @param {string} name
    * @return {string}
@@ -71,8 +81,21 @@ goog.scope(function () {
    * @return {string}
    */
   Font.prototype.getCssVariation = function () {
-    var style = 'normal',
-        weight = this.weight_ + '00';
+    return 'font-style:' + this.getCssStyle() + ';font-weight:' + this.getCssWeight() + ';';
+  };
+
+  /**
+   * @return {string}
+   */
+  Font.prototype.getCssWeight = function () {
+    return this.weight_ + '00';
+  };
+
+  /**
+   * @return {string}
+   */
+  Font.prototype.getCssStyle = function () {
+    var style = 'normal';
 
     if (this.style_ === 'o') {
       style = 'oblique';
@@ -80,7 +103,7 @@ goog.scope(function () {
       style = 'italic';
     }
 
-    return 'font-style:' + style + ';font-weight:' + weight + ';';
+    return style;
   };
 
   /**

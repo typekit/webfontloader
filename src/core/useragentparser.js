@@ -44,7 +44,7 @@ webfont.UserAgentParser.UNKNOWN_USER_AGENT = new webfont.UserAgent(
     new webfont.Version(),
     webfont.UserAgentParser.UNKNOWN,
     undefined,
-    new webfont.BrowserInfo(false, false, false));
+    new webfont.BrowserInfo(false, false, false, false));
 
 
 goog.scope(function () {
@@ -191,7 +191,7 @@ goog.scope(function () {
       platformVersion,
       platformVersionString,
       documentMode,
-      new BrowserInfo(supportWebFont, false, false)
+      new BrowserInfo(supportWebFont, false, false, !!this.doc_['fonts'])
     );
   };
 
@@ -246,7 +246,7 @@ goog.scope(function () {
         platformVersion,
         platformVersionString,
         documentMode,
-        new BrowserInfo(false, false, false)
+        new BrowserInfo(false, false, false, !!this.doc_['fonts'])
       );
     }
 
@@ -267,7 +267,7 @@ goog.scope(function () {
           platformVersion,
           platformVersionString,
           documentMode,
-          new BrowserInfo(browserVersion.major >= 10, false, false)
+          new BrowserInfo(browserVersion.major >= 10, false, false, !!this.doc_['fonts'])
         );
       }
     }
@@ -286,7 +286,7 @@ goog.scope(function () {
         platformVersion,
         platformVersionString,
         documentMode,
-        new BrowserInfo(browserVersion.major >= 10, false, false)
+        new BrowserInfo(browserVersion.major >= 10, false, false, !!this.doc_['fonts'])
       );
     }
     return new UserAgent(
@@ -300,7 +300,7 @@ goog.scope(function () {
       platformVersion,
       platformVersionString,
       documentMode,
-      new BrowserInfo(false, false, false)
+      new BrowserInfo(false, false, false, !!this.doc_['fonts'])
     );
   };
 
@@ -386,7 +386,7 @@ goog.scope(function () {
       platformVersion,
       platformVersionString,
       this.getDocumentMode_(this.doc_),
-      new BrowserInfo(supportWebFont, hasWebKitFallbackBug, hasWebKitMetricsBug)
+      new BrowserInfo(supportWebFont, hasWebKitFallbackBug, hasWebKitMetricsBug, !!this.doc_['fonts'])
     );
   };
 
@@ -438,7 +438,7 @@ goog.scope(function () {
       platformVersion,
       platformVersionString,
       this.getDocumentMode_(this.doc_),
-      new BrowserInfo(supportWebFont, false, false)
+      new BrowserInfo(supportWebFont, false, false, !!this.doc_['fonts'])
     );
   };
 

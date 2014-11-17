@@ -7,10 +7,11 @@ goog.provide('webfont.BrowserInfo');
  * @param {boolean} webKitFallbackBug
  * @param {boolean} webKitMetricsBug
  */
-webfont.BrowserInfo = function (webfontSupport, webKitFallbackBug, webKitMetricsBug) {
+webfont.BrowserInfo = function (webfontSupport, webKitFallbackBug, webKitMetricsBug, hasNativeFontLoading) {
   this.webfontSupport_ = webfontSupport;
   this.webKitFallbackBug_ = webKitFallbackBug;
   this.webKitMetricsBug_ = webKitMetricsBug;
+  this.hasNativeFontLoading_ = hasNativeFontLoading;
 };
 
 goog.scope(function () {
@@ -69,5 +70,15 @@ goog.scope(function () {
    */
   BrowserInfo.prototype.hasWebKitMetricsBug = function () {
     return this.webKitMetricsBug_;
+  };
+
+  /**
+   * @export
+   *
+   * Returns true if this browser has native font loading as
+   * specified in: http://dev.w3.org/csswg/css-font-loading/
+   */
+  BrowserInfo.prototype.hasNativeFontLoading = function () {
+    return this.hasNativeFontLoading_;
   };
 });

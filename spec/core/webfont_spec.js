@@ -3,6 +3,7 @@ describe('WebFont', function () {
       Font = webfont.Font;
       UserAgent = webfont.UserAgent,
       FontWatchRunner = webfont.FontWatchRunner,
+      NativeFontWatchRunner = webfont.NativeFontWatchRunner,
       BrowserInfo = webfont.BrowserInfo,
       Version = webfont.Version,
       Font = webfont.Font,
@@ -22,7 +23,7 @@ describe('WebFont', function () {
       new Version(10, 6),
       '10.6',
       undefined,
-      new BrowserInfo(true, false, false)
+      new BrowserInfo(true, false, false, false)
     );
     fontModuleLoader = new FontModuleLoader();
   });
@@ -149,6 +150,14 @@ describe('WebFont', function () {
         };
 
         spyOn(FontWatchRunner.prototype, 'start').andCallFake(function () {
+          if (conf.id) {
+            active(font);
+          } else {
+            inactive(font);
+          }
+        });
+
+        spyOn(NativeFontWatchRunner.prototype, 'start').andCallFake(function () {
           if (conf.id) {
             active(font);
           } else {
