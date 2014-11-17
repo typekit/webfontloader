@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.5.6'
-  s.date              = '2014-09-03'
+  s.version           = '1.5.7'
+  s.date              = '2014-11-17'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -117,6 +117,7 @@ DESC
     spec/core/fontruler_spec.js
     spec/core/fontwatcher_spec.js
     spec/core/fontwatchrunner_spec.js
+    spec/core/nativefontwatchrunner_spec.js
     spec/core/size_spec.js
     spec/core/useragentparser_spec.js
     spec/core/version_spec.js
@@ -136,6 +137,8 @@ DESC
     spec/fixtures/fonts/sourcesans.woff
     spec/fixtures/fonts/sourcesansa.css
     spec/fixtures/fonts/sourcesansb.css
+    spec/fixtures/fonts/sourcesansc.css
+    spec/fixtures/fonts/sourcesansd.css
     spec/index.html
     spec/modules/custom_spec.js
     spec/modules/fontdeck_spec.js
@@ -156,6 +159,7 @@ DESC
     src/core/fontwatcher.js
     src/core/fontwatchrunner.js
     src/core/initialize.js
+    src/core/nativefontwatchrunner.js
     src/core/useragent.js
     src/core/useragentparser.js
     src/core/version.js
