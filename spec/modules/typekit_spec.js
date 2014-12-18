@@ -12,43 +12,26 @@ describe('modules.Typekit', function () {
       support = null;
 
   beforeEach(function () {
-    global = {};
+    global = {
+      Typekit: {
+        config: {
+          fn: ['Font1', ['n4'], 'Font2', ['n4', 'n7']]
+        },
+        load: jasmine.createSpy('load')
+      }
+    };
 
     support = jasmine.createSpy('support');
 
     load = jasmine.createSpy('load');
 
     fakeDomHelper = {
-      loadScript: jasmine.createSpy('loadScript'),
+      loadScript: jasmine.createSpy('loadScript').andCallFake(function (url, cb) {
+        cb(null);
+      }),
       getLoadWindow: jasmine.createSpy('getLoadWindow').andReturn(global),
       getProtocol: jasmine.createSpy('getProtocol').andReturn('http:')
     };
-  });
-
-  it('support load and life cycle', function () {
-    var typekit = new Typekit(fakeDomHelper, configuration);
-
-    typekit.supportUserAgent('useragent', support);
-
-    expect(fakeDomHelper.loadScript).toHaveBeenCalled();
-    expect(fakeDomHelper.loadScript.calls[0].args[0]).toEqual('http://use.typekit.net/abc.js');
-    expect(support).not.toHaveBeenCalled();
-
-    expect(global.__webfonttypekitmodule__).not.toBeNull();
-    expect(global.__webfonttypekitmodule__['abc']).not.toBeNull();
-
-    global.__webfonttypekitmodule__['abc'](function (ua, config, init) {
-      expect(ua).toEqual('useragent');
-      expect(config).toEqual(configuration);
-      expect(init).not.toBeNull();
-      init(true, ['Font1', 'Font2'], {});
-    });
-
-    expect(support).toHaveBeenCalled();
-
-    typekit.load(load);
-
-    expect(load).toHaveBeenCalledWith([new Font('Font1'), new Font('Font2')]);
   });
 
   it('should load with variations', function () {
@@ -56,21 +39,14 @@ describe('modules.Typekit', function () {
 
     typekit.supportUserAgent('useragent', support);
 
-    global.__webfonttypekitmodule__['abc'](function (ua, config, init) {
-      init(true, ['Font1', 'Font2'], {
-        'Font1': ['n7', 'i7']
-      });
-    });
-
+    expect(fakeDomHelper.loadScript).toHaveBeenCalled();
+    expect(fakeDomHelper.loadScript.calls[0].args[0]).toEqual('http://use.typekit.net/abc.js');
     expect(support).toHaveBeenCalled();
 
+    expect(global.Typekit.load).toHaveBeenCalled();
     typekit.load(load);
 
-    expect(load).toHaveBeenCalledWith([
-      new Font('Font1', 'n7'),
-      new Font('Font1', 'i7'),
-      new Font('Font2', 'n4')
-    ]);
+    expect(load).toHaveBeenCalledWith([new Font('Font1', 'n4'), new Font('Font2', 'n4'), new Font('Font2', 'n7')]);
   });
 
   it('should load through the alternative API', function () {

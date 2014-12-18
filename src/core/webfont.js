@@ -18,6 +18,8 @@ webfont.WebFont = function(mainWindow) {
   this.userAgent_ = this.userAgentParser_.parse();
   this.moduleLoading_ = 0;
   this.moduleFailedLoading_ = 0;
+  this.events_ = true;
+  this.classes_ = true;
 };
 
 goog.scope(function () {
@@ -41,8 +43,17 @@ goog.scope(function () {
     var context = configuration['context'] || this.mainWindow_;
     this.domHelper_ = new DomHelper(this.mainWindow_, context);
 
+    this.events_ = configuration['events'] !== false;
+    this.classes_ = configuration['classes'] !== false;
+
     var eventDispatcher = new EventDispatcher(
-        this.domHelper_, context.document.documentElement, configuration);
+        this.domHelper_,
+        context.document.documentElement,
+        configuration,
+        undefined,
+        this.events_,
+        this.classes_
+    );
 
     this.load_(eventDispatcher, configuration);
   };
@@ -69,7 +80,9 @@ goog.scope(function () {
       if (allModulesLoaded && this.moduleFailedLoading_ == 0) {
         eventDispatcher.dispatchInactive();
       } else {
-        fontWatcher.watchFonts([], {}, null, allModulesLoaded);
+        if (this.classes_ || this.events_) {
+          fontWatcher.watchFonts([], {}, null, allModulesLoaded);
+        }
       }
     }
   };
@@ -84,9 +97,11 @@ goog.scope(function () {
   WebFont.prototype.onModuleReady_ = function(eventDispatcher, fontWatcher, fonts, opt_fontTestStrings, opt_metricCompatibleFonts) {
     var allModulesLoaded = --this.moduleLoading_ == 0;
 
-    setTimeout(function () {
-      fontWatcher.watchFonts(fonts, opt_fontTestStrings || {}, opt_metricCompatibleFonts || null, allModulesLoaded);
-    }, 0);
+    if (this.classes_ || this.events_) {
+      setTimeout(function () {
+        fontWatcher.watchFonts(fonts, opt_fontTestStrings || {}, opt_metricCompatibleFonts || null, allModulesLoaded);
+      }, 0);
+    }
   };
 
   /**
