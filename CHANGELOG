@@ -1,3 +1,8 @@
+v1.5.9 (December 18, 2014)
+* Use visibility hidden instead of off-screen positioning
+* Decouple Typekit internal API
+* Disable native font loading (see comment)
+
 v1.5.8 (November 17, 2014)
 * Add prebuilt library to repository
 
