@@ -99,7 +99,7 @@ goog.scope(function () {
 
     if (this.classes_ || this.events_) {
       setTimeout(function () {
-        fontWatcher.watchFonts(fonts, opt_fontTestStrings || {}, opt_metricCompatibleFonts || null, allModulesLoaded);
+        fontWatcher.watchFonts(fonts, opt_fontTestStrings || null, opt_metricCompatibleFonts || null, allModulesLoaded);
       }, 0);
     }
   };

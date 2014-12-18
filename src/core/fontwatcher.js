@@ -28,14 +28,15 @@ goog.scope(function () {
   /**
    * Watches a set of font families.
    * @param {Array.<webfont.Font>} fonts The fonts to watch.
-   * @param {Object.<string, string>} fontTestStrings The font test strings for
+   * @param {webfont.FontTestStrings} fontTestStrings The font test strings for
    *     each family.
    * @param {Object.<String, boolean>} metricCompatibleFonts
    * @param {boolean} last True if this is the last set of fonts to watch.
    */
   FontWatcher.prototype.watchFonts = function(fonts,
       fontTestStrings, metricCompatibleFonts, last) {
-    var length = fonts.length;
+    var length = fonts.length,
+        testStrings = fontTestStrings || {};
 
     if (length === 0 && last) {
       this.eventDispatcher_.dispatchInactive();
@@ -50,7 +51,7 @@ goog.scope(function () {
 
     for (var i = 0; i < fonts.length; i++) {
       var font = fonts[i],
-          fontTestString = fontTestStrings[font.getName()];
+          testString = testStrings[font.getName()];
 
       this.eventDispatcher_.dispatchFontLoading(font);
 
@@ -85,7 +86,7 @@ goog.scope(function () {
             this.browserInfo_,
             this.timeout_,
             metricCompatibleFonts,
-            fontTestString
+            testString
           );
       //}
 
