@@ -1,3 +1,6 @@
+v1.5.10 (December 18, 2014)
+* Fix parameters passed to Typekit KitJS
+
 v1.5.9 (December 18, 2014)
 * Use visibility hidden instead of off-screen positioning
 * Decouple Typekit internal API
