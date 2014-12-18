@@ -57,8 +57,8 @@ goog.scope(function () {
             // we don't duplicate font watching.
             try {
               loadWindow['Typekit']['load']({
-                events: false,
-                classes: false
+                'events': false,
+                'classes': false
               });
             } catch (e) {}
           }
