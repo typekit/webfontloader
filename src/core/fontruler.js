@@ -38,7 +38,7 @@ goog.scope(function () {
    * @return {string}
    */
   FontRuler.prototype.computeStyleString_ = function(font) {
-    return "position:absolute;top:0px;left:0px;visibility:hidden;" +
+    return "display:block;position:absolute;top:0px;left:0px;visibility:hidden;" +
            "font-size:300px;width:auto;height:auto;line-height:normal;margin:0;" +
            "padding:0;font-variant:normal;white-space:nowrap;font-family:" +
            font.getCssName() + ";" + font.getCssVariation();

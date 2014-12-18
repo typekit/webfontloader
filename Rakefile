@@ -81,12 +81,19 @@ directory "target"
 directory "tmp"
 
 desc "Compile the JavaScript into target/webfont.js"
-task :compile => "target/webfont.js"
+task :compile, [:modules] => "target/webfont.js"
 
-file "target/webfont.js" => SourceJs + ["target"] do |t|
+file "webfontloader.js" => "target/webfont.js" do
+  cp "target/webfont.js", "webfontloader.js"
+end
+
+file "target/webfont.js", [:modules] => SourceJs + ["target"] do |t, args|
+  args.with_defaults(:modules => 'custom google typekit monotype fontdeck')
+
+  modules = args[:modules].split ' '
 
   output_marker = "%output%"
-  output_wrapper = @modules.js_output_wrapper(output_marker)
+  output_wrapper = @modules.js_output_wrapper(output_marker, version)
 
   args = [
     ["-jar", JsCompilerJar],
@@ -95,8 +102,11 @@ file "target/webfont.js" => SourceJs + ["target"] do |t|
     "--generate_exports",
     ["--output_wrapper", %("#{output_wrapper}")],
     ["--warning_level", "VERBOSE"],
-    ["--summary_detail_level", "3"]
+    ["--summary_detail_level", "3"],
+    "--define goog.DEBUG=false"
   ]
+
+  args.concat modules.map { |m| "--define INCLUDE_" + m.upcase + "_MODULE" }
 
   # Extra args to add warnings.
   args.concat([
@@ -112,20 +122,51 @@ file "target/webfont.js" => SourceJs + ["target"] do |t|
 end
 
 desc "Creates debug version into target/webfont.js"
-task :debug => "target/webfont_debug.js"
+task :debug, [:modules] => "target/webfont_debug.js"
 
-file "target/webfont_debug.js" => SourceJs + ["target"] do |t|
-  File.open(t.name, "w") { |f|
-    @modules.all_source_files.each { |src|
-      f.puts File.read(src)
-      f.puts ""
-    }
-  }
+file "target/webfont_debug.js", [:modules] => SourceJs + ["target"] do |t, args|
+  args.with_defaults(:modules => 'custom google typekit monotype fontdeck')
+
+  modules = args[:modules].split ' '
+
+  output_marker = "%output%"
+  output_wrapper = @modules.js_output_wrapper(output_marker, version)
+
+  args = [
+    ["-jar", JsCompilerJar],
+    ["--compilation_level", "ADVANCED_OPTIMIZATIONS"],
+    ["--js_output_file", t.name],
+    "--generate_exports",
+    ["--output_wrapper", %("#{output_wrapper}")],
+    ["--warning_level", "VERBOSE"],
+    ["--summary_detail_level", "3"],
+    "--debug=true",
+    "--formatting=PRETTY_PRINT",
+    "--formatting=PRINT_INPUT_DELIMITER"
+  ]
+
+  args.concat modules.map { |m| "--define INCLUDE_" + m.upcase + "_MODULE" }
+
+  # Extra args to add warnings.
+  args.concat([
+    ["--warning_level", "VERBOSE"],
+    ["--summary_detail_level", "1"]
+  ])
+
+  source = @modules.all_source_files
+  args.concat source.map { |f| ["--js", f] }
+
+  output = `java #{args.flatten.join(' ')} 2>&1`
+  $?.success? ? (puts output) : (fail output)
 end
 
 #
 # Run
 #
+desc "BrowserStack tests"
+task :bstest do |t|
+  exec "browserstack-test -u $BROWSERSTACK_USERNAME -p $BROWSERSTACK_PASSWORD -k $BROWSERSTACK_KEY -b browsers.json -t 300 http://localhost:9999/spec/index.html"
+end
 
 desc "Test everything"
 task :default => [:clean, :gzipbytes, :test]
@@ -168,11 +209,12 @@ end
 #
 #############################################################################
 
-task :release => :build do
+task :release => [:build] do
   unless `git branch` =~ /^\* master$/
     puts "You must be on the master branch to release!"
     exit!
   end
+  sh "git add webfontloader.js"
   sh "git commit --allow-empty -a -m 'Release #{version}'"
   sh "git tag -a v#{version}"
   sh "git push --tags origin master"
@@ -180,6 +222,8 @@ task :release => :build do
 end
 
 task :build => :gemspec do
+  Rake::Task["target/webfont.js"].execute
+  Rake::Task["webfontloader.js"].execute
   sh "mkdir -p pkg"
   sh "gem build #{gemspec_file}"
   sh "mv #{gem_file} pkg"

@@ -1,5 +1,6 @@
 describe('DomHelper', function () {
-  var domHelper = new webfont.DomHelper(window);
+  var DomHelper = webfont.DomHelper,
+      domHelper = new DomHelper(window);
 
   describe('#createElement', function () {
     it('should create an element', function () {
@@ -40,31 +41,6 @@ describe('DomHelper', function () {
       expect(-1, parentDiv.innerHTML.indexOf('evil'));
 
       delete Object.prototype.evil;
-    });
-  });
-
-  describe('#createCssLink', function () {
-    var link = domHelper.createCssLink('http://moo/somecss.css');
-
-    it('should create a link', function () {
-      expect(link).not.toBeNull();
-    });
-
-    it('should create a link with correct rel and href properties', function () {
-      expect(link.rel).toEqual('stylesheet');
-      expect(link.href).toEqual('http://moo/somecss.css');
-    });
-  });
-
-  describe('#createScriptSrc', function () {
-    var script = domHelper.createScriptSrc('http://moo/somescript.js');
-
-    it('should create a script element', function () {
-      expect(script).not.toBeNull();
-    });
-
-    it('should have a src property', function () {
-      expect(script.src).toEqual('http://moo/somescript.js');
     });
   });
 
@@ -123,6 +99,106 @@ describe('DomHelper', function () {
     });
   });
 
+  describe('#updateClassName', function () {
+    it('should handle optional arguments correctly', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'moo');
+
+      domHelper.updateClassName(div);
+      expect(div.className).toEqual('moo');
+
+      domHelper.updateClassName(div, [], []);
+      expect(div.className).toEqual('moo');
+
+      domHelper.updateClassName(div, null, null);
+      expect(div.className).toEqual('moo');
+    });
+
+    it('should have added a class name', function () {
+      var div = domHelper.createElement('div');
+      domHelper.updateClassName(div, ['moo']);
+
+      expect(div.className).toEqual('moo');
+    });
+
+    it('should not add duplicate class names', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'moo');
+      domHelper.updateClassName(div, ['moo']);
+
+      expect(div.className).toEqual('moo');
+    });
+
+    it('should add multiple class names', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.updateClassName(div, ['moo', 'meu', 'moo']);
+      expect(div.className).toEqual('moo meu');
+    });
+
+    it('should normalize spaces and tabs', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.updateClassName(div, ['meu', '      foo']);
+      expect(div.className).toEqual('meu foo');
+    });
+
+    it('should remove class names', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'meu moo');
+      expect(div.className).toEqual('meu moo');
+
+      domHelper.updateClassName(div, null, ['meu']);
+      expect(div.className).toEqual('moo');
+    });
+
+    it('should remove multiple class names', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'meu');
+      domHelper.appendClassName(div, 'moo');
+      expect(div.className).toEqual('meu moo');
+
+      domHelper.updateClassName(div, null, ['meu', 'moo']);
+      expect(div.className).toEqual('');
+    });
+
+    it('should not remove non-existing classes', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'moo');
+      expect(div.className).toEqual('moo');
+
+      domHelper.updateClassName(div, null, 'boo');
+      expect(div.className).toEqual('moo');
+    });
+
+    it('should add and remove class names', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'moo');
+      domHelper.appendClassName(div, 'meh');
+      expect(div.className).toEqual('moo meh');
+
+      domHelper.updateClassName(div, ['meu'], ['moo', 'meh']);
+      expect(div.className).toEqual('meu');
+    });
+
+    it('should update one of many class names', function () {
+      var div = domHelper.createElement('div');
+
+      domHelper.appendClassName(div, 'moo');
+      domHelper.appendClassName(div, 'meh');
+      expect(div.className).toEqual('moo meh');
+
+      domHelper.updateClassName(div, ['meu'], ['moo']);
+      expect(div.className).toEqual('meh meu');
+    });
+  });
+
   describe('#hasClassName', function () {
     var div = null;
 
@@ -153,6 +229,314 @@ describe('DomHelper', function () {
       domHelper.setStyle(div, 'left:3px;top:1px;');
       expect(div.style.left).toEqual('3px');
       expect(div.style.top).toEqual('1px');
+    });
+  });
+
+  describe('#createStyle', function () {
+    var style = null;
+
+    beforeEach(function () {
+      style = domHelper.createStyle('blockquote{font-size:300px}');
+      domHelper.insertInto('head', style);
+    });
+
+    afterEach(function () {
+      domHelper.removeElement(style);
+    });
+
+    it('should create a style element', function () {
+      expect(style).not.toBeNull();
+      expect(style.nodeName).toEqual('STYLE');
+    });
+
+    it('should set the css content correctly', function () {
+      var text = style.styleSheet ? style.styleSheet.cssText : style.textContent;
+      expect(text.replace(/[\s;]/g, '').toLowerCase()).toEqual('blockquote{font-size:300px}');
+    });
+  });
+
+  describe('#loadStylesheet', function () {
+    it('should load the stylesheet', function () {
+      var el = null,
+          width = null,
+          link = null;
+
+      runs(function () {
+        el = domHelper.createElement('div', { id: 'TEST_ELEMENT' });
+        domHelper.insertInto('body', el);
+        width = el.offsetWidth;
+        link = domHelper.loadStylesheet('fixtures/external_stylesheet.css');
+      });
+
+      waitsFor(function () {
+        return width !== el.offsetWidth;
+      });
+
+      runs(function () {
+        expect(link).not.toBeNull();
+        expect(link.rel).toEqual('stylesheet');
+        expect(el.offsetWidth).toEqual(300);
+      });
+    });
+  });
+
+  describe('#loadScript', function () {
+    it('should load the script', function () {
+      runs(function () {
+        domHelper.loadScript('fixtures/external_script.js');
+      });
+
+      waitsFor(function () {
+        return window.EXTERNAL_SCRIPT_LOADED;
+      }, 'script was never inserted', 1000);
+
+      runs(function () {
+        expect(window.EXTERNAL_SCRIPT_LOADED).toBe(true);
+      });
+    });
+
+    it('should call the callback', function () {
+      var called = false,
+          error = null;
+
+      runs(function () {
+        domHelper.loadScript('fixtures/external_script.js', function (err) {
+          called = true;
+          error = err;
+        });
+      });
+
+      waitsFor(function () {
+        return called;
+      }, 'callback was never called', 1000);
+
+      runs(function () {
+        expect(called).toBe(true);
+        expect(error).toBeFalsy();
+      });
+    });
+
+    it('should return a script element', function () {
+      var script = domHelper.loadScript('fixtures/external_script.js');
+
+      expect(script).not.toBeNull();
+      expect(script.nodeName).toEqual('SCRIPT');
+    });
+
+    it('should timeout if the script does not load or is very slow', function () {
+      var called = false,
+          error = false;
+
+      // Spy on createElement so the all loadScript code is executed but
+      // the "script" won't actually load.
+      spyOn(domHelper, 'createElement').andCallFake(function (name) {
+        return document.createElement('div');
+      });
+
+      runs(function () {
+        domHelper.loadScript('fixtures/external_script.js', function (err) {
+          called = true;
+          error = err;
+        }, 100);
+      });
+
+      waitsFor(function () {
+        return called;
+      });
+
+      runs(function () {
+        expect(called).toBe(true);
+        expect(error).toBeTruthy();
+      });
+    });
+  });
+
+  describe('#getProtocol', function () {
+    it('should return http', function () {
+      var domHelper = new DomHelper({
+        location: {
+          protocol: 'http:'
+        }
+      });
+
+      expect(domHelper.getProtocol()).toEqual('http:');
+    });
+
+    it('should return https', function () {
+      var domHelper = new DomHelper({
+        location: {
+          protocol: 'https:'
+        }
+      });
+
+      expect(domHelper.getProtocol()).toEqual('https:');
+    });
+
+    it('should return the protocol from an iframe', function () {
+      var domHelper = new DomHelper({
+        location: {
+          protocol: 'https:'
+        }
+      }, {
+        location: {
+          protocol: 'http:'
+        }
+      });
+
+      expect(domHelper.getProtocol()).toEqual('http:');
+    });
+
+    it('should return the protocol from the main window if the iframe has no protocol', function () {
+      var domHelper = new DomHelper({
+        location: {
+          protocol: 'http:'
+        }
+      }, {
+        location: {
+          protocol: 'about:'
+        }
+      });
+
+      expect(domHelper.getProtocol()).toEqual('http:');
+    });
+  });
+
+  describe('#isHttps', function () {
+    it('should return true if the protocol is https', function () {
+      var domHelper = new DomHelper({
+        location: {
+          protocol: 'https:'
+        }
+      });
+
+      expect(domHelper.isHttps()).toBe(true);
+    });
+
+    it('should return false if the protocol is not https', function () {
+      var domHelper = new DomHelper({
+        location: {
+          protocol: 'http:'
+        }
+      });
+
+      expect(domHelper.isHttps()).toBe(false);
+    });
+  });
+
+  describe('#getHostname', function () {
+    it('should return the hostname', function () {
+      var domHelper = new DomHelper({
+        location: {
+          hostname: 'example.com'
+        }
+      });
+
+      expect(domHelper.getHostName()).toEqual('example.com');
+    });
+
+    it('should return the hostname from the iframe if present', function () {
+      var domHelper = new DomHelper({
+        location: {
+          hostname: 'example.com'
+        }
+      }, {
+        location: {
+          hostname: 'example.org'
+        }
+      });
+
+      expect(domHelper.getHostName()).toEqual('example.org');
+    });
+  });
+
+  describe('#insertInto', function () {
+    it('should insert an element', function () {
+      var a = domHelper.createElement('div');
+
+      var result = domHelper.insertInto('body', a);
+
+      expect(result).toBe(true);
+      expect(a.parentNode.nodeName).toEqual('BODY');
+    });
+  });
+
+  describe('#whenBodyExists', function () {
+    var domHelper = null,
+        callback = null;
+
+    beforeEach(function () {
+      domHelper = new DomHelper({
+        document: {}
+      });
+
+      callback = jasmine.createSpy('callback');
+    });
+
+    it('should wait until the body exists before calling the callback', function () {
+      runs(function () {
+        domHelper.whenBodyExists(callback);
+      });
+
+      waits(200);
+
+      runs(function () {
+        domHelper.document_.body = true;
+      });
+
+      waitsFor(function () {
+        return callback.wasCalled;
+      }, 'callback was never called', 100);
+
+      runs(function () {
+        expect(callback).toHaveBeenCalled();
+      });
+    });
+
+    it('should not call the callback if the body is not available', function () {
+      runs(function () {
+        domHelper.whenBodyExists(callback);
+      });
+
+      waits(100);
+
+      runs(function () {
+        expect(callback).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('#removeElement', function () {
+    it('should remove an element', function () {
+      var a = domHelper.createElement('div'),
+          b = domHelper.createElement('div');
+
+      a.appendChild(b);
+
+      var result = domHelper.removeElement(b);
+      expect(result).toBe(true);
+      expect(b.parentNode).not.toEqual(a);
+    });
+
+    it('should return false when failing to remove an element', function () {
+      var a = domHelper.createElement('div');
+
+      var result = domHelper.removeElement(a);
+
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('#getMainWindow', function () {
+    it('should return the main window', function () {
+      var domHelper = new DomHelper(1, 2);
+      expect(domHelper.getMainWindow()).toEqual(1);
+    });
+  });
+
+  describe('#getLoadWindow', function () {
+    it('should return the load window', function () {
+      var domHelper = new DomHelper(1, 2);
+      expect(domHelper.getLoadWindow()).toEqual(2);
     });
   });
 });

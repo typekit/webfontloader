@@ -60,9 +60,12 @@ goog.scope(function () {
    * Dispatch the loading event and append the loading class name.
    */
   EventDispatcher.prototype.dispatchLoading = function() {
-    this.domHelper_.appendClassName(this.htmlElement_,
-        this.cssClassName_.build(
-            this.namespace_, webfont.EventDispatcher.LOADING));
+    this.domHelper_.updateClassName(this.htmlElement_,
+      [
+        this.cssClassName_.build(this.namespace_, webfont.EventDispatcher.LOADING)
+      ]
+    );
+
     this.dispatch_(webfont.EventDispatcher.LOADING);
   };
 
@@ -71,9 +74,12 @@ goog.scope(function () {
    * @param {webfont.Font} font
    */
   EventDispatcher.prototype.dispatchFontLoading = function(font) {
-    this.domHelper_.appendClassName(this.htmlElement_,
-        this.cssClassName_.build(
-            this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.LOADING));
+    this.domHelper_.updateClassName(this.htmlElement_,
+      [
+        this.cssClassName_.build(this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.LOADING)
+      ]
+    );
+
     this.dispatch_(
         webfont.EventDispatcher.FONT + webfont.EventDispatcher.LOADING, font);
   };
@@ -84,17 +90,18 @@ goog.scope(function () {
    * @param {webfont.Font} font
    */
   EventDispatcher.prototype.dispatchFontActive = function(font) {
-    this.domHelper_.removeClassName(this.htmlElement_,
-        this.cssClassName_.build(
-            this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.LOADING));
-    this.domHelper_.removeClassName(this.htmlElement_,
-        this.cssClassName_.build(
-            this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.INACTIVE));
-    this.domHelper_.appendClassName(this.htmlElement_,
-        this.cssClassName_.build(
-            this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.ACTIVE));
-    this.dispatch_(
-        webfont.EventDispatcher.FONT + webfont.EventDispatcher.ACTIVE, font);
+    this.domHelper_.updateClassName(
+      this.htmlElement_,
+      [
+        this.cssClassName_.build(this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.ACTIVE)
+      ],
+      [
+        this.cssClassName_.build(this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.LOADING),
+        this.cssClassName_.build(this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.INACTIVE)
+      ]
+    );
+
+    this.dispatch_(webfont.EventDispatcher.FONT + webfont.EventDispatcher.ACTIVE, font);
   };
 
   /**
@@ -104,19 +111,21 @@ goog.scope(function () {
    * @param {webfont.Font} font
    */
   EventDispatcher.prototype.dispatchFontInactive = function(font) {
-    this.domHelper_.removeClassName(this.htmlElement_,
-        this.cssClassName_.build(
-            this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.LOADING));
     var hasFontActive = this.domHelper_.hasClassName(this.htmlElement_,
-        this.cssClassName_.build(
-            this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.ACTIVE));
+          this.cssClassName_.build(this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.ACTIVE)
+        ),
+        add = [],
+        remove = [
+          this.cssClassName_.build(this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.LOADING)
+        ];
+
     if (!hasFontActive) {
-      this.domHelper_.appendClassName(this.htmlElement_,
-          this.cssClassName_.build(
-              this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.INACTIVE));
+      add.push(this.cssClassName_.build(this.namespace_, font.getName(), font.getVariation().toString(), webfont.EventDispatcher.INACTIVE));
     }
-    this.dispatch_(
-        webfont.EventDispatcher.FONT + webfont.EventDispatcher.INACTIVE, font);
+
+    this.domHelper_.updateClassName(this.htmlElement_, add, remove);
+
+    this.dispatch_(webfont.EventDispatcher.FONT + webfont.EventDispatcher.INACTIVE, font);
   };
 
   /**
@@ -124,17 +133,20 @@ goog.scope(function () {
    * inactive class name (unless the active class name is already present).
    */
   EventDispatcher.prototype.dispatchInactive = function() {
-    this.domHelper_.removeClassName(this.htmlElement_,
-        this.cssClassName_.build(
-            this.namespace_, webfont.EventDispatcher.LOADING));
     var hasActive = this.domHelper_.hasClassName(this.htmlElement_,
-        this.cssClassName_.build(
-            this.namespace_, webfont.EventDispatcher.ACTIVE));
+          this.cssClassName_.build(this.namespace_, webfont.EventDispatcher.ACTIVE)
+        ),
+        add = [],
+        remove = [
+          this.cssClassName_.build(this.namespace_, webfont.EventDispatcher.LOADING)
+        ];
+
     if (!hasActive) {
-      this.domHelper_.appendClassName(this.htmlElement_,
-          this.cssClassName_.build(
-            this.namespace_, webfont.EventDispatcher.INACTIVE));
+      add.push(this.cssClassName_.build(this.namespace_, webfont.EventDispatcher.INACTIVE));
     }
+
+    this.domHelper_.updateClassName(this.htmlElement_, add, remove);
+
     this.dispatch_(webfont.EventDispatcher.INACTIVE);
   };
 
@@ -143,15 +155,16 @@ goog.scope(function () {
    * class name, and append the active class name.
    */
   EventDispatcher.prototype.dispatchActive = function() {
-    this.domHelper_.removeClassName(this.htmlElement_,
-        this.cssClassName_.build(
-            this.namespace_, webfont.EventDispatcher.LOADING));
-    this.domHelper_.removeClassName(this.htmlElement_,
-        this.cssClassName_.build(
-            this.namespace_, webfont.EventDispatcher.INACTIVE));
-    this.domHelper_.appendClassName(this.htmlElement_,
-        this.cssClassName_.build(
-            this.namespace_, webfont.EventDispatcher.ACTIVE));
+    this.domHelper_.updateClassName(this.htmlElement_,
+      [
+        this.cssClassName_.build(this.namespace_, webfont.EventDispatcher.ACTIVE)
+      ],
+      [
+        this.cssClassName_.build(this.namespace_, webfont.EventDispatcher.LOADING),
+        this.cssClassName_.build(this.namespace_, webfont.EventDispatcher.INACTIVE)
+      ]
+    );
+
     this.dispatch_(webfont.EventDispatcher.ACTIVE);
   };
 

@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.4.3'
-  s.date              = '2013-05-16'
+  s.version           = '1.5.8'
+  s.date              = '2014-11-17'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -32,6 +32,9 @@ DESC
   s.authors  = ["Ryan Carver", "Jeremie Lenfant-engelmann"]
   s.email    = 'ryan@typekit.com'
   s.homepage = 'http://github.com/typekit/webfontloader'
+
+  ## License
+  s.license = "Apache 2.0"
 
   ## This gets added to the $LOAD_PATH so that 'lib/NAME.rb' can be required as
   ## require 'NAME.rb' or'/lib/NAME/file.rb' can be as require 'NAME/file.rb'
@@ -66,18 +69,16 @@ DESC
   ## THE MANIFEST COMMENTS, they are used as delimiters by the task.
   # = MANIFEST =
   s.files = %w[
+    AUTHORS
     CHANGELOG
+    CONTRIBUTING.md
     Gemfile
     LICENSE
     README.md
     Rakefile
     bin/webfontloader-demos
-    docs/EVENTS.md
-    docs/MODULES.md
-    docs/TRANSITIONS.md
+    browsers.json
     lib/webfontloader.rb
-    lib/webfontloader/demo/public/ascender-iframe.html
-    lib/webfontloader/demo/public/ascender.html
     lib/webfontloader/demo/public/basic.css
     lib/webfontloader/demo/public/blank.html
     lib/webfontloader/demo/public/custom-iframe.html
@@ -108,7 +109,6 @@ DESC
     lib/webfontloader/demo/public/typekit.html
     lib/webfontloader/demo/server.rb
     lib/webfontloader/modules.rb
-    spec/ascender/ascenderscript_spec.js
     spec/core/cssclassname_spec.js
     spec/core/domhelper_spec.js
     spec/core/eventdispatcher_spec.js
@@ -117,64 +117,64 @@ DESC
     spec/core/fontruler_spec.js
     spec/core/fontwatcher_spec.js
     spec/core/fontwatchrunner_spec.js
+    spec/core/nativefontwatchrunner_spec.js
     spec/core/size_spec.js
     spec/core/useragentparser_spec.js
     spec/core/version_spec.js
     spec/core/webfont_spec.js
-    spec/custom/customcss_spec.js
     spec/deps.js
-    spec/fontdeck/fontdeckscript_spec.js
-    spec/fonts/LICENSE.txt
-    spec/fonts/nullfont.css
-    spec/fonts/nullfont1.css
-    spec/fonts/nullfont2.css
-    spec/fonts/nullfont3.css
-    spec/fonts/sourcesans.eot
-    spec/fonts/sourcesans.otf
-    spec/fonts/sourcesans.svg
-    spec/fonts/sourcesans.ttf
-    spec/fonts/sourcesans.woff
-    spec/fonts/sourcesansa.css
-    spec/fonts/sourcesansb.css
-    spec/fonts/sourcesansc.css
-    spec/fonts/sourcesanscbold.css
-    spec/fonts/sourcesanscbold.otf
-    spec/google/fontapiparser_spec.js
-    spec/google/fontapiurlbuilder_spec.js
-    spec/google/googlefontapi_spec.js
-    spec/google/lastresortwebkitfontwatchrunner_spec.js
+    spec/fixtures/external_script.js
+    spec/fixtures/external_stylesheet.css
+    spec/fixtures/fonts/LICENSE.txt
+    spec/fixtures/fonts/nullfont.css
+    spec/fixtures/fonts/nullfont1.css
+    spec/fixtures/fonts/nullfont2.css
+    spec/fixtures/fonts/nullfont3.css
+    spec/fixtures/fonts/sourcesans.eot
+    spec/fixtures/fonts/sourcesans.otf
+    spec/fixtures/fonts/sourcesans.svg
+    spec/fixtures/fonts/sourcesans.ttf
+    spec/fixtures/fonts/sourcesans.woff
+    spec/fixtures/fonts/sourcesansa.css
+    spec/fixtures/fonts/sourcesansb.css
+    spec/fixtures/fonts/sourcesansc.css
+    spec/fixtures/fonts/sourcesansd.css
     spec/index.html
-    spec/monotype/monotypescript_spec.js
-    spec/typekit/typekitscript_spec.js
-    src/ascender/ascender_script.js
-    src/async_load.js
+    spec/modules/custom_spec.js
+    spec/modules/fontdeck_spec.js
+    spec/modules/google/fontapiparser_spec.js
+    spec/modules/google/fontapiurlbuilder_spec.js
+    spec/modules/google/googlefontapi_spec.js
+    spec/modules/monotype_spec.js
+    spec/modules/typekit_spec.js
     src/closure.js
     src/core/browserinfo.js
     src/core/cssclassname.js
     src/core/domhelper.js
     src/core/eventdispatcher.js
     src/core/font.js
+    src/core/fontmodule.js
     src/core/fontmoduleloader.js
     src/core/fontruler.js
     src/core/fontwatcher.js
     src/core/fontwatchrunner.js
     src/core/initialize.js
-    src/core/namespace.js
+    src/core/nativefontwatchrunner.js
     src/core/useragent.js
     src/core/useragentparser.js
     src/core/version.js
     src/core/webfont.js
-    src/custom/customcss.js
-    src/fontdeck/fontdeck_script.js
-    src/google/fontapiparser.js
-    src/google/fontapiurlbuilder.js
-    src/google/googlefontapi.js
-    src/google/lastresortwebkitfontwatchrunner.js
     src/modules.yml
-    src/monotype/monotype_script.js
-    src/typekit/typekit_script.js
+    src/modules/custom.js
+    src/modules/fontdeck.js
+    src/modules/google/fontapiparser.js
+    src/modules/google/fontapiurlbuilder.js
+    src/modules/google/googlefontapi.js
+    src/modules/monotype.js
+    src/modules/typekit.js
     tools/compiler/base.js
     tools/compiler/compiler.jar
+    tools/jasmine-browserstack/jasmine-browserstack.js
     tools/jasmine-phantomjs/jasmine-phantomjs.js
     tools/jasmine-phantomjs/terminal-reporter.js
     tools/jasmine/MIT.LICENSE

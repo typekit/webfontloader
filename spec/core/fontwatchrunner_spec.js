@@ -189,8 +189,7 @@ describe('FontWatchRunner', function () {
         timesToGetTimeBeforeTimeout = 2;
 
         var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, font, fallbackBugBrowserInfo,
-            0, { 'My Other Family': true });
+            domHelper, font, fallbackBugBrowserInfo, 0, { 'My Other Family': true });
 
         fontWatchRunner.start();
 
@@ -207,13 +206,12 @@ describe('FontWatchRunner', function () {
         timesToGetTimeBeforeTimeout = 2;
 
         var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, font, fallbackBugBrowserInfo,
-            0, { 'My Family': true });
+            domHelper, new Font('Arimo'), fallbackBugBrowserInfo, 0, { 'Arimo': true });
 
         fontWatchRunner.start();
 
         jasmine.Clock.tick(1 * 25);
-        expect(activeCallback).toHaveBeenCalledWith(font);
+        expect(activeCallback).toHaveBeenCalledWith(new Font('Arimo'));
       });
     });
 
@@ -243,7 +241,7 @@ describe('FontWatchRunner', function () {
         ];
 
         fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-            domHelper, font, browserInfo, 0, {}, 'TestString');
+            domHelper, font, browserInfo, 0, null, 'TestString');
 
         fontWatchRunner.start();
 
@@ -258,8 +256,6 @@ describe('FontWatchRunner', function () {
         nullFont = null,
         sourceSansA = null,
         sourceSansB = null,
-        sourceSansC = null,
-        sourceSansCBold = null,
         elena = null;
 
     beforeEach(function () {
@@ -268,8 +264,6 @@ describe('FontWatchRunner', function () {
       nullFont = new Font('__webfontloader_test__');
       sourceSansA = new Font('SourceSansA');
       sourceSansB = new Font('SourceSansB');
-      sourceSansC = new Font('SourceSansC');
-      sourceSansCBold = new Font('SourceSansC', 'n7');
       elena = new Font('Elena');
 
       userAgent = userAgentParser.parse();
@@ -294,7 +288,7 @@ describe('FontWatchRunner', function () {
 
     it('should load font succesfully', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, sourceSansA, userAgent.getBrowserInfo(), 500),
+          domHelper, sourceSansA, userAgent.getBrowserInfo(), 5000),
           ruler = new FontRuler(domHelper, 'abcdef'),
           monospace = new Font('monospace'),
           sourceSansAFallback = new Font("'SourceSansA', monospace"),
@@ -353,7 +347,7 @@ describe('FontWatchRunner', function () {
 
     it('should load even if @font-face is inserted after watching has started', function () {
       var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, sourceSansB, userAgent.getBrowserInfo(), 500),
+          domHelper, sourceSansB, userAgent.getBrowserInfo(), 5000),
           ruler = new FontRuler(domHelper, 'abcdef'),
           monospace = new Font('monospace'),
           sourceSansBFallback = new Font("'SourceSansB', monospace"),
@@ -370,7 +364,7 @@ describe('FontWatchRunner', function () {
         var link = document.createElement('link');
 
         link.rel = "stylesheet";
-        link.href= "fonts/sourcesansb.css";
+        link.href= "fixtures/fonts/sourcesansb.css";
 
         domHelper.insertInto('head', link);
       });
@@ -396,45 +390,6 @@ describe('FontWatchRunner', function () {
       runs(function () {
         expect(ruler.getWidth()).not.toEqual(originalWidth);
         expect(ruler.getWidth()).toEqual(activeWidth);
-      });
-    });
-
-    it('should load one weight after another', function () {
-       var fontWatchRunnerRegular = new FontWatchRunner(activeCallback, inactiveCallback,
-           domHelper, sourceSansC, userAgent.getBrowserInfo(), 500),
-           fontWatchRunnerBold = new FontWatchRunner(activeCallback, inactiveCallback,
-           domHelper, sourceSansCBold, userAgent.getBrowserInfo(), 500),
-           fontRulerA = new FontRuler(domHelper, 'abcdef'),
-           fontRulerB = new FontRuler(domHelper, 'abcdef');
-
-      runs(function () {
-        fontRulerA.insert();
-        fontRulerA.setFont(sourceSansC);
-        fontWatchRunnerRegular.start();
-      });
-
-      waitsFor(function () {
-        return activeCallback.wasCalled || inactiveCallback.wasCalled;
-      });
-
-      runs(function () {
-        expect(activeCallback).toHaveBeenCalledWith(sourceSansC);
-
-        activeCallback.reset();
-        inactiveCallback.reset();
-
-        fontRulerB.insert();
-        fontRulerB.setFont(sourceSansCBold);
-        fontWatchRunnerBold.start();
-      });
-
-      waitsFor(function () {
-        return activeCallback.wasCalled || inactiveCallback.wasCalled;
-      });
-
-      runs(function () {
-        expect(activeCallback).toHaveBeenCalledWith(sourceSansCBold);
-        expect(fontRulerA.getWidth()).not.toEqual(fontRulerB.getWidth());
       });
     });
   });

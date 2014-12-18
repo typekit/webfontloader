@@ -1,14 +1,30 @@
 describe('WebFont', function () {
   var WebFont = webfont.WebFont,
+      Font = webfont.Font;
       UserAgent = webfont.UserAgent,
+      FontWatchRunner = webfont.FontWatchRunner,
+      NativeFontWatchRunner = webfont.NativeFontWatchRunner,
       BrowserInfo = webfont.BrowserInfo,
+      Version = webfont.Version,
       Font = webfont.Font,
       FontModuleLoader = webfont.FontModuleLoader,
       fontModuleLoader = null,
       userAgent = null;
 
   beforeEach(function () {
-    userAgent = new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false, false));
+    userAgent = new UserAgent(
+      'Firefox',
+      new Version(3, 6),
+      '3.6',
+      'Gecko',
+      new Version(1, 9, 2),
+      '1.9.2',
+      'Macintosh',
+      new Version(10, 6),
+      '10.6',
+      undefined,
+      new BrowserInfo(true, false, false, false)
+    );
     fontModuleLoader = new FontModuleLoader();
   });
 
@@ -17,7 +33,7 @@ describe('WebFont', function () {
         testModule = null;
 
     beforeEach(function () {
-      font = new WebFont(window, fontModuleLoader, userAgent);
+      font = new WebFont(window);
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
@@ -78,10 +94,15 @@ describe('WebFont', function () {
   describe('font load with context', function () {
     var font = null,
         testModule = null,
-        fakeMainWindow = {};
+        fakeMainWindow = {
+          navigator: {
+            userAgent: 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/5.0.342.9 Safari/533.2'
+          },
+          document: {}
+        };
 
     beforeEach(function () {
-      font = new WebFont(fakeMainWindow, fontModuleLoader, userAgent);
+      font = new WebFont(fakeMainWindow);
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.domHelper = domHelper;
@@ -121,29 +142,28 @@ describe('WebFont', function () {
     beforeEach(function () {
       font = new Font('Font1');
       jasmine.Clock.useMock();
-      webfont = new WebFont(window, fontModuleLoader, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false)));
+      webfont = new WebFont(window);
       webfont.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
           this.fonts = [];
         };
 
-        testModule.getFontWatchRunnerCtor = function () {
-          function FakeFontWatchRunner(activeCallback, inactiveCallback) {
-            this.inactive = inactiveCallback;
-            this.active = activeCallback;
-          };
+        spyOn(FontWatchRunner.prototype, 'start').andCallFake(function () {
+          if (conf.id) {
+            active(font);
+          } else {
+            inactive(font);
+          }
+        });
 
-          FakeFontWatchRunner.prototype.start = function () {
-            if (conf.id) {
-              this.active(font);
-            } else {
-              this.inactive(font);
-            }
-          };
-
-          return FakeFontWatchRunner;
-        };
+        spyOn(NativeFontWatchRunner.prototype, 'start').andCallFake(function () {
+          if (conf.id) {
+            active(font);
+          } else {
+            inactive(font);
+          }
+        });
 
         testModule.supportUserAgent = function (userAgent, support) {
           if (conf.id) {
@@ -197,7 +217,7 @@ describe('WebFont', function () {
         testModule = null;
 
     beforeEach(function () {
-      font = new WebFont(window, fontModuleLoader, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(true, false, false)));
+      font = new WebFont(window);
 
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {};
@@ -218,8 +238,8 @@ describe('WebFont', function () {
       });
 
       expect(font.onModuleReady_).toHaveBeenCalled();
-      expect(font.onModuleReady_.calls[0].args[3]).toEqual([new Font('Elena')]);
-      expect(font.onModuleReady_.calls[0].args[4]).toEqual({ 'Elena': '1234567' });
+      expect(font.onModuleReady_.calls[0].args[2]).toEqual([new Font('Elena')]);
+      expect(font.onModuleReady_.calls[0].args[3]).toEqual({ 'Elena': '1234567' });
     });
   });
 
@@ -228,11 +248,14 @@ describe('WebFont', function () {
         testModule = null;
 
     beforeEach(function () {
-      font = new WebFont(window, fontModuleLoader, new UserAgent('Firefox', '3.6', 'Gecko', '1.9.2', 'Macintosh', '10.6', undefined, new BrowserInfo(false, false, false)));
+      font = new WebFont(window);
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
           this.loadCalled = false;
+        };
+        testModule.supportUserAgent = function (ua, support) {
+          support(false);
         };
         testModule.load = function () {};
         return testModule;
@@ -249,8 +272,106 @@ describe('WebFont', function () {
         inactive: inactive
       });
 
-      expect(testModule).toBeNull()
       expect(inactive).toHaveBeenCalled();
+      expect(inactive.calls.length).toEqual(1);
+    });
+  });
+
+  describe('module fails to load', function () {
+    var font = null,
+        testModule = null,
+        inactive = null,
+        active = null;
+
+    beforeEach(function () {
+      inactive = jasmine.createSpy('inactive'),
+      active = jasmine.createSpy('active');
+
+      font = new WebFont(window, fontModuleLoader, userAgent);
+
+      font.addModule('test', function (conf, domHelper) {
+        testModule = new function () {};
+        testModule.supportUserAgent = function (ua, support) {
+          window.setTimeout(function () {
+            support(false);
+          }, 100);
+        };
+        testModule.load = function (onReady) {
+          onReady();
+        };
+
+        return testModule;
+      });
+    });
+
+    it('times out and calls inactive', function () {
+      runs(function () {
+        font.load({
+          'test': {},
+          inactive: inactive,
+          active: active
+        });
+      });
+
+      waitsFor(function () {
+        return active.wasCalled || inactive.wasCalled;
+      });
+
+      runs(function () {
+        expect(inactive).toHaveBeenCalled();
+        expect(active).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('synchronous load event', function () {
+    var font = null,
+        testModule = null,
+        inactive = null,
+        loading = null,
+        active = null;
+
+    beforeEach(function () {
+      inactive = jasmine.createSpy('inactive'),
+      active = jasmine.createSpy('active');
+      loading = jasmine.createSpy('loading');
+
+      font = new WebFont(window, fontModuleLoader, userAgent);
+
+      font.addModule('test', function (conf, domHelper) {
+        testModule = new function () {};
+        testModule.supportUserAgent = function (ua, support) {
+          window.setTimeout(function () {
+            support(true);
+          }, 100);
+        };
+        testModule.load = function (onReady) {
+          onReady([]);
+        };
+
+        return testModule;
+      });
+    });
+
+    it('fires loading event correctly', function () {
+      runs(function () {
+        font.load({
+          'test': {},
+          inactive: inactive,
+          active: active,
+          loading: loading
+        });
+        expect(loading).toHaveBeenCalled();
+      });
+
+      waitsFor(function () {
+        return active.wasCalled || inactive.wasCalled;
+      });
+
+      runs(function () {
+        expect(inactive).toHaveBeenCalled();
+        expect(active).not.toHaveBeenCalled();
+      });
     });
   });
 });

@@ -39,6 +39,24 @@ describe('Font', function () {
     });
   });
 
+  describe('#toCssString', function () {
+    function toCssString(fvd) {
+      return new Font('My Family', fvd).toCssString();
+    }
+
+    it('should expand font styles correctly', function () {
+      expect(toCssString('n4')).toEqual("normal 400 300px 'My Family'");
+      expect(toCssString('i4')).toEqual("italic 400 300px 'My Family'");
+      expect(toCssString('o4')).toEqual("oblique 400 300px 'My Family'");
+    });
+
+    it('should expand weights correctly', function () {
+      for (var i = 1; i < 10; i += 1) {
+        expect(toCssString('n' + i)).toEqual("normal " + (i * 100) + " 300px 'My Family'");
+      }
+    });
+  });
+
   describe('#getCssVariation', function () {
     function toCss(fvd) {
       return new Font('My Family', fvd).getCssVariation();

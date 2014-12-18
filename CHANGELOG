@@ -1,3 +1,77 @@
+v1.5.8 (November 17, 2014)
+* Add prebuilt library to repository
+
+v1.5.7 (November 17, 2014)
+* Decrease default timeout to 3 seconds
+* Add support for native font loading
+
+v1.5.6 (September 3, 2014)
+* Fix double inactive event when all modules fail to load
+
+v1.5.5 (June 5, 2014)
+* Add support for the Chromecast browser
+
+v1.5.4 (May 2, 2014)
+* Add support for the PlayStation 4 browser
+
+v1.5.3 (April 8, 2014)
+* Prevent a potential FOUT when setting the font event classes.
+* Add "display:block" to test rulers so "* { display: none; }" doesn't override it
+
+v1.5.2 (January 3, 2014)
+* Add Copyright, License and Version to the compiled output file(s)
+* Fix small bug in Google Font module that rejected font variations with dashes
+
+v1.5.1 (October 15, 2013)
+* Dispatch wf-loading event synchronously instead of waiting for asynchronous modules
+* Update README explaining how to use custom fonts without a stylesheet
+* Add license information to gemspec
+
+v1.5.0 (September 9, 2013)
+* Correctly categorize Internet Explorer 11 as an Internet Explorer version.
+* Add support for custom test strings in the custom module.
+* Various small bug fixes to the test suite so it runs on all browsers automatically.
+
+v1.4.12 (August 21, 2013)
+* Cleared up initialization code and made all modules optional and configurable at compile time
+
+v1.4.11 (August 8, 2013)
+* Remove Ascender module (according to Monotype the service has now been shutdown completely.)
+* Switch Monotype module to use fast.fonts.net instead of fast.fonts.com
+* Update license
+
+v1.4.10 (July 31, 2013)
+* Add loadStylesheet method with optional callback that replaces createCssLink
+* Remove supportForStyle check because it breaks XHTML/SVG and is no longer necessary
+* Fix inactive never called when script loading times out
+* Move test assets into fixtures directory
+
+v1.4.9 (July 24, 2013)
+* Disable terminal spec report when not using PhantomJS
+* Remove obsolete namespace declaration
+
+v1.4.8 (June 24, 2013)
+* Add support for the Chromium based Opera browser
+* Change the debug task to do a Closure Compiler debug build
+* Fix a global variable leak in the compiled output
+* Add support for the PhantomJS user agent string
+
+v1.4.7 (June 6, 2013)
+* Fix backwards compatibility with version strings for Chrome
+* Restore specs that test against version strings for backwards compatibility with the old UserAgent API.
+
+v1.4.6 (May 29, 2013)
+* Merge font watching strategies from core and the Google module
+* Add support for the Samsung Galaxy S4 user agent string
+
+v1.4.5 (May 23, 2013)
+* Move modules into their own namespace
+* Add new methods into DomHelper and add specs for all DomHelper methods
+* Rename watch method so as not to conflict with Firefox Object.prototype.watch
+
+v1.4.4 (May 22, 2013)
+* Change the UserAgent API so that it is backwards compatible with older Typekit kits.
+
 v1.4.3 (May 16, 2013)
 * UserAgent now maintains version numbers as instances of the Version class.
 
