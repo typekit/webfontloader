@@ -12,6 +12,8 @@ webfont.DomHelper = function(mainWindow, opt_loadWindow) {
   this.mainWindow_ = mainWindow;
   this.loadWindow_ = opt_loadWindow || mainWindow;
 
+  this.protocol_ = null;
+
   /** @type {Document} */
   this.document_ = this.loadWindow_.document;
 };
@@ -220,12 +222,27 @@ goog.scope(function () {
    * @return {string} The protocol (http: or https:) to request resources in.
    */
   DomHelper.prototype.getProtocol = function() {
-    var protocol = this.loadWindow_.location.protocol;
-    // For empty iframes, fallback to main window's protocol.
-    if (protocol == 'about:') {
-      protocol = this.mainWindow_.location.protocol;
+    if (this.protocol_ !== null) {
+      return this.protocol_;
+    } else {
+      var protocol = this.loadWindow_.location.protocol;
+      // For empty iframes, fallback to main window's protocol.
+      if (protocol == 'about:') {
+        protocol = this.mainWindow_.location.protocol;
+      }
+      return protocol == 'https:' ? 'https:' : 'http:';
     }
-    return protocol == 'https:' ? 'https:' : 'http:';
+  };
+
+  /**
+   * Explicitly set the protocol instead of automatic detection.
+   *
+   * @param {string} protocol
+   */
+  DomHelper.prototype.setProtocol = function (protocol) {
+    if (/^http(s)?:$/.test(protocol)) {
+      this.protocol_ = protocol;
+    }
   };
 
   /**
