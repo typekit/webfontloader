@@ -1,0 +1,18 @@
+{
+  "name": "webfontloader",
+  "main": "webfontloader.js",
+  "version": "1.5.10",
+  "homepage": "https://github.com/typekit/webfontloader",
+  "authors": [
+    "Bram Stein <b.l.stein@gmail.com>"
+  ],
+  "description": "Web Font Loader gives you added control when using linked fonts via @font-face",
+  "keywords": [
+    "webfont",
+    "loader",
+    "webfontloader",
+    "typekit",
+    "font"
+  ],
+  "license": "Apache License, Version 2.0"
+}
