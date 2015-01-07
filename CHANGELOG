@@ -1,3 +1,6 @@
+v1.5.11 (January 7, 2015)
+* Add support for explicitly setting the protocol
+
 v1.5.10 (December 18, 2014)
 * Fix parameters passed to Typekit KitJS
 
