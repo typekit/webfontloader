@@ -401,6 +401,28 @@ describe('DomHelper', function () {
     });
   });
 
+  describe('#setProtocol', function () {
+    it('ignores invalid values', function () {
+      var domHelper = new DomHelper({
+        location: 'http:'
+      });
+
+      domHelper.setProtocol('huh');
+
+      expect(domHelper.getProtocol()).toEqual('http:');
+    });
+
+    it('overrides the global value', function () {
+      var domHelper = new DomHelper({
+        location: 'http:'
+      });
+
+      domHelper.setProtocol('https:');
+
+      expect(domHelper.getProtocol()).toEqual('https:');
+    });
+  });
+
   describe('#isHttps', function () {
     it('should return true if the protocol is https', function () {
       var domHelper = new DomHelper({
