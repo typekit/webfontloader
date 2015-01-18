@@ -2,7 +2,7 @@
 
 Web Font Loader gives you added control when using linked fonts via `@font-face`. It provides a common interface to loading fonts regardless of the source, then adds a standard set of events you may use to control the loading experience. The Web Font Loader is able to load fonts from [Google Fonts](http://www.google.com/fonts/), [Typekit](http://www.typekit.com/),  [Fonts.com](http://www.fonts.com/), and [Fontdeck](http://fontdeck.com/), as well as self-hosted web fonts. It is co-developed by [Google](http://www.google.com/) and [Typekit](http://www.typekit.com).
 
-[![Build Status](https://travis-ci.org/typekit/webfontloader.png?branch=master)](https://travis-ci.org/typekit/webfontloader)
+[![Build Status](https://travis-ci.org/typekit/webfontloader.svg?branch=master)](https://travis-ci.org/typekit/webfontloader)
 
 ## Contents
 
