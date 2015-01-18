@@ -6,8 +6,8 @@ if (system.args.length !== 1) {
 
   page.onConsoleMessage = function (msg) {
     console.log(msg);
-    if (/^SUCCESS|FAILURE/.test(msg)) {
-      if (/^SUCCESS/.test(msg)) {
+    if (/SUCCESS|FAILURE/.test(msg)) {
+      if (/SUCCESS/.test(msg)) {
         phantom.exit(0);
       } else {
         phantom.exit(1);

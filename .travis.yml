@@ -1,10 +1,4 @@
-script: rake bstest
+script: rake test
 before_script: 
-- npm install -g browserstack-test simple-http-server
-- nserver -p 9999 --nologs &
-env: 
-  global: 
-  - secure: SpBESv1t9BSVNDIHUkXjWX6ky6Vm6zTtAH8Rim1nV/ls+GUZ8VDVonNmtzZwlW0Looe3flxLBGC/b+qGDTTBddb4yezhOxLpjwTshGk82+PBjMPrBZxZH5GTdDSNy+wQXVOmfMklE4WJ/XEEi6CUln5khnGyyxf7ZGD6L7YpBwg=
-  - secure: e5JNnWU/xS9UsXD6OzkiLPfBmjxUFCYHFGMyZt1Ccr9R67XP++DD19xcHli6EL6pZs5yaDoywlgJyerB8+FTPxTRb678bbhQn32P2I+0WWWAgrB7WuOp8LOhvzBz/qnCSkQJ1d85ZruGq59G0TO+u+aAB/AEwqEcDiCTz9wanmM=
-  - secure: kUwbB34My6ya3c9yQ895rElfbqXpeO7DF54/9PSkUOQRmlYs1tIxO4hNlb/0yR1ZXFQf/+HJTG+aHe7hFv/Aopa/TAISSg+94SHOU1H0+9bOPWMSfhWh2IwkSR3LPi5ysXKlRpPLMVkk4jIMX3HjNFQg7XmUA2Tj3BB39baTTxI=
+- npm install -g phantomjs2
 language: ruby
