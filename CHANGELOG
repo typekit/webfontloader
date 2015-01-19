@@ -1,3 +1,7 @@
+v1.5.12 (January 19, 2015)
+* Revert using visibility hidden (caused strange artifacts on some sites on iOS browsers)
+* Fix compiler warnings
+
 v1.5.11 (January 7, 2015)
 * Add support for explicitly setting the protocol
 
