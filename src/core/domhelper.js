@@ -12,7 +12,8 @@ webfont.DomHelper = function(mainWindow, opt_loadWindow) {
   this.mainWindow_ = mainWindow;
   this.loadWindow_ = opt_loadWindow || mainWindow;
 
-  this.protocol_ = null;
+  /** @type {string} */
+  this.protocol_;
 
   /** @type {Document} */
   this.document_ = this.loadWindow_.document;
@@ -222,7 +223,7 @@ goog.scope(function () {
    * @return {string} The protocol (http: or https:) to request resources in.
    */
   DomHelper.prototype.getProtocol = function() {
-    if (this.protocol_ !== null) {
+    if (typeof this.protocol_ === 'string') {
       return this.protocol_;
     } else {
       var protocol = this.loadWindow_.location.protocol;
