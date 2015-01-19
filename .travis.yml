@@ -1,4 +1,2 @@
 script: rake test
-before_script: 
-- npm install -g phantomjs2
 language: ruby
