@@ -2,6 +2,12 @@ goog.provide('webfont.FontWatcher');
 
 goog.require('webfont.FontWatchRunner');
 goog.require('webfont.NativeFontWatchRunner');
+
+/**
+ * @typedef {Object.<string, Array.<string>>}
+ */
+webfont.FontTestStrings;
+
 /**
  * @constructor
  * @param {webfont.UserAgent} userAgent

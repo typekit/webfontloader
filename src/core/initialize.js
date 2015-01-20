@@ -9,11 +9,6 @@ goog.require('webfont.modules.Custom');
 goog.require('webfont.modules.google.GoogleFontApi');
 
 /**
- * @typedef {Object.<string, Array.<string>>}
- */
-webfont.FontTestStrings;
-
-/**
  * @define {boolean}
  */
 var INCLUDE_CUSTOM_MODULE = false;
