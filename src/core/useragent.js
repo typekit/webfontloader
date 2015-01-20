@@ -3,13 +3,6 @@ goog.provide('webfont.UserAgent');
 /**
  * A user agent string representation.
  *
- * This currently keeps a string and parsed `Version` representation
- * of version strings. This is done for backwards compatibility with
- * older versions of Typekit's KitJS when loaded through the Web Font
- * Loader. The old string based API is deprecated and will eventually
- * be removed.
- *
- * @export
  * @param {string} name
  * @param {webfont.Version} version
  * @param {string} engine
@@ -43,7 +36,6 @@ goog.scope(function () {
   var UserAgent = webfont.UserAgent;
 
   /**
-   * @export
    * @return {string}
    */
   UserAgent.prototype.getName = function() {
@@ -58,7 +50,6 @@ goog.scope(function () {
   };
 
   /**
-   * @export
    * @return {string}
    */
   UserAgent.prototype.getEngine = function() {
@@ -73,7 +64,6 @@ goog.scope(function () {
   };
 
   /**
-   * @export
    * @return {string}
    */
   UserAgent.prototype.getPlatform = function() {
@@ -88,7 +78,6 @@ goog.scope(function () {
   };
 
   /**
-   * @export
    * @return {number|undefined}
    */
   UserAgent.prototype.getDocumentMode = function() {
@@ -96,7 +85,6 @@ goog.scope(function () {
   };
 
   /**
-   * @export
    * @return {webfont.BrowserInfo}
    */
   UserAgent.prototype.getBrowserInfo = function() {
