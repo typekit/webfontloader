@@ -1,3 +1,7 @@
+v1.5.13 (January 20, 2015)
+* Remove unused exports
+* Move definition of FontTestStrings to where it is first used
+
 v1.5.12 (January 19, 2015)
 * Revert using visibility hidden (caused strange artifacts on some sites on iOS browsers)
 * Fix compiler warnings
