@@ -8,7 +8,7 @@ describe('EventDispatcher', function () {
       font = null;
 
   beforeEach(function () {
-    element = domHelper.createElement();
+    element = domHelper.getLoadWindow().document.documentElement;
     config = {
       loading: jasmine.createSpy('loading'),
       active: jasmine.createSpy('active'),
@@ -20,7 +20,9 @@ describe('EventDispatcher', function () {
       events: true
     };
 
-    eventDispatcher = new EventDispatcher(domHelper, element, config);
+    element.className = '';
+
+    eventDispatcher = new EventDispatcher(domHelper, config);
 
     font = new Font('My Family', 'n4');
   });
@@ -209,7 +211,7 @@ describe('EventDispatcher', function () {
     beforeEach(function () {
       config.classes = false;
       config.events = false;
-      eventDispatcher = new EventDispatcher(domHelper, element, config);
+      eventDispatcher = new EventDispatcher(domHelper, config);
       eventDispatcher.dispatchInactive();
       eventDispatcher.dispatchActive();
       eventDispatcher.dispatchLoading();
@@ -236,7 +238,7 @@ describe('EventDispatcher', function () {
   describe('disable classes', function () {
     beforeEach(function () {
       config.classes = false;
-      eventDispatcher = new EventDispatcher(domHelper, element, config);
+      eventDispatcher = new EventDispatcher(domHelper, config);
       eventDispatcher.dispatchInactive();
       eventDispatcher.dispatchActive();
       eventDispatcher.dispatchLoading();

@@ -48,7 +48,6 @@ goog.scope(function () {
 
     var eventDispatcher = new EventDispatcher(
         this.domHelper_,
-        context.document.documentElement,
         configuration
     );
 

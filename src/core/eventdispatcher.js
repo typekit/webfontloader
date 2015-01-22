@@ -10,13 +10,12 @@ goog.require('webfont.CssClassName');
  * associated active or inactive class name is also present).
  *
  * @param {webfont.DomHelper} domHelper
- * @param {HTMLElement} htmlElement
  * @param {Object} config
  * @constructor
  */
-webfont.EventDispatcher = function(domHelper, htmlElement, config) {
+webfont.EventDispatcher = function(domHelper, config) {
   this.domHelper_ = domHelper;
-  this.htmlElement_ = htmlElement;
+  this.htmlElement_ = domHelper.getLoadWindow().document.documentElement;
   this.callbacks_ = config;
   this.namespace_ = webfont.EventDispatcher.DEFAULT_NAMESPACE;
   this.cssClassName_ = new webfont.CssClassName('-');
