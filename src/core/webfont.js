@@ -49,10 +49,7 @@ goog.scope(function () {
     var eventDispatcher = new EventDispatcher(
         this.domHelper_,
         context.document.documentElement,
-        configuration,
-        undefined,
-        this.events_,
-        this.classes_
+        configuration
     );
 
     this.load_(eventDispatcher, configuration);

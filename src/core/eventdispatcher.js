@@ -8,22 +8,20 @@ goog.require('webfont.CssClassName');
  * names always overwrite inactive class names of the same type, while loading
  * class names may be present whenever a font is loading (regardless of if an
  * associated active or inactive class name is also present).
+ *
  * @param {webfont.DomHelper} domHelper
  * @param {HTMLElement} htmlElement
- * @param {Object} callbacks
- * @param {string=} opt_namespace
- * @param {boolean=} opt_dispatchEvents Set to false to not call any callbacks. Defaults to true.
- * @param {boolean=} opt_setClasses Set to false to not set classes on the HTML element. Defaults to true.
+ * @param {Object} config
  * @constructor
  */
-webfont.EventDispatcher = function(domHelper, htmlElement, callbacks, opt_namespace, opt_dispatchEvents, opt_setClasses) {
+webfont.EventDispatcher = function(domHelper, htmlElement, config) {
   this.domHelper_ = domHelper;
   this.htmlElement_ = htmlElement;
-  this.callbacks_ = callbacks;
-  this.namespace_ = opt_namespace || webfont.EventDispatcher.DEFAULT_NAMESPACE;
+  this.callbacks_ = config;
+  this.namespace_ = webfont.EventDispatcher.DEFAULT_NAMESPACE;
   this.cssClassName_ = new webfont.CssClassName('-');
-  this.dispatchEvents_ = opt_dispatchEvents !== false;
-  this.setClasses_ = opt_setClasses !== false;
+  this.dispatchEvents_ = config['events'] !== false;
+  this.setClasses_ = config['classes'] !== false;
 };
 
 /**
