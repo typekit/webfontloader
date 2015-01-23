@@ -5,21 +5,24 @@ describe('EventDispatcher', function () {
       domHelper = new DomHelper(window),
       element = null
       eventDispatcher = null,
-      namespace = 'ns',
       font = null;
 
   beforeEach(function () {
-    element = domHelper.createElement();
-    callbacks = {
+    element = domHelper.getLoadWindow().document.documentElement;
+    config = {
       loading: jasmine.createSpy('loading'),
       active: jasmine.createSpy('active'),
       inactive: jasmine.createSpy('inactive'),
       fontloading: jasmine.createSpy('fontloading'),
       fontactive: jasmine.createSpy('fontactive'),
-      fontinactive: jasmine.createSpy('fontinactive')
+      fontinactive: jasmine.createSpy('fontinactive'),
+      classes: true,
+      events: true
     };
 
-    eventDispatcher = new EventDispatcher(domHelper, element, callbacks, namespace);
+    element.className = '';
+
+    eventDispatcher = new EventDispatcher(domHelper, config);
 
     font = new Font('My Family', 'n4');
   });
@@ -30,11 +33,11 @@ describe('EventDispatcher', function () {
     });
 
     it('should call the correct callback', function () {
-      expect(callbacks.loading).toHaveBeenCalled();
+      expect(config.loading).toHaveBeenCalled();
     });
 
     it('should set the correct class name', function () {
-      expect(element.className).toEqual('ns-loading');
+      expect(element.className).toEqual('wf-loading');
     });
   });
 
@@ -44,11 +47,11 @@ describe('EventDispatcher', function () {
     });
 
     it('should call the correct callback', function () {
-      expect(callbacks.fontloading).toHaveBeenCalledWith('My Family', 'n4');
+      expect(config.fontloading).toHaveBeenCalledWith('My Family', 'n4');
     });
 
     it('should set the correct class name', function () {
-      expect(element.className).toEqual('ns-myfamily-n4-loading');
+      expect(element.className).toEqual('wf-myfamily-n4-loading');
     });
   });
 
@@ -58,11 +61,11 @@ describe('EventDispatcher', function () {
     });
 
     it('should call the correct callback', function () {
-      expect(callbacks.fontinactive).toHaveBeenCalledWith('My Family', 'n4');
+      expect(config.fontinactive).toHaveBeenCalledWith('My Family', 'n4');
     });
 
     it('should set the correct class name', function () {
-      expect(element.className).toEqual('ns-myfamily-n4-inactive');
+      expect(element.className).toEqual('wf-myfamily-n4-inactive');
     });
   });
 
@@ -73,7 +76,7 @@ describe('EventDispatcher', function () {
     });
 
     it('should set the correct class name', function () {
-      expect(element.className).toEqual('ns-myfamily-n4-inactive');
+      expect(element.className).toEqual('wf-myfamily-n4-inactive');
     });
   });
 
@@ -84,11 +87,11 @@ describe('EventDispatcher', function () {
     });
 
     it('should not append the inactive class name', function () {
-      expect(element.className).toEqual('ns-myfamily-n4-active');
+      expect(element.className).toEqual('wf-myfamily-n4-active');
     });
 
     it('should still call the correct callback', function () {
-      expect(callbacks.fontinactive).toHaveBeenCalledWith('My Family', 'n4');
+      expect(config.fontinactive).toHaveBeenCalledWith('My Family', 'n4');
     });
   });
 
@@ -98,11 +101,11 @@ describe('EventDispatcher', function () {
     });
 
     it('should call the correct callback', function () {
-      expect(callbacks.fontactive).toHaveBeenCalledWith('My Family', 'n4');
+      expect(config.fontactive).toHaveBeenCalledWith('My Family', 'n4');
     });
 
     it('should set the correct class name', function () {
-      expect(element.className).toEqual('ns-myfamily-n4-active');
+      expect(element.className).toEqual('wf-myfamily-n4-active');
     });
   });
 
@@ -113,7 +116,7 @@ describe('EventDispatcher', function () {
     });
 
     it('should set the correct class name', function () {
-      expect(element.className).toEqual('ns-myfamily-n4-active');
+      expect(element.className).toEqual('wf-myfamily-n4-active');
     });
   });
 
@@ -124,7 +127,7 @@ describe('EventDispatcher', function () {
     });
 
     it('should set the correct class', function () {
-      expect(element.className).toEqual('ns-myfamily-n4-active');
+      expect(element.className).toEqual('wf-myfamily-n4-active');
     });
   });
 
@@ -134,11 +137,11 @@ describe('EventDispatcher', function () {
     });
 
     it('should call the correct callback', function () {
-      expect(callbacks.inactive).toHaveBeenCalled();
+      expect(config.inactive).toHaveBeenCalled();
     });
 
     it('should set the correct class name', function () {
-      expect(element.className).toEqual('ns-inactive');
+      expect(element.className).toEqual('wf-inactive');
     });
   });
 
@@ -149,7 +152,7 @@ describe('EventDispatcher', function () {
     });
 
     it('should set the correct class name', function () {
-      expect(element.className).toEqual('ns-inactive');
+      expect(element.className).toEqual('wf-inactive');
     });
   });
 
@@ -160,11 +163,11 @@ describe('EventDispatcher', function () {
     });
 
     it('should not set the the inactive class', function () {
-      expect(element.className).toEqual('ns-active');
+      expect(element.className).toEqual('wf-active');
     });
 
     it('should still call the inactive callback', function () {
-      expect(callbacks.inactive).toHaveBeenCalled();
+      expect(config.inactive).toHaveBeenCalled();
     });
   });
 
@@ -174,11 +177,11 @@ describe('EventDispatcher', function () {
     });
 
     it('should call the correct callback', function () {
-      expect(callbacks.active).toHaveBeenCalled();
+      expect(config.active).toHaveBeenCalled();
     });
 
     it('should set the correct class name', function () {
-      expect(element.className).toEqual('ns-active');
+      expect(element.className).toEqual('wf-active');
     });
   });
 
@@ -189,7 +192,7 @@ describe('EventDispatcher', function () {
     });
 
     it('should set the correct class name', function () {
-      expect(element.className).toEqual('ns-active');
+      expect(element.className).toEqual('wf-active');
     });
   });
 
@@ -200,13 +203,15 @@ describe('EventDispatcher', function () {
     });
 
     it('should set the correct class name', function () {
-      expect(element.className).toEqual('ns-active');
+      expect(element.className).toEqual('wf-active');
     });
   });
 
-  describe('disable callbacks', function () {
+  describe('disable classes and events', function () {
     beforeEach(function () {
-      eventDispatcher = new EventDispatcher(domHelper, element, callbacks, namespace, false);
+      config.classes = false;
+      config.events = false;
+      eventDispatcher = new EventDispatcher(domHelper, config);
       eventDispatcher.dispatchInactive();
       eventDispatcher.dispatchActive();
       eventDispatcher.dispatchLoading();
@@ -215,25 +220,35 @@ describe('EventDispatcher', function () {
       eventDispatcher.dispatchFontLoading(font);
     });
 
+    afterEach(function () {
+      config.classes = true;
+      config.events = true;
+    });
+
     it('should not fire any events', function () {
-      expect(callbacks.inactive).not.toHaveBeenCalled();
-      expect(callbacks.active).not.toHaveBeenCalled();
-      expect(callbacks.loading).not.toHaveBeenCalled();
-      expect(callbacks.fontinactive).not.toHaveBeenCalled();
-      expect(callbacks.fontactive).not.toHaveBeenCalled();
-      expect(callbacks.fontloading).not.toHaveBeenCalled();
+      expect(config.inactive).not.toHaveBeenCalled();
+      expect(config.active).not.toHaveBeenCalled();
+      expect(config.loading).not.toHaveBeenCalled();
+      expect(config.fontinactive).not.toHaveBeenCalled();
+      expect(config.fontactive).not.toHaveBeenCalled();
+      expect(config.fontloading).not.toHaveBeenCalled();
     });
   });
 
   describe('disable classes', function () {
     beforeEach(function () {
-      eventDispatcher = new EventDispatcher(domHelper, element, callbacks, namespace, true, false);
+      config.classes = false;
+      eventDispatcher = new EventDispatcher(domHelper, config);
       eventDispatcher.dispatchInactive();
       eventDispatcher.dispatchActive();
       eventDispatcher.dispatchLoading();
       eventDispatcher.dispatchFontInactive(font);
       eventDispatcher.dispatchFontActive(font);
       eventDispatcher.dispatchFontLoading(font);
+    });
+
+    afterEach(function () {
+      config.classes = true;
     });
 
     it('should not fire any events', function () {
