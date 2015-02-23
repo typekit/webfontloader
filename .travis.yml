@@ -1,5 +1,4 @@
 script: rake test
-before_install:
-  brew update
-  brew install phantomjs
+before_script:
+  npm install -g phantomjs2-ext
 language: ruby
