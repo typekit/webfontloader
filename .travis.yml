@@ -1,4 +1,1 @@
-script: rake test
-before_script:
-  npm install -g phantomjs2-ext
-language: ruby
+language: node_js
