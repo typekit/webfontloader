@@ -1,1 +1,3 @@
+before_script:
+  - sudo apt-get remove phantomjs
 language: node_js
