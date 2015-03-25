@@ -1,3 +1,6 @@
+v1.5.15 (March 25, 2015)
+* Increase offset position for ruler so scrollbars are less likely to be triggered by large test strings
+
 v1.5.14 (January 23, 2015)
 * Refactor EventDispatcher
 
