@@ -4,7 +4,7 @@
   "description": "Web Font Loader gives you added control when using linked fonts via @font-face.",
   "main": "webfontloader.js",
   "scripts": {
-    "test": "./node_modules/.bin/phantomjs tools/jasmine-phantomjs/jasmine-phantomjs.js spec/index.html"
+    "test": "phantomjs tools/jasmine-phantomjs/jasmine-phantomjs.js spec/index.html"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,5 @@
   },
   "homepage": "https://github.com/typekit/webfontloader",
   "devDependencies": {
-    "phantomjs2-ext": "0.0.4"
   }
 }
