@@ -1,7 +1,6 @@
-describe('FontWatchRunner', function () {
-  var FontWatchRunner = webfont.FontWatchRunner,
+describe('LastResortFontWatchRunner', function () {
+  var LastResortFontWatchRunner = webfont.LastResortFontWatchRunner,
       Font = webfont.Font,
-      BrowserInfo = webfont.BrowserInfo,
       DomHelper = webfont.DomHelper,
       FontRuler = webfont.FontRuler;
 
@@ -26,7 +25,7 @@ describe('FontWatchRunner', function () {
   });
 
   it('should fail to load a null font', function () {
-    var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+    var fontWatchRunner = new LastResortFontWatchRunner(activeCallback, inactiveCallback,
         domHelper, nullFont, 500, {});
 
     runs(function () {
@@ -43,7 +42,7 @@ describe('FontWatchRunner', function () {
   });
 
   it('should load font succesfully', function () {
-    var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+    var fontWatchRunner = new LastResortFontWatchRunner(activeCallback, inactiveCallback,
         domHelper, sourceSansA, 5000),
         ruler = new FontRuler(domHelper, 'abcdef'),
         monospace = new Font('monospace'),
@@ -85,7 +84,7 @@ describe('FontWatchRunner', function () {
   });
 
   it('should attempt to load a non-existing font', function () {
-    var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+    var fontWatchRunner = new LastResortFontWatchRunner(activeCallback, inactiveCallback,
         domHelper, elena, 500, {});
 
     runs(function () {
@@ -102,7 +101,7 @@ describe('FontWatchRunner', function () {
   });
 
   it('should load even if @font-face is inserted after watching has started', function () {
-    var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
+    var fontWatchRunner = new LastResortFontWatchRunner(activeCallback, inactiveCallback,
         domHelper, sourceSansB, 5000),
         ruler = new FontRuler(domHelper, 'abcdef'),
         monospace = new Font('monospace'),

@@ -13,6 +13,7 @@ core:
   - core/fontruler.js
   - core/nativefontwatchrunner.js
   - core/fontwatchrunner.js
+  - core/lastresortfontwatchrunner.js
   - core/fontwatcher.js
   - core/webfont.js
   - core/initialize.js
