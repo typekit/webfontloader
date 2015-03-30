@@ -84,17 +84,17 @@ goog.scope(function () {
       //      fontTestString
       //    );
       //} else {
-        fontWatchRunner = new FontWatchRunner(
-            goog.bind(this.fontActive_, this),
-            goog.bind(this.fontInactive_, this),
-            this.domHelper_,
-            font,
-            this.browserInfo_,
-            this.timeout_,
-            metricCompatibleFonts,
-            testString
-          );
-      //}
+      //
+      fontWatchRunner = new FontWatchRunner(
+        goog.bind(this.fontActive_, this),
+        goog.bind(this.fontInactive_, this),
+        this.domHelper_,
+        font,
+        this.browserInfo_,
+        this.timeout_,
+        metricCompatibleFonts,
+        testString
+      );
 
       fontWatchRunner.start();
     }

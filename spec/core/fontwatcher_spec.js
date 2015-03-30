@@ -21,13 +21,10 @@ describe('FontWatcher', function () {
     userAgent = new UserAgent(
       'Firefox',
       new Version(3, 6),
-      '3.6',
       'Gecko',
       new Version(1, 9, 3),
-      '1.9.3',
       'Macintosh',
       new Version(10, 6),
-      '10.6',
       undefined,
       new BrowserInfo(true, false, false, false)
     );
