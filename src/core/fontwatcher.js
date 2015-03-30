@@ -2,7 +2,6 @@ goog.provide('webfont.FontWatcher');
 
 goog.require('webfont.FontWatchRunner');
 goog.require('webfont.NativeFontWatchRunner');
-goog.require('webfont.LastResortFontWatchRunner');
 
 /**
  * @typedef {Object.<string, Array.<string>>}
@@ -30,8 +29,7 @@ webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, opt_timeou
 goog.scope(function () {
   var FontWatcher = webfont.FontWatcher,
       FontWatchRunner = webfont.FontWatchRunner,
-      NativeFontWatchRunner = webfont.NativeFontWatchRunner,
-      LastResortFontWatchRunner = webfont.LastResortFontWatchRunner;
+      NativeFontWatchRunner = webfont.NativeFontWatchRunner;
 
   /**
    * Watches a set of font families.
@@ -87,27 +85,16 @@ goog.scope(function () {
       //    );
       //} else {
       //
-      if (this.browserInfo_.hasWebKitFallbackBug()) {
-        fontWatchRunner = new LastResortFontWatchRunner(
-          goog.bind(this.fontActive_, this),
-          goog.bind(this.fontInactive_, this),
-          this.domHelper_,
-          font,
-          this.timeout_,
-          metricCompatibleFonts,
-          testString
-        );
-      } else {
-        fontWatchRunner = new FontWatchRunner(
-          goog.bind(this.fontActive_, this),
-          goog.bind(this.fontInactive_, this),
-          this.domHelper_,
-          font,
-          this.timeout_,
-          metricCompatibleFonts,
-          testString
-        );
-      }
+      fontWatchRunner = new FontWatchRunner(
+        goog.bind(this.fontActive_, this),
+        goog.bind(this.fontInactive_, this),
+        this.domHelper_,
+        font,
+        this.browserInfo_,
+        this.timeout_,
+        metricCompatibleFonts,
+        testString
+      );
 
       fontWatchRunner.start();
     }
