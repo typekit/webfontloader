@@ -1,3 +1,6 @@
+v1.5.16 (March 30, 2015)
+* Optimise DOM performance in the font watcher.
+
 v1.5.15 (March 25, 2015)
 * Increase offset position for ruler so scrollbars are less likely to be triggered by large test strings
 
