@@ -292,8 +292,11 @@ goog.scope(function () {
   DomHelper.prototype.loadStylesheet = function (href, opt_callback) {
     var link = this.createElement('link', {
       'rel': 'stylesheet',
-      'href': href
+      'href': href,
+      'media': 'only x'
     });
+
+    var sheets = this.document_.styleSheets;
 
     var done = false;
 
@@ -317,7 +320,23 @@ goog.scope(function () {
       }
     };
 
+    function onAvailable(callback) {
+      for (var i = 0; i < sheets.length; i++) {
+        if (sheets[i].href && sheets[i].href.indexOf(href) !== -1) {
+          return callback();
+        }
+      }
+
+      setTimeout(function () {
+        onAvailable(callback);
+      }, 0);
+    }
+
     this.insertInto('head', link);
+
+    onAvailable(function () {
+      link.media = "all";
+    });
 
     return link;
   };
