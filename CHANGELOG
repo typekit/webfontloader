@@ -1,3 +1,6 @@
+v1.5.18 (April 15, 2015)
+* Add configuration option to enable asynchronous CSS (internal API)
+
 v1.5.17 (April 14, 2015)
 * Load CSS files asynchronously
 
