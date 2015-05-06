@@ -285,7 +285,17 @@ WebFontConfig = {
 };
 ```
 
-Sometimes the font you requested doesn't come in the default variation (e.g. `n4`) and you need to explicitly request the variation you want for font events to work (e.g. `n3`, `n7`, etc.). You can also supply the `text` parameter to perform character subsetting:
+Sometimes the font you requested doesn't come in the default weight (e.g. 400) and you need to explicitly request the variation you want for font events to work (e.g. `300`, `700`, etc.):
+
+```javascript
+WebFontConfig = {
+  google: {
+    families: ['Open Sans Condensed:300,700']
+  }
+};
+```
+
+You can also supply the `text` parameter to perform character subsetting:
 
 ```javascript
 WebFontConfig = {
