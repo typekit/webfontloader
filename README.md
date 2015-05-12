@@ -25,7 +25,7 @@ Web Font Loader gives you added control when using linked fonts via `@font-face`
 To use the Web Font Loader library, just include it in your page and tell it which fonts to load. For example, you could load fonts from [Google Fonts](http://www.google.com/fonts/) using the Web Font Loader hosted on [Google Hosted Libraries](https://developers.google.com/speed/libraries/) using the following code.
 
 ```html
-<script src="//ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script>
 <script>
   WebFont.load({
     google: {
@@ -47,7 +47,7 @@ It is also possible to use the Web Font Loader asynchronously. For example, to l
    
    (function(d) {
       var wf = d.createElement('script'), s = d.scripts[0];
-      wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.5.6/webfont.js';
+      wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js';
       s.parentNode.insertBefore(wf, s);
    })(document);
 </script>
