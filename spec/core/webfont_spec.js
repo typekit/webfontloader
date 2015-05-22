@@ -1,103 +1,21 @@
 describe('WebFont', function () {
   var WebFont = webfont.WebFont,
       Font = webfont.Font;
-      UserAgent = webfont.UserAgent,
       FontWatchRunner = webfont.FontWatchRunner,
       NativeFontWatchRunner = webfont.NativeFontWatchRunner,
-      BrowserInfo = webfont.BrowserInfo,
       Version = webfont.Version,
       Font = webfont.Font,
       FontModuleLoader = webfont.FontModuleLoader,
-      fontModuleLoader = null,
-      userAgent = null;
+      fontModuleLoader = null;
 
   beforeEach(function () {
-    userAgent = new UserAgent(
-      'Firefox',
-      new Version(3, 6),
-      '3.6',
-      'Gecko',
-      new Version(1, 9, 2),
-      '1.9.2',
-      'Macintosh',
-      new Version(10, 6),
-      '10.6',
-      undefined,
-      new BrowserInfo(true, false, false, false)
-    );
     fontModuleLoader = new FontModuleLoader();
-  });
-
-  describe('font load', function () {
-    var font = null,
-        testModule = null;
-
-    beforeEach(function () {
-      font = new WebFont(window);
-      font.addModule('test', function (conf, domHelper) {
-        testModule = new function () {
-          this.conf = conf;
-          this.domHelper = domHelper;
-          this.loadCalled = true;
-          this.supportUserAgentCalled = false;
-        };
-
-        testModule.load = function (onReady) {
-          this.loadCalled = true;
-          onReady([]);
-        };
-
-        testModule.supportUserAgent = function (ua, support) {
-          this.supportUserAgentCalled = true;
-          support(true);
-        };
-
-        return testModule;
-      });
-    });
-
-    it('should not start loading', function () {
-      expect(font.moduleFailedLoading_).toEqual(0);
-      expect(font.moduleLoading_).toEqual(0);
-    });
-
-    it('should fail to load a module', function () {
-      var loading = jasmine.createSpy('loading');
-
-      font.load({
-        test: {
-          somedata: 'in french a cow says meuh'
-        },
-        loading: loading
-      });
-
-      expect(font.moduleFailedLoading_).toEqual(1);
-      expect(font.moduleLoading_).toEqual(0);
-      expect(testModule).not.toBeNull();
-
-      expect(testModule.conf).not.toBeUndefined();
-      expect(testModule.conf).not.toBeNull();
-
-      expect(testModule.domHelper).not.toBeNull();
-      expect(testModule.domHelper).not.toBeUndefined();
-
-      expect(testModule.domHelper.getMainWindow()).toEqual(window);
-      expect(testModule.domHelper.getLoadWindow()).toEqual(window);
-
-      expect(testModule.conf.somedata).toEqual('in french a cow says meuh');
-      expect(testModule.loadCalled).toBe(true);
-      expect(testModule.supportUserAgentCalled).toBe(true);
-      expect(loading).toHaveBeenCalled();
-    });
   });
 
   describe('font load with context', function () {
     var font = null,
         testModule = null,
         fakeMainWindow = {
-          navigator: {
-            userAgent: 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_8; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/5.0.342.9 Safari/533.2'
-          },
           document: {}
         };
 
@@ -107,9 +25,8 @@ describe('WebFont', function () {
         testModule = new function () {
           this.domHelper = domHelper;
         };
-        testModule.load = function () {};
-        testModule.supportUserAgent = function (ua, support) {
-          support(true);
+        testModule.load = function (onReady) {
+          onReady([]);
         };
 
         return testModule;
@@ -146,7 +63,6 @@ describe('WebFont', function () {
       webfont.addModule('test', function (conf, domHelper) {
         testModule = new function () {
           this.conf = conf;
-          this.fonts = [];
         };
 
         spyOn(FontWatchRunner.prototype, 'start').andCallFake(function () {
@@ -165,16 +81,12 @@ describe('WebFont', function () {
           }
         });
 
-        testModule.supportUserAgent = function (userAgent, support) {
-          if (conf.id) {
-            // The monotype module only initializes font
-            // and description if there is a kit id.
-            this.fonts = [font];
-          }
-          support(true);
-        };
         testModule.load = function (onReady) {
-          onReady(this.fonts);
+          if (conf.id) {
+            onReady([font]);
+          } else {
+            onReady([]);
+          }
         };
 
         return testModule;
@@ -221,7 +133,6 @@ describe('WebFont', function () {
 
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {};
-        testModule.supportUserAgent = function (ua, support) { support(true); };
         testModule.load = function (onReady) {
           onReady([new Font('Elena')], { 'Elena': '1234567' });
         };
@@ -243,40 +154,6 @@ describe('WebFont', function () {
     });
   });
 
-  describe('font inactive', function () {
-    var font = null,
-        testModule = null;
-
-    beforeEach(function () {
-      font = new WebFont(window);
-      font.addModule('test', function (conf, domHelper) {
-        testModule = new function () {
-          this.conf = conf;
-          this.loadCalled = false;
-        };
-        testModule.supportUserAgent = function (ua, support) {
-          support(false);
-        };
-        testModule.load = function () {};
-        return testModule;
-      });
-    });
-
-    it('should load with the correct context', function () {
-      var inactive = jasmine.createSpy('inactive');
-
-      font.load({
-        test: {
-          somedata: 'in french a cow says meuh'
-        },
-        inactive: inactive
-      });
-
-      expect(inactive).toHaveBeenCalled();
-      expect(inactive.calls.length).toEqual(1);
-    });
-  });
-
   describe('module fails to load', function () {
     var font = null,
         testModule = null,
@@ -287,17 +164,12 @@ describe('WebFont', function () {
       inactive = jasmine.createSpy('inactive'),
       active = jasmine.createSpy('active');
 
-      font = new WebFont(window, fontModuleLoader, userAgent);
+      font = new WebFont(window, fontModuleLoader);
 
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {};
-        testModule.supportUserAgent = function (ua, support) {
-          window.setTimeout(function () {
-            support(false);
-          }, 100);
-        };
         testModule.load = function (onReady) {
-          onReady();
+          onReady([]);
         };
 
         return testModule;
@@ -336,17 +208,12 @@ describe('WebFont', function () {
       active = jasmine.createSpy('active');
       loading = jasmine.createSpy('loading');
 
-      font = new WebFont(window, fontModuleLoader, userAgent);
+      font = new WebFont(window, fontModuleLoader);
 
       font.addModule('test', function (conf, domHelper) {
         testModule = new function () {};
-        testModule.supportUserAgent = function (ua, support) {
-          window.setTimeout(function () {
-            support(true);
-          }, 100);
-        };
         testModule.load = function (onReady) {
-          onReady([]);
+          onReady([new Font('Elena')]);
         };
 
         return testModule;

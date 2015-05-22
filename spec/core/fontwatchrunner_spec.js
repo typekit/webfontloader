@@ -2,28 +2,22 @@ describe('FontWatchRunner', function () {
   var FontWatchRunner = webfont.FontWatchRunner,
       Font = webfont.Font,
       BrowserInfo = webfont.BrowserInfo,
-      UserAgentParser = webfont.UserAgentParser,
       DomHelper = webfont.DomHelper,
       FontRuler = webfont.FontRuler;
 
   var domHelper = null,
       activeCallback = null,
       inactiveCallback = null,
-      userAgent = null,
       nullFont = null,
       sourceSansA = null,
       sourceSansB = null,
       elena = null;
 
   beforeEach(function () {
-    var userAgentParser = new UserAgentParser(window.navigator.userAgent, window.document);
-
     domHelper = new DomHelper(window);
 
     activeCallback = jasmine.createSpy('activeCallback');
     inactiveCallback = jasmine.createSpy('inactiveCallback');
-
-    userAgent = userAgentParser.parse();
 
     nullFont = new Font('__webfontloader_test__');
     sourceSansA = new Font('SourceSansA');
@@ -33,7 +27,7 @@ describe('FontWatchRunner', function () {
 
   it('should fail to load a null font', function () {
     var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, nullFont, userAgent.getBrowserInfo(), 500, {});
+        domHelper, nullFont, 500, {});
 
     runs(function () {
       fontWatchRunner.start();
@@ -50,7 +44,7 @@ describe('FontWatchRunner', function () {
 
   it('should load font succesfully', function () {
     var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, sourceSansA, userAgent.getBrowserInfo(), 5000),
+        domHelper, sourceSansA,  5000),
         ruler = new FontRuler(domHelper, 'abcdef'),
         monospace = new Font('monospace'),
         sourceSansAFallback = new Font("'SourceSansA', monospace"),
@@ -92,7 +86,7 @@ describe('FontWatchRunner', function () {
 
   it('should attempt to load a non-existing font', function () {
     var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, elena, userAgent.getBrowserInfo(), 500, {});
+        domHelper, elena, 500, {});
 
     runs(function () {
       fontWatchRunner.start();
@@ -109,7 +103,7 @@ describe('FontWatchRunner', function () {
 
   it('should load even if @font-face is inserted after watching has started', function () {
     var fontWatchRunner = new FontWatchRunner(activeCallback, inactiveCallback,
-        domHelper, sourceSansB, userAgent.getBrowserInfo(), 5000),
+        domHelper, sourceSansB, 5000),
         ruler = new FontRuler(domHelper, 'abcdef'),
         monospace = new Font('monospace'),
         sourceSansBFallback = new Font("'SourceSansB', monospace"),
