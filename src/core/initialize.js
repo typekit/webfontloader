@@ -78,11 +78,20 @@ if (INCLUDE_GOOGLE_MODULE) {
   });
 }
 
-if (!goog.global[WEBFONT]) {
-  goog.global[WEBFONT] = {};
-  goog.global[WEBFONT]['load'] = goog.bind(webFontLoader.load, webFontLoader);
+var exports = {
+  'load': goog.bind(webFontLoader.load, webFontLoader)
+};
 
-  if (goog.global[WEBFONT_CONFIG]) {
-    webFontLoader.load(goog.global[WEBFONT_CONFIG]);
+if (typeof define === "function" && define.amd) {
+  define(function () {
+    return exports;
+  });
+} else if (typeof module !== "undefined" && module.exports) {
+  module.exports = exports;
+} else {
+  window[WEBFONT] = exports;
+
+  if (window[WEBFONT_CONFIG]) {
+    webFontLoader.load(window[WEBFONT_CONFIG]);
   }
 }

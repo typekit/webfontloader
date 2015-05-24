@@ -102,6 +102,7 @@ file "target/webfont.js", [:modules] => SourceJs + ["target"] do |t, args|
     ["--output_wrapper", %("#{output_wrapper}")],
     ["--warning_level", "VERBOSE"],
     ["--summary_detail_level", "3"],
+    ["--externs", "externs.js"],
     "--define goog.DEBUG=false"
   ]
 
@@ -138,6 +139,7 @@ file "target/webfont_debug.js", [:modules] => SourceJs + ["target"] do |t, args|
     ["--output_wrapper", %("#{output_wrapper}")],
     ["--warning_level", "VERBOSE"],
     ["--summary_detail_level", "3"],
+    ["--externs", "externs.js"],
     "--debug=true",
     "--formatting=PRETTY_PRINT",
     "--formatting=PRINT_INPUT_DELIMITER"
