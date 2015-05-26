@@ -374,7 +374,7 @@ goog.scope(function () {
       };
       head.appendChild(script);
 
-      window.setTimeout(function () {
+      setTimeout(function () {
         if (!done) {
           done = true;
           if (opt_callback) {
