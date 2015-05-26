@@ -1,3 +1,6 @@
+v1.5.20 (May 26, 2015)
+* Use setTimeout instead of window.setTimeout
+
 v1.5.19 (May 24, 2015)
 * Add UMD wrapper
 
