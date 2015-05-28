@@ -9,18 +9,16 @@ goog.require('webfont.FontRuler');
  * @param {function(webfont.Font)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
  * @param {webfont.Font} font
- * @param {webfont.BrowserInfo} browserInfo
  * @param {number=} opt_timeout
  * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    font, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
+    font, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
   this.font_ = font;
-  this.browserInfo_ = browserInfo;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
   this.lastResortWidths_ = {};
   this.timeout_ = opt_timeout || 3000;
@@ -57,6 +55,36 @@ goog.scope(function () {
   var FontWatchRunner = webfont.FontWatchRunner,
       Font = webfont.Font,
       FontRuler = webfont.FontRuler;
+
+  /**
+   * @type {null|boolean}
+   */
+  FontWatchRunner.HAS_WEBKIT_FALLBACK_BUG = null;
+
+  /**
+   * @return {string}
+   */
+  FontWatchRunner.getUserAgent = function () {
+    return window.navigator.userAgent;
+  };
+
+  /**
+   * Returns true if this browser is WebKit and it has the fallback bug
+   * which is present in WebKit 536.11 and earlier.
+   *
+   * @return {boolean}
+   */
+  FontWatchRunner.hasWebKitFallbackBug = function () {
+    if (FontWatchRunner.HAS_WEBKIT_FALLBACK_BUG === null) {
+      var match = /AppleWebKit\/([0-9]+)(?:\.([0-9]+))/.exec(FontWatchRunner.getUserAgent());
+
+      FontWatchRunner.HAS_WEBKIT_FALLBACK_BUG = !!match &&
+                                          (parseInt(match[1], 10) < 536 ||
+                                           (parseInt(match[1], 10) === 536 &&
+                                            parseInt(match[2], 10) <= 11));
+    }
+    return FontWatchRunner.HAS_WEBKIT_FALLBACK_BUG;
+  };
 
   /**
    * @private
@@ -152,7 +180,7 @@ goog.scope(function () {
    * @return {boolean}
    */
   FontWatchRunner.prototype.isLastResortFont_ = function (a, b) {
-    return this.browserInfo_.hasWebKitFallbackBug() && this.widthsMatchLastResortWidths_(a, b);
+    return FontWatchRunner.hasWebKitFallbackBug() && this.widthsMatchLastResortWidths_(a, b);
   };
 
   /**

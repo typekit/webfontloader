@@ -9,7 +9,7 @@ describe('modules.Typekit', function () {
   var fakeDomHelper = null,
       global = {},
       load = null,
-      support = null;
+      onReady = null;
 
   beforeEach(function () {
     global = {
@@ -21,7 +21,7 @@ describe('modules.Typekit', function () {
       }
     };
 
-    support = jasmine.createSpy('support');
+    onReady = jasmine.createSpy('onReady');
 
     load = jasmine.createSpy('load');
 
@@ -37,11 +37,10 @@ describe('modules.Typekit', function () {
   it('should load with variations', function () {
     var typekit = new Typekit(fakeDomHelper, configuration);
 
-    typekit.supportUserAgent('useragent', support);
+    typekit.load(onReady);
 
     expect(fakeDomHelper.loadScript).toHaveBeenCalled();
-    expect(fakeDomHelper.loadScript.calls[0].args[0]).toEqual('http://use.typekit.net/abc.js');
-    expect(support).toHaveBeenCalled();
+    expect(fakeDomHelper.loadScript.calls[0].args[0]).toEqual('https://use.typekit.net/abc.js');
 
     expect(global.Typekit.load).toHaveBeenCalled();
     typekit.load(load);
@@ -52,7 +51,8 @@ describe('modules.Typekit', function () {
   it('should load through the alternative API', function () {
     var typekit = new Typekit(fakeDomHelper, { id: 'abc', api: '/test' });
 
-    typekit.supportUserAgent('useragent', support);
+    typekit.load(onReady);
+
     expect(fakeDomHelper.loadScript).toHaveBeenCalled();
     expect(fakeDomHelper.loadScript.calls[0].args[0]).toEqual('/test/abc.js');
   });
@@ -60,10 +60,9 @@ describe('modules.Typekit', function () {
   it('should not load without a kit id', function () {
     var typekit = new Typekit(fakeDomHelper, { id: null });
 
-    typekit.supportUserAgent('useragent', support);
+    typekit.load(onReady);
 
     expect(fakeDomHelper.loadScript).not.toHaveBeenCalled();
-    expect(support).toHaveBeenCalled();
 
     typekit.load(load);
 

@@ -4,7 +4,6 @@ goog.require('webfont.DomHelper');
 goog.require('webfont.EventDispatcher');
 goog.require('webfont.FontWatcher');
 goog.require('webfont.FontModuleLoader');
-goog.require('webfont.UserAgentParser');
 
 /**
  * @param {Window} mainWindow The main application window containing
@@ -14,10 +13,7 @@ goog.require('webfont.UserAgentParser');
 webfont.WebFont = function(mainWindow) {
   this.mainWindow_ = mainWindow;
   this.fontModuleLoader_ = new webfont.FontModuleLoader();
-  this.userAgentParser_ = new webfont.UserAgentParser(mainWindow.navigator.userAgent, mainWindow.document);
-  this.userAgent_ = this.userAgentParser_.parse();
   this.moduleLoading_ = 0;
-  this.moduleFailedLoading_ = 0;
   this.events_ = true;
   this.classes_ = true;
 };
@@ -55,35 +51,6 @@ goog.scope(function () {
   };
 
   /**
-   * @param {webfont.FontModule} module
-   * @param {webfont.EventDispatcher} eventDispatcher
-   * @param {webfont.FontWatcher} fontWatcher
-   * @param {boolean} support
-   */
-  WebFont.prototype.isModuleSupportingUserAgent_ = function(module, eventDispatcher,
-      fontWatcher, support) {
-    var that = this;
-
-    if (support) {
-      module.load(function (fonts, opt_fontTestStrings, opt_metricCompatibleFonts) {
-        that.onModuleReady_(eventDispatcher, fontWatcher, fonts, opt_fontTestStrings, opt_metricCompatibleFonts);
-      });
-    } else {
-      var allModulesLoaded = --this.moduleLoading_ == 0;
-
-      this.moduleFailedLoading_--;
-
-      if (allModulesLoaded && this.moduleFailedLoading_ == 0) {
-        eventDispatcher.dispatchInactive();
-      } else {
-        if (this.classes_ || this.events_) {
-          fontWatcher.watchFonts([], {}, null, allModulesLoaded);
-        }
-      }
-    }
-  };
-
-  /**
    * @param {webfont.EventDispatcher} eventDispatcher
    * @param {webfont.FontWatcher} fontWatcher
    * @param {Array.<webfont.Font>} fonts
@@ -115,16 +82,16 @@ goog.scope(function () {
 
     modules = this.fontModuleLoader_.getModules(configuration, this.domHelper_);
 
-    this.moduleFailedLoading_ = this.moduleLoading_ = modules.length;
+    var fontWatcher = new webfont.FontWatcher(this.domHelper_, eventDispatcher, timeout);
 
-    var fontWatcher = new webfont.FontWatcher(this.userAgent_, this.domHelper_, eventDispatcher, timeout);
+    this.moduleLoading_ = modules.length;
 
     for (var i = 0, len = modules.length; i < len; i++) {
       var module = modules[i];
 
-      module.supportUserAgent(this.userAgent_,
-          goog.bind(this.isModuleSupportingUserAgent_, this, module,
-          eventDispatcher, fontWatcher));
+      module.load(function (fonts, opt_fontTestStrings, opt_metricCompatibleFonts) {
+        self.onModuleReady_(eventDispatcher, fontWatcher, fonts, opt_fontTestStrings, opt_metricCompatibleFonts);
+      });
     }
   };
 });

@@ -9,7 +9,6 @@ goog.require('webfont.Font');
 webfont.modules.Typekit = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
-  this.fonts_ = [];
 };
 
 /**
@@ -23,12 +22,11 @@ goog.scope(function () {
       Font = webfont.Font;
 
   Typekit.prototype.getScriptSrc = function(kitId) {
-    var protocol = this.domHelper_.getProtocol();
-    var api = this.configuration_['api'] || protocol + '//use.typekit.net';
+    var api = this.configuration_['api'] || 'https://use.typekit.net';
     return api + '/' + kitId + '.js';
   };
 
-  Typekit.prototype.supportUserAgent = function(userAgent, support) {
+  Typekit.prototype.load = function(onReady) {
     var kitId = this.configuration_['id'];
     var configuration = this.configuration_;
     var loadWindow = this.domHelper_.getLoadWindow();
@@ -39,17 +37,18 @@ goog.scope(function () {
       // and use that to populate the fonts we should watch.
       this.domHelper_.loadScript(this.getScriptSrc(kitId), function (err) {
         if (err) {
-          support(false);
+          onReady([]);
         } else {
           if (loadWindow['Typekit'] && loadWindow['Typekit']['config'] && loadWindow['Typekit']['config']['fn']) {
-            var fn = loadWindow['Typekit']['config']['fn'];
+            var fn = loadWindow['Typekit']['config']['fn'],
+                fonts = [];
 
             for (var i = 0; i < fn.length; i += 2) {
               var font = fn[i],
                   variations = fn[i + 1];
 
               for (var j = 0; j < variations.length; j++) {
-                that.fonts_.push(new Font(font, variations[j]));
+                fonts.push(new Font(font, variations[j]));
               }
             }
 
@@ -61,16 +60,13 @@ goog.scope(function () {
                 'classes': false
               });
             } catch (e) {}
+
+            onReady(fonts);
           }
-          support(true);
         }
       }, 2000);
     } else {
-      support(false);
+      onReady([]);
     }
-  };
-
-  Typekit.prototype.load = function(onReady) {
-    onReady(this.fonts_);
   };
 });

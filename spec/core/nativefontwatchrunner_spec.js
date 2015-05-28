@@ -1,14 +1,12 @@
 describe('NativeFontWatchRunner', function () {
   var NativeFontWatchRunner = webfont.NativeFontWatchRunner,
       Font = webfont.Font,
-      UserAgentParser = webfont.UserAgentParser,
       DomHelper = webfont.DomHelper,
       FontRuler = webfont.FontRuler;
 
   var domHelper = null,
       activeCallback = null,
       inactiveCallback = null,
-      userAgent = null,
       nullFont = null,
       sourceSansC = null,
       elena = null;
@@ -19,13 +17,9 @@ describe('NativeFontWatchRunner', function () {
     activeCallback = jasmine.createSpy('activeCallback');
     inactiveCallback = jasmine.createSpy('inactiveCallback');
 
-    var userAgentParser = new UserAgentParser(window.navigator.userAgent, window.document);
-
     nullFont = new Font('__webfontloader_test_3__');
     sourceSansC = new Font('SourceSansC');
     elena = new Font('Elena');
-
-    userAgent = userAgentParser.parse();
   });
 
   if (window['FontFace']) {

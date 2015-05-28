@@ -10,20 +10,17 @@ webfont.FontTestStrings;
 
 /**
  * @constructor
- * @param {webfont.UserAgent} userAgent
  * @param {webfont.DomHelper} domHelper
  * @param {webfont.EventDispatcher} eventDispatcher
  * @param {number=} opt_timeout
  */
-webfont.FontWatcher = function(userAgent, domHelper, eventDispatcher, opt_timeout) {
+webfont.FontWatcher = function(domHelper, eventDispatcher, opt_timeout) {
   this.domHelper_ = domHelper;
   this.eventDispatcher_ = eventDispatcher;
   this.currentlyWatched_ = 0;
   this.last_ = false;
   this.success_ = false;
   this.timeout_ = opt_timeout;
-
-  this.browserInfo_ = userAgent.getBrowserInfo();
 };
 
 goog.scope(function () {
@@ -74,7 +71,7 @@ goog.scope(function () {
       // stylesheet has loaded reliably). Until that issue is
       // resolved we'll keep the native font disabled.
       //
-      //if (this.browserInfo_.hasNativeFontLoading()) {
+      //if (window['FontFace']) {
       //  fontWatchRunner = new NativeFontWatchRunner(
       //      goog.bind(this.fontActive_, this),
       //      goog.bind(this.fontInactive_, this),
@@ -90,7 +87,6 @@ goog.scope(function () {
         goog.bind(this.fontInactive_, this),
         this.domHelper_,
         font,
-        this.browserInfo_,
         this.timeout_,
         metricCompatibleFonts,
         testString

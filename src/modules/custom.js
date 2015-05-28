@@ -56,8 +56,4 @@ goog.scope(function () {
 
     onReady(fonts, fontTestStrings);
   };
-
-  Custom.prototype.supportUserAgent = function(userAgent, support) {
-    return support(userAgent.getBrowserInfo().hasWebFontSupport());
-  };
 });

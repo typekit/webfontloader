@@ -61,13 +61,11 @@ describe('modules.Fontdeck', function () {
 
   describe('support and load life cycle', function () {
     var fontdeck = null,
-        support = null;
+        onReady = jasmine.createSpy('onReady');
 
     beforeEach(function () {
       fontdeck = new Fontdeck(fakeDomHelper, configuration);
-      support = jasmine.createSpy('support');
-
-      fontdeck.supportUserAgent('user agent', support);
+      fontdeck.load(onReady);
     });
 
     it('should create the script correctly', function () {
@@ -84,8 +82,6 @@ describe('modules.Fontdeck', function () {
       global.__webfontfontdeckmodule__['2282'](true, apiResponse);
 
       expect(fontdeck.fonts_).toEqual([new Font(apiResponse.fonts[0].name), new Font(apiResponse.fonts[1].name, 'i7')]);
-
-      expect(support).toHaveBeenCalled();
     });
   });
 
@@ -95,14 +91,10 @@ describe('modules.Fontdeck', function () {
 
     beforeEach(function () {
       fontdeck = new Fontdeck(fakeDomHelper, { id: null });
-      support = jasmine.createSpy('support');
-
-      fontdeck.supportUserAgent('user agent', support);
     });
 
     it('should not have loaded any fonts', function () {
       expect(fontdeck.fonts_).toEqual([]);
-      expect(support).toHaveBeenCalled();
     });
   });
 });
