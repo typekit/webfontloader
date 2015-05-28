@@ -1,3 +1,6 @@
+v1.6.0 (May 28, 2015)
+* Remove user agent string sniffing. From now on the Web Font Loader will always try to load fonts.
+
 v1.5.21 (May 26, 2015)
 * No changes.
 
