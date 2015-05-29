@@ -216,9 +216,10 @@ task :release => [:build] do
   end
   sh "git add webfontloader.js"
   sh "git commit --allow-empty -a -m 'Release #{version}'"
-  sh "git tag -a v#{version}"
+  sh "npm version #{version}"
   sh "git push --tags origin master"
   sh "gem push pkg/#{name}-#{version}.gem"
+  sh "npm publish"
 end
 
 task :build => :gemspec do
