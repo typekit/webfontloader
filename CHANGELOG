@@ -1,3 +1,6 @@
+v1.6.3 (June 1, 2015)
+* Fix invalid references to global this (window).
+
 v1.6.2 (May 29, 2015)
 * No changes.
 
