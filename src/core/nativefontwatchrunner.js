@@ -30,7 +30,7 @@ goog.scope(function () {
     // We're using Promises here because the font load API
     // uses them, so we can be sure they're available.
     Promise.race([new Promise(function (resolve, reject) {
-      goog.global.setTimeout(function () {
+      setTimeout(function () {
         reject(that.font_);
       }, that.timeout_);
     }), doc.fonts.load(this.font_.toCssString(), this.fontTestString_)]).then(function (fonts) {

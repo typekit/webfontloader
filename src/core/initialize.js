@@ -46,7 +46,7 @@ var WEBFONT_CONFIG = 'WebFontConfig';
 /**
  * @type {webfont.WebFont}
  */
-var webFontLoader = new webfont.WebFont(goog.global);
+var webFontLoader = new webfont.WebFont(window);
 
 if (INCLUDE_CUSTOM_MODULE) {
   webFontLoader.addModule(webfont.modules.Custom.NAME, function (configuration, domHelper) {
