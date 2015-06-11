@@ -295,6 +295,16 @@ WebFontConfig = {
 };
 ```
 
+If you need to specify character subsets other than the default (e.g.: greek script in addition to latin), you must append the subset string to the requested family string after a colon. The subset string should follow the [Google documentation](https://developers.google.com/fonts/docs/getting_started#Subsets) (subset names separated by commas):
+
+```javascript
+WebFontConfig = {
+  google: {
+    families: ['Open Sans Condensed:300,700:latin,greek']
+  }
+};
+```
+
 You can also supply the `text` parameter to perform character subsetting:
 
 ```javascript
