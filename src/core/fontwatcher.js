@@ -52,7 +52,8 @@ goog.scope(function () {
       this.last_ = last;
     }
 
-    for (var i = 0; i < fonts.length; i++) {
+    var i, fontWatchRunners = [];
+    for (i = 0; i < fonts.length; i++) {
       var font = fonts[i],
           testString = testStrings[font.getName()];
 
@@ -92,7 +93,11 @@ goog.scope(function () {
         testString
       );
 
-      fontWatchRunner.start();
+      fontWatchRunners.push(fontWatchRunner);
+    }
+
+    for (i = 0; i < fontWatchRunners.length; i++) {
+      fontWatchRunners[i].start();
     }
   };
 

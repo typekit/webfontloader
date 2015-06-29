@@ -101,13 +101,13 @@ goog.scope(function () {
     this.fontRulerA_.insert();
     this.fontRulerB_.insert();
     this.fontRulerC_.insert();
-
-    this.lastResortWidths_[FontWatchRunner.LastResortFonts.SERIF] = this.fontRulerA_.getWidth();
-    this.lastResortWidths_[FontWatchRunner.LastResortFonts.SANS_SERIF] = this.fontRulerB_.getWidth();
-    this.lastResortWidths_[FontWatchRunner.LastResortFonts.MONOSPACE] = this.fontRulerC_.getWidth();
   };
 
   FontWatchRunner.prototype.start = function() {
+    this.lastResortWidths_[FontWatchRunner.LastResortFonts.SERIF] = this.fontRulerA_.getWidth();
+    this.lastResortWidths_[FontWatchRunner.LastResortFonts.SANS_SERIF] = this.fontRulerB_.getWidth();
+    this.lastResortWidths_[FontWatchRunner.LastResortFonts.MONOSPACE] = this.fontRulerC_.getWidth();
+
     this.started_ = goog.now();
 
     this.fontRulerA_.setFont(new Font(this.font_.getName() + ',' + FontWatchRunner.LastResortFonts.SERIF, this.font_.getVariation()));
