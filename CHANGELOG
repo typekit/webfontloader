@@ -1,3 +1,6 @@
+v1.6.4 (July 9, 2015)
+* Optimise reflows when setting up test spans.
+
 v1.6.3 (June 1, 2015)
 * Fix invalid references to global this (window).
 
