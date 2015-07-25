@@ -1,3 +1,8 @@
+v1.6.5 (July 25, 2015)
+* Optimise layout calculations
+* Fix Rubygems source
+* Simplify internal Google module code
+
 v1.6.4 (July 9, 2015)
 * Optimise reflows when setting up test spans.
 
