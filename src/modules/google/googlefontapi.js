@@ -32,13 +32,12 @@ goog.scope(function () {
   };
 
   GoogleFontApi.prototype.load = function(onReady) {
-    this.insertLink_(onReady);
-  };
-
-  GoogleFontApi.prototype.insertLink_ = function(onReady) {
     var domHelper = this.domHelper_;
     var fontApiUrlBuilder = new FontApiUrlBuilder(
-        this.configuration_['api'], domHelper.getProtocol(), this.configuration_['text']);
+        this.configuration_['api'],
+        domHelper.getProtocol(),
+        this.configuration_['text']
+    );
     var fontFamilies = this.configuration_['families'];
     fontApiUrlBuilder.setFontFamilies(fontFamilies);
 
