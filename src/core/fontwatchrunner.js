@@ -27,9 +27,10 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
 
   this.fontRulerA_ = null;
   this.fontRulerB_ = null;
-  this.fontRulerC_ = null;
+  this.lastResortRulerA_ = null;
+  this.lastResortRulerB_ = null;
 
-  this.setupLastResortWidths_();
+  this.setupRulers_();
 };
 
 /**
@@ -38,8 +39,7 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
  */
 webfont.FontWatchRunner.LastResortFonts = {
   SERIF: 'serif',
-  SANS_SERIF: 'sans-serif',
-  MONOSPACE: 'monospace'
+  SANS_SERIF: 'sans-serif'
 };
 
 /**
@@ -89,29 +89,28 @@ goog.scope(function () {
   /**
    * @private
    */
-  FontWatchRunner.prototype.setupLastResortWidths_ = function() {
+  FontWatchRunner.prototype.setupRulers_ = function() {
     this.fontRulerA_ = new FontRuler(this.domHelper_, this.fontTestString_);
     this.fontRulerB_ = new FontRuler(this.domHelper_, this.fontTestString_);
-    this.fontRulerC_ = new FontRuler(this.domHelper_, this.fontTestString_);
-
-    this.fontRulerA_.setFont(new Font(FontWatchRunner.LastResortFonts.SERIF, this.font_.getVariation()));
-    this.fontRulerB_.setFont(new Font(FontWatchRunner.LastResortFonts.SANS_SERIF, this.font_.getVariation()));
-    this.fontRulerC_.setFont(new Font(FontWatchRunner.LastResortFonts.MONOSPACE, this.font_.getVariation()));
-
-    this.fontRulerA_.insert();
-    this.fontRulerB_.insert();
-    this.fontRulerC_.insert();
-  };
-
-  FontWatchRunner.prototype.start = function() {
-    this.lastResortWidths_[FontWatchRunner.LastResortFonts.SERIF] = this.fontRulerA_.getWidth();
-    this.lastResortWidths_[FontWatchRunner.LastResortFonts.SANS_SERIF] = this.fontRulerB_.getWidth();
-    this.lastResortWidths_[FontWatchRunner.LastResortFonts.MONOSPACE] = this.fontRulerC_.getWidth();
-
-    this.started_ = goog.now();
+    this.lastResortRulerA_ = new FontRuler(this.domHelper_, this.fontTestString_);
+    this.lastResortRulerB_ = new FontRuler(this.domHelper_, this.fontTestString_);
 
     this.fontRulerA_.setFont(new Font(this.font_.getName() + ',' + FontWatchRunner.LastResortFonts.SERIF, this.font_.getVariation()));
     this.fontRulerB_.setFont(new Font(this.font_.getName() + ',' + FontWatchRunner.LastResortFonts.SANS_SERIF, this.font_.getVariation()));
+    this.lastResortRulerA_.setFont(new Font(FontWatchRunner.LastResortFonts.SERIF, this.font_.getVariation()));
+    this.lastResortRulerB_.setFont(new Font(FontWatchRunner.LastResortFonts.SANS_SERIF, this.font_.getVariation()));
+
+    this.fontRulerA_.insert();
+    this.fontRulerB_.insert();
+    this.lastResortRulerA_.insert();
+    this.lastResortRulerB_.insert();
+  };
+
+  FontWatchRunner.prototype.start = function() {
+    this.lastResortWidths_[FontWatchRunner.LastResortFonts.SERIF] = this.lastResortRulerA_.getWidth();
+    this.lastResortWidths_[FontWatchRunner.LastResortFonts.SANS_SERIF] = this.lastResortRulerB_.getWidth();
+
+    this.started_ = goog.now();
 
     this.check_();
   };
@@ -238,7 +237,8 @@ goog.scope(function () {
   FontWatchRunner.prototype.finish_ = function(callback) {
     this.fontRulerA_.remove();
     this.fontRulerB_.remove();
-    this.fontRulerC_.remove();
+    this.lastResortRulerA_.remove();
+    this.lastResortRulerB_.remove();
     callback(this.font_);
   };
 });
