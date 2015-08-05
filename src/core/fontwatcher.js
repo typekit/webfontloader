@@ -29,6 +29,11 @@ goog.scope(function () {
       NativeFontWatchRunner = webfont.NativeFontWatchRunner;
 
   /**
+   * @const @type {boolean}
+   */
+  FontWatcher.shouldUseNativeLoader = !!window['FontFace'];
+
+  /**
    * Watches a set of font families.
    * @param {Array.<webfont.Font>} fonts The fonts to watch.
    * @param {webfont.FontTestStrings} fontTestStrings The font test strings for

@@ -1,14 +1,17 @@
 describe('modules.google.GoogleFontApi', function () {
   var GoogleFontApi = webfont.modules.google.GoogleFontApi,
+      Any = jasmine.Matchers.Any,
       Font = webfont.Font,
       link = '',
       insert = '',
+      onload = null,
       fakeDomHelper =  {
         whenBodyExists: function (callback) {
           callback();
         },
-        loadStylesheet: function (cssLink) {
+        loadStylesheet: function (cssLink, cb) {
           link = cssLink;
+          onload = cb;
         },
         getProtocol: function () {
           return 'http:';
@@ -19,7 +22,13 @@ describe('modules.google.GoogleFontApi', function () {
   beforeEach(function () {
     insert = '';
     link = '';
+    onload = null;
   });
+
+  function notifySheetsLoaded() {
+    if (onload)
+      onload();
+  };
 
   describe('call onReady with font family loading', function () {
     var googleFontApi = null,
@@ -37,6 +46,7 @@ describe('modules.google.GoogleFontApi', function () {
     });
 
     it('has the correct families', function () {
+      notifySheetsLoaded();
       expect(fonts).not.toBeNull();
       expect(fonts.length).toEqual(2);
       expect(fonts[0]).toEqual(new Font('Font1'));
@@ -46,18 +56,30 @@ describe('modules.google.GoogleFontApi', function () {
 
   describe('call onReady with font family loading and custom API url', function () {
     var googleFontApi = null;
+    var loaded  = false;
 
     beforeEach(function () {
+      loaded  = false;
       googleFontApi = new GoogleFontApi(fakeDomHelper, {
         api: 'http://moo',
         families: ['Font1', 'Font2']
       });
-      googleFontApi.load(function () {});
+      googleFontApi.load(function () { loaded = true; });
     });
 
     it('has inserted the link element correctly', function () {
       expect(link).toEqual('http://moo?family=Font1%7CFont2');
     });
+
+    if (webfont.StyleSheetWaiter.shouldWait) {
+      it('does not call onReady until sheets are loaded', function () {
+        expect(onload).toMatch(new Any(Function));
+        expect(loaded).toBe(false);
+
+        notifySheetsLoaded();
+        expect(loaded).toBe(true);
+      });
+    }
   });
 
   describe('spaces replaced by plus', function () {
