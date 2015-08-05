@@ -1,6 +1,7 @@
 describe('FontWatcher', function () {
   var FontWatcher = webfont.FontWatcher,
       FontWatchRunner = webfont.FontWatchRunner,
+      NativeFontWatchRunner = webfont.NativeFontWatchRunner,
       Font = webfont.Font,
       DomHelper = webfont.DomHelper,
       Version = webfont.Version,
@@ -29,7 +30,7 @@ describe('FontWatcher', function () {
     eventDispatcher.dispatchActive = jasmine.createSpy('dispatchActive');
     eventDispatcher.dispatchInactive = jasmine.createSpy('dispatchInactive');
 
-    spyOn(FontWatchRunner.prototype, 'start').andCallFake(function (font, fontTestString) {
+    var fakeStart = function (font, fontTestString) {
       var found = false;
 
       testStrings(this.fontTestString_);
@@ -47,7 +48,10 @@ describe('FontWatcher', function () {
       } else {
         this.inactiveCallback_(this.font_);
       }
-    });
+    };
+
+    spyOn(FontWatchRunner.prototype, 'start').andCallFake(fakeStart);
+    spyOn(NativeFontWatchRunner.prototype, 'start').andCallFake(fakeStart);
   });
 
   describe('watch zero fonts', function () {
@@ -196,6 +200,7 @@ describe('FontWatcher', function () {
     it('should use the correct tests strings', function () {
       activeFonts = [font1, font2];
 
+      var defaultTestString = FontWatcher.shouldUseNativeLoader ? undefined : FontWatchRunner.DEFAULT_TEST_STRING;
       var fontWatcher = new FontWatcher(domHelper, eventDispatcher);
 
       fontWatcher.watchFonts([font1, font2, font3, font4], {
@@ -207,9 +212,9 @@ describe('FontWatcher', function () {
 
       expect(testStrings.callCount).toEqual(4);
       expect(testStrings.calls[0].args[0]).toEqual('testString1');
-      expect(testStrings.calls[1].args[0]).toEqual(FontWatchRunner.DEFAULT_TEST_STRING);
+      expect(testStrings.calls[1].args[0]).toEqual(defaultTestString);
       expect(testStrings.calls[2].args[0]).toEqual('testString2');
-      expect(testStrings.calls[3].args[0]).toEqual(FontWatchRunner.DEFAULT_TEST_STRING);
+      expect(testStrings.calls[3].args[0]).toEqual(defaultTestString);
     });
   });
 

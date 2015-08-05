@@ -66,37 +66,26 @@ goog.scope(function () {
 
       var fontWatchRunner = null;
 
-      // We've disabled the native font watch runner for now. The
-      // reason is that its behaviour is slightly different from
-      // the non-native version in that it returns immediately if
-      // a @font-face rule is not in the document. The non-native
-      // version keeps polling the page. A lot of modules depend
-      // on the ability to start font watching before actually
-      // loading the fonts, so they fail in this case (which is
-      // related to browser support; figuring out when a
-      // stylesheet has loaded reliably). Until that issue is
-      // resolved we'll keep the native font disabled.
-      //
-      //if (window['FontFace']) {
-      //  fontWatchRunner = new NativeFontWatchRunner(
-      //      goog.bind(this.fontActive_, this),
-      //      goog.bind(this.fontInactive_, this),
-      //      this.domHelper_,
-      //      font,
-      //      this.timeout_,
-      //      fontTestString
-      //    );
-      //} else {
-      //
-      fontWatchRunner = new FontWatchRunner(
-        goog.bind(this.fontActive_, this),
-        goog.bind(this.fontInactive_, this),
-        this.domHelper_,
-        font,
-        this.timeout_,
-        metricCompatibleFonts,
-        testString
-      );
+      if (FontWatcher.shouldUseNativeLoader) {
+        fontWatchRunner = new NativeFontWatchRunner(
+            goog.bind(this.fontActive_, this),
+            goog.bind(this.fontInactive_, this),
+            this.domHelper_,
+            font,
+            this.timeout_,
+            testString
+          );
+      } else {
+        fontWatchRunner = new FontWatchRunner(
+          goog.bind(this.fontActive_, this),
+          goog.bind(this.fontInactive_, this),
+          this.domHelper_,
+          font,
+          this.timeout_,
+          metricCompatibleFonts,
+          testString
+        );
+      }
 
       fontWatchRunners.push(fontWatchRunner);
     }
