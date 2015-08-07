@@ -65,16 +65,13 @@ goog.scope(function () {
       t = document.documentElement;
     }
 
-    if (t && t.lastChild) {
-      // This is safer than appendChild in IE. appendChild causes random
-      // JS errors in IE. Sometimes errors in other JS exectution, sometimes
-      // complete 'This page cannot be displayed' errors. For our purposes,
-      // it's equivalent because we don't need to insert at any specific
-      // location.
-      t.insertBefore(e, t.lastChild);
-      return true;
-    }
-    return false;
+    // This is safer than appendChild in IE. appendChild causes random
+    // JS errors in IE. Sometimes errors in other JS exectution, sometimes
+    // complete 'This page cannot be displayed' errors. For our purposes,
+    // it's equivalent because we don't need to insert at any specific
+    // location.
+    t.insertBefore(e, t.lastChild);
+    return true;
   };
 
   /**
