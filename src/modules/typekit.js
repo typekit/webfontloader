@@ -57,7 +57,8 @@ goog.scope(function () {
             try {
               loadWindow['Typekit']['load']({
                 'events': false,
-                'classes': false
+                'classes': false,
+                'async': true
               });
             } catch (e) {}
 
