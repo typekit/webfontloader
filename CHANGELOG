@@ -1,3 +1,10 @@
+
+v1.6.6 (August 7, 2015)
+
+* Fix weird check in insertInto that disallowed adding a link to an empty head element.
+* Load fonts asynchronously for the Typekit module.
+* Remove font rulers and trigger callback asynchronously to avoid unnecessary reflows.
+
 v1.6.5 (July 25, 2015)
 * Optimise layout calculations
 * Fix Rubygems source
