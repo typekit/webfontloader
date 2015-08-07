@@ -235,10 +235,15 @@ goog.scope(function () {
    * @param {function(webfont.Font)} callback
    */
   FontWatchRunner.prototype.finish_ = function(callback) {
-    this.fontRulerA_.remove();
-    this.fontRulerB_.remove();
-    this.lastResortRulerA_.remove();
-    this.lastResortRulerB_.remove();
-    callback(this.font_);
+    // Remove elements and trigger callback (which adds active/inactive class) asynchronously to avoid reflow chain if
+    // several fonts are finished loading right after each other
+    setTimeout(goog.bind(function () {
+      this.fontRulerA_.remove();
+      this.fontRulerB_.remove();
+      this.lastResortRulerA_.remove();
+      this.lastResortRulerB_.remove();
+      callback(this.font_);
+    }, this), 0);
   };
+
 });
