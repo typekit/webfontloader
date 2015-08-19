@@ -15,7 +15,6 @@ webfont.MonotypeScript = function (userAgent, domHelper, configuration) {
   this.configuration_ = configuration;
   this.fontFamilies_ = [];
   this.fontVariations_ = {};
-  //change
 };
 
 /**
