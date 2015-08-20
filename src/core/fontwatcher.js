@@ -1,112 +1,137 @@
+goog.provide('webfont.FontWatcher');
+
+goog.require('webfont.FontWatchRunner');
+goog.require('webfont.NativeFontWatchRunner');
+
+/**
+ * @typedef {Object.<string, Array.<string>>}
+ */
+webfont.FontTestStrings;
+
 /**
  * @constructor
  * @param {webfont.DomHelper} domHelper
  * @param {webfont.EventDispatcher} eventDispatcher
- * @param {Object.<string, function(Object): number>} fontSizer
- * @param {function(function(), number=)} asyncCall
- * @param {function(): number} getTime
+ * @param {number=} opt_timeout
  */
-webfont.FontWatcher = function(domHelper, eventDispatcher, fontSizer,
-    asyncCall, getTime) {
+webfont.FontWatcher = function(domHelper, eventDispatcher, opt_timeout) {
   this.domHelper_ = domHelper;
   this.eventDispatcher_ = eventDispatcher;
-  this.fontSizer_ = fontSizer;
-  this.asyncCall_ = asyncCall;
-  this.getTime_ = getTime;
   this.currentlyWatched_ = 0;
   this.last_ = false;
   this.success_ = false;
+  this.timeout_ = opt_timeout;
 };
 
-/**
- * @type {string}
- * @const
- */
-webfont.FontWatcher.DEFAULT_VARIATION = 'n4';
+goog.scope(function () {
+  var FontWatcher = webfont.FontWatcher,
+      FontWatchRunner = webfont.FontWatchRunner,
+      NativeFontWatchRunner = webfont.NativeFontWatchRunner;
 
-/**
- * Watches a set of font families.
- * @param {Array.<string>} fontFamilies The font family names to watch.
- * @param {Object.<string, Array.<string>>} fontDescriptions The font variations
- *     of each family to watch. Described with FVD.
- * @param {Object.<string, string>} fontTestStrings The font test strings for
- *     each family.
- * @param {function(new:webfont.FontWatchRunner, function(string, string),
- *     function(string, string), webfont.DomHelper,
- *     Object.<string, function(Object): number>,
- *     function(function(), number=), function(): number, string, string,
- *     string=)} fontWatchRunnerCtor The font watch runner constructor.
- * @param {boolean} last True if this is the last set of families to watch.
- */
-webfont.FontWatcher.prototype.watch = function(fontFamilies, fontDescriptions,
-    fontTestStrings, fontWatchRunnerCtor, last) {
-  var length = fontFamilies.length;
+  /**
+   * Watches a set of font families.
+   * @param {Array.<webfont.Font>} fonts The fonts to watch.
+   * @param {webfont.FontTestStrings} fontTestStrings The font test strings for
+   *     each family.
+   * @param {Object.<String, boolean>} metricCompatibleFonts
+   * @param {boolean} last True if this is the last set of fonts to watch.
+   */
+  FontWatcher.prototype.watchFonts = function(fonts,
+      fontTestStrings, metricCompatibleFonts, last) {
+    var length = fonts.length,
+        testStrings = fontTestStrings || {};
 
-  for (var i = 0; i < length; i++) {
-    var fontFamily = fontFamilies[i];
-    if (!fontDescriptions[fontFamily]) {
-      fontDescriptions[fontFamily] = [webfont.FontWatcher.DEFAULT_VARIATION];
-    }
-    this.currentlyWatched_ += fontDescriptions[fontFamily].length;
-  }
-
-  if (last) {
-    this.last_ = last;
-  }
-
-  for (var i = 0; i < length; i++) {
-    var fontFamily = fontFamilies[i];
-    var descriptions = fontDescriptions[fontFamily];
-    var fontTestString  = fontTestStrings[fontFamily];
-
-    for (var j = 0, len = descriptions.length; j < len; j++) {
-      var fontDescription = descriptions[j];
-
-      this.eventDispatcher_.dispatchFontLoading(fontFamily, fontDescription);
-
-      var activeCallback = webfont.bind(this, this.fontActive_);
-      var inactiveCallback = webfont.bind(this, this.fontInactive_)
-      var fontWatchRunner = new fontWatchRunnerCtor(activeCallback,
-          inactiveCallback, this.domHelper_, this.fontSizer_, this.asyncCall_,
-          this.getTime_, fontFamily, fontDescription, fontTestString);
-
-      fontWatchRunner.start();
-    }
-  }
-};
-
-/**
- * Called by a FontWatchRunner when a font has been detected as active.
- * @param {string} fontFamily
- * @param {string} fontDescription
- * @private
- */
-webfont.FontWatcher.prototype.fontActive_ = function(fontFamily, fontDescription) {
-  this.eventDispatcher_.dispatchFontActive(fontFamily, fontDescription);
-  this.success_ = true;
-  this.decreaseCurrentlyWatched_();
-};
-
-/**
- * Called by a FontWatchRunner when a font has been detected as inactive.
- * @param {string} fontFamily
- * @param {string} fontDescription
- * @private
- */
-webfont.FontWatcher.prototype.fontInactive_ = function(fontFamily, fontDescription) {
-  this.eventDispatcher_.dispatchFontInactive(fontFamily, fontDescription);
-  this.decreaseCurrentlyWatched_();
-};
-
-/**
- * @private
- */
-webfont.FontWatcher.prototype.decreaseCurrentlyWatched_ = function() {
-  if (--this.currentlyWatched_ == 0 && this.last_) {
-    if (this.success_) {
-      this.eventDispatcher_.dispatchActive();
-    } else {
+    if (length === 0 && last) {
       this.eventDispatcher_.dispatchInactive();
+      return;
     }
-  }
-};
+
+    this.currentlyWatched_ += fonts.length;
+
+    if (last) {
+      this.last_ = last;
+    }
+
+    var i, fontWatchRunners = [];
+    for (i = 0; i < fonts.length; i++) {
+      var font = fonts[i],
+          testString = testStrings[font.getName()];
+
+      this.eventDispatcher_.dispatchFontLoading(font);
+
+      var fontWatchRunner = null;
+
+      // We've disabled the native font watch runner for now. The
+      // reason is that its behaviour is slightly different from
+      // the non-native version in that it returns immediately if
+      // a @font-face rule is not in the document. The non-native
+      // version keeps polling the page. A lot of modules depend
+      // on the ability to start font watching before actually
+      // loading the fonts, so they fail in this case (which is
+      // related to browser support; figuring out when a
+      // stylesheet has loaded reliably). Until that issue is
+      // resolved we'll keep the native font disabled.
+      //
+      //if (window['FontFace']) {
+      //  fontWatchRunner = new NativeFontWatchRunner(
+      //      goog.bind(this.fontActive_, this),
+      //      goog.bind(this.fontInactive_, this),
+      //      this.domHelper_,
+      //      font,
+      //      this.timeout_,
+      //      fontTestString
+      //    );
+      //} else {
+      //
+      fontWatchRunner = new FontWatchRunner(
+        goog.bind(this.fontActive_, this),
+        goog.bind(this.fontInactive_, this),
+        this.domHelper_,
+        font,
+        this.timeout_,
+        metricCompatibleFonts,
+        testString
+      );
+
+      fontWatchRunners.push(fontWatchRunner);
+    }
+
+    for (i = 0; i < fontWatchRunners.length; i++) {
+      fontWatchRunners[i].start();
+    }
+  };
+
+  /**
+   * Called by a FontWatchRunner when a font has been detected as active.
+   * @param {webfont.Font} font
+   * @private
+   */
+  FontWatcher.prototype.fontActive_ = function(font) {
+    this.eventDispatcher_.dispatchFontActive(font);
+    this.success_ = true;
+    this.decreaseCurrentlyWatched_();
+  };
+
+  /**
+   * Called by a FontWatchRunner when a font has been detected as inactive.
+   * @param {webfont.Font} font
+   * @private
+   */
+  FontWatcher.prototype.fontInactive_ = function(font) {
+    this.eventDispatcher_.dispatchFontInactive(font);
+    this.decreaseCurrentlyWatched_();
+  };
+
+  /**
+   * @private
+   */
+  FontWatcher.prototype.decreaseCurrentlyWatched_ = function() {
+    if (--this.currentlyWatched_ == 0 && this.last_) {
+      if (this.success_) {
+        this.eventDispatcher_.dispatchActive();
+      } else {
+        this.eventDispatcher_.dispatchInactive();
+      }
+    }
+  };
+});

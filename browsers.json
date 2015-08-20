@@ -1,0 +1,133 @@
+[
+  {
+    "os_version": "XP",
+    "os": "Windows",
+    "browser_version": "12.16",
+    "browser": "opera"
+  },
+  {
+    "os_version": "XP",
+    "os": "Windows",
+    "browser_version": "3.6",
+    "browser": "firefox"
+  },
+  {
+    "os_version": "XP",
+    "os": "Windows",
+    "browser_version": "20.0",
+    "browser": "firefox"
+  },
+  {
+    "os_version": "XP",
+    "os": "Windows",
+    "browser_version": "6.0",
+    "browser": "ie",
+    "timeout": "300"
+  },
+  {
+    "os_version": "XP",
+    "os": "Windows",
+    "browser_version": "7.0",
+    "browser": "ie",
+    "timeout": "300"
+  },
+  {
+    "os_version": "XP",
+    "os": "Windows",
+    "browser_version": "8.0",
+    "browser": "ie"
+  },
+  {
+    "os_version": "8",
+    "os": "Windows",
+    "browser_version": "10.0 Desktop",
+    "browser": "ie"
+  },
+  {
+    "os_version": "7",
+    "os": "Windows",
+    "browser_version": "9.0",
+    "browser": "ie"
+  },
+  {
+    "os_version": "Mountain Lion",
+    "os": "OS X",
+    "browser_version": "6.0",
+    "browser": "safari"
+  },
+  {
+    "os_version": "Mountain Lion",
+    "os": "OS X",
+    "browser_version": "25.0",
+    "browser": "chrome"
+  },
+  {
+    "os_version": "Snow Leopard",
+    "os": "OS X",
+    "browser_version": "5.0",
+    "browser": "safari"
+  },
+  {
+    "os_version": "5.0",
+    "device": "iPad 2 (5.0)",
+    "os": "ios",
+    "browser": "Mobile Safari",
+    "timeout": "300"
+  },
+  {
+    "os_version": "5.1",
+    "device": "iPad 3rd",
+    "os": "ios",
+    "browser": "Mobile Safari",
+    "timeout": "300"
+  },
+  {
+    "os_version": "6.0",
+    "device": "iPhone 5",
+    "os": "ios",
+    "browser": "Mobile Safari",
+    "timeout": "300"
+  },
+  {
+    "os_version": "4.3.2",
+    "device": "iPad 2",
+    "os": "ios",
+    "browser": "Mobile Safari",
+    "timeout": "300"
+  },
+  {
+    "os_version": "2.3",
+    "device": "Samsung Galaxy S II",
+    "os": "android",
+    "browser": "Android Browser",
+    "timeout": "300"
+  },
+  {
+    "os_version": "2.2",
+    "device": "Samsung Galaxy S",
+    "os": "android",
+    "browser": "Android Browser",
+    "timeout": "300"
+  },
+  {
+    "os_version": "4.2",
+    "device": "LG Nexus 4",
+    "os": "android",
+    "browser": "Android Browser",
+    "timeout": "300"
+  },
+  {
+    "os_version": "4.0",
+    "device": "Samsung Galaxy Nexus",
+    "os": "android",
+    "browser": "Android Browser",
+    "timeout": "300"
+  },
+  {
+    "os_version": "4.1",
+    "device": "Samsung Galaxy S III",
+    "os": "android",
+    "browser": "Android Browser",
+    "timeout": "300"
+  }
+]
