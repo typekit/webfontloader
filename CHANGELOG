@@ -1,3 +1,192 @@
+
+v1.6.6 (August 7, 2015)
+
+* Fix weird check in insertInto that disallowed adding a link to an empty head element.
+* Load fonts asynchronously for the Typekit module.
+* Remove font rulers and trigger callback asynchronously to avoid unnecessary reflows.
+
+v1.6.5 (July 25, 2015)
+* Optimise layout calculations
+* Fix Rubygems source
+* Simplify internal Google module code
+
+v1.6.4 (July 9, 2015)
+* Optimise reflows when setting up test spans.
+
+v1.6.3 (June 1, 2015)
+* Fix invalid references to global this (window).
+
+v1.6.2 (May 29, 2015)
+* No changes.
+
+v1.6.1 (May 29, 2015)
+* Automatically update npm version.
+
+v1.6.0 (May 28, 2015)
+* Remove user agent string sniffing. From now on the Web Font Loader will always try to load fonts.
+
+v1.5.21 (May 26, 2015)
+* No changes.
+
+v1.5.20 (May 26, 2015)
+* Use setTimeout instead of window.setTimeout
+
+v1.5.19 (May 24, 2015)
+* Add UMD wrapper
+
+v1.5.18 (April 15, 2015)
+* Add configuration option to enable asynchronous CSS (internal API)
+
+v1.5.17 (April 14, 2015)
+* Load CSS files asynchronously
+
+v1.5.16 (March 30, 2015)
+* Optimise DOM performance in the font watcher.
+
+v1.5.15 (March 25, 2015)
+* Increase offset position for ruler so scrollbars are less likely to be triggered by large test strings
+
+v1.5.14 (January 23, 2015)
+* Refactor EventDispatcher
+
+v1.5.13 (January 20, 2015)
+* Remove unused exports
+* Move definition of FontTestStrings to where it is first used
+
+v1.5.12 (January 19, 2015)
+* Revert using visibility hidden (caused strange artifacts on some sites on iOS browsers)
+* Fix compiler warnings
+
+v1.5.11 (January 7, 2015)
+* Add support for explicitly setting the protocol
+
+v1.5.10 (December 18, 2014)
+* Fix parameters passed to Typekit KitJS
+
+v1.5.9 (December 18, 2014)
+* Use visibility hidden instead of off-screen positioning
+* Decouple Typekit internal API
+* Disable native font loading (see comment)
+
+v1.5.8 (November 17, 2014)
+* Add prebuilt library to repository
+
+v1.5.7 (November 17, 2014)
+* Decrease default timeout to 3 seconds
+* Add support for native font loading
+
+v1.5.6 (September 3, 2014)
+* Fix double inactive event when all modules fail to load
+
+v1.5.5 (June 5, 2014)
+* Add support for the Chromecast browser
+
+v1.5.4 (May 2, 2014)
+* Add support for the PlayStation 4 browser
+
+v1.5.3 (April 8, 2014)
+* Prevent a potential FOUT when setting the font event classes.
+* Add "display:block" to test rulers so "* { display: none; }" doesn't override it
+
+v1.5.2 (January 3, 2014)
+* Add Copyright, License and Version to the compiled output file(s)
+* Fix small bug in Google Font module that rejected font variations with dashes
+
+v1.5.1 (October 15, 2013)
+* Dispatch wf-loading event synchronously instead of waiting for asynchronous modules
+* Update README explaining how to use custom fonts without a stylesheet
+* Add license information to gemspec
+
+v1.5.0 (September 9, 2013)
+* Correctly categorize Internet Explorer 11 as an Internet Explorer version.
+* Add support for custom test strings in the custom module.
+* Various small bug fixes to the test suite so it runs on all browsers automatically.
+
+v1.4.12 (August 21, 2013)
+* Cleared up initialization code and made all modules optional and configurable at compile time
+
+v1.4.11 (August 8, 2013)
+* Remove Ascender module (according to Monotype the service has now been shutdown completely.)
+* Switch Monotype module to use fast.fonts.net instead of fast.fonts.com
+* Update license
+
+v1.4.10 (July 31, 2013)
+* Add loadStylesheet method with optional callback that replaces createCssLink
+* Remove supportForStyle check because it breaks XHTML/SVG and is no longer necessary
+* Fix inactive never called when script loading times out
+* Move test assets into fixtures directory
+
+v1.4.9 (July 24, 2013)
+* Disable terminal spec report when not using PhantomJS
+* Remove obsolete namespace declaration
+
+v1.4.8 (June 24, 2013)
+* Add support for the Chromium based Opera browser
+* Change the debug task to do a Closure Compiler debug build
+* Fix a global variable leak in the compiled output
+* Add support for the PhantomJS user agent string
+
+v1.4.7 (June 6, 2013)
+* Fix backwards compatibility with version strings for Chrome
+* Restore specs that test against version strings for backwards compatibility with the old UserAgent API.
+
+v1.4.6 (May 29, 2013)
+* Merge font watching strategies from core and the Google module
+* Add support for the Samsung Galaxy S4 user agent string
+
+v1.4.5 (May 23, 2013)
+* Move modules into their own namespace
+* Add new methods into DomHelper and add specs for all DomHelper methods
+* Rename watch method so as not to conflict with Firefox Object.prototype.watch
+
+v1.4.4 (May 22, 2013)
+* Change the UserAgent API so that it is backwards compatible with older Typekit kits.
+
+v1.4.3 (May 16, 2013)
+* UserAgent now maintains version numbers as instances of the Version class.
+
+v1.4.2 (April 11, 2013)
+* Namespace is now configurable at compile time
+* BrowserInfo and UserAgent are exported so Typekit KitJS and the standalone webfontloader can share data
+* Add "aria-hidden=true" to test spans so screen readers do not read test spans
+* Fix passing the test strings from the modules to core.
+
+v1.4.1 (April 8, 2013)
+* Internal rewrite of font and variations
+* Fix for the configurable timeout on the Google module
+
+v1.4.0 (March 28, 2013)
+* Stop exporting the `addModule` API to dynamically add modules (it didn't work anyway.)
+* Stop checking the height when monitoring for font load. This turned out to be inconsistent across platforms.
+
+v1.3.2 (March 27, 2013)
+* Add support for the Amazon 1 and 2+ browsers.
+
+v1.3.1 (March 14, 2013)
+* Change code to use explicit dependencies
+* Fix unit tests in older browsers
+* Fix google/FontApiParser.js to work in IE <= 8
+
+v1.3.0 (February 28, 2013)
+* New optional configuration parameter `timeout` which lets you customize the default timeout.
+* Change the Typekit module to use `use.typekit.net` instead of `use.typekit.com`.
+* Disable height check on OSX and iOS WebKit based browsers which suffer from a metrics bug when loading web fonts.
+
+v1.2.1 (February 26, 2013)
+* Fix the possibility of test strings wrapping to a new line and thereby breaking font watching.
+* Change the FontWatchRunner to not create DOM elements until it is started.
+* Fix the possibility of extraneous whitespace in class names.
+* Add a cache buster parameter to the Monotype/Fonts.com module.
+* Fix the case where there are no fonts to load. Webfontloader will now fire the inactive event correctly.
+* Test suite now uses the active browser to test font watching in addition to the mocked font watching tests.
+* Test suite is now using Jasmine instead of JSTestDriver.
+
+v1.2.0 (January 30, 2013)
+* Improved font watching for browsers with the WebKit web font fallback bug
+* Improved font watching in general by comparing both width and height
+* UserAgent user interface has changed with the introduction of a BrowserInfo object that contains information derived from the user agent string
+* The custom module now supports loading font variations
+
 v1.1.2 (January 21, 2013)
 * Added parameter to Google module to do character based subsetting.
 * Made WebKit useragent check less strict about capitalization for LG L160 phones that apparently use 'AppleWebkit' instead of 'AppleWebKit' in their useragent strings.

@@ -16,7 +16,7 @@ module WebFontLoader
 
     def all_source_files
       @all_source_files ||= begin
-        modules.map { |mod| config[mod] }.compact.flatten.map { |f| File.join(js_src, f) }.push File.join(js_src, "async_load.js")
+        modules.map { |mod| config[mod] }.compact.flatten.map { |f| File.join(js_src, f) }
       end
     end
 
@@ -27,8 +27,8 @@ module WebFontLoader
       end
     end
 
-    def js_output_wrapper(source)
-      File.read(File.join(js_src, "closure.js")).sub("{{source}}", source)
+    def js_output_wrapper(source, version)
+      File.read(File.join(js_src, "closure.js")).sub("{{source}}", source).sub("{{version}}", version)
     end
 
   protected

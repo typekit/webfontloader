@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Webfontloader tests</title>
+    <link rel="stylesheet" href="../tools/jasmine/jasmine.css">
+
+    <link rel="stylesheet" href="fixtures/fonts/nullfont.css">
+    <link rel="stylesheet" href="fixtures/fonts/nullfont1.css">
+    <link rel="stylesheet" href="fixtures/fonts/nullfont2.css">
+    <link rel="stylesheet" href="fixtures/fonts/nullfont3.css">
+    <link rel="stylesheet" href="fixtures/fonts/sourcesansa.css">
+    <link rel="stylesheet" href="fixtures/fonts/sourcesansc.css">
+ </head>
+ <body>
+    <script>
+      CLOSURE_NO_DEPS = true;
+    </script>
+    <script src="../tools/jasmine/jasmine.js"></script>
+    <script src="../tools/jasmine/jasmine-html.js"></script>
+    <script src="../tools/jasmine-phantomjs/terminal-reporter.js"></script>
+    <script src="../tools/jasmine-browserstack/jasmine-browserstack.js"></script>
+    <script src="../tools/compiler/base.js"></script>
+    <script src="../spec/deps.js"></script>
+
+    <script>
+      goog.require('webfont');
+    </script>
+
+    <script src="../spec/core/domhelper_spec.js"></script>
+    <script src="../spec/core/cssclassname_spec.js"></script>
+    <script src="../spec/core/fontmoduleloader_spec.js"></script>
+    <script src="../spec/core/eventdispatcher_spec.js"></script>
+    <script src="../spec/core/font_spec.js"></script>
+    <script src="../spec/core/fontruler_spec.js"></script>
+    <script src="../spec/core/fontwatchrunner_spec.js"></script>
+    <script src="../spec/core/nativefontwatchrunner_spec.js"></script>
+    <script src="../spec/core/fontwatcher_spec.js"></script>
+    <script src="../spec/core/webfont_spec.js"></script>
+    <script src="../spec/modules/google/fontapiparser_spec.js"></script>
+    <script src="../spec/modules/google/fontapiurlbuilder_spec.js"></script>
+    <script src="../spec/modules/google/googlefontapi_spec.js"></script>
+    <script src="../spec/modules/custom_spec.js"></script>
+    <script src="../spec/modules/fontdeck_spec.js"></script>
+    <script src="../spec/modules/monotype_spec.js"></script>
+    <script src="../spec/modules/typekit_spec.js"></script>
+
+    <script>
+      (function () {
+        var env = jasmine.getEnv();
+
+        env.updateInterval = 1000;
+
+        var htmlReporter = new jasmine.HtmlReporter(),
+            terminalReporter = new jasmine.TerminalReporter({
+              verbosity: 3,
+              color: true
+            }),
+            browserStackReporter = new jasmine.BrowserStackReporter();
+
+        if (/PhantomJS/.test(navigator.userAgent)) {
+          env.addReporter(terminalReporter);
+        }
+        env.addReporter(htmlReporter);
+        env.addReporter(browserStackReporter);
+        env.specFilter = function (spec) {
+          return htmlReporter.specFilter(spec);
+        };
+
+        var currentOnload = window.onload;
+
+        window.onload = function () {
+          if (currentOnload) {
+            currentOnload();
+          }
+          env.execute();
+        };
+      }());
+    </script>
+  </body>
+</html>

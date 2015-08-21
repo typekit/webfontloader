@@ -1,0 +1,33 @@
+{
+  "name": "webfontloader",
+  "version": "1.6.6",
+  "description": "Web Font Loader gives you added control when using linked fonts via @font-face.",
+  "main": "webfontloader.js",
+  "scripts": {
+    "test": "phantomjs tools/jasmine-phantomjs/jasmine-phantomjs.js spec/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/typekit/webfontloader.git"
+  },
+  "keywords": [
+    "web",
+    "fonts",
+    "webfonts",
+    "font",
+    "loader",
+    "@font-face"
+  ],
+  "contributors": [
+    "Ryan Carver <ryan@typekit.com>",
+    "Jeremie Lenfant-engelmann <jeremiele@google.com>",
+    "Sean McBride <sean@typekit.com>",
+    "Bram Stein <bram@typekit.com>"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/typekit/webfontloader/issues"
+  },
+  "homepage": "https://github.com/typekit/webfontloader",
+  "devDependencies": {}
+}

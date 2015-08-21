@@ -63,11 +63,6 @@ require 'webfontloader'
 CLEAN.include("target")
 CLEAN.include("tmp")
 
-# JsTestDriver
-JsTestPort = "9876"
-JsTestServer = "http://localhost:#{JsTestPort}"
-JsTestJar = "tools/jstestdriver/JsTestDriver-1.2.1.jar"
-
 # JsCompiler
 JsCompilerJar = "tools/compiler/compiler.jar"
 
@@ -85,22 +80,20 @@ SourceJs  = FileList["src/**/*"]
 directory "target"
 directory "tmp"
 
-file "tmp/jsTestDriver.conf" => AllJs + ["tmp"] do |t|
-  require 'yaml'
-  config = {
-    "server" => JsTestServer,
-    "load" => (@modules.all_source_files + @modules.all_test_globs).map { |f| "../#{f}" }
-  }
-  File.open(t.name, "w") { |f| YAML.dump(config, f) }
+desc "Compile the JavaScript into target/webfont.js"
+task :compile, [:modules] => "target/webfont.js"
+
+file "webfontloader.js" => "target/webfont.js" do
+  cp "target/webfont.js", "webfontloader.js"
 end
 
-desc "Compile the JavaScript into target/webfont.js"
-task :compile => "target/webfont.js"
+file "target/webfont.js", [:modules] => SourceJs + ["target"] do |t, args|
+  args.with_defaults(:modules => 'custom google typekit monotype fontdeck')
 
-file "target/webfont.js" => SourceJs + ["target"] do |t|
+  modules = args[:modules].split ' '
 
   output_marker = "%output%"
-  output_wrapper = @modules.js_output_wrapper(output_marker)
+  output_wrapper = @modules.js_output_wrapper(output_marker, version)
 
   args = [
     ["-jar", JsCompilerJar],
@@ -108,8 +101,12 @@ file "target/webfont.js" => SourceJs + ["target"] do |t|
     ["--js_output_file", t.name],
     ["--output_wrapper", %("#{output_wrapper}")],
     ["--warning_level", "VERBOSE"],
-    ["--summary_detail_level", "3"]
+    ["--summary_detail_level", "3"],
+    ["--externs", "externs.js"],
+    "--define goog.DEBUG=false"
   ]
+
+  args.concat modules.map { |m| "--define INCLUDE_" + m.upcase + "_MODULE" }
 
   # Extra args to add warnings.
   args.concat([
@@ -121,48 +118,62 @@ file "target/webfont.js" => SourceJs + ["target"] do |t|
   args.concat source.map { |f| ["--js", f] }
 
   output = `java #{args.flatten.join(' ')} 2>&1`
-  fail output unless output.empty?
+  $?.success? ? (puts output) : (fail output)
 end
 
 desc "Creates debug version into target/webfont.js"
-task :debug => "target/webfont_debug.js"
+task :debug, [:modules] => "target/webfont_debug.js"
 
-file "target/webfont_debug.js" => SourceJs + ["target"] do |t|
-  File.open(t.name, "w") { |f|
-    @modules.all_source_files.each { |src|
-      f.puts File.read(src)
-      f.puts ""
-    }
-  }
+file "target/webfont_debug.js", [:modules] => SourceJs + ["target"] do |t, args|
+  args.with_defaults(:modules => 'custom google typekit monotype fontdeck')
+
+  modules = args[:modules].split ' '
+
+  output_marker = "%output%"
+  output_wrapper = @modules.js_output_wrapper(output_marker, version)
+
+  args = [
+    ["-jar", JsCompilerJar],
+    ["--compilation_level", "ADVANCED_OPTIMIZATIONS"],
+    ["--js_output_file", t.name],
+    ["--output_wrapper", %("#{output_wrapper}")],
+    ["--warning_level", "VERBOSE"],
+    ["--summary_detail_level", "3"],
+    ["--externs", "externs.js"],
+    "--debug=true",
+    "--formatting=PRETTY_PRINT",
+    "--formatting=PRINT_INPUT_DELIMITER"
+  ]
+
+  args.concat modules.map { |m| "--define INCLUDE_" + m.upcase + "_MODULE" }
+
+  # Extra args to add warnings.
+  args.concat([
+    ["--warning_level", "VERBOSE"],
+    ["--summary_detail_level", "1"]
+  ])
+
+  source = @modules.all_source_files
+  args.concat source.map { |f| ["--js", f] }
+
+  output = `java #{args.flatten.join(' ')} 2>&1`
+  $?.success? ? (puts output) : (fail output)
 end
 
 #
 # Run
 #
+desc "BrowserStack tests"
+task :bstest do |t|
+  exec "browserstack-test -u $BROWSERSTACK_USERNAME -p $BROWSERSTACK_PASSWORD -k $BROWSERSTACK_KEY -b browsers.json -t 300 http://localhost:9999/spec/index.html"
+end
 
 desc "Test everything"
 task :default => [:clean, :gzipbytes, :test]
 
-namespace :test do
-  task :server do
-    system "java -jar #{JsTestJar} --port #{JsTestPort}"
-  end
-  task :capture do
-    system "open #{JsTestServer}/capture?strict"
-  end
-  desc "Execute tests against a running server"
-  task :run => ["tmp/jsTestDriver.conf"] do |t|
-    config = t.prerequisites.first
-    system "java -jar #{JsTestJar} --config #{config} --server #{JsTestServer} --tests all --captureConsole --verbose"
-  end
-  desc "Boot the test server and capture a browser"
-  multitask :boot => ['test:server', 'test:capture']
-end
-
 desc "Run all tests"
-task :test => ["tmp/jsTestDriver.conf"] do |t|
-  config = t.prerequisites.first
-  system "java -jar #{JsTestJar} --port #{JsTestPort} --config #{config} --server #{JsTestServer} --browser open --tests all --captureConsole --verbose"
+task :test do |t|
+  exec "phantomjs tools/jasmine-phantomjs/jasmine-phantomjs.js spec/index.html"
 end
 
 desc "Start the demo server"
@@ -198,18 +209,22 @@ end
 #
 #############################################################################
 
-task :release => :build do
+task :release => [:build] do
   unless `git branch` =~ /^\* master$/
     puts "You must be on the master branch to release!"
     exit!
   end
+  sh "git add webfontloader.js"
   sh "git commit --allow-empty -a -m 'Release #{version}'"
-  sh "git tag -a v#{version}"
+  sh "npm version #{version}"
   sh "git push --tags origin master"
   sh "gem push pkg/#{name}-#{version}.gem"
+  sh "npm publish"
 end
 
 task :build => :gemspec do
+  Rake::Task["target/webfont.js"].execute
+  Rake::Task["webfontloader.js"].execute
   sh "mkdir -p pkg"
   sh "gem build #{gemspec_file}"
   sh "mv #{gem_file} pkg"
