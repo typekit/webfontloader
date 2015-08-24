@@ -34,8 +34,8 @@ webfont.modules.Monotype.NAME = 'monotype';
 webfont.modules.Monotype.HOOK = '__mti_fntLst';
 
 /**
- * __MonotypeAPIScript__ is the id of script added by google API. Currently 'webfonts.fonts.com' supports only one script in a page.
- * This may require change in future if 'webfonts.fonts.com' begins supporting multiple scripts per page.
+ * __MonotypeAPIScript__ is the id of script added by google API. Currently 'fonts.com' supports only one script in a page.
+ * This may require change in future if 'fonts.com' begins supporting multiple scripts per page.
  * @const
  */
 webfont.modules.Monotype.SCRIPTID = '__MonotypeAPIScript__';
@@ -54,30 +54,34 @@ goog.scope(function () {
     var self = this;
     var projectId = self.configuration_['projectId'];
     var version = self.configuration_['version'];
+    function checkAndLoadIfDownloaded() {
+	  if (loadWindow[Monotype.HOOK + projectId]) {
+	    var mti_fnts = loadWindow[Monotype.HOOK + projectId](),
+	    fonts = [];
 
+	    if (mti_fnts) {
+		  for (var i = 0; i < mti_fnts.length; i++) {
+		    fonts.push(new Font(mti_fnts[i]["fontfamily"]));
+		  }
+	    }
+	    onReady(fonts);
+	  } else {
+	    setTimeout(function () {
+	      checkAndLoadIfDownloaded();
+	    }, 0)
+	  }
+    }
     if (projectId) {
-      var loadWindow = self.domHelper_.getLoadWindow();
+	  var loadWindow = self.domHelper_.getLoadWindow();
 
-      var script = this.domHelper_.loadScript(self.getScriptSrc(projectId, version), function (err) {
-        if (err) {
-          onReady([]);
-        } else {
-          if (loadWindow[Monotype.HOOK + projectId]) {
-            var mti_fnts = loadWindow[Monotype.HOOK + projectId](),
-                fonts = [];
-
-            if (mti_fnts) {
-              for (var i = 0; i < mti_fnts.length; i++) {
-                fonts.push(new Font(mti_fnts[i]["fontfamily"]));
-              }
-            }
-            onReady(fonts);
-          } else {
-            onReady([]);
-          }
-        }
-      });
-      script["id"] = Monotype.SCRIPTID + projectId;
+	  var script = this.domHelper_.loadScript(self.getScriptSrc(projectId, version), function (err) {
+	    if (err) {
+		  onReady([]);
+	    } else {
+		  checkAndLoadIfDownloaded();
+	    }
+	  });
+	  script["id"] = Monotype.SCRIPTID + projectId;
     } else {
       onReady([]);
     }
