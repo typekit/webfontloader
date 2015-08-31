@@ -68,7 +68,7 @@ goog.scope(function () {
 	  } else {
 	    setTimeout(function () {
 	      checkAndLoadIfDownloaded();
-	    }, 0)
+	    }, 50);
 	  }
     }
     if (projectId) {
