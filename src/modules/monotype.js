@@ -58,7 +58,7 @@ goog.scope(function() {
     function checkAndLoadIfDownloaded() {
       if (loadWindow[Monotype.HOOK + projectId]) {
         var mti_fnts = loadWindow[Monotype.HOOK + projectId](),
-          fonts = [];
+            fonts = [];
 
         if (mti_fnts) {
           for (var i = 0; i < mti_fnts.length; i++) {
