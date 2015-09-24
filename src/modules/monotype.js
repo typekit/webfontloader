@@ -63,11 +63,11 @@ goog.scope(function() {
 
         if (mti_fnts) {
           for (var i = 0; i < mti_fnts.length; i++) {
-            var fnt=mti_fnts[i]["fontfamily"];
+            var fnt = mti_fnts[i]["fontfamily"];
             
             //Check if font-style and font-weight is available
-            if(mti_fnts[i]["fontStyle"]!=undefined && mti_fnts[i]["fontWeight"]!=undefined) {
-              fntVariation=mti_fnts[i]["fontStyle"]+mti_fnts[i]["fontWeight"];
+            if (mti_fnts[i]["fontStyle"] != undefined && mti_fnts[i]["fontWeight"] != undefined) {
+              fntVariation = mti_fnts[i]["fontStyle"] + mti_fnts[i]["fontWeight"];
               fonts.push(new Font(fnt,fntVariation));
             } else {
               fonts.push(new Font(fnt));
