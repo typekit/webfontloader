@@ -298,25 +298,40 @@ goog.scope(function () {
 
     var done = false;
 
-    link.onload = function () {
-      if (!done) {
-        done = true;
+    // The NativeFontWatchRunnner depends on the correct and reliable
+    // @onload event, and browsers with the native font loading API
+    // have reliable @onload support as far as we know. So we use the
+    // event for such a case and unconditionally invokes the callback
+    // otherwise.
+    var needsCorrectOnloadTiming = window['FontFace'];
+    if (needsCorrectOnloadTiming) {
+      link.onload = function () {
+        if (!done) {
+          done = true;
 
+          if (opt_callback) {
+            opt_callback(null);
+          }
+        }
+      };
+
+      link.onerror = function () {
+        if (!done) {
+          done = true;
+
+          if (opt_callback) {
+            opt_callback(new Error('Stylesheet failed to load'));
+          }
+        }
+      };
+    } else {
+      // Some callers expect opt_callback being called asynchronously.
+      setTimeout(function () {
         if (opt_callback) {
           opt_callback(null);
         }
-      }
-    };
-
-    link.onerror = function () {
-      if (!done) {
-        done = true;
-
-        if (opt_callback) {
-          opt_callback(new Error('Stylesheet failed to load'));
-        }
-      }
-    };
+      }, 0);
+    }
 
     function onAvailable(callback) {
       for (var i = 0; i < sheets.length; i++) {

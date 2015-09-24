@@ -1,10 +1,19 @@
 describe('modules.Custom', function () {
   var Custom = webfont.modules.Custom,
-      FontFamily = webfont.FontFamily;
+      FontFamily = webfont.FontFamily,
+      Any = jasmine.Matchers.Any;
 
   describe('insert links correctly', function () {
     var fakeDomHelper = null,
         load = null;
+
+    function notiySheetsLoaded() {
+      var argsForCall = fakeDomHelper.loadStylesheet.argsForCall;
+      for (var i = 0; i < argsForCall.length; i++) {
+        var args = argsForCall[i];
+        args[1]();
+      }
+    }
 
     beforeEach(function () {
       fakeDomHelper = {
@@ -26,11 +35,20 @@ describe('modules.Custom', function () {
 
     it('should have inserted the links correctly', function () {
       expect(fakeDomHelper.loadStylesheet.callCount).toEqual(2);
-      expect(fakeDomHelper.loadStylesheet).toHaveBeenCalledWith('http://moo');
-      expect(fakeDomHelper.loadStylesheet).toHaveBeenCalledWith('http://meuh');
+      expect(fakeDomHelper.loadStylesheet).toHaveBeenCalledWith('http://moo', new Any(Function));
+      expect(fakeDomHelper.loadStylesheet).toHaveBeenCalledWith('http://meuh', new Any(Function));
     });
 
+    if (webfont.StyleSheetWaiter.shouldWait) {
+      it('should not invoke callback before all CSS are loaded', function () {
+        expect(load.callCount).toEqual(0);
+        notiySheetsLoaded();
+        expect(load.callCount).toEqual(1);
+      });
+    }
+
     it('should have loaded the families correctly', function () {
+      notiySheetsLoaded();
       expect(load.callCount).toEqual(1);
       expect(load.calls[0].args[0].length).toEqual(3);
       expect(load.calls[0].args[0][0].getName()).toEqual('Font1');
@@ -39,8 +57,10 @@ describe('modules.Custom', function () {
     });
 
     it('should have set a custom test string', function () {
+      notiySheetsLoaded();
       expect(load.callCount).toEqual(1);
       expect(load.calls[0].args[1]).toEqual({ Font3: 'hello world' });
     });
   });
+
 });
