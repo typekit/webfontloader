@@ -1,6 +1,6 @@
 {
   "name": "webfontloader",
-  "version": "1.6.6",
+  "version": "1.6.7",
   "description": "Web Font Loader gives you added control when using linked fonts via @font-face.",
   "main": "webfontloader.js",
   "scripts": {
