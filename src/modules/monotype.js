@@ -58,11 +58,20 @@ goog.scope(function() {
     function checkAndLoadIfDownloaded() {
       if (loadWindow[Monotype.HOOK + projectId]) {
         var mti_fnts = loadWindow[Monotype.HOOK + projectId](),
-            fonts = [];
+            fonts = [],
+            fntVariation;
 
         if (mti_fnts) {
           for (var i = 0; i < mti_fnts.length; i++) {
-            fonts.push(new Font(mti_fnts[i]["fontfamily"]));
+            var fnt=mti_fnts[i]["fontfamily"];
+            
+            //Check if font-style and font-weight is available
+            if(mti_fnts[i]["fontStyle"]!=undefined && mti_fnts[i]["fontWeight"]!=undefined) {
+              fntVariation=mti_fnts[i]["fontStyle"]+mti_fnts[i]["fontWeight"];
+              fonts.push(new Font(fnt,fntVariation));
+            } else {
+              fonts.push(new Font(fnt));
+            }
           }
         }
         onReady(fonts);
