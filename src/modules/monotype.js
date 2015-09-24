@@ -68,7 +68,7 @@ goog.scope(function() {
             //Check if font-style and font-weight is available
             if (mti_fnts[i]["fontStyle"] != undefined && mti_fnts[i]["fontWeight"] != undefined) {
               fntVariation = mti_fnts[i]["fontStyle"] + mti_fnts[i]["fontWeight"];
-              fonts.push(new Font(fnt,fntVariation));
+              fonts.push(new Font(fnt, fntVariation));
             } else {
               fonts.push(new Font(fnt));
             }
