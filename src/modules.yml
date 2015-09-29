@@ -1,6 +1,7 @@
 core:
   - ../tools/compiler/base.js
   - core/domhelper.js
+  - core/stylesheetwaiter.js
   - core/cssclassname.js
   - core/font.js
   - core/eventdispatcher.js
