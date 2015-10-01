@@ -1,3 +1,7 @@
+v1.6.8 (October 1, 2015)
+
+* Add support for the native font loading API.
+
 v1.6.7 (September 24, 2015)
 
 * Update Monotype module
