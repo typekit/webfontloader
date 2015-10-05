@@ -61,7 +61,7 @@ goog.scope(function () {
     var split = name.split(/,\s*/);
     for (var i = 0; i < split.length; i++) {
       var part = split[i].replace(/['"]/g, '');
-      if (part.indexOf(' ') == -1) {
+      if (part.indexOf(' ') == -1 && !(/^\d/.test(part))) {
         quoted.push(part);
       } else {
         quoted.push("'" + part + "'");
