@@ -296,14 +296,13 @@ goog.scope(function () {
    * load. Note that the callback is *NOT* guaranteed to be called in all browsers. The first
    * argument to the callback is an error object that is falsy when there are no errors and
    * truthy when there are.
-   * @param {boolean=} opt_async True if the stylesheet should be loaded asynchronously. Defaults to false.
    * @return {Element} The link element
    */
-  DomHelper.prototype.loadStylesheet = function (href, opt_callback, opt_async) {
+  DomHelper.prototype.loadStylesheet = function (href, opt_callback) {
     var link = this.createElement('link', {
       'rel': 'stylesheet',
       'href': href,
-      'media': (opt_async ? 'only x' : 'all')
+      'media': 'all'
     });
 
     var sheets = this.document_.styleSheets;
@@ -339,25 +338,7 @@ goog.scope(function () {
       }, 0);
     }
 
-    function onAvailable(callback) {
-      for (var i = 0; i < sheets.length; i++) {
-        if (sheets[i].href && sheets[i].href.indexOf(href) !== -1) {
-          return callback();
-        }
-      }
-
-      setTimeout(function () {
-        onAvailable(callback);
-      }, 0);
-    }
-
     this.insertInto('head', link);
-
-    if (opt_async) {
-      onAvailable(function () {
-        link.media = "all";
-      });
-    }
 
     return link;
   };
