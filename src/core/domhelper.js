@@ -309,12 +309,13 @@ goog.scope(function () {
     var sheets = this.document_.styleSheets,
         eventFired = false,
         asyncResolved = !opt_async,
-        callbackArg = null;
+        callbackArg = null,
+        callback = opt_callback || null;
 
     function mayInvokeCallback() {
-      if (opt_callback && eventFired && asyncResolved) {
-        opt_callback(callbackArg);
-        opt_callback = null;
+      if (callback && eventFired && asyncResolved) {
+        callback(callbackArg);
+        callback = null;
       }
     }
 
