@@ -1,3 +1,7 @@
+v1.6.10 (October 9, 2015)
+
+* Fix compile warning
+
 v1.6.9 (October 9, 2015)
 
 * Fix native font load detection when combined with asynchronous CSS loading
