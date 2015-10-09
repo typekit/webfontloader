@@ -306,36 +306,34 @@ goog.scope(function () {
       'media': (opt_async ? 'only x' : 'all')
     });
 
-    var sheets = this.document_.styleSheets;
+    var sheets = this.document_.styleSheets,
+        eventFired = false,
+        asyncResolved = !opt_async,
+        callbackArg = null;
 
-    var done = false;
+    function mayInvokeCallback() {
+      if (opt_callback && eventFired && asyncResolved) {
+        opt_callback(callbackArg);
+        opt_callback = null;
+      }
+    }
 
     if (DomHelper.CAN_WAIT_STYLESHEET) {
       link.onload = function () {
-        if (!done) {
-          done = true;
-
-          if (opt_callback) {
-            opt_callback(null);
-          }
-        }
+        eventFired = true;
+        mayInvokeCallback();
       };
 
       link.onerror = function () {
-        if (!done) {
-          done = true;
-
-          if (opt_callback) {
-            opt_callback(new Error('Stylesheet failed to load'));
-          }
-        }
+        eventFired = true;
+        callbackArg = new Error('Stylesheet failed to load');
+        mayInvokeCallback();
       };
     } else {
       // Some callers expect opt_callback being called asynchronously.
       setTimeout(function () {
-        if (opt_callback) {
-          opt_callback(null);
-        }
+        eventFired = true;
+        mayInvokeCallback();
       }, 0);
     }
 
@@ -356,6 +354,11 @@ goog.scope(function () {
     if (opt_async) {
       onAvailable(function () {
         link.media = "all";
+        // Give another tick to ensure the @media change takes effect.
+        setTimeout(function() {
+          asyncResolved = true;
+          mayInvokeCallback();
+        }, 0);
       });
     }
 
