@@ -8,8 +8,8 @@ describe('NativeFontWatchRunner', function () {
       activeCallback = null,
       inactiveCallback = null,
       nullFont = null,
-      sourceSansC = null,
-      elena = null;
+      elena = null,
+      loadFontGenerator = null;
 
   beforeEach(function () {
     domHelper = new DomHelper(window);
@@ -18,7 +18,6 @@ describe('NativeFontWatchRunner', function () {
     inactiveCallback = jasmine.createSpy('inactiveCallback');
 
     nullFont = new Font('__webfontloader_test_3__');
-    sourceSansC = new Font('SourceSansC');
     elena = new Font('Elena');
   });
 
@@ -40,47 +39,54 @@ describe('NativeFontWatchRunner', function () {
       });
     });
 
-    it('should load font succesfully', function () {
-      var fontWatchRunner = new NativeFontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, sourceSansC),
-          ruler = new FontRuler(domHelper, 'abcdef'),
-          monospace = new Font('monospace'),
-          sourceSansCFallback = new Font('SourceSansC, monospace'),
-          activeWidth = null,
-          originalWidth = null,
-          finalCheck = false;
+    loadFontGenerator = function(fontName) {
+      var baseFont = new Font(fontName);
+      return function() {
+        var fontWatchRunner = new NativeFontWatchRunner(activeCallback, inactiveCallback,
+            domHelper, baseFont),
+            ruler = new FontRuler(domHelper, 'abcdef'),
+            monospace = new Font('monospace'),
+            fallbackFont = new Font(fontName + ', monospace'),
+            activeWidth = null,
+            originalWidth = null,
+            finalCheck = false;
 
-      runs(function () {
-        ruler.insert();
-        ruler.setFont(monospace);
-        originalWidth = ruler.getWidth();
-        ruler.setFont(sourceSansCFallback);
-        fontWatchRunner.start();
-      });
+        runs(function () {
+          ruler.insert();
+          ruler.setFont(monospace);
+          originalWidth = ruler.getWidth();
+          ruler.setFont(fallbackFont);
+          fontWatchRunner.start();
+        });
 
-      waitsFor(function () {
-        return activeCallback.wasCalled || inactiveCallback.wasCalled;
-      });
+        waitsFor(function () {
+          return activeCallback.wasCalled || inactiveCallback.wasCalled;
+        });
 
-      runs(function () {
-        expect(activeCallback).toHaveBeenCalledWith(sourceSansC);
-        activeWidth = ruler.getWidth();
-        expect(activeWidth).not.toEqual(originalWidth);
+        runs(function () {
+          expect(activeCallback).toHaveBeenCalledWith(baseFont);
+          activeWidth = ruler.getWidth();
+          expect(activeWidth).not.toEqual(originalWidth);
 
-        window.setTimeout(function () {
-          finalCheck = true;
-        }, 200);
-      });
+          window.setTimeout(function () {
+            finalCheck = true;
+          }, 200);
+        });
 
-      waitsFor(function () {
-        return finalCheck;
-      });
+        waitsFor(function () {
+          return finalCheck;
+        });
 
-      runs(function () {
-        expect(ruler.getWidth()).not.toEqual(originalWidth);
-        expect(ruler.getWidth()).toEqual(activeWidth);
-      });
-    });
+        runs(function () {
+          expect(ruler.getWidth()).not.toEqual(originalWidth);
+          expect(ruler.getWidth()).toEqual(activeWidth);
+        });
+      };
+    }
+
+    it('should load font succesfully', loadFontGenerator('SourceSansC'));
+
+    it('should load font imported multiple times successfully', loadFontGenerator('SourceSansE'))
 
     it('should attempt to load a non-existing font', function () {
       var fontWatchRunner = new NativeFontWatchRunner(activeCallback, inactiveCallback,

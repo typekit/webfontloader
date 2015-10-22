@@ -34,7 +34,11 @@ goog.scope(function () {
         reject(that.font_);
       }, that.timeout_);
     }), doc.fonts.load(this.font_.toCssString(), this.fontTestString_)]).then(function (fonts) {
-      if (fonts.length === 1) {
+      var fontReady = false;
+      for (var i = 0; i < fonts.length && !fontReady; i++) {
+        fontReady = fonts[i].status === "loaded";
+      }
+      if (fontReady) {
         that.activeCallback_(that.font_);
       } else {
         that.inactiveCallback_(that.font_);
