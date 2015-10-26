@@ -44,7 +44,7 @@ It is also possible to use the Web Font Loader asynchronously. For example, to l
    WebFontConfig = {
       typekit: { id: 'xxxxxx' }
    };
-   
+
    (function(d) {
       var wf = d.createElement('script'), s = d.scripts[0];
       wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js';
@@ -56,6 +56,18 @@ It is also possible to use the Web Font Loader asynchronously. For example, to l
 Using the Web Font Loader asynchronously avoids blocking your page while loading the JavaScript. Be aware that if the script is used asynchronously, the rest of the page might render before the Web Font Loader is loaded and executed, which can cause a [Flash of Unstyled Text (FOUT)](http://help.typekit.com/customer/portal/articles/6852).
 
 The FOUT can be more easily avoided when loading the Web Font Loader synchronously, as it will automatically set the `wf-loading` class on the HTML element as soon as `Webfont.load` has been called. The browser will wait for the script to load before continuing to load the rest of the content, FOUT is avoided.
+
+Web Font Loader is also available on npm as a CommonJS module. Just `npm install webfontloader` and then require it in your code.
+
+```js
+  var WebFont = require('webfontloader');
+
+  WebFont.load({
+    google: {
+      families: ['Droid Sans', 'Droid Serif']
+    }
+  });
+```
 
 ## Configuration
 
