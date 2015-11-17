@@ -35,10 +35,6 @@ goog.scope(function () {
       }, that.timeout_);
     }), doc.fonts.load(this.font_.toCssString(), this.fontTestString_)]).then(function (fonts) {
       if (fonts.length >= 1) {
-        if (fonts.length !== 1 && console.warn) {
-          console.warn('Font "' + that.font_.toCssString() + '" has duplication.');
-        }
-
         that.activeCallback_(that.font_);
       } else {
         that.inactiveCallback_(that.font_);
