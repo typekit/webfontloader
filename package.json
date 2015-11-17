@@ -18,6 +18,9 @@
     "loader",
     "@font-face"
   ],
+  "files": [
+    "webfontloader.js"
+  ],
   "contributors": [
     "Ryan Carver <ryan@typekit.com>",
     "Jeremie Lenfant-engelmann <jeremiele@google.com>",
