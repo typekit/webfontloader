@@ -1,3 +1,8 @@
+v1.6.11 (November 17, 2015)
+
+* Only include production build in npm package
+* Fix bug that caused duplicate font loads to fail (using the native font loading code)
+
 v1.6.10 (October 9, 2015)
 
 * Fix compile warning
