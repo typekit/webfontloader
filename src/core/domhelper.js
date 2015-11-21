@@ -338,7 +338,7 @@ goog.scope(function () {
       }, 0);
     }
 
-    function onAvailable(callback) {
+    function onStylesheetAvailable(callback) {
       for (var i = 0; i < sheets.length; i++) {
         if (sheets[i].href && sheets[i].href.indexOf(href) !== -1) {
           return callback();
@@ -350,16 +350,28 @@ goog.scope(function () {
       }, 0);
     }
 
+    function onMediaAvailable(callback) {
+      if (link.sheet && link.sheet.media[0] === "all") {
+        callback();
+      } else {
+        setTimeout(function () {
+          onMediaAvailable(callback);
+        }, 0);
+      }
+    }
+
     this.insertInto('head', link);
 
     if (opt_async) {
-      onAvailable(function () {
+      onStylesheetAvailable(function () {
         link.media = "all";
-        // Give another tick to ensure the @media change takes effect.
-        setTimeout(function() {
+        // The media type change doesn't take effect immediately on Chrome, so
+        // we'll query the media attribute on the stylesheet until it changes
+        // to "all".
+        onMediaAvailable(function () {
           asyncResolved = true;
           mayInvokeCallback();
-        }, 0);
+        });
       });
     }
 
