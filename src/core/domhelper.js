@@ -346,7 +346,7 @@ goog.scope(function () {
       }
 
       setTimeout(function () {
-        onAvailable(callback);
+        onStylesheetAvailable(callback);
       }, 0);
     }
 
