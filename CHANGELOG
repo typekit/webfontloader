@@ -1,3 +1,7 @@
+v1.6.12 (November 23, 2015)
+
+* Fix bug that sometimes caused wf-inactive to show when asynchronously loading CSS.
+
 v1.6.11 (November 17, 2015)
 
 * Only include production build in npm package
