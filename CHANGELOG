@@ -1,3 +1,7 @@
+v1.6.14 (November 24, 2015)
+
+* Change media type check to be more reliable on old IE.
+
 v1.6.13 (November 24, 2015)
 
 * Fix media type check in IE/Edge.
