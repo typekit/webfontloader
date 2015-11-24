@@ -351,13 +351,16 @@ goog.scope(function () {
     }
 
     function onMediaAvailable(callback) {
-      if (link.sheet && link.sheet.media[0] === "all") {
-        callback();
-      } else {
-        setTimeout(function () {
-          onMediaAvailable(callback);
-        }, 0);
+      for (var i = 0; i < sheets.length; i++) {
+        if (sheets[i].href && sheets[i].href.indexOf(href) !== -1 &&
+            (sheets[i].media === "all" || sheets[i].media[0] === "all")) {
+          return callback();
+        }
       }
+
+      setTimeout(function () {
+        onMediaAvailable(callback);
+      }, 0);
     }
 
     this.insertInto('head', link);
