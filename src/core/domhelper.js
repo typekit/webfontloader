@@ -353,7 +353,7 @@ goog.scope(function () {
     function onMediaAvailable(callback) {
       for (var i = 0; i < sheets.length; i++) {
         if (sheets[i].href && sheets[i].href.indexOf(href) !== -1 &&
-            (sheets[i].media === "all" || sheets[i].media[0] === "all")) {
+            (sheets[i].media && sheets[i].media === "all" || sheets[i].media.mediaText === "all")) {
           return callback();
         }
       }
