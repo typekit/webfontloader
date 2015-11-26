@@ -1,3 +1,7 @@
+v1.6.15 (November 26, 2015)
+
+* Temporarily disable the native font loading API in Firefox 42 and below due to a bug.
+
 v1.6.14 (November 24, 2015)
 
 * Change media type check to be more reliable on old IE.
