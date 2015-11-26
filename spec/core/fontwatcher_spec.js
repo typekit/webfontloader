@@ -54,6 +54,29 @@ describe('FontWatcher', function () {
     spyOn(NativeFontWatchRunner.prototype, 'start').andCallFake(fakeStart);
   });
 
+  if (!!window.FontFace) {
+    describe('use native font loading API', function () {
+      beforeEach(function () {
+        FontWatcher.SHOULD_USE_NATIVE_LOADER = null;
+      });
+
+      it('works on Chrome', function () {
+        spyOn(FontWatcher, 'getUserAgent').andReturn('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36');
+        expect(FontWatcher.shouldUseNativeLoader()).toEqual(true);
+      });
+
+      it('is disabled on Firefox <= 42', function () {
+        spyOn(FontWatcher, 'getUserAgent').andReturn('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:42.0) Gecko/20100101 Firefox/42.0')
+        expect(FontWatcher.shouldUseNativeLoader()).toEqual(false);
+      });
+
+      it('is enabled on Firefox > 43', function () {
+        spyOn(FontWatcher, 'getUserAgent').andReturn('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:43.0) Gecko/20100101 Firefox/43.0');
+        expect(FontWatcher.shouldUseNativeLoader()).toEqual(true);
+      });
+    });
+  }
+
   describe('watch zero fonts', function () {
     it('should call inactive when there are no fonts to load', function () {
       activeFonts = [];

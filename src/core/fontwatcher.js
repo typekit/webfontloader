@@ -29,10 +29,39 @@ goog.scope(function () {
       NativeFontWatchRunner = webfont.NativeFontWatchRunner;
 
   /**
-   * @const
-   * @type {boolean}
+   * @type {null|boolean}
    */
-  FontWatcher.SHOULD_USE_NATIVE_LOADER = !!window['FontFace'];
+  FontWatcher.SHOULD_USE_NATIVE_LOADER = null;
+
+  /**
+   * @return {string}
+   */
+  FontWatcher.getUserAgent = function () {
+    return window.navigator.userAgent;
+  };
+
+  /**
+   * Returns true if this browser has support for
+   * the CSS font loading API.
+   *
+   * @return {boolean}
+   */
+  FontWatcher.shouldUseNativeLoader = function () {
+    if (FontWatcher.SHOULD_USE_NATIVE_LOADER === null) {
+      if (!!window.FontFace) {
+        var match = /Gecko.*Firefox\/(\d+)/.exec(FontWatcher.getUserAgent());
+
+        if (match) {
+          FontWatcher.SHOULD_USE_NATIVE_LOADER = parseInt(match[1], 10) > 42;
+        } else {
+          FontWatcher.SHOULD_USE_NATIVE_LOADER = true;
+        }
+      } else {
+        FontWatcher.SHOULD_USE_NATIVE_LOADER = false;
+      }
+    }
+    return FontWatcher.SHOULD_USE_NATIVE_LOADER;
+  };
 
   /**
    * Watches a set of font families.
@@ -67,7 +96,7 @@ goog.scope(function () {
 
       var fontWatchRunner = null;
 
-      if (FontWatcher.SHOULD_USE_NATIVE_LOADER) {
+      if (FontWatcher.shouldUseNativeLoader()) {
         fontWatchRunner = new NativeFontWatchRunner(
             goog.bind(this.fontActive_, this),
             goog.bind(this.fontInactive_, this),
