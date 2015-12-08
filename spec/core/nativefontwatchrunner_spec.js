@@ -27,7 +27,7 @@ describe('NativeFontWatchRunner', function () {
   if (window['FontFace']) {
     it('should fail to load a null font', function () {
       var fontWatchRunner = new NativeFontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, nullFont);
+          domHelper, nullFont, 500);
 
       runs(function () {
         fontWatchRunner.start();
@@ -94,7 +94,7 @@ describe('NativeFontWatchRunner', function () {
 
     it('should attempt to load a non-existing font', function () {
       var fontWatchRunner = new NativeFontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, elena);
+          domHelper, elena, 500);
 
       runs(function () {
         fontWatchRunner.start();
