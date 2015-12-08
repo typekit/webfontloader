@@ -323,7 +323,7 @@ You can also supply the `text` parameter to perform character subsetting:
 WebFontConfig = {
   google: {
     families: ['Droid Sans', 'Droid Serif'],
-    text: 'abcdedfghijklmopqrstuvwxyz!'
+    text: 'abcdefghijklmnopqrstuvwxyz!'
   }
 };
 ```
