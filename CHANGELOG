@@ -1,3 +1,7 @@
+v1.6.16 (December 8, 2015)
+
+* Add support for detecting font loads even if the font isn't in the CSSOM yet (workaround for a Chrome bug).
+
 v1.6.15 (November 26, 2015)
 
 * Temporarily disable the native font loading API in Firefox 42 and below due to a bug.
