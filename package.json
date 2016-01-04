@@ -20,7 +20,7 @@
   ],
   "files": [
     "webfontloader.js",
-    "src/core/*.js"
+    "src/**/*.js"
   ],
   "contributors": [
     "Ryan Carver <ryan@typekit.com>",
