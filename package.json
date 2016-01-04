@@ -19,7 +19,8 @@
     "@font-face"
   ],
   "files": [
-    "webfontloader.js"
+    "webfontloader.js",
+    "src/core/*.js"
   ],
   "contributors": [
     "Ryan Carver <ryan@typekit.com>",
