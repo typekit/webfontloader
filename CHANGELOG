@@ -1,8 +1,12 @@
-v1.6.18 (January 4, 2015)
+v1.6.19 (January 4, 2016)
+
+* Add src/core files to npm package.
+
+v1.6.18 (January 4, 2016)
 
 * Version bump.
 
-v1.6.17 (January 4, 2015)
+v1.6.17 (January 4, 2016)
 
 * Upgrade closure compiler and base.js to latest version (no code changes).
 
