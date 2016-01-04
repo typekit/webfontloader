@@ -1,3 +1,7 @@
+v1.6.18 (January 4, 2015)
+
+* Version bump.
+
 v1.6.17 (January 4, 2015)
 
 * Upgrade closure compiler and base.js to latest version (no code changes).
