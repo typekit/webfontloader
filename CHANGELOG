@@ -1,3 +1,7 @@
+v1.6.17 (January 4, 2015)
+
+* Upgrade closure compiler and base.js to latest version (no code changes).
+
 v1.6.16 (December 8, 2015)
 
 * Add support for detecting font loads even if the font isn't in the CSSOM yet (workaround for a Chrome bug).

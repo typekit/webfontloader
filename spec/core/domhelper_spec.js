@@ -542,7 +542,18 @@ describe('DomHelper', function () {
 
     beforeEach(function () {
       domHelper = new DomHelper({
-        document: {}
+        document: {
+          addEventListener: function (event, callback) {
+            function check() {
+              if (domHelper.document_.body) {
+                callback();
+              } else {
+                setTimeout(check, 10);
+              }
+            }
+            check();
+          }
+        }
       });
 
       callback = jasmine.createSpy('callback');

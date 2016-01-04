@@ -92,14 +92,20 @@ goog.scope(function () {
    */
   DomHelper.prototype.whenBodyExists = function(callback) {
     var that = this;
-    var check = function() {
-      if (that.document_.body) {
-        callback();
+
+    if (that.document_.body) {
+      callback();
+    } else {
+      if (that.document_.addEventListener) {
+        that.document_.addEventListener('DOMContentLoaded', callback);
       } else {
-        setTimeout(check, 0);
+        that.document_.onreadystatechange = function () {
+          if (that.document_.readyState == 'interactive') {
+            callback();
+          }
+        };
       }
     }
-    check();
   };
 
   /**
