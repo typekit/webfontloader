@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
   s.version           = '1.6.20'
-  s.date              = '2016-01-04'
+  s.date              = '2016-01-24'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -34,7 +34,7 @@ DESC
   s.homepage = 'http://github.com/typekit/webfontloader'
 
   ## License
-  s.license = "Apache 2.0"
+  s.license = "Apache-2.0"
 
   ## This gets added to the $LOAD_PATH so that 'lib/NAME.rb' can be required as
   ## require 'NAME.rb' or'/lib/NAME/file.rb' can be as require 'NAME/file.rb'
@@ -59,10 +59,10 @@ DESC
 
   ## List your development dependencies here. Development dependencies are
   ## those that are only needed during development
-  s.add_development_dependency('rake')
-  s.add_development_dependency('rack', ["~>1.5.1"])
-  s.add_development_dependency('sinatra', ["~>1.3.4"])
-  s.add_development_dependency('vegas', ["~>0.1.11"])
+  s.add_development_dependency('rake', '~>0')
+  s.add_development_dependency('rack', '~>1.5', '>=1.5.1')
+  s.add_development_dependency('sinatra', '~>1.3', '>=1.3.4')
+  s.add_development_dependency('vegas', ['~>0.1.11'])
 
   ## Leave this section as-is. It will be automatically generated from the
   ## contents of your Git repository via the gemspec task. DO NOT REMOVE
