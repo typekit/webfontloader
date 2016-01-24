@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
   s.version           = '1.6.20'
-  s.date              = '2016-01-04'
+  s.date              = '2016-01-23'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -180,7 +180,7 @@ DESC
     tools/jasmine/jasmine.css
     tools/jasmine/jasmine.js
     webfontloader.gemspec
-    webfontloader.js
+    webfontloader.min.js
   ]
   # = MANIFEST =
 
