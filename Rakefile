@@ -83,8 +83,8 @@ directory "tmp"
 desc "Compile the JavaScript into target/webfont.js"
 task :compile, [:modules] => "target/webfont.js"
 
-file "webfontloader.js" => "target/webfont.js" do
-  cp "target/webfont.js", "webfontloader.js"
+file "webfontloader.min.js" => "target/webfont.js" do
+  cp "target/webfont.js", "webfontloader.min.js"
 end
 
 file "target/webfont.js", [:modules] => SourceJs + ["target"] do |t, args|
@@ -214,7 +214,7 @@ task :release => [:build] do
     puts "You must be on the master branch to release!"
     exit!
   end
-  sh "git add webfontloader.js"
+  sh "git add webfontloader.min.js"
   sh "git commit --allow-empty -a -m 'Release #{version}'"
   sh "npm version #{version}"
   sh "git push --tags origin master"
@@ -224,7 +224,7 @@ end
 
 task :build => :gemspec do
   Rake::Task["target/webfont.js"].execute
-  Rake::Task["webfontloader.js"].execute
+  Rake::Task["webfontloader.min.js"].execute
   sh "mkdir -p pkg"
   sh "gem build #{gemspec_file}"
   sh "mv #{gem_file} pkg"
