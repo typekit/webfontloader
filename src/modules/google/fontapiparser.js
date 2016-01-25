@@ -11,13 +11,12 @@ webfont.modules.google.FontApiParser = function(fontFamilies) {
   this.fontTestStrings_ = {};
 };
 
-
 webfont.modules.google.FontApiParser.INT_FONTS = {
   'latin': webfont.FontWatchRunner.DEFAULT_TEST_STRING,
-  'cyrillic': '&#1081;&#1103;&#1046;',
-  'greek': '&#945;&#946;&#931;',
-  'khmer': '&#x1780;&#x1781;&#x1782;',
-  'Hanuman': '&#x1780;&#x1781;&#x1782;' // For backward compatibility
+  'cyrillic': 'йяЖ',
+  'greek': 'αβΣ',
+  'khmer': 'កខគ',
+  'Hanuman': 'កខគ' // For backward compatibility
 };
 
 webfont.modules.google.FontApiParser.WEIGHTS = {
