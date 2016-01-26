@@ -99,11 +99,11 @@ goog.scope(function () {
       if (that.document_.addEventListener) {
         that.document_.addEventListener('DOMContentLoaded', callback);
       } else {
-        that.document_.onreadystatechange = function () {
-          if (that.document_.readyState == 'interactive') {
+        that.document_.attachEvent('onreadystatechange', function () {
+          if (that.document_.readyState == 'interactive' || that.document_.readyState == 'complete') {
             callback();
           }
-        };
+        });
       }
     }
   };
