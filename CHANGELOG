@@ -1,3 +1,9 @@
+v1.6.21 (February 2, 2016)
+
+* Fix bug in Google module that caused non-latin to fail on browsers that
+support the native font loading API.
+* Fix bug in IE8 where font events sometimes failed due to a timing issue.
+
 v1.6.20 (January 4, 2016)
 
 * Add all source files to the npm package.
