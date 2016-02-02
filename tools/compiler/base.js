@@ -24,6 +24,7 @@
  * @provideGoog
  */
 
+var CLOSURE_NO_DEPS = true;
 
 /**
  * @define {boolean} Overridden to true by the compiler when
