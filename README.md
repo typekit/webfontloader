@@ -146,7 +146,7 @@ If both events and classes are disabled, the Web Font Loader does not perform fo
 
 ### Timeouts
 
-Since the Internet is not 100% reliable, it's possible that a font will fail to load. The `fontinactive` event will be triggered after 5 seconds if the font fails to render. If *at least* one font succesfully renders, the `active` event will be triggered, else the `inactive` event will be triggered.
+Since the Internet is not 100% reliable, it's possible that a font will fail to load. The `fontinactive` event will be triggered after 5 seconds if the font fails to render. If *at least* one font successfully renders, the `active` event will be triggered, else the `inactive` event will be triggered.
 
 You can change the default timeout by using the `timeout` option on the `WebFontConfig` object.
 
