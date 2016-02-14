@@ -289,7 +289,7 @@ The Fonts.com module has an optional `version` option which acts as a cache-bust
 
 ### Google
 
-Using [Google's Font API](https://code.google.com/apis/webfonts/docs/getting_started.html), name the font families you'd like to load. You can use the same [syntax](https://developers.google.com/fonts/docs/getting_started#Syntax) as in the Font API to specify styles:
+Using [Google's Font API](https://code.google.com/apis/webfonts/docs/getting_started.html), name the font families you'd like to load. You can use the same [syntax](https://developers.google.com/fonts/docs/getting_started#Syntax) as in the Font API to specify styles. Please note that the Google module does not support the FVD syntax that is used in the custom module. 
 
 ```javascript
 WebFontConfig = {
