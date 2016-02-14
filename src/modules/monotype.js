@@ -4,9 +4,9 @@ goog.require('webfont.Font');
 
 /**
 webfont.load({
-monotype: {
-projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'//this is your Fonts.com Web fonts projectId
-}
+  monotype: {
+    projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'//this is your Fonts.com Web fonts projectId
+  }
 });
 */
 
@@ -14,10 +14,9 @@ projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'//this is your Fonts.com Web fo
  * @constructor
  * @implements {webfont.FontModule}
  */
-webfont.modules.Monotype = function (domHelper, configuration) {
+webfont.modules.Monotype = function(domHelper, configuration) {
   this.domHelper_ = domHelper;
   this.configuration_ = configuration;
-  this.fonts_ = [];
 };
 
 /**
@@ -35,56 +34,66 @@ webfont.modules.Monotype.NAME = 'monotype';
 webfont.modules.Monotype.HOOK = '__mti_fntLst';
 
 /**
- * __MonotypeAPIScript__ is the id of script added by google API. Currently 'webfonts.fonts.com' supports only one script in a page.
- * This may require change in future if 'webfonts.fonts.com' begins supporting multiple scripts per page.
+ * __MonotypeAPIScript__ is the id of script added by google API. Currently 'fonts.com' supports only one script in a page.
+ * This may require change in future if 'fonts.com' begins supporting multiple scripts per page.
  * @const
  */
 webfont.modules.Monotype.SCRIPTID = '__MonotypeAPIScript__';
 
-goog.scope(function () {
+goog.scope(function() {
   var Monotype = webfont.modules.Monotype,
-      Font = webfont.Font;
+    Font = webfont.Font;
 
-  Monotype.prototype.supportUserAgent = function (userAgent, support) {
+  Monotype.prototype.getScriptSrc = function(projectId, version) {
+    var p = this.domHelper_.getProtocol();
+    var api = (this.configuration_['api'] || 'fast.fonts.net/jsapi').replace(/^.*http(s?):(\/\/)?/, "");
+    return p + "//" + api + '/' + projectId + '.js' + (version ? '?v=' + version : '');
+  };
+
+  Monotype.prototype.load = function(onReady) {
     var self = this;
     var projectId = self.configuration_['projectId'];
     var version = self.configuration_['version'];
-    if (projectId) {
-      var loadWindow = self.domHelper_.getLoadWindow();
 
-      function onload() {
-        if (loadWindow[Monotype.HOOK + projectId]) {
-          var mti_fnts = loadWindow[Monotype.HOOK + projectId]();
-          if (mti_fnts) {
-            for (var i = 0; i < mti_fnts.length; i++) {
-              self.fonts_.push(new Font(mti_fnts[i]["fontfamily"]));
+    function checkAndLoadIfDownloaded() {
+      if (loadWindow[Monotype.HOOK + projectId]) {
+        var mti_fnts = loadWindow[Monotype.HOOK + projectId](),
+            fonts = [],
+            fntVariation;
+
+        if (mti_fnts) {
+          for (var i = 0; i < mti_fnts.length; i++) {
+            var fnt = mti_fnts[i]["fontfamily"];
+            
+            //Check if font-style and font-weight is available
+            if (mti_fnts[i]["fontStyle"] != undefined && mti_fnts[i]["fontWeight"] != undefined) {
+              fntVariation = mti_fnts[i]["fontStyle"] + mti_fnts[i]["fontWeight"];
+              fonts.push(new Font(fnt, fntVariation));
+            } else {
+              fonts.push(new Font(fnt));
             }
           }
         }
-        support(userAgent.getBrowserInfo().hasWebFontSupport());
+        onReady(fonts);
+      } else {
+        setTimeout(function() {
+          checkAndLoadIfDownloaded();
+        }, 50);
       }
+    }
+    if (projectId) {
+      var loadWindow = self.domHelper_.getLoadWindow();
 
-      var script = this.domHelper_.loadScript(self.getScriptSrc(projectId, version), function (err) {
+      var script = this.domHelper_.loadScript(self.getScriptSrc(projectId, version), function(err) {
         if (err) {
-          support(false);
+          onReady([]);
         } else {
-          onload();
+          checkAndLoadIfDownloaded();
         }
       });
       script["id"] = Monotype.SCRIPTID + projectId;
+    } else {
+      onReady([]);
     }
-    else {
-      support(false);
-    }
-  };
-
-  Monotype.prototype.getScriptSrc = function (projectId, version) {
-    var p = this.domHelper_.getProtocol();
-    var api = (this.configuration_['api'] || 'fast.fonts.net/jsapi').replace(/^.*http(s?):(\/\/)?/, "");
-    return p + "//" + api + '/' + projectId + '.js' + ( version ? '?v='+ version : '' );
-  };
-
-  Monotype.prototype.load = function (onReady) {
-    onReady(this.fonts_);
   };
 });

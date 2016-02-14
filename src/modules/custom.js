@@ -1,6 +1,7 @@
 goog.provide('webfont.modules.Custom');
 
 goog.require('webfont.Font');
+goog.require('webfont.StyleSheetWaiter');
 
 /**
  *
@@ -26,16 +27,17 @@ webfont.modules.Custom.NAME = 'custom';
 
 goog.scope(function () {
   var Custom = webfont.modules.Custom,
-      Font = webfont.Font;
+      Font = webfont.Font,
+      StyleSheetWaiter = webfont.StyleSheetWaiter;
 
   Custom.prototype.load = function(onReady) {
     var i, len;
     var urls = this.configuration_['urls'] || [];
     var familiesConfiguration = this.configuration_['families'] || [];
     var fontTestStrings = this.configuration_['testStrings'] || {};
-
+    var waiter = new StyleSheetWaiter();
     for (i = 0, len = urls.length; i < len; i++) {
-      this.domHelper_.loadStylesheet(urls[i]);
+      this.domHelper_.loadStylesheet(urls[i], waiter.startWaitingLoad());
     }
 
     var fonts = [];
@@ -54,10 +56,8 @@ goog.scope(function () {
       }
     }
 
-    onReady(fonts, fontTestStrings);
-  };
-
-  Custom.prototype.supportUserAgent = function(userAgent, support) {
-    return support(userAgent.getBrowserInfo().hasWebFontSupport());
+    waiter.waitWhileNeededThen(function() {
+      onReady(fonts, fontTestStrings);
+    });
   };
 });

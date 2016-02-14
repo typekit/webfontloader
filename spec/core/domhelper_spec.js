@@ -280,6 +280,60 @@ describe('DomHelper', function () {
     });
   });
 
+  describe('#loadStylesheet with callback', function () {
+    it('should load the stylesheet', function () {
+      var el = null,
+          width = null,
+          callbackMade = false;
+
+      function callback() {
+        callbackMade = true;
+      }
+
+      runs(function () {
+        el = domHelper.createElement('div', { id: 'TEST_ELEMENT' });
+        domHelper.insertInto('body', el);
+        width = el.offsetWidth;
+        domHelper.loadStylesheet('fixtures/external_stylesheet.css', callback);
+      });
+
+      waitsFor(function () {
+        return callbackMade;
+      });
+
+      runs(function () {
+        expect(el.offsetWidth).toEqual(300);
+      });
+    });
+  });
+
+  describe('#loadStylesheet with async and callback', function () {
+    it('should load the stylesheet', function () {
+      var el = null,
+          width = null,
+          callbackMade = false;
+
+      function callback() {
+        callbackMade = true;
+      }
+
+      runs(function () {
+        el = domHelper.createElement('div', { id: 'TEST_ELEMENT' });
+        domHelper.insertInto('body', el);
+        width = el.offsetWidth;
+        domHelper.loadStylesheet('fixtures/external_stylesheet.css', callback, true);
+      });
+
+      waitsFor(function () {
+        return callbackMade;
+      });
+
+      runs(function () {
+        expect(el.offsetWidth).toEqual(300);
+      });
+    });
+  });
+
   describe('#loadScript', function () {
     it('should load the script', function () {
       runs(function () {
@@ -488,7 +542,18 @@ describe('DomHelper', function () {
 
     beforeEach(function () {
       domHelper = new DomHelper({
-        document: {}
+        document: {
+          addEventListener: function (event, callback) {
+            function check() {
+              if (domHelper.document_.body) {
+                callback();
+              } else {
+                setTimeout(check, 10);
+              }
+            }
+            check();
+          }
+        }
       });
 
       callback = jasmine.createSpy('callback');

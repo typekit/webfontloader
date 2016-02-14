@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.5.18'
-  s.date              = '2015-04-15'
+  s.version           = '1.6.21'
+  s.date              = '2016-02-02'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -34,7 +34,7 @@ DESC
   s.homepage = 'http://github.com/typekit/webfontloader'
 
   ## License
-  s.license = "Apache 2.0"
+  s.license = "Apache-2.0"
 
   ## This gets added to the $LOAD_PATH so that 'lib/NAME.rb' can be required as
   ## require 'NAME.rb' or'/lib/NAME/file.rb' can be as require 'NAME/file.rb'
@@ -59,10 +59,10 @@ DESC
 
   ## List your development dependencies here. Development dependencies are
   ## those that are only needed during development
-  s.add_development_dependency('rake')
-  s.add_development_dependency('rack', ["~>1.5.1"])
-  s.add_development_dependency('sinatra', ["~>1.3.4"])
-  s.add_development_dependency('vegas', ["~>0.1.11"])
+  s.add_development_dependency('rake', '~>0')
+  s.add_development_dependency('rack', '~>1.5', '>=1.5.1')
+  s.add_development_dependency('sinatra', '~>1.3', '>=1.3.4')
+  s.add_development_dependency('vegas', '~>0.1.11')
 
   ## Leave this section as-is. It will be automatically generated from the
   ## contents of your Git repository via the gemspec task. DO NOT REMOVE
@@ -77,6 +77,7 @@ DESC
     Rakefile
     bin/webfontloader-demos
     browsers.json
+    externs.js
     lib/webfontloader.rb
     lib/webfontloader/demo/public/basic.css
     lib/webfontloader/demo/public/blank.html
@@ -119,8 +120,6 @@ DESC
     spec/core/fontwatchrunner_spec.js
     spec/core/nativefontwatchrunner_spec.js
     spec/core/size_spec.js
-    spec/core/useragentparser_spec.js
-    spec/core/version_spec.js
     spec/core/webfont_spec.js
     spec/deps.js
     spec/fixtures/external_script.js
@@ -139,6 +138,8 @@ DESC
     spec/fixtures/fonts/sourcesansb.css
     spec/fixtures/fonts/sourcesansc.css
     spec/fixtures/fonts/sourcesansd.css
+    spec/fixtures/fonts/sourcesansdup1.css
+    spec/fixtures/fonts/sourcesansdup2.css
     spec/index.html
     spec/modules/custom_spec.js
     spec/modules/fontdeck_spec.js
@@ -148,7 +149,6 @@ DESC
     spec/modules/monotype_spec.js
     spec/modules/typekit_spec.js
     src/closure.js
-    src/core/browserinfo.js
     src/core/cssclassname.js
     src/core/domhelper.js
     src/core/eventdispatcher.js
@@ -160,9 +160,7 @@ DESC
     src/core/fontwatchrunner.js
     src/core/initialize.js
     src/core/nativefontwatchrunner.js
-    src/core/useragent.js
-    src/core/useragentparser.js
-    src/core/version.js
+    src/core/stylesheetwaiter.js
     src/core/webfont.js
     src/modules.yml
     src/modules/custom.js

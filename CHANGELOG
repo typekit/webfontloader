@@ -1,3 +1,102 @@
+v1.6.21 (February 2, 2016)
+
+* Fix bug in Google module that caused non-latin to fail on browsers that
+support the native font loading API.
+* Fix bug in IE8 where font events sometimes failed due to a timing issue.
+
+v1.6.20 (January 4, 2016)
+
+* Add all source files to the npm package.
+
+v1.6.19 (January 4, 2016)
+
+* Add src/core files to npm package.
+
+v1.6.18 (January 4, 2016)
+
+* Version bump.
+
+v1.6.17 (January 4, 2016)
+
+* Upgrade closure compiler and base.js to latest version (no code changes).
+
+v1.6.16 (December 8, 2015)
+
+* Add support for detecting font loads even if the font isn't in the CSSOM yet (workaround for a Chrome bug).
+
+v1.6.15 (November 26, 2015)
+
+* Temporarily disable the native font loading API in Firefox 42 and below due to a bug.
+
+v1.6.14 (November 24, 2015)
+
+* Change media type check to be more reliable on old IE.
+
+v1.6.13 (November 24, 2015)
+
+* Fix media type check in IE/Edge.
+
+v1.6.12 (November 23, 2015)
+
+* Fix bug that sometimes caused wf-inactive to show when asynchronously loading CSS.
+
+v1.6.11 (November 17, 2015)
+
+* Only include production build in npm package
+* Fix bug that caused duplicate font loads to fail (using the native font loading code)
+
+v1.6.10 (October 9, 2015)
+
+* Fix compile warning
+
+v1.6.9 (October 9, 2015)
+
+* Fix native font load detection when combined with asynchronous CSS loading
+* Fix support for font family names starting with a number
+
+v1.6.8 (October 1, 2015)
+
+* Add support for the native font loading API.
+
+v1.6.7 (September 24, 2015)
+
+* Update Monotype module
+
+v1.6.6 (August 7, 2015)
+
+* Fix weird check in insertInto that disallowed adding a link to an empty head element.
+* Load fonts asynchronously for the Typekit module.
+* Remove font rulers and trigger callback asynchronously to avoid unnecessary reflows.
+
+v1.6.5 (July 25, 2015)
+* Optimise layout calculations
+* Fix Rubygems source
+* Simplify internal Google module code
+
+v1.6.4 (July 9, 2015)
+* Optimise reflows when setting up test spans.
+
+v1.6.3 (June 1, 2015)
+* Fix invalid references to global this (window).
+
+v1.6.2 (May 29, 2015)
+* No changes.
+
+v1.6.1 (May 29, 2015)
+* Automatically update npm version.
+
+v1.6.0 (May 28, 2015)
+* Remove user agent string sniffing. From now on the Web Font Loader will always try to load fonts.
+
+v1.5.21 (May 26, 2015)
+* No changes.
+
+v1.5.20 (May 26, 2015)
+* Use setTimeout instead of window.setTimeout
+
+v1.5.19 (May 24, 2015)
+* Add UMD wrapper
+
 v1.5.18 (April 15, 2015)
 * Add configuration option to enable asynchronous CSS (internal API)
 

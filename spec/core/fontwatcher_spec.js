@@ -1,9 +1,8 @@
 describe('FontWatcher', function () {
   var FontWatcher = webfont.FontWatcher,
       FontWatchRunner = webfont.FontWatchRunner,
+      NativeFontWatchRunner = webfont.NativeFontWatchRunner,
       Font = webfont.Font,
-      UserAgent = webfont.UserAgent,
-      BrowserInfo = webfont.BrowserInfo,
       DomHelper = webfont.DomHelper,
       Version = webfont.Version,
       domHelper = new DomHelper(window),
@@ -14,20 +13,9 @@ describe('FontWatcher', function () {
       font2 = null,
       font3 = null,
       font4 = null,
-      userAgent = null,
       activeFonts = [];
 
   beforeEach(function () {
-    userAgent = new UserAgent(
-      'Firefox',
-      new Version(3, 6),
-      'Gecko',
-      new Version(1, 9, 3),
-      'Macintosh',
-      new Version(10, 6),
-      undefined,
-      new BrowserInfo(true, false, false, false)
-    );
     font1 = new Font('font1');
     font2 = new Font('font2');
     font3 = new Font('font3');
@@ -42,7 +30,7 @@ describe('FontWatcher', function () {
     eventDispatcher.dispatchActive = jasmine.createSpy('dispatchActive');
     eventDispatcher.dispatchInactive = jasmine.createSpy('dispatchInactive');
 
-    spyOn(FontWatchRunner.prototype, 'start').andCallFake(function (font, fontTestString) {
+    var fakeStart = function (font, fontTestString) {
       var found = false;
 
       testStrings(this.fontTestString_);
@@ -60,13 +48,39 @@ describe('FontWatcher', function () {
       } else {
         this.inactiveCallback_(this.font_);
       }
-    });
+    };
+
+    spyOn(FontWatchRunner.prototype, 'start').andCallFake(fakeStart);
+    spyOn(NativeFontWatchRunner.prototype, 'start').andCallFake(fakeStart);
   });
+
+  if (!!window.FontFace) {
+    describe('use native font loading API', function () {
+      beforeEach(function () {
+        FontWatcher.SHOULD_USE_NATIVE_LOADER = null;
+      });
+
+      it('works on Chrome', function () {
+        spyOn(FontWatcher, 'getUserAgent').andReturn('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36');
+        expect(FontWatcher.shouldUseNativeLoader()).toEqual(true);
+      });
+
+      it('is disabled on Firefox <= 42', function () {
+        spyOn(FontWatcher, 'getUserAgent').andReturn('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:42.0) Gecko/20100101 Firefox/42.0')
+        expect(FontWatcher.shouldUseNativeLoader()).toEqual(false);
+      });
+
+      it('is enabled on Firefox > 43', function () {
+        spyOn(FontWatcher, 'getUserAgent').andReturn('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:43.0) Gecko/20100101 Firefox/43.0');
+        expect(FontWatcher.shouldUseNativeLoader()).toEqual(true);
+      });
+    });
+  }
 
   describe('watch zero fonts', function () {
     it('should call inactive when there are no fonts to load', function () {
       activeFonts = [];
-      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
+      var fontWatcher = new FontWatcher(domHelper, eventDispatcher);
 
       fontWatcher.watchFonts([], {}, null, true);
       expect(eventDispatcher.dispatchInactive).toHaveBeenCalled();
@@ -74,7 +88,7 @@ describe('FontWatcher', function () {
 
     it('should not call inactive when there are no fonts to load, but this is not the last set', function () {
       activeFonts = [];
-      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
+      var fontWatcher = new FontWatcher(domHelper, eventDispatcher);
 
       fontWatcher.watchFonts([], {}, null, false);
       expect(eventDispatcher.dispatchInactive).not.toHaveBeenCalled();
@@ -84,7 +98,7 @@ describe('FontWatcher', function () {
   describe('watch one font not last', function () {
     it('should not call font inactive, inactive or active', function () {
       activeFonts = [font1];
-      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
+      var fontWatcher = new FontWatcher(domHelper, eventDispatcher);
 
       fontWatcher.watchFonts([font1], {}, null, false);
       expect(eventDispatcher.dispatchFontInactive).not.toHaveBeenCalled();
@@ -96,7 +110,7 @@ describe('FontWatcher', function () {
   describe('watch one font active', function () {
     it('should call font active and active', function () {
       activeFonts = [font1];
-      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
+      var fontWatcher = new FontWatcher(domHelper, eventDispatcher);
 
       fontWatcher.watchFonts([font1], {}, null, true);
       expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith(font1);
@@ -110,7 +124,7 @@ describe('FontWatcher', function () {
   describe('watch one font inactive', function () {
     it('should call inactive', function () {
       activeFonts = [];
-      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
+      var fontWatcher = new FontWatcher(domHelper, eventDispatcher);
 
       fontWatcher.watchFonts([font1], {}, null, true);
       expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith(font1);
@@ -124,7 +138,7 @@ describe('FontWatcher', function () {
   describe('watch multiple fonts active', function () {
     it('should call font active and active', function () {
       activeFonts = [font1, font2, font3];
-      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
+      var fontWatcher = new FontWatcher(domHelper, eventDispatcher);
 
       fontWatcher.watchFonts([font1, font2, font3], {}, null, true);
       expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith(font1);
@@ -138,7 +152,7 @@ describe('FontWatcher', function () {
   describe('watch multiple fonts inactive', function () {
     it('should call inactive', function () {
       activeFonts = [];
-      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
+      var fontWatcher = new FontWatcher(domHelper, eventDispatcher);
 
       fontWatcher.watchFonts([font1, font2, font3], {}, null, true);
       expect(eventDispatcher.dispatchFontLoading).toHaveBeenCalledWith(font1);
@@ -152,7 +166,7 @@ describe('FontWatcher', function () {
   describe('watch multiple fonts mixed', function () {
     it('should call the correct callbacks', function () {
       activeFonts = [font1, font3];
-      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
+      var fontWatcher = new FontWatcher(domHelper, eventDispatcher);
 
       fontWatcher.watchFonts([font1, font2, font3], {}, null, true);
       expect(eventDispatcher.dispatchFontLoading.callCount).toEqual(3);
@@ -181,7 +195,7 @@ describe('FontWatcher', function () {
           font9 = new Font('font8', 'n7');
 
       activeFonts = [font5, font6];
-      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
+      var fontWatcher = new FontWatcher(domHelper, eventDispatcher);
 
       fontWatcher.watchFonts([font5, font6, font7, font8, font9], {}, null, true);
       expect(eventDispatcher.dispatchFontLoading.callCount).toEqual(5);
@@ -209,7 +223,8 @@ describe('FontWatcher', function () {
     it('should use the correct tests strings', function () {
       activeFonts = [font1, font2];
 
-      var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher);
+      var defaultTestString = FontWatcher.SHOULD_USE_NATIVE_LOADER ? undefined : FontWatchRunner.DEFAULT_TEST_STRING;
+      var fontWatcher = new FontWatcher(domHelper, eventDispatcher);
 
       fontWatcher.watchFonts([font1, font2, font3, font4], {
         'font1': 'testString1',
@@ -220,14 +235,14 @@ describe('FontWatcher', function () {
 
       expect(testStrings.callCount).toEqual(4);
       expect(testStrings.calls[0].args[0]).toEqual('testString1');
-      expect(testStrings.calls[1].args[0]).toEqual(FontWatchRunner.DEFAULT_TEST_STRING);
+      expect(testStrings.calls[1].args[0]).toEqual(defaultTestString);
       expect(testStrings.calls[2].args[0]).toEqual('testString2');
-      expect(testStrings.calls[3].args[0]).toEqual(FontWatchRunner.DEFAULT_TEST_STRING);
+      expect(testStrings.calls[3].args[0]).toEqual(defaultTestString);
     });
   });
 
   it('should pass on the timeout to FontWatchRunner', function () {
-    var fontWatcher = new FontWatcher(userAgent, domHelper, eventDispatcher, 4000);
+    var fontWatcher = new FontWatcher(domHelper, eventDispatcher, 4000);
 
     fontWatcher.watchFonts([font1], {}, null, true);
 

@@ -9,18 +9,16 @@ goog.require('webfont.FontRuler');
  * @param {function(webfont.Font)} inactiveCallback
  * @param {webfont.DomHelper} domHelper
  * @param {webfont.Font} font
- * @param {webfont.BrowserInfo} browserInfo
  * @param {number=} opt_timeout
  * @param {Object.<string, boolean>=} opt_metricCompatibleFonts
  * @param {string=} opt_fontTestString
  */
 webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
-    font, browserInfo, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
+    font, opt_timeout, opt_metricCompatibleFonts, opt_fontTestString) {
   this.activeCallback_ = activeCallback;
   this.inactiveCallback_ = inactiveCallback;
   this.domHelper_ = domHelper;
   this.font_ = font;
-  this.browserInfo_ = browserInfo;
   this.fontTestString_ = opt_fontTestString || webfont.FontWatchRunner.DEFAULT_TEST_STRING;
   this.lastResortWidths_ = {};
   this.timeout_ = opt_timeout || 3000;
@@ -29,9 +27,10 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
 
   this.fontRulerA_ = null;
   this.fontRulerB_ = null;
-  this.fontRulerC_ = null;
+  this.lastResortRulerA_ = null;
+  this.lastResortRulerB_ = null;
 
-  this.setupLastResortWidths_();
+  this.setupRulers_();
 };
 
 /**
@@ -40,8 +39,7 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
  */
 webfont.FontWatchRunner.LastResortFonts = {
   SERIF: 'serif',
-  SANS_SERIF: 'sans-serif',
-  MONOSPACE: 'monospace'
+  SANS_SERIF: 'sans-serif'
 };
 
 /**
@@ -59,31 +57,60 @@ goog.scope(function () {
       FontRuler = webfont.FontRuler;
 
   /**
-   * @private
+   * @type {null|boolean}
    */
-  FontWatchRunner.prototype.setupLastResortWidths_ = function() {
-    this.fontRulerA_ = new FontRuler(this.domHelper_, this.fontTestString_);
-    this.fontRulerB_ = new FontRuler(this.domHelper_, this.fontTestString_);
-    this.fontRulerC_ = new FontRuler(this.domHelper_, this.fontTestString_);
+  FontWatchRunner.HAS_WEBKIT_FALLBACK_BUG = null;
 
-    this.fontRulerA_.setFont(new Font(FontWatchRunner.LastResortFonts.SERIF, this.font_.getVariation()));
-    this.fontRulerB_.setFont(new Font(FontWatchRunner.LastResortFonts.SANS_SERIF, this.font_.getVariation()));
-    this.fontRulerC_.setFont(new Font(FontWatchRunner.LastResortFonts.MONOSPACE, this.font_.getVariation()));
-
-    this.fontRulerA_.insert();
-    this.fontRulerB_.insert();
-    this.fontRulerC_.insert();
-
-    this.lastResortWidths_[FontWatchRunner.LastResortFonts.SERIF] = this.fontRulerA_.getWidth();
-    this.lastResortWidths_[FontWatchRunner.LastResortFonts.SANS_SERIF] = this.fontRulerB_.getWidth();
-    this.lastResortWidths_[FontWatchRunner.LastResortFonts.MONOSPACE] = this.fontRulerC_.getWidth();
+  /**
+   * @return {string}
+   */
+  FontWatchRunner.getUserAgent = function () {
+    return window.navigator.userAgent;
   };
 
-  FontWatchRunner.prototype.start = function() {
-    this.started_ = goog.now();
+  /**
+   * Returns true if this browser is WebKit and it has the fallback bug
+   * which is present in WebKit 536.11 and earlier.
+   *
+   * @return {boolean}
+   */
+  FontWatchRunner.hasWebKitFallbackBug = function () {
+    if (FontWatchRunner.HAS_WEBKIT_FALLBACK_BUG === null) {
+      var match = /AppleWebKit\/([0-9]+)(?:\.([0-9]+))/.exec(FontWatchRunner.getUserAgent());
+
+      FontWatchRunner.HAS_WEBKIT_FALLBACK_BUG = !!match &&
+                                          (parseInt(match[1], 10) < 536 ||
+                                           (parseInt(match[1], 10) === 536 &&
+                                            parseInt(match[2], 10) <= 11));
+    }
+    return FontWatchRunner.HAS_WEBKIT_FALLBACK_BUG;
+  };
+
+  /**
+   * @private
+   */
+  FontWatchRunner.prototype.setupRulers_ = function() {
+    this.fontRulerA_ = new FontRuler(this.domHelper_, this.fontTestString_);
+    this.fontRulerB_ = new FontRuler(this.domHelper_, this.fontTestString_);
+    this.lastResortRulerA_ = new FontRuler(this.domHelper_, this.fontTestString_);
+    this.lastResortRulerB_ = new FontRuler(this.domHelper_, this.fontTestString_);
 
     this.fontRulerA_.setFont(new Font(this.font_.getName() + ',' + FontWatchRunner.LastResortFonts.SERIF, this.font_.getVariation()));
     this.fontRulerB_.setFont(new Font(this.font_.getName() + ',' + FontWatchRunner.LastResortFonts.SANS_SERIF, this.font_.getVariation()));
+    this.lastResortRulerA_.setFont(new Font(FontWatchRunner.LastResortFonts.SERIF, this.font_.getVariation()));
+    this.lastResortRulerB_.setFont(new Font(FontWatchRunner.LastResortFonts.SANS_SERIF, this.font_.getVariation()));
+
+    this.fontRulerA_.insert();
+    this.fontRulerB_.insert();
+    this.lastResortRulerA_.insert();
+    this.lastResortRulerB_.insert();
+  };
+
+  FontWatchRunner.prototype.start = function() {
+    this.lastResortWidths_[FontWatchRunner.LastResortFonts.SERIF] = this.lastResortRulerA_.getWidth();
+    this.lastResortWidths_[FontWatchRunner.LastResortFonts.SANS_SERIF] = this.lastResortRulerB_.getWidth();
+
+    this.started_ = goog.now();
 
     this.check_();
   };
@@ -152,7 +179,7 @@ goog.scope(function () {
    * @return {boolean}
    */
   FontWatchRunner.prototype.isLastResortFont_ = function (a, b) {
-    return this.browserInfo_.hasWebKitFallbackBug() && this.widthsMatchLastResortWidths_(a, b);
+    return FontWatchRunner.hasWebKitFallbackBug() && this.widthsMatchLastResortWidths_(a, b);
   };
 
   /**
@@ -208,9 +235,15 @@ goog.scope(function () {
    * @param {function(webfont.Font)} callback
    */
   FontWatchRunner.prototype.finish_ = function(callback) {
-    this.fontRulerA_.remove();
-    this.fontRulerB_.remove();
-    this.fontRulerC_.remove();
-    callback(this.font_);
+    // Remove elements and trigger callback (which adds active/inactive class) asynchronously to avoid reflow chain if
+    // several fonts are finished loading right after each other
+    setTimeout(goog.bind(function () {
+      this.fontRulerA_.remove();
+      this.fontRulerB_.remove();
+      this.lastResortRulerA_.remove();
+      this.lastResortRulerB_.remove();
+      callback(this.font_);
+    }, this), 0);
   };
+
 });

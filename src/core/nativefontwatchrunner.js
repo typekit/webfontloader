@@ -27,20 +27,26 @@ goog.scope(function () {
     var doc = this.domHelper_.getLoadWindow().document,
         that = this;
 
-    // We're using Promises here because the font load API
-    // uses them, so we can be sure they're available.
-    Promise.race([new Promise(function (resolve, reject) {
-      goog.global.setTimeout(function () {
-        reject(that.font_);
-      }, that.timeout_);
-    }), doc.fonts.load(this.font_.toCssString(), this.fontTestString_)]).then(function (fonts) {
-      if (fonts.length === 1) {
-        that.activeCallback_(that.font_);
-      } else {
+    var start = goog.now();
+
+    function check() {
+      var now = goog.now();
+
+      if (now - start >= that.timeout_) {
         that.inactiveCallback_(that.font_);
+      } else {
+        doc.fonts.load(that.font_.toCssString(), that.fontTestString_).then(function (fonts) {
+          if (fonts.length >= 1) {
+            that.activeCallback_(that.font_);
+          } else {
+            setTimeout(check, 25);
+          }
+        }, function () {
+          that.inactiveCallback_(that.font_);
+        });
       }
-    }, function () {
-      that.inactiveCallback_(that.font_);
-    });
+    }
+
+    check();
   };
 });

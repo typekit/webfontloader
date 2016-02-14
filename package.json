@@ -1,6 +1,6 @@
 {
   "name": "webfontloader",
-  "version": "1.5.18",
+  "version": "1.6.21",
   "description": "Web Font Loader gives you added control when using linked fonts via @font-face.",
   "main": "webfontloader.js",
   "scripts": {
@@ -18,6 +18,10 @@
     "loader",
     "@font-face"
   ],
+  "files": [
+    "webfontloader.js",
+    "src/**/*.js"
+  ],
   "contributors": [
     "Ryan Carver <ryan@typekit.com>",
     "Jeremie Lenfant-engelmann <jeremiele@google.com>",
@@ -29,6 +33,5 @@
     "url": "https://github.com/typekit/webfontloader/issues"
   },
   "homepage": "https://github.com/typekit/webfontloader",
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

@@ -1,10 +1,7 @@
 core:
   - ../tools/compiler/base.js
   - core/domhelper.js
-  - core/browserinfo.js
-  - core/version.js
-  - core/useragent.js
-  - core/useragentparser.js
+  - core/stylesheetwaiter.js
   - core/cssclassname.js
   - core/font.js
   - core/eventdispatcher.js

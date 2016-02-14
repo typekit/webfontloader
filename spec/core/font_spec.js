@@ -26,6 +26,10 @@ describe('Font', function () {
       expect(quote("'family 1', 'family 2'")).toEqual("'family 1','family 2'");
     });
 
+    it('should quote family names starting with a number', function () {
+      expect(quote('5test')).toEqual("'5test'");
+    });
+
     it('should not quote when there is no space', function () {
       expect(quote('MyFamily')).toEqual('MyFamily');
     });

@@ -33,7 +33,7 @@ goog.scope(function () {
     return protocol + api + hostname + '/' + projectId + '.js';
   };
 
-  Fontdeck.prototype.supportUserAgent = function(userAgent, support) {
+  Fontdeck.prototype.load = function(onReady) {
     var projectId = this.configuration_['id'];
     var loadWindow = this.domHelper_.getLoadWindow();
     var self = this;
@@ -51,21 +51,17 @@ goog.scope(function () {
           var font = data['fonts'][i];
           self.fonts_.push(new Font(font['name'], Font.parseCssVariation('font-weight:' + font['weight'] + ';font-style:' + font['style'])));
         }
-        support(fontdeckSupports);
+        onReady(self.fonts_);
       };
 
       // Call the Fontdeck API.
       this.domHelper_.loadScript(this.getScriptSrc(projectId), function (err) {
         if (err) {
-          support(false);
+          onReady([]);
         }
       });
     } else {
-      support(false);
+      onReady([]);
     }
-  };
-
-  Fontdeck.prototype.load = function(onReady) {
-    onReady(this.fonts_);
   };
 });

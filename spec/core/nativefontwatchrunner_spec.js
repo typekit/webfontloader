@@ -1,16 +1,15 @@
 describe('NativeFontWatchRunner', function () {
   var NativeFontWatchRunner = webfont.NativeFontWatchRunner,
       Font = webfont.Font,
-      UserAgentParser = webfont.UserAgentParser,
       DomHelper = webfont.DomHelper,
       FontRuler = webfont.FontRuler;
 
   var domHelper = null,
       activeCallback = null,
       inactiveCallback = null,
-      userAgent = null,
       nullFont = null,
       sourceSansC = null,
+      sourceSansDup = null,
       elena = null;
 
   beforeEach(function () {
@@ -19,19 +18,16 @@ describe('NativeFontWatchRunner', function () {
     activeCallback = jasmine.createSpy('activeCallback');
     inactiveCallback = jasmine.createSpy('inactiveCallback');
 
-    var userAgentParser = new UserAgentParser(window.navigator.userAgent, window.document);
-
     nullFont = new Font('__webfontloader_test_3__');
     sourceSansC = new Font('SourceSansC');
+    sourceSansDup = new Font('SourceSansDup');
     elena = new Font('Elena');
-
-    userAgent = userAgentParser.parse();
   });
 
   if (window['FontFace']) {
     it('should fail to load a null font', function () {
       var fontWatchRunner = new NativeFontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, nullFont);
+          domHelper, nullFont, 500);
 
       runs(function () {
         fontWatchRunner.start();
@@ -46,12 +42,14 @@ describe('NativeFontWatchRunner', function () {
       });
     });
 
-    it('should load font succesfully', function () {
-      var fontWatchRunner = new NativeFontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, sourceSansC),
+    function succesfulLoadingSpec(getFontToBeLoaded, getFontNameToBeLoaded) {
+      var fontToBeLoaded = getFontToBeLoaded(),
+          fontNameToBeLoaded = getFontNameToBeLoaded(),
+          fontWatchRunner = new NativeFontWatchRunner(activeCallback, inactiveCallback,
+          domHelper, fontToBeLoaded),
           ruler = new FontRuler(domHelper, 'abcdef'),
           monospace = new Font('monospace'),
-          sourceSansCFallback = new Font('SourceSansC, monospace'),
+          fallbackFont = new Font(fontNameToBeLoaded + ', monospace'),
           activeWidth = null,
           originalWidth = null,
           finalCheck = false;
@@ -60,7 +58,7 @@ describe('NativeFontWatchRunner', function () {
         ruler.insert();
         ruler.setFont(monospace);
         originalWidth = ruler.getWidth();
-        ruler.setFont(sourceSansCFallback);
+        ruler.setFont(fallbackFont);
         fontWatchRunner.start();
       });
 
@@ -69,7 +67,7 @@ describe('NativeFontWatchRunner', function () {
       });
 
       runs(function () {
-        expect(activeCallback).toHaveBeenCalledWith(sourceSansC);
+        expect(activeCallback).toHaveBeenCalledWith(fontToBeLoaded);
         activeWidth = ruler.getWidth();
         expect(activeWidth).not.toEqual(originalWidth);
 
@@ -86,11 +84,17 @@ describe('NativeFontWatchRunner', function () {
         expect(ruler.getWidth()).not.toEqual(originalWidth);
         expect(ruler.getWidth()).toEqual(activeWidth);
       });
-    });
+    }
+
+    it('should load font succesfully',
+       succesfulLoadingSpec.bind(null, function() { return sourceSansC; }, function() { return 'SourceSansC'; }));
+
+    it('should load font succesfully even if it is duplicated',
+       succesfulLoadingSpec.bind(null, function() { return sourceSansDup; }, function() { return 'SourceSansDup'; }));
 
     it('should attempt to load a non-existing font', function () {
       var fontWatchRunner = new NativeFontWatchRunner(activeCallback, inactiveCallback,
-          domHelper, elena);
+          domHelper, elena, 500);
 
       runs(function () {
         fontWatchRunner.start();
