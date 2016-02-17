@@ -274,7 +274,7 @@ WebFontConfig = {
 
 ### Fonts.com
 
-When using [Fonts.com web fonts](http://webfonts.fonts.com/) specify your Project ID.
+When using [Fonts.com web fonts](http://www.fonts.com/web-fonts/) specify your Project ID.
 
 ```javascript
 WebFontConfig = {
