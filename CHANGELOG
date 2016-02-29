@@ -1,3 +1,8 @@
+v1.6.22 (February 29, 2016)
+
+* Fix bug that caused long loading fonts to get stuck on wf-loading because
+the timeout never fired (or took a really long time).
+
 v1.6.21 (February 2, 2016)
 
 * Fix bug in Google module that caused non-latin to fail on browsers that
