@@ -360,7 +360,7 @@ goog.scope(function () {
       for (var i = 0; i < sheets.length; i++) {
         if (sheets[i].href && sheets[i].href.indexOf(href) !== -1 && sheets[i].media) {
           /**
-           * @type {string|!MediaList}
+           * @type {string|MediaList|null}
            */
           var media = sheets[i].media;
 
