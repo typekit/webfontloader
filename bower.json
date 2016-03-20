@@ -1,7 +1,6 @@
 {
   "name": "webfontloader",
   "main": "webfontloader.js",
-  "version": "1.6.21",
   "homepage": "https://github.com/typekit/webfontloader",
   "authors": [
     "Ryan Carver <ryan@typekit.com>",
