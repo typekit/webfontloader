@@ -358,9 +358,15 @@ goog.scope(function () {
 
     function onMediaAvailable(callback) {
       for (var i = 0; i < sheets.length; i++) {
-        if (sheets[i].href && sheets[i].href.indexOf(href) !== -1 &&
-            (sheets[i].media && sheets[i].media === "all" || sheets[i].media.mediaText === "all")) {
-          return callback();
+        if (sheets[i].href && sheets[i].href.indexOf(href) !== -1 && sheets[i].media) {
+          /**
+           * @type {string|!MediaList}
+           */
+          var media = sheets[i].media;
+
+          if (media === "all" || (media.mediaText && media.mediaText === "all")) {
+            return callback();
+          }
         }
       }
 
