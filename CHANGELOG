@@ -1,3 +1,9 @@
+v1.6.23 (March 20, 2016)
+
+* Add bower.json
+* Small code rewrite in order to workaround a bad type cast (Closure Compiler
+is correct, but reality doesn't always match).
+
 v1.6.22 (February 29, 2016)
 
 * Fix bug that caused long loading fonts to get stuck on wf-loading because
