@@ -43,6 +43,7 @@ webfont.modules.Monotype.SCRIPTID = '__MonotypeAPIScript__';
 goog.scope(function() {
   var Monotype = webfont.modules.Monotype,
     Font = webfont.Font;
+    
 
   Monotype.prototype.getScriptSrc = function(projectId, version) {
     var p = this.domHelper_.getProtocol();
@@ -54,7 +55,9 @@ goog.scope(function() {
     var self = this;
     var projectId = self.configuration_['projectId'];
     var version = self.configuration_['version'];
-
+    //Expose 'mti_loadAllFonts' variable to load all fonts while using loader without webfontconfig
+    window['mti_loadAllFonts']=this.configuration_['loadAllFonts'];
+      
     function checkAndLoadIfDownloaded() {
       if (loadWindow[Monotype.HOOK + projectId]) {
         var mti_fnts = loadWindow[Monotype.HOOK + projectId](),
