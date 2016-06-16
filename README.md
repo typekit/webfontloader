@@ -280,12 +280,13 @@ When using [Fonts.com web fonts](http://www.fonts.com/web-fonts/) specify your P
 WebFontConfig = {
   monotype: {
     projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-    version: 12345 // (optional, flushes the CDN cache)
+    version: 12345 // (optional, flushes the CDN cache),
+    loadAllFonts:true //(optional, loads all project fonts)
   }
 };
 ```
 
-The Fonts.com module has an optional `version` option which acts as a cache-buster.
+The Fonts.com module has an optional `version` option which acts as a cache-buster, optional `loadAllFonts` loads all project fonts. By default, Fonts.com module loads only fonts used on the page.
 
 ### Google
 
