@@ -57,6 +57,7 @@ goog.scope(function() {
     var version = self.configuration_['version'];
     //Expose 'mti_loadAllFonts' variable to load all fonts while using loader without webfontconfig
     window['mti_loadAllFonts']=this.configuration_['loadAllFonts'];
+      
     function checkAndLoadIfDownloaded() {
       if (loadWindow[Monotype.HOOK + projectId]) {
         var mti_fnts = loadWindow[Monotype.HOOK + projectId](),
