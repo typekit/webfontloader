@@ -280,7 +280,7 @@ When using [Fonts.com web fonts](http://www.fonts.com/web-fonts/) specify your P
 WebFontConfig = {
   monotype: {
     projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-    version: 12345 // (optional, flushes the CDN cache),
+    version: 12345, // (optional, flushes the CDN cache)
     loadAllFonts:true //(optional, loads all project fonts)
   }
 };
