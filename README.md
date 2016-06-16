@@ -25,7 +25,7 @@ Web Font Loader gives you added control when using linked fonts via `@font-face`
 To use the Web Font Loader library, just include it in your page and tell it which fonts to load. For example, you could load fonts from [Google Fonts](http://www.google.com/fonts/) using the Web Font Loader hosted on [Google Hosted Libraries](https://developers.google.com/speed/libraries/) using the following code.
 
 ```html
-<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
 <script>
   WebFont.load({
     google: {
@@ -35,7 +35,9 @@ To use the Web Font Loader library, just include it in your page and tell it whi
 </script>
 ```
 
-Alternatively, you can link to the latest `1.x` version of the Web Font Loader by using `https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js` as the `script` source. Note that the version in this url is less specific. It will always load the latest `1.x` version, but it also has a shorter cache time to ensure that your page gets updates in a timely manner. For performance reasons, we recommend using an explicit version number (such as `1.4.7`) in urls when using the Web Font Loader in production. You can manually update the Web Font Loader version number in the url when you want to adopt a new version.
+Alternatively, you can link to the latest `1.x` version of the Web Font Loader by using `https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js` as the `script` source. Note that the version in this url is less specific. It will always load the latest `1.x` version, but it also has a shorter cache time to ensure that your page gets updates in a timely manner. For performance reasons, we recommend using an explicit version number (such as `1.6.16`) in urls when using the Web Font Loader in production. You can manually update the Web Font Loader version number in the url when you want to adopt a new version.
+
+Web Font Loader is also available on the [jsDelivr](http://www.jsdelivr.com/projects/webfontloader) & [CDNJS](https://cdnjs.com/libraries/webfont) CDNs.
 
 It is also possible to use the Web Font Loader asynchronously. For example, to load [Typekit](http://www.typekit.com) fonts asynchronously, you could use the following code.
 
@@ -44,10 +46,10 @@ It is also possible to use the Web Font Loader asynchronously. For example, to l
    WebFontConfig = {
       typekit: { id: 'xxxxxx' }
    };
-   
+
    (function(d) {
       var wf = d.createElement('script'), s = d.scripts[0];
-      wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js';
+      wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js';
       s.parentNode.insertBefore(wf, s);
    })(document);
 </script>
@@ -56,6 +58,18 @@ It is also possible to use the Web Font Loader asynchronously. For example, to l
 Using the Web Font Loader asynchronously avoids blocking your page while loading the JavaScript. Be aware that if the script is used asynchronously, the rest of the page might render before the Web Font Loader is loaded and executed, which can cause a [Flash of Unstyled Text (FOUT)](http://help.typekit.com/customer/portal/articles/6852).
 
 The FOUT can be more easily avoided when loading the Web Font Loader synchronously, as it will automatically set the `wf-loading` class on the HTML element as soon as `Webfont.load` has been called. The browser will wait for the script to load before continuing to load the rest of the content, FOUT is avoided.
+
+Web Font Loader is also available on npm as a CommonJS module. Just `npm install webfontloader` and then require it in your code.
+
+```js
+  var WebFont = require('webfontloader');
+
+  WebFont.load({
+    google: {
+      families: ['Droid Sans', 'Droid Serif']
+    }
+  });
+```
 
 ## Configuration
 
@@ -132,7 +146,7 @@ If both events and classes are disabled, the Web Font Loader does not perform fo
 
 ### Timeouts
 
-Since the Internet is not 100% reliable, it's possible that a font will fail to load. The `fontinactive` event will be triggered after 5 seconds if the font fails to render. If *at least* one font succesfully renders, the `active` event will be triggered, else the `inactive` event will be triggered.
+Since the Internet is not 100% reliable, it's possible that a font will fail to load. The `fontinactive` event will be triggered after 5 seconds if the font fails to render. If *at least* one font successfully renders, the `active` event will be triggered, else the `inactive` event will be triggered.
 
 You can change the default timeout by using the `timeout` option on the `WebFontConfig` object.
 
@@ -260,7 +274,7 @@ WebFontConfig = {
 
 ### Fonts.com
 
-When using [Fonts.com web fonts](http://webfonts.fonts.com/) specify your Project ID.
+When using [Fonts.com web fonts](http://www.fonts.com/web-fonts/) specify your Project ID.
 
 ```javascript
 WebFontConfig = {
@@ -275,7 +289,7 @@ The Fonts.com module has an optional `version` option which acts as a cache-bust
 
 ### Google
 
-Using [Google's Font API](https://code.google.com/apis/webfonts/docs/getting_started.html), name the font families you'd like to load. You can use the same [syntax](https://developers.google.com/fonts/docs/getting_started#Syntax) as in the Font API to specify styles:
+Using [Google's Font API](https://code.google.com/apis/webfonts/docs/getting_started.html), name the font families you'd like to load. You can use the same [syntax](https://developers.google.com/fonts/docs/getting_started#Syntax) as in the Font API to specify styles. Please note that the Google module does not support the FVD syntax that is used in the custom module. 
 
 ```javascript
 WebFontConfig = {
@@ -311,7 +325,7 @@ You can also supply the `text` parameter to perform character subsetting:
 WebFontConfig = {
   google: {
     families: ['Droid Sans', 'Droid Serif'],
-    text: 'abcdedfghijklmopqrstuvwxyz!'
+    text: 'abcdefghijklmnopqrstuvwxyz!'
   }
 };
 ```

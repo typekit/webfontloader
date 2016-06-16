@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   ## If your rubyforge_project name is different, then edit it and comment out
   ## the sub! line in the Rakefile
   s.name              = 'webfontloader'
-  s.version           = '1.6.6'
-  s.date              = '2015-08-07'
+  s.version           = '1.6.24'
+  s.date              = '2016-03-20'
 
   ## Make sure your summary is short. The description may be as long
   ## as you like.
@@ -34,7 +34,7 @@ DESC
   s.homepage = 'http://github.com/typekit/webfontloader'
 
   ## License
-  s.license = "Apache 2.0"
+  s.license = "Apache-2.0"
 
   ## This gets added to the $LOAD_PATH so that 'lib/NAME.rb' can be required as
   ## require 'NAME.rb' or'/lib/NAME/file.rb' can be as require 'NAME/file.rb'
@@ -59,10 +59,10 @@ DESC
 
   ## List your development dependencies here. Development dependencies are
   ## those that are only needed during development
-  s.add_development_dependency('rake')
-  s.add_development_dependency('rack', ["~>1.5.1"])
-  s.add_development_dependency('sinatra', ["~>1.3.4"])
-  s.add_development_dependency('vegas', ["~>0.1.11"])
+  s.add_development_dependency('rake', '~>0')
+  s.add_development_dependency('rack', '~>1.5', '>=1.5.1')
+  s.add_development_dependency('sinatra', '~>1.3', '>=1.3.4')
+  s.add_development_dependency('vegas', '~>0.1.11')
 
   ## Leave this section as-is. It will be automatically generated from the
   ## contents of your Git repository via the gemspec task. DO NOT REMOVE
@@ -76,6 +76,7 @@ DESC
     README.md
     Rakefile
     bin/webfontloader-demos
+    bower.json
     browsers.json
     externs.js
     lib/webfontloader.rb
@@ -138,6 +139,8 @@ DESC
     spec/fixtures/fonts/sourcesansb.css
     spec/fixtures/fonts/sourcesansc.css
     spec/fixtures/fonts/sourcesansd.css
+    spec/fixtures/fonts/sourcesansdup1.css
+    spec/fixtures/fonts/sourcesansdup2.css
     spec/index.html
     spec/modules/custom_spec.js
     spec/modules/fontdeck_spec.js
@@ -158,6 +161,7 @@ DESC
     src/core/fontwatchrunner.js
     src/core/initialize.js
     src/core/nativefontwatchrunner.js
+    src/core/stylesheetwaiter.js
     src/core/webfont.js
     src/modules.yml
     src/modules/custom.js

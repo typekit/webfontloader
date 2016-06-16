@@ -23,6 +23,18 @@ goog.scope(function () {
   var DomHelper = webfont.DomHelper;
 
   /**
+   * The NativeFontWatchRunnner depends on the correct and reliable
+   * |onload| event, and browsers with the native font loading API
+   * have reliable @onload support as far as we know. So we use the
+   * event for such a case and unconditionally invokes the callback
+   * otherwise.
+   *
+   * @const
+   * @type {boolean}
+   */
+  DomHelper.CAN_WAIT_STYLESHEET = !!window['FontFace'];
+
+  /**
    * Creates an element.
    * @param {string} elem The element type.
    * @param {Object=} opt_attr A hash of attribute key/value pairs.
@@ -80,14 +92,20 @@ goog.scope(function () {
    */
   DomHelper.prototype.whenBodyExists = function(callback) {
     var that = this;
-    var check = function() {
-      if (that.document_.body) {
-        callback();
+
+    if (that.document_.body) {
+      callback();
+    } else {
+      if (that.document_.addEventListener) {
+        that.document_.addEventListener('DOMContentLoaded', callback);
       } else {
-        setTimeout(check, 0);
+        that.document_.attachEvent('onreadystatechange', function () {
+          if (that.document_.readyState == 'interactive' || that.document_.readyState == 'complete') {
+            callback();
+          }
+        });
       }
     }
-    check();
   };
 
   /**
@@ -294,31 +312,39 @@ goog.scope(function () {
       'media': (opt_async ? 'only x' : 'all')
     });
 
-    var sheets = this.document_.styleSheets;
+    var sheets = this.document_.styleSheets,
+        eventFired = false,
+        asyncResolved = !opt_async,
+        callbackArg = null,
+        callback = opt_callback || null;
 
-    var done = false;
-
-    link.onload = function () {
-      if (!done) {
-        done = true;
-
-        if (opt_callback) {
-          opt_callback(null);
-        }
+    function mayInvokeCallback() {
+      if (callback && eventFired && asyncResolved) {
+        callback(callbackArg);
+        callback = null;
       }
-    };
+    }
 
-    link.onerror = function () {
-      if (!done) {
-        done = true;
+    if (DomHelper.CAN_WAIT_STYLESHEET) {
+      link.onload = function () {
+        eventFired = true;
+        mayInvokeCallback();
+      };
 
-        if (opt_callback) {
-          opt_callback(new Error('Stylesheet failed to load'));
-        }
-      }
-    };
+      link.onerror = function () {
+        eventFired = true;
+        callbackArg = new Error('Stylesheet failed to load');
+        mayInvokeCallback();
+      };
+    } else {
+      // Some callers expect opt_callback being called asynchronously.
+      setTimeout(function () {
+        eventFired = true;
+        mayInvokeCallback();
+      }, 0);
+    }
 
-    function onAvailable(callback) {
+    function onStylesheetAvailable(callback) {
       for (var i = 0; i < sheets.length; i++) {
         if (sheets[i].href && sheets[i].href.indexOf(href) !== -1) {
           return callback();
@@ -326,15 +352,41 @@ goog.scope(function () {
       }
 
       setTimeout(function () {
-        onAvailable(callback);
+        onStylesheetAvailable(callback);
+      }, 0);
+    }
+
+    function onMediaAvailable(callback) {
+      for (var i = 0; i < sheets.length; i++) {
+        if (sheets[i].href && sheets[i].href.indexOf(href) !== -1 && sheets[i].media) {
+          /**
+           * @type {string|MediaList|null}
+           */
+          var media = sheets[i].media;
+
+          if (media === "all" || (media.mediaText && media.mediaText === "all")) {
+            return callback();
+          }
+        }
+      }
+
+      setTimeout(function () {
+        onMediaAvailable(callback);
       }, 0);
     }
 
     this.insertInto('head', link);
 
     if (opt_async) {
-      onAvailable(function () {
+      onStylesheetAvailable(function () {
         link.media = "all";
+        // The media type change doesn't take effect immediately on Chrome, so
+        // we'll query the media attribute on the stylesheet until it changes
+        // to "all".
+        onMediaAvailable(function () {
+          asyncResolved = true;
+          mayInvokeCallback();
+        });
       });
     }
 
