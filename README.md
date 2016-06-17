@@ -281,7 +281,7 @@ WebFontConfig = {
   monotype: {
     projectId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
     version: 12345, // (optional, flushes the CDN cache)
-    loadAllFonts:true //(optional, loads all project fonts)
+    loadAllFonts: true //(optional, loads all project fonts)
   }
 };
 ```
