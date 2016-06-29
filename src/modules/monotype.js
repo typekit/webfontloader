@@ -40,6 +40,12 @@ webfont.modules.Monotype.HOOK = '__mti_fntLst';
  */
 webfont.modules.Monotype.SCRIPTID = '__MonotypeAPIScript__';
 
+/**
+ * __MonotypeConfiguration__ is function exposed to fonts.com. fonts.com will use this function to get webfontloader configuration
+ * @const
+ */
+webfont.modules.Monotype.CONFIGURATION = '__MonotypeConfiguration__';
+
 goog.scope(function() {
   var Monotype = webfont.modules.Monotype,
     Font = webfont.Font;
@@ -91,6 +97,10 @@ goog.scope(function() {
         if (err) {
           onReady([]);
         } else {
+          loadWindow[Monotype.CONFIGURATION+ projectId] = function() {
+           return  self.configuration_;
+          };
+            
           checkAndLoadIfDownloaded();
         }
       });
