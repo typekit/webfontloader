@@ -1,3 +1,8 @@
+v1.6.25 (July 7, 2016)
+
+* Add "loadAllFonts" option to Monotype module.
+* Add documentation on how to use Web Font Loader with Edge Web Fonts.
+
 v1.6.24 (March 20, 2016)
 
 * Fix type annotation in DomHelper.
