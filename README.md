@@ -12,6 +12,7 @@ Web Font Loader gives you added control when using linked fonts via `@font-face`
     * [Timeout](#timeouts)
     * [Iframes](#iframes)
 * [Modules](#modules)
+    * [Adobe Edge Web Fonts](#adobe-edge-web-fonts)
     * [Custom](#custom)
     * [Fontdeck](#fontdeck)
     * [Fonts.com](#fontscom)
@@ -179,6 +180,19 @@ This is an advanced configuration option that isn't needed for most use cases.
 ## Modules
 
 Web Font Loader provides a module system so that any web font provider can contribute code that allows their fonts to be loaded. This makes it possible to use multiple web font providers at the same time. The specifics of each provider currently supported by the library are documented here.
+
+### Adobe Edge Web Fonts
+
+When using [Adobe Edge Web Fonts](https://edgewebfonts.adobe.com/), you can use the `typekit` module by passing in a catenated list of fonts in the `id` parameter and set the `api` parameter to point to the Edge Web Fonts URL.
+
+```javascript
+WebFontConfig = {
+  typekit: {
+    id: 'adamina;advent-pro',
+    api: '//use.edgefonts.net'
+  }
+};
+```
 
 ### Custom
 
