@@ -13,6 +13,7 @@ webfont.modules.google.FontApiParser = function(fontFamilies) {
 
 webfont.modules.google.FontApiParser.INT_FONTS = {
   'latin': webfont.FontWatchRunner.DEFAULT_TEST_STRING,
+  'latin-ext': '\u00E7\u00F6\u00FC\u011F\u015F',
   'cyrillic': '\u0439\u044f\u0416',
   'greek': '\u03b1\u03b2\u03a3',
   'khmer': '\u1780\u1781\u1782',
