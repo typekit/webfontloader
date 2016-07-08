@@ -1,3 +1,7 @@
+v1.6.26 (July 8, 2016)
+
+* Add support for latin extended in the Google Fonts module.
+
 v1.6.25 (July 7, 2016)
 
 * Add "loadAllFonts" option to Monotype module.
