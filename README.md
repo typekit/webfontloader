@@ -50,7 +50,7 @@ It is also possible to use the Web Font Loader asynchronously. For example, to l
 
    (function(d) {
       var wf = d.createElement('script'), s = d.scripts[0];
-      wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js';
+      wf.src = 'https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.26/webfontloader.js';
       s.parentNode.insertBefore(wf, s);
    })(document);
 </script>
@@ -242,7 +242,7 @@ In this example, the `fonts.css` file might look something like this:
 If your fonts are already included in another stylesheet you can also leave out the `urls` array and just specify font family names to start font loading. As long as the names match those that are declared in the `families` array, the proper loading classes will be applied to the html element.
 
 ```html
-<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.26/webfontloader.js"></script>
 <script>
   WebFont.load({
     custom: {
