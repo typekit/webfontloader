@@ -24,7 +24,7 @@ describe('modules.Custom', function () {
 
       var defaultModule = new Custom(fakeDomHelper, {
         families: ['Font1', 'Font2', 'Font3'],
-        urls: ['http://moo', 'http://meuh'],
+        urls: ['https://moo', 'https://meuh'],
         testStrings: {
           Font3: 'hello world'
         }
@@ -35,8 +35,8 @@ describe('modules.Custom', function () {
 
     it('should have inserted the links correctly', function () {
       expect(fakeDomHelper.loadStylesheet.callCount).toEqual(2);
-      expect(fakeDomHelper.loadStylesheet).toHaveBeenCalledWith('http://moo', new Any(Function));
-      expect(fakeDomHelper.loadStylesheet).toHaveBeenCalledWith('http://meuh', new Any(Function));
+      expect(fakeDomHelper.loadStylesheet).toHaveBeenCalledWith('https://moo', new Any(Function));
+      expect(fakeDomHelper.loadStylesheet).toHaveBeenCalledWith('https://meuh', new Any(Function));
     });
 
     if (webfont.DomHelper.CAN_WAIT_STYLESHEET) {

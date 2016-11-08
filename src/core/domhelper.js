@@ -235,41 +235,6 @@ goog.scope(function () {
   };
 
   /**
-   * @return {string} The protocol (http: or https:) to request resources in.
-   */
-  DomHelper.prototype.getProtocol = function() {
-    if (typeof this.protocol_ === 'string') {
-      return this.protocol_;
-    } else {
-      var protocol = this.loadWindow_.location.protocol;
-      // For empty iframes, fallback to main window's protocol.
-      if (protocol == 'about:') {
-        protocol = this.mainWindow_.location.protocol;
-      }
-      return protocol == 'https:' ? 'https:' : 'http:';
-    }
-  };
-
-  /**
-   * Explicitly set the protocol instead of automatic detection.
-   *
-   * @param {string} protocol
-   */
-  DomHelper.prototype.setProtocol = function (protocol) {
-    if (/^http(s)?:$/.test(protocol)) {
-      this.protocol_ = protocol;
-    }
-  };
-
-  /**
-   * Returns the secure status of the current document.
-   * @return {boolean} true if the current document is served securely.
-   */
-  DomHelper.prototype.isHttps = function() {
-    return this.getProtocol() === 'https:';
-  };
-
-  /**
    * Returns the hostname of the current document.
    * @return {string} hostname.
    */

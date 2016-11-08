@@ -18,7 +18,7 @@ webfont.modules.Fontdeck = function(domHelper, configuration) {
  */
 webfont.modules.Fontdeck.NAME = 'fontdeck';
 webfont.modules.Fontdeck.HOOK = '__webfontfontdeckmodule__';
-webfont.modules.Fontdeck.API = '//f.fontdeck.com/s/css/js/';
+webfont.modules.Fontdeck.API = 'https://f.fontdeck.com/s/css/js/';
 
 goog.scope(function () {
   var Fontdeck = webfont.modules.Fontdeck,
@@ -26,11 +26,10 @@ goog.scope(function () {
       FontVariationDescription = webfont.FontVariationDescription;
 
   Fontdeck.prototype.getScriptSrc = function(projectId) {
-    var protocol = this.domHelper_.getProtocol();
     // For empty iframes, fall back to main window's hostname.
     var hostname = this.domHelper_.getHostName();
     var api = this.configuration_['api'] || webfont.modules.Fontdeck.API;
-    return protocol + api + hostname + '/' + projectId + '.js';
+    return api + hostname + '/' + projectId + '.js';
   };
 
   Fontdeck.prototype.load = function(onReady) {
