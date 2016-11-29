@@ -1,3 +1,7 @@
+v1.6.27 (November 29, 2016)
+
+* Disable native font loading for Safari 10
+
 v1.6.26 (July 8, 2016)
 
 * Add support for latin extended in the Google Fonts module.
