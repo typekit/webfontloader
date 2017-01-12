@@ -52,9 +52,8 @@ goog.scope(function() {
     
 
   Monotype.prototype.getScriptSrc = function(projectId, version) {
-    var p = this.domHelper_.getProtocol();
-    var api = (this.configuration_['api'] || 'fast.fonts.net/jsapi').replace(/^.*http(s?):(\/\/)?/, "");
-    return p + "//" + api + '/' + projectId + '.js' + (version ? '?v=' + version : '');
+    var api = (this.configuration_['api'] || 'https://fast.fonts.net/jsapi')
+    return api + '/' + projectId + '.js' + (version ? '?v=' + version : '');
   };
 
   Monotype.prototype.load = function(onReady) {

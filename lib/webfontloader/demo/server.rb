@@ -8,8 +8,8 @@ module WebFontLoader
       DemoRoot = File.expand_path(File.join(File.dirname(__FILE__)))
       ProjectRoot = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", ".."))
 
-      GoogleApi = "http://fonts.googleapis.com/css"
-      GoogleFontApi = "http://themes.googleusercontent.com/font"
+      GoogleApi = "https://fonts.googleapis.com/css"
+      GoogleFontApi = "https://themes.googleusercontent.com/font"
 
       set :app_file, __FILE__
       set :sessions, false
@@ -43,7 +43,7 @@ module WebFontLoader
         headers 'Cache-Control' => 'max-age=300'
         response = open(url, 'User-Agent' => env['HTTP_USER_AGENT'])
         source = response.read
-        source.gsub!(%r[http://themes.googleusercontent.com/font], '/fonts/font')
+        source.gsub!(%r[https://themes.googleusercontent.com/font], '/fonts/font')
         source
       end
 

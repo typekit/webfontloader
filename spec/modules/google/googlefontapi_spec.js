@@ -12,9 +12,6 @@ describe('modules.google.GoogleFontApi', function () {
         loadStylesheet: function (cssLink, cb) {
           link = cssLink;
           onload = cb;
-        },
-        getProtocol: function () {
-          return 'http:';
         }
       };
 
@@ -42,7 +39,7 @@ describe('modules.google.GoogleFontApi', function () {
     });
 
     it('has inserted the link element correctly', function () {
-      expect(link).toEqual('http://fonts.googleapis.com/css?family=Font1%7CFont2');
+      expect(link).toEqual('https://fonts.googleapis.com/css?family=Font1%7CFont2');
     });
 
     it('has the correct families', function () {
@@ -61,14 +58,14 @@ describe('modules.google.GoogleFontApi', function () {
     beforeEach(function () {
       loaded  = false;
       googleFontApi = new GoogleFontApi(fakeDomHelper, {
-        api: 'http://moo',
+        api: 'https://moo',
         families: ['Font1', 'Font2']
       });
       googleFontApi.load(function () { loaded = true; });
     });
 
     it('has inserted the link element correctly', function () {
-      expect(link).toEqual('http://moo?family=Font1%7CFont2');
+      expect(link).toEqual('https://moo?family=Font1%7CFont2');
     });
 
     if (webfont.DomHelper.CAN_WAIT_STYLESHEET) {
@@ -91,7 +88,7 @@ describe('modules.google.GoogleFontApi', function () {
     });
 
     it('has inserted the link element correctly', function () {
-      expect(link).toEqual('http://fonts.googleapis.com/css?family=Font1+WithSpace%7CFont2+WithSpaceToo');
+      expect(link).toEqual('https://fonts.googleapis.com/css?family=Font1+WithSpace%7CFont2+WithSpaceToo');
     });
  });
 
@@ -104,7 +101,7 @@ describe('modules.google.GoogleFontApi', function () {
     });
 
     it('has inserted the link element correctly', function () {
-      expect(link).toEqual('http://fonts.googleapis.com/css?family=Font1+WithSpace:bi%7CFont2+WithSpaceToo:b,r');
+      expect(link).toEqual('https://fonts.googleapis.com/css?family=Font1+WithSpace:bi%7CFont2+WithSpaceToo:b,r');
     });
  });
 });
