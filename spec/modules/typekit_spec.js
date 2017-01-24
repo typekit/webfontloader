@@ -15,7 +15,19 @@ describe('modules.Typekit', function () {
     global = {
       Typekit: {
         config: {
-          fn: ['Font1', ['n4'], 'Font2', ['n4', 'n7']]
+          fc: [{
+            family: 'Font1',
+            weight: '400',
+            style: 'normal'
+          },  {
+            family: 'Font2',
+            weight: '400',
+            style: 'normal'
+          }, {
+            family: 'Font2',
+            weight: '700',
+            style: 'normal'
+          }]
         },
         load: jasmine.createSpy('load')
       }
