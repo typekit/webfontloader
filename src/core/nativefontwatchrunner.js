@@ -51,11 +51,16 @@ goog.scope(function () {
       check();
     });
 
-    var timer = new Promise(function (resolve, reject) {
-      setTimeout(reject, that.timeout_);
-    });
+    var timeoutId = null,
+      timer = new Promise(function (resolve, reject) {
+        timeoutId = setTimeout(reject, that.timeout_);
+      });
 
     Promise.race([timer, loader]).then(function () {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
       that.activeCallback_(that.font_);
     }, function () {
       that.inactiveCallback_(that.font_);
