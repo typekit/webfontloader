@@ -39,17 +39,15 @@ goog.scope(function () {
         if (err) {
           onReady([]);
         } else {
-          if (loadWindow['Typekit'] && loadWindow['Typekit']['config'] && loadWindow['Typekit']['config']['fn']) {
-            var fn = loadWindow['Typekit']['config']['fn'],
+          if (loadWindow['Typekit'] && loadWindow['Typekit']['config'] && loadWindow['Typekit']['config']['fc']) {
+            var fc = loadWindow['Typekit']['config']['fc'],
                 fonts = [];
 
-            for (var i = 0; i < fn.length; i += 2) {
-              var font = fn[i],
-                  variations = fn[i + 1];
+            for (var i = 0; i < fc.length; i++) {
+              var fvd = fc[i]['style'].charAt(0) + fc[i]['weight'].charAt(0);
+              var family = fc[i]['family'];
 
-              for (var j = 0; j < variations.length; j++) {
-                fonts.push(new Font(font, variations[j]));
-              }
+              fonts.push(new Font(family, fvd));
             }
 
             // Kick off font loading but disable font events so
