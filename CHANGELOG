@@ -1,3 +1,7 @@
+v1.6.28 (March 27, 2017)
+
+* Clear timer timeout when promise resolves.
+
 v1.6.27 (November 29, 2016)
 
 * Disable native font loading for Safari 10
