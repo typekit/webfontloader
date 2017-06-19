@@ -171,6 +171,19 @@ goog.scope(function () {
   };
 
   /**
+   * Returns true if both fonts don't match the Safari invalid font (question mark blocks) width
+   *
+   * @private
+   * @param {number} a
+   * @param {number} b
+   * @return {boolean}
+   */
+  FontWatchRunner.prototype.isInvalidFont_ = function (a, b) {
+      var invalidwidth = 2412;
+      return invalidwidth == a || invalidwidth == b;
+  };
+
+  /**
    * Returns true if the WebKit bug is present and both widths match a last resort font.
    *
    * @private
@@ -206,7 +219,7 @@ goog.scope(function () {
     var widthA = this.fontRulerA_.getWidth();
     var widthB = this.fontRulerB_.getWidth();
 
-    if (this.isFallbackFont_(widthA, widthB) || this.isLastResortFont_(widthA, widthB)) {
+    if (this.isFallbackFont_(widthA, widthB) || this.isLastResortFont_(widthA, widthB) || this.isInvalidFont_(widthA, widthB)) {
       if (this.hasTimedOut_()) {
         if (this.isLastResortFont_(widthA, widthB) && this.isMetricCompatibleFont_()) {
           this.finish_(this.activeCallback_);
