@@ -64,7 +64,7 @@ goog.scope(function () {
         } else if (safari10Match) {
           FontWatcher.SHOULD_USE_NATIVE_LOADER = false;
         } else {
-          FontWatcher.SHOULD_USE_NATIVE_LOADER = true;
+          FontWatcher.SHOULD_USE_NATIVE_LOADER = !!window.Promise;
         }
       } else {
         FontWatcher.SHOULD_USE_NATIVE_LOADER = false;
