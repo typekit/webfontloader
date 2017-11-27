@@ -64,9 +64,9 @@ The FOUT can be more easily avoided when loading the Web Font Loader synchronous
 Web Font Loader is also available on npm as a CommonJS module. Just `npm install webfontloader` and then require it in your code.
 
 ```js
-  var WebFont = require('webfontloader');
+  const {load: loadFont} = require('webfontloader');
 
-  WebFont.load({
+  loadFont({
     google: {
       families: ['Droid Sans', 'Droid Serif']
     }
