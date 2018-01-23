@@ -88,7 +88,7 @@ if (typeof define === "function" && define.amd) {
   });
 } else if (typeof module !== "undefined" && module.exports) {
   module.exports = exports;
-} else {
+} else if (typeof window !== "undefined") {
   window[WEBFONT] = exports;
 
   if (window[WEBFONT_CONFIG]) {
