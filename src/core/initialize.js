@@ -46,7 +46,7 @@ var WEBFONT_CONFIG = 'WebFontConfig';
 /**
  * @type {webfont.WebFont}
  */
-var webFontLoader = new webfont.WebFont(window);
+var webFontLoader = new webfont.WebFont(typeof window === 'undefined' ? null : window);
 
 if (INCLUDE_CUSTOM_MODULE) {
   webFontLoader.addModule(webfont.modules.Custom.NAME, function (configuration, domHelper) {
@@ -88,7 +88,7 @@ if (typeof define === "function" && define.amd) {
   });
 } else if (typeof module !== "undefined" && module.exports) {
   module.exports = exports;
-} else {
+} else if (typeof window !== "undefined") {
   window[WEBFONT] = exports;
 
   if (window[WEBFONT_CONFIG]) {
