@@ -29,8 +29,7 @@ describe('modules.Typekit', function () {
       loadScript: jasmine.createSpy('loadScript').andCallFake(function (url, cb) {
         cb(null);
       }),
-      getLoadWindow: jasmine.createSpy('getLoadWindow').andReturn(global),
-      getProtocol: jasmine.createSpy('getProtocol').andReturn('http:')
+      getLoadWindow: jasmine.createSpy('getLoadWindow').andReturn(global)
     };
   });
 

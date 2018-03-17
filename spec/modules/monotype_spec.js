@@ -7,7 +7,7 @@ describe('modules.Monotype', function () {
 
   var configuration = {
     projectId: '01e2ff27-25bf-4801-a23e-73d328e6c7cc',
-    api: 'http://fast.fonts.net/jsapidev'
+    api: 'https://fast.fonts.net/jsapidev'
   };
 
   var fakeDomHelper = null,
@@ -25,8 +25,7 @@ describe('modules.Monotype', function () {
         script.onload = callback;
         return script;
       }),
-      getLoadWindow: jasmine.createSpy('getLoadWindow').andReturn(global),
-      getProtocol: jasmine.createSpy('getProtocol').andReturn('http:')
+      getLoadWindow: jasmine.createSpy('getLoadWindow').andReturn(global)
     };
     support = jasmine.createSpy('support');
     load = jasmine.createSpy('load');
@@ -44,7 +43,7 @@ describe('modules.Monotype', function () {
 
   it('should create a script element', function () {
     expect(fakeDomHelper.loadScript).toHaveBeenCalled();
-    expect(fakeDomHelper.loadScript.calls[0].args[0]).toEqual('http://fast.fonts.net/jsapidev/01e2ff27-25bf-4801-a23e-73d328e6c7cc.js');
+    expect(fakeDomHelper.loadScript.calls[0].args[0]).toEqual('https://fast.fonts.net/jsapidev/01e2ff27-25bf-4801-a23e-73d328e6c7cc.js');
     expect(load).toHaveBeenCalledWith([new Font('aachen bold'), new Font('kid print regular')]);
   });
 });

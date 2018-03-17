@@ -8,7 +8,7 @@ goog.require('webfont.StyleSheetWaiter');
  * WebFont.load({
  *   custom: {
  *     families: ['Font1', 'Font2'],
- *    urls: [ 'http://moo', 'http://meuh' ] }
+ *    urls: [ 'https://moo', 'https://meuh' ] }
  * });
  *
  * @constructor

@@ -74,6 +74,12 @@ describe('FontWatcher', function () {
         spyOn(FontWatcher, 'getUserAgent').andReturn('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:43.0) Gecko/20100101 Firefox/43.0');
         expect(FontWatcher.shouldUseNativeLoader()).toEqual(true);
       });
+
+      it('is disabled on Safari > 10', function () {
+        spyOn(FontWatcher, 'getUserAgent').andReturn('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/602.2.14 (KHTML, like Gecko) Version/10.0.1 Safari/602.2.14');
+        spyOn(FontWatcher, 'getVendor').andReturn('Apple');
+        expect(FontWatcher.shouldUseNativeLoader()).toEqual(false);
+      });
     });
   }
 

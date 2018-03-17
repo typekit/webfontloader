@@ -41,6 +41,13 @@ goog.scope(function () {
   };
 
   /**
+   * @return {string}
+   */
+  FontWatcher.getVendor = function () {
+    return window.navigator.vendor;
+  };
+
+  /**
    * Returns true if this browser has support for
    * the CSS font loading API.
    *
@@ -50,9 +57,12 @@ goog.scope(function () {
     if (FontWatcher.SHOULD_USE_NATIVE_LOADER === null) {
       if (!!window.FontFace) {
         var match = /Gecko.*Firefox\/(\d+)/.exec(FontWatcher.getUserAgent());
+        var safari10Match = /OS X.*Version\/10\..*Safari/.exec(FontWatcher.getUserAgent()) && /Apple/.exec(FontWatcher.getVendor());
 
         if (match) {
           FontWatcher.SHOULD_USE_NATIVE_LOADER = parseInt(match[1], 10) > 42;
+        } else if (safari10Match) {
+          FontWatcher.SHOULD_USE_NATIVE_LOADER = false;
         } else {
           FontWatcher.SHOULD_USE_NATIVE_LOADER = true;
         }
