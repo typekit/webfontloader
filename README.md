@@ -1,6 +1,6 @@
 # Web Font Loader
 
-Web Font Loader gives you added control when using linked fonts via `@font-face`. It provides a common interface to loading fonts regardless of the source, then adds a standard set of events you may use to control the loading experience. The Web Font Loader is able to load fonts from [Google Fonts](http://www.google.com/fonts/), [Typekit](http://www.typekit.com/),  [Fonts.com](http://www.fonts.com/), and [Fontdeck](http://fontdeck.com/), as well as self-hosted web fonts. It is co-developed by [Google](http://www.google.com/) and [Typekit](http://www.typekit.com).
+Web Font Loader gives you added control when using linked fonts via `@font-face`. It provides a common interface to loading fonts regardless of the source, then adds a standard set of events you may use to control the loading experience. The Web Font Loader is able to load fonts from [Google Fonts](http://www.google.com/fonts/), [Typekit](http://www.typekit.com/) and [Fonts.com](http://www.fonts.com/), as well as self-hosted web fonts. It is co-developed by [Google](http://www.google.com/) and [Typekit](http://www.typekit.com).
 
 [![Build Status](https://travis-ci.org/typekit/webfontloader.svg?branch=master)](https://travis-ci.org/typekit/webfontloader)
 
@@ -14,7 +14,6 @@ Web Font Loader gives you added control when using linked fonts via `@font-face`
 * [Modules](#modules)
     * [Adobe Edge Web Fonts](#adobe-edge-web-fonts)
     * [Custom](#custom)
-    * [Fontdeck](#fontdeck)
     * [Fonts.com](#fontscom)
     * [Google](#google)
     * [Typekit](#typekit)
@@ -274,18 +273,6 @@ WebFontConfig = {
 ```
 
 Tests strings should be specified on a per font basis and contain at least one character. If not specified the default test string (`BESbswy`) is used.
-
-### Fontdeck
-
-To use the [Fontdeck](http://fontdeck.com/) module, specify the ID of your website. You can find this ID on the website page within your account settings.
-
-```javascript
-WebFontConfig = {
-  fontdeck: {
-    id: 'xxxxx'
-  }
-};
-```
 
 ### Fonts.com
 

@@ -93,7 +93,6 @@ DESC
     lib/webfontloader/demo/public/event-js-loading.html
     lib/webfontloader/demo/public/events-variations.html
     lib/webfontloader/demo/public/events.html
-    lib/webfontloader/demo/public/fontdeck.html
     lib/webfontloader/demo/public/fontwatchrunner-default-fonts.html
     lib/webfontloader/demo/public/google-css.html
     lib/webfontloader/demo/public/google-iframe.html
@@ -143,7 +142,6 @@ DESC
     spec/fixtures/fonts/sourcesansdup2.css
     spec/index.html
     spec/modules/custom_spec.js
-    spec/modules/fontdeck_spec.js
     spec/modules/google/fontapiparser_spec.js
     spec/modules/google/fontapiurlbuilder_spec.js
     spec/modules/google/googlefontapi_spec.js
@@ -165,7 +163,6 @@ DESC
     src/core/webfont.js
     src/modules.yml
     src/modules/custom.js
-    src/modules/fontdeck.js
     src/modules/google/fontapiparser.js
     src/modules/google/fontapiurlbuilder.js
     src/modules/google/googlefontapi.js
