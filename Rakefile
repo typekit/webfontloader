@@ -88,7 +88,7 @@ file "webfontloader.js" => "target/webfont.js" do
 end
 
 file "target/webfont.js", [:modules] => SourceJs + ["target"] do |t, args|
-  args.with_defaults(:modules => 'custom google typekit monotype fontdeck')
+  args.with_defaults(:modules => 'custom google typekit monotype')
 
   modules = args[:modules].split ' '
 
@@ -125,7 +125,7 @@ desc "Creates debug version into target/webfont.js"
 task :debug, [:modules] => "target/webfont_debug.js"
 
 file "target/webfont_debug.js", [:modules] => SourceJs + ["target"] do |t, args|
-  args.with_defaults(:modules => 'custom google typekit monotype fontdeck')
+  args.with_defaults(:modules => 'custom google typekit monotype')
 
   modules = args[:modules].split ' '
 

@@ -21,9 +21,6 @@ google:
   - modules/google/fontapiparser.js
   - modules/google/googlefontapi.js
 
-fontdeck:
-  - modules/fontdeck.js
-
 typekit:
   - modules/typekit.js
 

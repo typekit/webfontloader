@@ -23,7 +23,7 @@ If you want to build a JS file with only specific modules you can specify them o
 
     $ rake compile['custom google typekit']
 
-This will compile a JS file with only the `custom`, `google` and `typekit` modules. The available modules are: `custom`, `google`, `typekit`, `ascender`, `monotype`, `fontdeck`. By default all modules are included.
+This will compile a JS file with only the `custom`, `google` and `typekit` modules. The available modules are: `custom`, `google`, `typekit`, `ascender`, `monotype`. By default all modules are included.
 
 ## Demos
 
