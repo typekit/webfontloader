@@ -64,13 +64,15 @@ The FOUT can be more easily avoided when loading the Web Font Loader synchronous
 Web Font Loader is also available on npm as a CommonJS module. Just `npm install webfontloader` and then require it in your code.
 
 ```js
-  var WebFont = require('webfontloader');
+var WebFont = require('webfontloader');
+// or for ES6 import
+import WebFont from 'webfontloader'
 
-  WebFont.load({
-    google: {
-      families: ['Droid Sans', 'Droid Serif']
-    }
-  });
+WebFont.load({
+  google: {
+    families: ['Droid Sans', 'Droid Serif']
+  }
+});
 ```
 
 ## Configuration
