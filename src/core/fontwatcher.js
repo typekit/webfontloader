@@ -57,11 +57,14 @@ goog.scope(function () {
     if (FontWatcher.SHOULD_USE_NATIVE_LOADER === null) {
       if (!!window.FontFace) {
         var match = /Gecko.*Firefox\/(\d+)/.exec(FontWatcher.getUserAgent());
-        var safari10Match = /OS X.*Version\/10\..*Safari/.exec(FontWatcher.getUserAgent()) && /Apple/.exec(FontWatcher.getVendor());
+        var appleMatch = /Apple/.exec(FontWatcher.getVendor())
+        var safari10Match = /OS X.*Version\/10\..*Safari/.exec(FontWatcher.getUserAgent()) ||
+                            /AppleWebKit\/603/.exec(FontWatcher.getUserAgent()) ||
+                            /AppleWebKit\/602/.exec(FontWatcher.getUserAgent())
 
         if (match) {
           FontWatcher.SHOULD_USE_NATIVE_LOADER = parseInt(match[1], 10) > 42;
-        } else if (safari10Match) {
+        } else if (appleMatch && safari10Match) {
           FontWatcher.SHOULD_USE_NATIVE_LOADER = false;
         } else {
           FontWatcher.SHOULD_USE_NATIVE_LOADER = true;
