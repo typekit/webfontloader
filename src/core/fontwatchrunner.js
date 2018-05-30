@@ -39,7 +39,8 @@ webfont.FontWatchRunner = function(activeCallback, inactiveCallback, domHelper,
  */
 webfont.FontWatchRunner.LastResortFonts = {
   SERIF: 'serif',
-  SANS_SERIF: 'sans-serif'
+  SANS_SERIF: 'sans-serif',
+  MOCK_FONT: 'FontWatchRunnerMockFont'
 };
 
 /**
@@ -70,7 +71,7 @@ goog.scope(function () {
 
   /**
    * Returns true if this browser is WebKit and it has the fallback bug
-   * which is present in WebKit 536.11 and earlier.
+   * which is present in WebKit 602.*, 603.* ,and 536.11 and earlier
    *
    * @return {boolean}
    */
@@ -81,7 +82,9 @@ goog.scope(function () {
       FontWatchRunner.HAS_WEBKIT_FALLBACK_BUG = !!match &&
                                           (parseInt(match[1], 10) < 536 ||
                                            (parseInt(match[1], 10) === 536 &&
-                                            parseInt(match[2], 10) <= 11));
+                                            parseInt(match[2], 10) <= 11) ||
+                                           parseInt(match[1], 10) === 602 || 
+                                           parseInt(match[1], 10) === 603);
     }
     return FontWatchRunner.HAS_WEBKIT_FALLBACK_BUG;
   };
@@ -109,6 +112,10 @@ goog.scope(function () {
   FontWatchRunner.prototype.start = function() {
     this.lastResortWidths_[FontWatchRunner.LastResortFonts.SERIF] = this.lastResortRulerA_.getWidth();
     this.lastResortWidths_[FontWatchRunner.LastResortFonts.SANS_SERIF] = this.lastResortRulerB_.getWidth();
+
+    if (FontWatchRunner.hasWebKitFallbackBug()) {
+      this.lastResortWidths_[FontWatchRunner.LastResortFonts.MOCK_FONT] = this.getMockFontWidth_();
+    }
 
     this.started_ = goog.now();
 
@@ -192,6 +199,35 @@ goog.scope(function () {
   FontWatchRunner.prototype.isMetricCompatibleFont_ = function () {
     return this.metricCompatibleFonts_ === null || this.metricCompatibleFonts_.hasOwnProperty(this.font_.getName());
   };
+
+
+  /**
+   * Calculates the width of a mock font with the current font's variation css style
+   * before it has finished loading.
+   *
+   * @private
+   * @return {number}
+   */
+  FontWatchRunner.prototype.getMockFontWidth_ = function () {
+
+    var mockFontStyle = "@font-face\{font-family: '" + FontWatchRunner.LastResortFonts.MOCK_FONT + "';" +
+                        this.font_.getCssVariation() +
+                        "src: url(some.woff2) format('woff2');\}"
+
+    var mockFontCss = this.domHelper_.createStyle(mockFontStyle);
+    this.domHelper_.insertInto('head', mockFontCss)
+
+    var mockFontRuler = new FontRuler(this.domHelper_, this.fontTestString_);
+    mockFontRuler.setFont(new Font(FontWatchRunner.LastResortFonts.MOCK_FONT, this.font_.getVariation()));
+    mockFontRuler.insert();
+
+    var mockFontWidth = mockFontRuler.getWidth();
+
+    mockFontRuler.remove()
+    this.domHelper_.removeElement(mockFontCss)
+
+    return mockFontWidth
+  }
 
   /**
    * Checks the width of the two spans against their original widths during each
