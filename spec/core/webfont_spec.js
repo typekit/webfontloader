@@ -150,7 +150,7 @@ describe('WebFont', function () {
 
       expect(font.onModuleReady_).toHaveBeenCalled();
       expect(font.onModuleReady_.calls[0].args[2]).toEqual([new Font('Elena')]);
-      expect(font.onModuleReady_.calls[0].args[3]).toEqual({ 'Elena': '1234567' });
+      expect(font.onModuleReady_.calls[0].args[4]).toEqual({ 'Elena': '1234567' });
     });
   });
 
