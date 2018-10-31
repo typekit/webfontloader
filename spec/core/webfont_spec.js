@@ -241,4 +241,95 @@ describe('WebFont', function () {
       });
     });
   });
+
+  describe('multiple active events', function () {
+    var webFont = null,
+        active = null,
+        inactive = null,
+        loading = null,
+        spyOnFontWatchRunnerAreFontsLoading = null,
+        spyOnNativeFontWatchRunnerWaitForFontToLoad = null;
+
+    beforeEach(function () {
+      active = jasmine.createSpy('active'),
+      inactive = jasmine.createSpy('inactive');
+      loading = jasmine.createSpy('loading');
+
+      spyOnFontWatchRunnerAreFontsLoading = spyOn(FontWatchRunner.prototype, "areFontsLoading_");
+      spyOnNativeFontWatchRunnerWaitForFontToLoad = spyOn(NativeFontWatchRunner.prototype, "waitForFontToLoad_");
+
+      spyOnFontWatchRunnerAreFontsLoading.andCallFake(function () {
+        return false;
+      });
+
+      spyOnNativeFontWatchRunnerWaitForFontToLoad.andCallFake(function () {
+        return new Promise(function (resolve, reject) {
+          resolve();
+        });
+      });
+
+      webFont = new WebFont(window);
+      webFont.addModule('module1', function (conf, domHelper) {
+        var testModule = new function () {
+          this.conf = conf;
+        };
+
+        testModule.load = function (onReady) {
+          onReady([new Font(conf.id)]);
+        };
+
+        return testModule;
+      });
+
+      webFont.addModule('module2', function (conf, domHelper) {
+        var testModule = new function () {
+          this.conf = conf;
+        };
+
+        testModule.load = function (onReady) {
+          onReady([new Font(conf.id)]);
+        };
+
+        return testModule;
+      });
+    });
+
+    afterEach(function () {
+      spyOnFontWatchRunnerAreFontsLoading.reset();
+      spyOnNativeFontWatchRunnerWaitForFontToLoad.reset();
+    });
+
+    it('should fire multiple active events for multiple consecutive font requests', function () {
+      runs(function () {
+        webFont.load({
+          'module1': {
+            id: 'Elena'
+          },
+          'module2': {
+            id: 'Playfair Display'
+          },
+          inactive: inactive,
+          active: active,
+          loading: loading
+        });
+
+        webFont.load({
+          'module1': {
+            id: 'Playfair Display'
+          },
+          inactive: inactive,
+          active: active,
+          loading: loading
+        });
+      });
+
+      waitsFor(function () {
+        return active.callCount == 2;
+      });
+
+      runs(function () {
+        expect(inactive.callCount).toEqual(0);
+      });
+    });
+  });
 });
