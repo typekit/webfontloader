@@ -194,6 +194,18 @@ goog.scope(function () {
   };
 
   /**
+   * Returns true if both fonts are in a state that resembles loading.
+   *
+   * @private
+   * @param {number} a
+   * @param {number} b
+   * @return {boolean}
+   */
+  FontWatchRunner.prototype.areFontsLoading_ = function (a, b) {
+    return this.isFallbackFont_(a, b) || this.isLastResortFont_(a, b);
+  };
+
+  /**
    * Checks the width of the two spans against their original widths during each
    * async loop. If the width of one of the spans is different than the original
    * width, then we know that the font is rendering and finish with the active
@@ -206,14 +218,14 @@ goog.scope(function () {
     var widthA = this.fontRulerA_.getWidth();
     var widthB = this.fontRulerB_.getWidth();
 
-    if (this.isFallbackFont_(widthA, widthB) || this.isLastResortFont_(widthA, widthB)) {
+    if (this.areFontsLoading_(widthA, widthB)) {
       if (this.hasTimedOut_()) {
         if (this.isLastResortFont_(widthA, widthB) && this.isMetricCompatibleFont_()) {
           this.finish_(this.activeCallback_);
         } else {
           this.finish_(this.inactiveCallback_);
         }
-     } else {
+      } else {
         this.asyncCheck_();
       }
     } else {

@@ -23,20 +23,18 @@ goog.scope(function () {
 
   var NativeFontWatchRunner = webfont.NativeFontWatchRunner;
 
-  NativeFontWatchRunner.prototype.start = function () {
+  NativeFontWatchRunner.prototype.waitForFontToLoad_ = function (font, fontTestString, timeout) {
     var doc = this.domHelper_.getLoadWindow().document,
-        that = this;
+        start = goog.now();
 
-    var start = goog.now();
-
-    var loader = new Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
       var check = function () {
         var now = goog.now();
 
-        if (now - start >= that.timeout_) {
+        if (now - start >= timeout) {
           reject();
         } else {
-          doc.fonts.load(that.font_.toCssString(), that.fontTestString_).then(function (fonts) {
+          doc.fonts.load(font.toCssString(), fontTestString).then(function (fonts) {
             if (fonts.length >= 1) {
               resolve();
             } else {
@@ -50,6 +48,11 @@ goog.scope(function () {
 
       check();
     });
+  };
+
+  NativeFontWatchRunner.prototype.start = function () {
+    var that = this,
+        loader = this.waitForFontToLoad_(this.font_, this.fontTestString_, this.timeout_);
 
     var timeoutId = null,
       timer = new Promise(function (resolve, reject) {
