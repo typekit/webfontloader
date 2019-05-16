@@ -37,4 +37,12 @@ describe('modules.google.FontApiUrlBuilder', function () {
       '?family=Font1:bold,italic%7CFont2:italic%7CFont3' +
       '&subset=greek,cyrillic,latin');
   });
+  it('should build a proper url - display param', function () {
+    var builder = new FontApiUrlBuilder(undefined, undefined, 'swap');
+    builder.setFontFamilies(['Font1:bold,italic:greek,cyrillic', 'Font2:italic', 'Font3::latin']);
+    expect(builder.build()).toEqual(
+      FontApiUrlBuilder.DEFAULT_API_URL +
+      '?family=Font1:bold,italic%7CFont2:italic%7CFont3' +
+      '&subset=greek,cyrillic,latin&display=swap');
+  });
 });

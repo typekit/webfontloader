@@ -3,7 +3,7 @@ goog.provide('webfont.modules.google.FontApiUrlBuilder');
 /**
  * @constructor
  */
-webfont.modules.google.FontApiUrlBuilder = function(apiUrl, text) {
+webfont.modules.google.FontApiUrlBuilder = function(apiUrl, text, display) {
   if (apiUrl) {
     this.apiUrl_ = apiUrl;
   } else {
@@ -12,6 +12,7 @@ webfont.modules.google.FontApiUrlBuilder = function(apiUrl, text) {
   this.fontFamilies_ = [];
   this.subsets_ = [];
   this.text_ = text || '';
+  this.display_ = display || '';
 };
 
 
@@ -70,6 +71,10 @@ goog.scope(function () {
 
     if (this.text_.length > 0) {
       url += '&text=' + encodeURIComponent(this.text_);
+    }
+
+    if (this.display_.length > 0) {
+      url += '&display=' + this.display_;
     }
 
     return url;

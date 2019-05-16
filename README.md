@@ -348,6 +348,17 @@ WebFontConfig = {
 
 The `text` subsetting functionality is only available for the Google module.
 
+Additional option you can pass to google option is display, it enables use of [font-display(https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display)] property.
+
+```javascript
+WebFontConfig = {
+  google: {
+    families: ['Droid Sans', 'Droid Serif'],
+    display: 'swap'
+  }
+};
+```
+
 ### Typekit
 
 When using [Typekit](http://www.typekit.com), specify the Kit to retrieve by its ID. You can find the Kit ID within Typekit's Kit Editor interface.
