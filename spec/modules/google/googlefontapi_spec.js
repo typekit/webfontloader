@@ -59,13 +59,14 @@ describe('modules.google.GoogleFontApi', function () {
       loaded  = false;
       googleFontApi = new GoogleFontApi(fakeDomHelper, {
         api: 'https://moo',
-        families: ['Font1', 'Font2']
+        families: ['Font1', 'Font2'],
+        display: 'swap'
       });
       googleFontApi.load(function () { loaded = true; });
     });
 
     it('has inserted the link element correctly', function () {
-      expect(link).toEqual('https://moo?family=Font1%7CFont2');
+      expect(link).toEqual('https://moo?family=Font1%7CFont2&display=swap');
     });
 
     if (webfont.DomHelper.CAN_WAIT_STYLESHEET) {
