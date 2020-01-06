@@ -42,6 +42,8 @@ Web Font Loader is also available on the [jsDelivr](http://www.jsdelivr.com/proj
 
 It is also possible to use the Web Font Loader asynchronously. For example, to load [Typekit](http://www.typekit.com) fonts asynchronously, you could use the following code.
 
+hoge
+
 ```html
 <script>
    WebFontConfig = {
