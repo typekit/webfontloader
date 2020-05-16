@@ -28,7 +28,7 @@ module WebFontLoader
     end
 
     def js_output_wrapper(source, version)
-      File.read(File.join(js_src, "closure.js")).sub("{{source}}", source).sub("{{version}}", version)
+      File.read(File.join(js_src, "closure.js")).sub("{{source}}", source).sub("{{version}}", version).gsub(/\n|\r/,"")
     end
 
   protected

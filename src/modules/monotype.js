@@ -40,21 +40,28 @@ webfont.modules.Monotype.HOOK = '__mti_fntLst';
  */
 webfont.modules.Monotype.SCRIPTID = '__MonotypeAPIScript__';
 
+/**
+ * __MonotypeConfiguration__ is function exposed to fonts.com. fonts.com will use this function to get webfontloader configuration
+ * @const
+ */
+webfont.modules.Monotype.CONFIGURATION = '__MonotypeConfiguration__';
+
 goog.scope(function() {
   var Monotype = webfont.modules.Monotype,
     Font = webfont.Font;
+    
 
   Monotype.prototype.getScriptSrc = function(projectId, version) {
-    var p = this.domHelper_.getProtocol();
-    var api = (this.configuration_['api'] || 'fast.fonts.net/jsapi').replace(/^.*http(s?):(\/\/)?/, "");
-    return p + "//" + api + '/' + projectId + '.js' + (version ? '?v=' + version : '');
+    var api = (this.configuration_['api'] || 'https://fast.fonts.net/jsapi')
+    return api + '/' + projectId + '.js' + (version ? '?v=' + version : '');
   };
 
   Monotype.prototype.load = function(onReady) {
     var self = this;
     var projectId = self.configuration_['projectId'];
     var version = self.configuration_['version'];
-
+  
+      
     function checkAndLoadIfDownloaded() {
       if (loadWindow[Monotype.HOOK + projectId]) {
         var mti_fnts = loadWindow[Monotype.HOOK + projectId](),
@@ -88,6 +95,10 @@ goog.scope(function() {
         if (err) {
           onReady([]);
         } else {
+          loadWindow[Monotype.CONFIGURATION+ projectId] = function() {
+           return  self.configuration_;
+          };
+            
           checkAndLoadIfDownloaded();
         }
       });

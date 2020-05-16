@@ -29,24 +29,41 @@ goog.scope(function () {
 
     var start = goog.now();
 
-    function check() {
-      var now = goog.now();
+    var loader = new Promise(function (resolve, reject) {
+      var check = function () {
+        var now = goog.now();
 
-      if (now - start >= that.timeout_) {
-        that.inactiveCallback_(that.font_);
-      } else {
-        doc.fonts.load(that.font_.toCssString(), that.fontTestString_).then(function (fonts) {
-          if (fonts.length >= 1) {
-            that.activeCallback_(that.font_);
-          } else {
-            setTimeout(check, 25);
-          }
-        }, function () {
-          that.inactiveCallback_(that.font_);
-        });
+        if (now - start >= that.timeout_) {
+          reject();
+        } else {
+          doc.fonts.load(that.font_.toCssString(), that.fontTestString_).then(function (fonts) {
+            if (fonts.length >= 1) {
+              resolve();
+            } else {
+              setTimeout(check, 25);
+            }
+          }, function () {
+            reject();
+          });
+        }
+      };
+
+      check();
+    });
+
+    var timeoutId = null,
+      timer = new Promise(function (resolve, reject) {
+        timeoutId = setTimeout(reject, that.timeout_);
+      });
+
+    Promise.race([timer, loader]).then(function () {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
       }
-    }
-
-    check();
+      that.activeCallback_(that.font_);
+    }, function () {
+      that.inactiveCallback_(that.font_);
+    });
   };
 });

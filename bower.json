@@ -1,0 +1,23 @@
+{
+  "name": "webfontloader",
+  "main": "webfontloader.js",
+  "description": "Web Font Loader gives you added control when using linked fonts via @font-face.",
+  "moduleType": ["amd", "node"],
+  "license": "Apache-2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "spec",
+    "tools",
+    "lib",
+    "bin"
+  ],
+  "keywords": [
+    "web",
+    "fonts",
+    "webfonts",
+    "font",
+    "loader",
+    "@font-face"
+  ]
+}

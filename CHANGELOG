@@ -1,3 +1,35 @@
+v1.6.28 (March 27, 2017)
+
+* Clear timer timeout when promise resolves.
+
+v1.6.27 (November 29, 2016)
+
+* Disable native font loading for Safari 10
+
+v1.6.26 (July 8, 2016)
+
+* Add support for latin extended in the Google Fonts module.
+
+v1.6.25 (July 7, 2016)
+
+* Add "loadAllFonts" option to Monotype module.
+* Add documentation on how to use Web Font Loader with Edge Web Fonts.
+
+v1.6.24 (March 20, 2016)
+
+* Fix type annotation in DomHelper.
+
+v1.6.23 (March 20, 2016)
+
+* Add bower.json
+* Small code rewrite in order to workaround a bad type cast (Closure Compiler
+is correct, but reality doesn't always match).
+
+v1.6.22 (February 29, 2016)
+
+* Fix bug that caused long loading fonts to get stuck on wf-loading because
+the timeout never fired (or took a really long time).
+
 v1.6.21 (February 2, 2016)
 
 * Fix bug in Google module that caused non-latin to fail on browsers that

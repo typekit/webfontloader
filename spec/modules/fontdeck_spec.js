@@ -8,9 +8,9 @@ describe('modules.Fontdeck', function () {
 
   var apiResponse = {
     "domain" : "localhost",
-    "cssurl" : "http://f.fontdeck.com/s/css/03BmCXiV2AHwX/Rp+OBFTfD2oFs/localhost/2282.css",
+    "cssurl" : "https://f.fontdeck.com/s/css/03BmCXiV2AHwX/Rp+OBFTfD2oFs/localhost/2282.css",
     "project" : 2282,
-    "cssbase" : "http://f.fontdeck.com/s/css/03BmCXiV2AHwX/Rp+OBFTfD2oFs",
+    "cssbase" : "https://f.fontdeck.com/s/css/03BmCXiV2AHwX/Rp+OBFTfD2oFs",
     "fonts" : [
       {
         "font_family" : "'Fertigo Pro Regular', Fertigo, Constantia, Palatino, serif",
@@ -19,10 +19,10 @@ describe('modules.Fontdeck', function () {
         "style" : "normal",
         "weight" : "normal",
         "font_urls" : {
-          "eot" : "http://f.fontdeck.com/f/1/SUlFR0tid0kAA2vb11Ly/IGWDK+wV8TMAfV0J1Ej1J1GFRT1bssqrn6a.eot",
-          "ttf" : "http://f.fontdeck.com/f/1/SUlFR0tid0kAA2vb11Ly/IGWDK+wV8TMAfV0J1Ej1J1GFRT1bssqrn6a.ttf",
-          "woff" : "http://f.fontdeck.com/f/1/SUlFR0tid0kAA2vb11Ly/IGWDK+wV8TMAfV0J1Ej1J1GFRT1bssqrn6a.woff",
-          "svg" : "http://f.fontdeck.com/f/1/SUlFR0tid0kAA2vb11Ly/IGWDK+wV8TMAfV0J1Ej1J1GFRT1bssqrn6a.svg#104"
+          "eot" : "https://f.fontdeck.com/f/1/SUlFR0tid0kAA2vb11Ly/IGWDK+wV8TMAfV0J1Ej1J1GFRT1bssqrn6a.eot",
+          "ttf" : "https://f.fontdeck.com/f/1/SUlFR0tid0kAA2vb11Ly/IGWDK+wV8TMAfV0J1Ej1J1GFRT1bssqrn6a.ttf",
+          "woff" : "https://f.fontdeck.com/f/1/SUlFR0tid0kAA2vb11Ly/IGWDK+wV8TMAfV0J1Ej1J1GFRT1bssqrn6a.woff",
+          "svg" : "https://f.fontdeck.com/f/1/SUlFR0tid0kAA2vb11Ly/IGWDK+wV8TMAfV0J1Ej1J1GFRT1bssqrn6a.svg#104"
         },
         "id" : 104
       },
@@ -33,10 +33,10 @@ describe('modules.Fontdeck', function () {
         "style" : "italic",
         "weight" : "bold",
         "font_urls" : {
-          "eot" : "http://f.fontdeck.com/f/1/azJEbTVyc1QAA11+CAE5C93+l/bAQx1ipRo6Maba19w3Yy5ng+qVWlfj.eot",
-          "ttf" : "http://f.fontdeck.com/f/1/azJEbTVyc1QAA11+CAE5C93+l/bAQx1ipRo6Maba19w3Yy5ng+qVWlfj.ttf",
-          "woff" : "http://f.fontdeck.com/f/1/azJEbTVyc1QAA11+CAE5C93+l/bAQx1ipRo6Maba19w3Yy5ng+qVWlfj.woff",
-          "svg" : "http://f.fontdeck.com/f/1/azJEbTVyc1QAA11+CAE5C93+l/bAQx1ipRo6Maba19w3Yy5ng+qVWlfj.svg#2256"
+          "eot" : "https://f.fontdeck.com/f/1/azJEbTVyc1QAA11+CAE5C93+l/bAQx1ipRo6Maba19w3Yy5ng+qVWlfj.eot",
+          "ttf" : "https://f.fontdeck.com/f/1/azJEbTVyc1QAA11+CAE5C93+l/bAQx1ipRo6Maba19w3Yy5ng+qVWlfj.ttf",
+          "woff" : "https://f.fontdeck.com/f/1/azJEbTVyc1QAA11+CAE5C93+l/bAQx1ipRo6Maba19w3Yy5ng+qVWlfj.woff",
+          "svg" : "https://f.fontdeck.com/f/1/azJEbTVyc1QAA11+CAE5C93+l/bAQx1ipRo6Maba19w3Yy5ng+qVWlfj.svg#2256"
         },
         "id" : 2256
       }
@@ -54,7 +54,6 @@ describe('modules.Fontdeck', function () {
     fakeDomHelper = {
       loadScript: jasmine.createSpy('loadScript'),
       getLoadWindow: jasmine.createSpy('getLoadWindow').andReturn(global),
-      getProtocol: jasmine.createSpy('getProtocol').andReturn('https:'),
       getHostName: function () { return 'test-host-name';  }
     };
   });
