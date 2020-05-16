@@ -165,7 +165,7 @@ The timeout value should be in milliseconds, and defaults to 3000 milliseconds (
 
 ### Iframes
 
-Usually, it's easiest to include a copy of Web Font Loader in every window where fonts are needed, so that each window manages its own fonts. However, if you need to have a single window manage fonts for multiple same-origin child windows or iframes that are built up using JavaScript, Web Font Loader supports that as well. Just use the optional `context` configuration option and give it a reference to the target window for loading:
+Usually, it's easiest to include a copy of Web Font Loader in every window where fonts are needed so that each window manages its own fonts. However, if you need to have a single window manage fonts for multiple same-origin child windows or iframes that are built up using JavaScript, Web Font Loader supports that as well. Just use the optional `context` configuration option and give it a reference to the target window for loading:
 
 ```javascript
 WebFontConfig = {
@@ -240,7 +240,7 @@ In this example, the `fonts.css` file might look something like this:
 }
 ```
 
-If your fonts are already included in another stylesheet you can also leave out the `urls` array and just specify font family names to start font loading. As long as the names match those that are declared in the `families` array, the proper loading classes will be applied to the html element.
+If your fonts are already included in another stylesheet, you can also leave out the `urls` array and just specify font family names to start font loading. As long as the names match those that are declared in the `families` array, the proper loading classes will be applied to the html element.
 
 ```html
 <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script>
@@ -364,7 +364,7 @@ WebFontConfig = {
 
 ## Browser Support
 
-Every web browser has varying levels of support for fonts linked via `@font-face`. Web Font Loader determines support for web fonts is using the browser's user agent string. The user agent string may claim to support a web font format when it in fact does not. This is especially noticeable on mobile browsers with a "Desktop" mode, which usually identify as Chrome on Linux. In this case a web font provider may decide to send WOFF fonts to the device because the real desktop Chrome supports it, while the mobile browser does not. The Web Font Loader is not designed to handle these cases and it defaults to believing what's in the user agent string. Web font providers can build on top of the basic Web Font Loader functionality to handle these special cases individually.
+Every web browser has varying levels of support for fonts linked via `@font-face`. Web Font Loader determines support for web fonts by using the browser's user agent string. The user agent string may claim to support a web font format when it in fact does not. This is especially noticeable on mobile browsers with a "Desktop" mode, which usually identify as Chrome on Linux. In this case a web font provider may decide to send WOFF fonts to the device because the real desktop Chrome supports it, while the mobile browser does not. The Web Font Loader is not designed to handle these cases and it defaults to believing what's in the user agent string. Web font providers can build on top of the basic Web Font Loader functionality to handle these special cases individually.
 
 If Web Font Loader determines that the current browser does not support `@font-face`, the `inactive` event will be triggered.
 
