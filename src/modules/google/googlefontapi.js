@@ -38,7 +38,10 @@ goog.scope(function () {
     var domHelper = this.domHelper_;
     var fontApiUrlBuilder = new FontApiUrlBuilder(
         this.configuration_['api'],
-        this.configuration_['text']
+        this.configuration_['text'],
+        this.configuration_['display'],
+        this.configuration_['effect'],
+        this.configuration_['version']
     );
     var fontFamilies = this.configuration_['families'];
     fontApiUrlBuilder.setFontFamilies(fontFamilies);

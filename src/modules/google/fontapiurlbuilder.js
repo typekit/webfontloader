@@ -3,19 +3,30 @@ goog.provide('webfont.modules.google.FontApiUrlBuilder');
 /**
  * @constructor
  */
-webfont.modules.google.FontApiUrlBuilder = function(apiUrl, text) {
+webfont.modules.google.FontApiUrlBuilder = function(apiUrl, text, display, effect, version) {
+  this.apiVersion_ = version === 2 ? 2 : 1;
+  const urlComponents = webfont.modules.google.FontApiUrlBuilder.DEFAULT_API_URL_COMPONENTS[this.apiVersion_ - 1];
   if (apiUrl) {
     this.apiUrl_ = apiUrl;
+    this.apiSeparator_ = urlComponents[1];
   } else {
-    this.apiUrl_ = webfont.modules.google.FontApiUrlBuilder.DEFAULT_API_URL;
+    this.apiUrl_ = urlComponents[0];
+    this.apiSeparator_ = urlComponents[1];
   }
   this.fontFamilies_ = [];
   this.subsets_ = [];
   this.text_ = text || '';
+  this.display_ = display || '';
+  this.effect_ = effect || '';
 };
 
+webfont.modules.google.FontApiUrlBuilder.DEFAULT_API_URL_COMPONENTS = [
+  ['https://fonts.googleapis.com/css', '%7C' ],
+  ['https://fonts.googleapis.com/css2', '&family=']
+];
 
-webfont.modules.google.FontApiUrlBuilder.DEFAULT_API_URL = 'https://fonts.googleapis.com/css';
+webfont.modules.google.FontApiUrlBuilder.DEFAULT_API_URL = webfont.modules.google.FontApiUrlBuilder.DEFAULT_API_URL_COMPONENTS[0][0];
+webfont.modules.google.FontApiUrlBuilder.DEFAULT_API_URL_V2 = webfont.modules.google.FontApiUrlBuilder.DEFAULT_API_URL_COMPONENTS[1][0];
 
 goog.scope(function () {
   var FontApiUrlBuilder = webfont.modules.google.FontApiUrlBuilder;
@@ -62,7 +73,7 @@ goog.scope(function () {
     for (var i = 0; i < length; i++) {
       sb.push(this.webSafe(this.fontFamilies_[i]));
     }
-    var url = this.apiUrl_ + '?family=' + sb.join('%7C'); // '|' escaped.
+    var url = this.apiUrl_ + '?family=' + sb.join(this.apiSeparator_);
 
     if (this.subsets_.length > 0) {
       url += '&subset=' + this.subsets_.join(',');
@@ -70,6 +81,14 @@ goog.scope(function () {
 
     if (this.text_.length > 0) {
       url += '&text=' + encodeURIComponent(this.text_);
+    }
+
+    if (this.display_.length > 0) {
+      url += '&display=' + encodeURIComponent(this.display_);
+    }
+
+    if (this.effect_.length > 0) {
+      url += '&effect=' + encodeURIComponent(this.effect_);
     }
 
     return url;
