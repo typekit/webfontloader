@@ -335,18 +335,31 @@ WebFontConfig = {
 };
 ```
 
-You can also supply the `text` parameter to perform character subsetting:
+**Advanced Google-only features:** You can also supply the `text` parameter to perform character subsetting, the `effects` parameter to enable [font effects](https://developers.google.com/fonts/docs/getting_started#enabling_font_effects_beta), and the `display` parameter to control what happens when the [font is unavailable](https://developers.google.com/fonts/docs/getting_started#use_font-display):
 
 ```javascript
 WebFontConfig = {
   google: {
     families: ['Droid Sans', 'Droid Serif'],
-    text: 'abcdefghijklmnopqrstuvwxyz!'
+    text: 'abcdefghijklmnopqrstuvwxyz!',
+    effects: 'shadow-multiple',
+    display: 'swap'
   }
 };
 ```
 
-The `text` subsetting functionality is only available for the Google module.
+**API Version::** By default Google Fonts API version 1 is used. In order to use advanced features such as variable fonts, supply the `version: 2` parameter to target [Google Fonts API version 2](https://developers.google.com/fonts/docs/css2) instead:
+
+```javascript
+WebFontConfig = {
+  google: {
+    families: ['Work Sans:wght@400..700', 'Inter:wght@100..300'],
+    version: 2
+  }
+};
+```
+Note: font `effects` are currently only available when using version 1.
+
 
 ### Typekit
 
