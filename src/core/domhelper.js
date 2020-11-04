@@ -274,7 +274,8 @@ goog.scope(function () {
     var link = this.createElement('link', {
       'rel': 'stylesheet',
       'href': href,
-      'media': (opt_async ? 'only x' : 'all')
+      'media': (opt_async ? 'only x' : 'all'),
+      'crossorigin':'anonymous'
     });
 
     var sheets = this.document_.styleSheets,
