@@ -40,6 +40,23 @@ Alternatively, you can link to the latest `1.x` version of the Web Font Loader b
 
 Web Font Loader is also available on the [jsDelivr](http://www.jsdelivr.com/projects/webfontloader) & [CDNJS](https://cdnjs.com/libraries/webfont) CDNs.
 
+One of the ways to load fonts with Web Font Loader is with javascript:
+
+```html
+    var wf = document.createElement("script");
+    wf.type = "text/javascript";
+    wf.src = "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js";
+    wf.async = false;
+    wf.onload = function () {
+      WebFont.load({
+        google: {
+          families: ['Montserrat:400,600,700']
+        }
+      });
+    };
+    document.head.appendChild(wf);
+```
+
 It is also possible to use the Web Font Loader asynchronously. For example, to load [Typekit](http://www.typekit.com) fonts asynchronously, you could use the following code.
 
 ```html
