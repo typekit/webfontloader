@@ -1,6 +1,6 @@
 # Web Font Loader
 
-Web Font Loader gives you added control when using linked fonts via `@font-face`. It provides a common interface to loading fonts regardless of the source, then adds a standard set of events you may use to control the loading experience. The Web Font Loader is able to load fonts from [Google Fonts](http://www.google.com/fonts/), [Typekit](http://www.typekit.com/),  [Fonts.com](http://www.fonts.com/), and [Fontdeck](http://fontdeck.com/), as well as self-hosted web fonts. It is co-developed by [Google](http://www.google.com/) and [Typekit](http://www.typekit.com).
+Web Font Loader gives you added control when using linked fonts via `@font-face`. It provides a common interface to loading fonts regardless of the source, then adds a standard set of events you may use to control the loading experience. The Web Font Loader is able to load fonts from [Google Fonts](https://fonts.google.com/), [Adobe Fonts](https://fonts.adobe.com/) (formerly Typekit), [Fonts.com](https://www.monotype.com/products/monotype-fonts), and Fontdeck, as well as self-hosted web fonts. It is co-developed by [Google](http://www.google.com/) and Typekit.
 
 [![Build Status](https://travis-ci.org/typekit/webfontloader.svg?branch=master)](https://travis-ci.org/typekit/webfontloader)
 
@@ -23,7 +23,7 @@ Web Font Loader gives you added control when using linked fonts via `@font-face`
 
 ## Get Started
 
-To use the Web Font Loader library, just include it in your page and tell it which fonts to load. For example, you could load fonts from [Google Fonts](http://www.google.com/fonts/) using the Web Font Loader hosted on [Google Hosted Libraries](https://developers.google.com/speed/libraries/) using the following code.
+To use the Web Font Loader library, just include it in your page and tell it which fonts to load. For example, you could load fonts from [Google Fonts](https://fonts.google.com/) using the Web Font Loader hosted on [Google Hosted Libraries](https://developers.google.com/speed/libraries/) using the following code.
 
 ```html
 <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
@@ -38,9 +38,9 @@ To use the Web Font Loader library, just include it in your page and tell it whi
 
 Alternatively, you can link to the latest `1.x` version of the Web Font Loader by using `https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js` as the `script` source. Note that the version in this url is less specific. It will always load the latest `1.x` version, but it also has a shorter cache time to ensure that your page gets updates in a timely manner. For performance reasons, we recommend using an explicit version number (such as `1.6.26`) in urls when using the Web Font Loader in production. You can manually update the Web Font Loader version number in the url when you want to adopt a new version.
 
-Web Font Loader is also available on the [jsDelivr](http://www.jsdelivr.com/projects/webfontloader) & [CDNJS](https://cdnjs.com/libraries/webfont) CDNs.
+Web Font Loader is also available on the [jsDelivr](https://www.jsdelivr.com/package/npm/webfontloader) & [CDNJS](https://cdnjs.com/libraries/webfont) CDNs.
 
-It is also possible to use the Web Font Loader asynchronously. For example, to load [Typekit](http://www.typekit.com) fonts asynchronously, you could use the following code.
+It is also possible to use the Web Font Loader asynchronously. For example, to load [Adobe Fonts](https://fonts.adobe.com/) fonts asynchronously, you could use the following code.
 
 ```html
 <script>
@@ -182,9 +182,9 @@ This is an advanced configuration option that isn't needed for most use cases.
 
 Web Font Loader provides a module system so that any web font provider can contribute code that allows their fonts to be loaded. This makes it possible to use multiple web font providers at the same time. The specifics of each provider currently supported by the library are documented here.
 
-### Adobe Edge Web Fonts
+### Adobe Edge Web Fonts (retired)
 
-When using [Adobe Edge Web Fonts](https://edgewebfonts.adobe.com/), you can use the `typekit` module by passing in a catenated list of fonts in the `id` parameter and set the `api` parameter to point to the Edge Web Fonts URL.
+Adobe Edge Web Fonts is retired. The legacy `typekit` configuration can still be used with a compatible service by passing in a catenated list of fonts in the `id` parameter and setting the `api` parameter to that service's API URL.
 
 ```javascript
 WebFontConfig = {
@@ -275,9 +275,9 @@ WebFontConfig = {
 
 Tests strings should be specified on a per font basis and contain at least one character. If not specified the default test string (`BESbswy`) is used.
 
-### Fontdeck
+### Fontdeck (retired)
 
-To use the [Fontdeck](http://fontdeck.com/) module, specify the ID of your website. You can find this ID on the website page within your account settings.
+Fontdeck is retired and no longer provides new website IDs. The legacy module is retained for compatibility; if you have an existing Fontdeck ID, specify it as follows.
 
 ```javascript
 WebFontConfig = {
@@ -289,7 +289,7 @@ WebFontConfig = {
 
 ### Fonts.com
 
-When using [Fonts.com web fonts](http://www.fonts.com/web-fonts/) specify your Project ID.
+When using [Fonts.com web fonts](https://www.monotype.com/products/monotype-fonts), specify your Project ID.
 
 ```javascript
 WebFontConfig = {
@@ -305,7 +305,7 @@ The Fonts.com module has an optional `version` option which acts as a cache-bust
 
 ### Google
 
-Using [Google's Font API](https://code.google.com/apis/webfonts/docs/getting_started.html), name the font families you'd like to load. You can use the same [syntax](https://developers.google.com/fonts/docs/getting_started#Syntax) as in the Font API to specify styles. Please note that the Google module does not support the FVD syntax that is used in the custom module. 
+Using [Google's Font API](https://developers.google.com/fonts/docs/getting_started), name the font families you'd like to load. You can use the same [syntax](https://developers.google.com/fonts/docs/getting_started#Syntax) as in the Font API to specify styles. Please note that the Google module does not support the FVD syntax that is used in the custom module. 
 
 ```javascript
 WebFontConfig = {
@@ -350,7 +350,7 @@ The `text` subsetting functionality is only available for the Google module.
 
 ### Typekit
 
-When using [Typekit](http://www.typekit.com), specify the Kit to retrieve by its ID. You can find the Kit ID within Typekit's Kit Editor interface.
+When using [Adobe Fonts](https://fonts.adobe.com/) (formerly Typekit), specify the Kit to retrieve by its ID. You can find the Kit ID within the Adobe Fonts kit editor interface.
 
 ```javascript
 WebFontConfig = {
